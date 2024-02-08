@@ -1324,10 +1324,10 @@ jQuery(function($){
                ?>
 
                <div id="air_info"><?if($rs[d_air_no]){?>▶출국편명:<?=$rs[d_air_no]?> (출발시간:<?=$rs[d_air_time1]?> <?if($rs[d_air_time2]){?>/ 도착시간:<?=$rs[d_air_time2]?><?}?>)<?}?>
-                    <?if($rs[d_air_id_no]){?><a href="javascript:newWin('view_air.php?id_no=<?=$rs[d_air_id_no]?>',950,580,1,1,'','air')"><?=$rs[d_air_id_no]?></a><?}?>
+                    <?if($rs[d_air_id_no]){?><a href="javascript:newWin('view_air.php?id_no=<?=$rs[d_air_id_no]?>',950,580,1,1,'','air')"><?=$rs[d_air_id_no]?></a><?}?> 출국일: <?=$rs[d_date]?>
                </div>
                <div id="air_info2"><?if($rs[r_air_no]){?>▶귀국편명:<?=$rs[r_air_no]?> (출발시간:<?=$rs[r_air_time1]?> <?if($rs[r_air_time2]){?>/ 도착시간:<?=$rs[r_air_time2]?><?}?>)<?}?>
-                    <?if($rs[r_air_id_no]){?><a href="javascript:newWin('view_air.php?id_no=<?=$rs[r_air_id_no]?>',950,580,1,1,'','air')"><?=$rs[r_air_id_no]?></a><?}?>
+                    <?if($rs[r_air_id_no]){?><a href="javascript:newWin('view_air.php?id_no=<?=$rs[r_air_id_no]?>',950,580,1,1,'','air')"><?=$rs[r_air_id_no]?></a><?}?> 귀국일: <?=$rs[r_date]?>
                </div>
           </td>
 

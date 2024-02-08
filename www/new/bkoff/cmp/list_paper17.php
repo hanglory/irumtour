@@ -1,7 +1,8 @@
 <?
 include_once("../include/common_file.php");
 
-chk_power($_SESSION["sessLogin"]["proof"],"통계");
+chk_power($_SESSION["sessLogin"]["proof"],"매출현황");
+//chk_power($_SESSION["sessLogin"]["proof"],"통계");
 
 $dtype=($dtype)? $dtype : "d_date";
 

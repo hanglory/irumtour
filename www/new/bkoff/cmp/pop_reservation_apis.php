@@ -57,6 +57,8 @@ if ($mode=="save"){
             $price_last[$i]= $price[$i]- ($price_prev[$i] + $price_prev2[$i] + $price_prev3[$i]);
             $passport_limit[$i] = strtoupper($passport_limit[$i]);
             $bit_cancel[$i] = rnf($bit_cancel[$i]);
+            $chk_ticket[$i] = rnf($chk_ticket[$i]);
+            $chk_refund[$i] = rnf($chk_refund[$i]);
             //$price_prev = rnf($price_prev);
 
             $rn[$i] = trim($rn[$i]);
@@ -132,7 +134,9 @@ if ($mode=="save"){
                   bank_in2_id,
                   bank_in3_id,
                   reg_date,
-                  reg_date2
+                  reg_date2,
+                  chk_ticket,
+                  chk_refund
               ) values (
                   '$code',
                   '$CP_ID',
@@ -177,7 +181,9 @@ if ($mode=="save"){
                   '$bank_in2_id[$i]',
                   '$bank_in3_id[$i]',
                   '$reg_date',
-                  '$reg_date2'
+                  '$reg_date2',
+                  '$chk_ticket[$i]',
+                  '$chk_refund[$i]'
             )";
 
             $outprice_query = "";
@@ -226,6 +232,8 @@ if ($mode=="save"){
                   bank_in3_id='$bank_in3_id[$i]',
                   bit = '$bit',
                   bit_cancel_date = '$bit_cancel_date[$i]',
+                  chk_ticket = '$chk_ticket[$i]',
+                  chk_refund = '$chk_refund[$i]',
                   bit_cancel = '$bit_cancel[$i]'
                where id_no='$id_no[$i]'
             ";
@@ -1093,10 +1101,12 @@ input{padding:0;margin:0;letter-spacing: -0.8px;font-family: verdana;}
             </td>
             <!-- <td class="apis2"><input type="text" name="memo[]" id="memo_<?=$j?>" value="<?=$rs[memo]?>" size="9" maxlength="30" class="box" /></td> -->
             <td class="apis3">
-                <input type="checkbox" name="chk_ticket[]" value="1" <?=($rs[chk_ticket])?'checked':""?> >
+                <input type="hidden" name="chk_ticket[]" id="chk_ticket_<?=$j?>"  value="<?=($rs[chk_ticket])?1:0?>">
+                <input type="checkbox"  value="1" <?=($rs[chk_ticket])?'checked':""?> onclick="if(this.checked==true){$('#chk_ticket_<?=$j?>').val(1);}else{$('#chk_ticket_<?=$j?>').val(0);} ">
             </td>
             <td class="apis3">
-                <input type="checkbox" name="chk_refund[]" value="1" <?=($rs[chk_refund])?'checked':""?> >
+                <input type="hidden" name="chk_refund[]" id="chk_refund_<?=$j?>" value="<?=($rs[chk_refund])?1:0?>">
+                <input type="checkbox"  value="1" <?=($rs[chk_refund])?'checked':""?> onclick="if(this.checked==true){$('#chk_refund_<?=$j?>').val(1);}else{$('#chk_refund_<?=$j?>').val(0);} ">
             </td>
 
 

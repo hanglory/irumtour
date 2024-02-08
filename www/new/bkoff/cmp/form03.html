@@ -19,6 +19,8 @@ if($_GET["id_no"]){
 $page_width="700";
 
 
+
+
 if($mode=="save"){
 
     $plan_text1 = trim($plan_text1);
@@ -131,8 +133,8 @@ if($mode=="save"){
     $form3_text3 = trim($form3_text3);
     $form3_text4 = trim($form3_text4);
 
-	$sql="
-	   update cmp_reservation set
+    $sql="
+       update cmp_reservation set
         plan_text1 = '$plan_text1',
         plan_text2 = '$plan_text2',
         plan_text3 = '$plan_text3',
@@ -240,16 +242,37 @@ if($mode=="save"){
         prepare='$prepare',
         add_text3='$add_text3',
 
+
+        std_d_date='$std_d_date',
+        std_d_air_no='$std_d_air_no',
+        std_d_time='$std_d_time',
+        std_r_date='$std_r_date',
+        std_r_air_no='$std_r_air_no',
+        std_r_time='$std_r_time',
+        std_airport_in='$std_airport_in',
+        std_airport_counter='$std_airport_counter',
+        std_chk_time='$std_chk_time',
+        std_airport_out='$std_airport_out',
+        std_meeting_place='$std_meeting_place',
+        std_meeting_board='$std_meeting_board',
+        std_local_staff='$std_local_staff',
+        std_golf_phone='$std_golf_phone',
+        std_hotel_info='$std_hotel_info',
+        std_cargo2='$std_cargo2',
+
+
+
+
         form3_text = '$form3_text',
         form3_text2 = '$form3_text2',
         form3_text3 = '$form3_text3',
-	    form3_text4 = '$form3_text4'
-	   where id_no=$id_no
-	";
-	$dbo->query($sql);
+        form3_text4 = '$form3_text4'
+       where id_no=$id_no
+    ";
+    $dbo->query($sql);
 
-	error("저장하였습니다.");
-	exit;
+    error("저장하였습니다.");
+    exit;
 }
 
 
@@ -266,6 +289,28 @@ $d_date = $rs[d_date];
 $r_date = $rs[r_date];
 $d_arr = explode("/",$rs[d_date]);
 $month = ceil($d_arr[1]);
+
+
+$std_d_date = $rs[std_d_date];
+$std_d_air_no = $rs[std_d_air_no];
+$std_d_time = $rs[std_d_time];
+$std_r_date = $rs[std_r_date];
+$std_r_air_no = $rs[std_r_air_no];
+$std_r_time = $rs[std_r_time];
+$std_airport_in = $rs[std_airport_in];
+$std_airport_counter = $rs[std_airport_counter];
+$std_chk_time = $rs[std_chk_time];
+$std_airport_out = $rs[std_airport_out];
+$std_meeting_place = $rs[std_meeting_place];
+$std_meeting_board = $rs[std_meeting_board];
+$std_local_staff = $rs[std_local_staff];
+$std_golf_phone = $rs[std_golf_phone];
+$std_hotel_info = $rs[std_hotel_info];
+$std_cargo2 = $rs[std_cargo2];
+
+
+
+
 if($rs[origin_id_no]){
     $sql2 = "select * from cmp_estimate where id_no=$rs[origin_id_no]";
     $dbo2->query($sql2);
@@ -289,7 +334,7 @@ if($rs[hotel_id_no]){
     $sql2 = "select * from cmp_hotel where id_no=$rs[hotel_id_no]";
     $dbo2->query($sql2);
     $rs2= $dbo2->next_record();
-    if(strstr("@14.37.242.84@221.154.216.133@","@".$_SERVER["REMOTE_ADDR"]."@")) checkVar($rs2[name].mysql_error(),$sql);
+    //if(strstr("@14.37.242.84@221.154.216.133@","@".$_SERVER["REMOTE_ADDR"]."@")) checkVar($rs2[name].mysql_error(),$sql);
     if($rs2[id_no]){
         $hotel_name = $rs2[name];
         $hotel_url = $rs2[url];
@@ -499,6 +544,7 @@ $golf_staff = $rs2[main_staff];
 $meeting_place = $rs2[meeting_place];
 $meeting_board = $rs2[meeting_board];
 $golf_phone = $rs2[phone2];
+$etc2 = $rs2[etc2];
 
 /*2016-04-06*/
 $point_include =($rs[add_text1])? $rs[add_text1] :  $rs2[point_include];
@@ -560,10 +606,10 @@ $hotel_address=$rs2[address];
 $hotel_phone=$rs2[phone];
 $hotel_url=$rs2[url];
 $form_mode = ($nation=="일본" || $nation=="중국" || $nation=="대만")?2:1;
-if(strstr("@14.37.242.84@221.154.216.133@","@".$_SERVER["REMOTE_ADDR"]."@")){
-    checkVar("HOTEL_ID_NO",$HOTEL_ID_NO);
-    checkVar("HOTEL_ID_NO",$sql2);
-}
+// if(strstr("@14.37.242.84@221.154.216.133@","@".$_SERVER["REMOTE_ADDR"]."@")){
+//     checkVar("HOTEL_ID_NO",$HOTEL_ID_NO);
+//     checkVar("HOTEL_ID_NO",$sql2);
+// }
 
 
 if($HOTEL2_ID_NO) $hotel2_id_no=$HOTEL2_ID_NO;
@@ -602,11 +648,11 @@ $edit_mode = (!$doc_mode && !$print_mode)?1:0;
 
 /*2016-04-06*/
 if($doc_mode && !$code){
-	$xls_name = "report1.doc";
-	header("Content-type: application/vnd.ms-word");
-	header("Content-Type: application/vnd.ms-word; charset=euc-kr");
-	header("Content-Disposition: attachment;filename=$xls_name;");
-	header( "Content-Description: PHP4 Generated Data" );
+    $xls_name = "report1.doc";
+    header("Content-type: application/vnd.ms-word");
+    header("Content-Type: application/vnd.ms-word; charset=euc-kr");
+    header("Content-Disposition: attachment;filename=$xls_name;");
+    header( "Content-Description: PHP4 Generated Data" );
 }
 
 $bg_color = ($cp_color)? $cp_color : "#948A54";
@@ -630,22 +676,22 @@ include("inc_form_og.php");
 <link rel="stylesheet" href="https://<?=$_SERVER["HTTP_HOST"]?>/new/bkoff/include/basic.css" type="text/css">
 
 <?if($edit_mode){?>
-	<script language="JavaScript" src="../../include/form_check.js"></script>
-	<script language="JavaScript" src="../../include/function.js"></script>
-	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script language="JavaScript" src="../../include/form_check.js"></script>
+    <script language="JavaScript" src="../../include/function.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 
-	<!-- Include Core Datepicker Stylesheet -->
-	<link rel="stylesheet" href="../../include/ui.datepicker.css" type="text/css" media="screen" title="core css file" charset="utf-8" />
-	<!-- Include jQuery -->
-	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-	<!-- Include Core Datepicker JavaScript -->
-	<script src="../../include/ui.datepicker.js" type="text/javascript" charset="utf-8"></script>
-	<!-- Attach the datepicker to dateinput after document is ready -->
-	<script type="text/javascript" charset="utf-8">
-		jQuery(function($){$(".dateinput").datepicker();});
-	</script>
-	<script type="text/javascript" src="../../qtip/jquery.qtip-1.0.0-rc3.min.js"></script>
-	<script type="text/javascript" src="../../include/jquery.maskedinput.min.js"></script>
+    <!-- Include Core Datepicker Stylesheet -->
+    <link rel="stylesheet" href="../../include/ui.datepicker.css" type="text/css" media="screen" title="core css file" charset="utf-8" />
+    <!-- Include jQuery -->
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <!-- Include Core Datepicker JavaScript -->
+    <script src="../../include/ui.datepicker.js" type="text/javascript" charset="utf-8"></script>
+    <!-- Attach the datepicker to dateinput after document is ready -->
+    <script type="text/javascript" charset="utf-8">
+        jQuery(function($){$(".dateinput").datepicker();});
+    </script>
+    <script type="text/javascript" src="../../qtip/jquery.qtip-1.0.0-rc3.min.js"></script>
+    <script type="text/javascript" src="../../include/jquery.maskedinput.min.js"></script>
 
     <script type="text/javascript">
     function save(){
@@ -708,7 +754,7 @@ include("inc_form_og.php");
       </tr>
 
 
-	  <tr>
+      <tr>
         <td><table width="<?=$page_width?>" border="0" cellspacing="1" cellpadding="0" style="border-collapse:collapse;border:1px solid #ccc ">
           <tr>
             <td width="20%" height="30" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'Malgun Gothic','돋움';font-weight:bold;color:#fff">수신</span></td>
@@ -723,27 +769,85 @@ include("inc_form_og.php");
             <td height="30" bgcolor="#ffffff" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding-left:10px;font-size:10pt"><?//=$FRANCHISECORPNAME?> <?=staff_full_name($staff_id)?></td>
           </tr>
 
-		</table>
-		</td>
+        </table>
+        </td>
       </tr>
 
 
       <tr>
         <td align="left" height="40" style="font-size:14px;"><span style="font-size:10pt;font-family:'Malgun Gothic','돋움';font-weight:bold">1. 일정</span></td>
       </tr>
-	  <tr>
+      <tr>
         <td><table width="<?=$page_width?>" border="0" cellspacing="1" cellpadding="0" style="border-collapse:collapse;border:1px solid #ccc ">
           <tr>
             <td width="25%" height="30" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'Malgun Gothic','돋움';font-weight:bold;color:#fff">출국</span></td>
-            <td width="25%" height="30" align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><?=$d_date?></td>
-            <td width="25%" height="30" align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><?=$d_air_no?></td>
-            <td width="25%" height="30" align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><?=$d_time_s?>~<?=$d_time_e?></td>
+            <td width="25%" height="30" align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc">
+                
+                    <?  
+                    $std_d_date = ($std_d_date)? $std_d_date : $d_date;    
+                    ?>
+                    <?if($edit_mode){?>
+                    <input type="text" name="std_d_date" class="editor3 dateinput c" maxlength="50" value="<?=$std_d_date?>">
+                    <?}else{?>
+                        <?=($d_date);?>
+                    <?}?>          
+
+            </td>
+            <td width="25%" height="30" align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc">
+
+                    <?  
+                    $std_d_air_no = ($std_d_air_no)? $std_d_air_no : $d_air_no;    
+                    ?>                
+                    <?if($edit_mode){?>
+                    <input type="text" name="std_d_air_no" class="editor3 c" maxlength="50" value="<?=$std_d_air_no?>">
+                    <?}else{?>
+                        <?=($d_air_no);?>
+                    <?}?>                 
+            </td>
+            <td width="25%" height="30" align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc">
+                
+                    <?
+                    $std_d_time=($std_d_time)? $std_d_time : "${d_time_s}~$d_time_e";
+                    ?>
+                    <?if($edit_mode){?>
+                    <input type="text" name="std_d_time" class="editor3 c" maxlength="11" value="<?=$std_d_time?>">
+                    <?}else{?>
+                        <?=$d_time_s?>~<?=$d_time_e?>
+                    <?}?>                     
+                </td>
           </tr>
           <tr>
             <td width="25%" height="30" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'Malgun Gothic','돋움';font-weight:bold;color:#fff">귀국</span></td>
-            <td width="25%" height="30" align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><?=$r_date?></td>
-            <td width="25%" height="30" align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><?=$r_air_no?></td>
-            <td width="25%" height="30" align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><?=$r_time_s?>~<?=$r_time_e?></td>
+            <td width="25%" height="30" align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc">
+                    <?  
+                    $std_r_date = ($std_r_date)? $std_r_date : $r_date;    
+                    ?>                
+                    <?if($edit_mode){?>
+                    <input type="text" name="std_r_date" class="editor3 dateinput c" maxlength="50" value="<?=$std_r_date?>">
+                    <?}else{?>
+                        <?=($r_date);?>
+                    <?}?>                  
+            </td>
+            <td width="25%" height="30" align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc">
+                    <?  
+                    $std_r_air_no = ($std_r_air_no)? $std_r_air_no : $r_air_no;    
+                    ?>                
+                    <?if($edit_mode){?>
+                    <input type="text" name="std_r_air_no" class="editor3  c" maxlength="50" value="<?=$std_r_air_no?>">
+                    <?}else{?>
+                        <?=($r_air_no);?>
+                    <?}?>                  
+            </td>
+            <td width="25%" height="30" align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc">
+                    <?
+                    $std_r_time=($std_r_time)? $std_r_time : "${r_time_s}~$r_time_e";
+                    ?>
+                    <?if($edit_mode){?>
+                    <input type="text" name="std_r_time" class="editor3 c" maxlength="11" value="<?=$std_r_time?>">
+                    <?}else{?>
+                        <?=$r_time_s?>~<?=$r_time_e?>
+                    <?}?>                  
+            </td>
           </tr>
 </table></td>
       </tr>
@@ -757,11 +861,30 @@ include("inc_form_og.php");
         <td><table width="<?=$page_width?>" border="0" cellspacing="1" cellpadding="0" style="border-collapse:collapse;border:1px solid #ccc ">
           <tr>
             <td width="20%" height="30" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'Malgun Gothic','돋움';font-weight:bold;color:#fff">국내공항</span></td>
-            <td height="30" colspan="2" align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><?=$airport_in?> <?//=$airport_counter?></td>
+            <td height="30" colspan="2" align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc">
+
+                <?  
+                $std_airport_in = ($std_airport_in)? $std_airport_in : $airport_in;    
+                ?>                
+                <?if($edit_mode){?>
+                <input type="text" name="std_airport_in" class="editor3 c" maxlength="50" value="<?=$std_airport_in?>">
+                <?}else{?>
+                    <?=($airport_in);?>
+                <?}?>                       
+            </td>
           </tr>
           <tr>
             <td width="20%" height="30" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'Malgun Gothic','돋움';font-weight:bold;color:#fff">체크인카운터</span></td>
-            <td height="30" colspan="2" align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><?=$airport_counter?></td>
+            <td height="30" colspan="2" align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc">
+                <?  
+                $std_airport_counter = ($std_airport_counter)? $std_airport_counter : $airport_counter;    
+                ?>                
+                <?if($edit_mode){?>
+                <input type="text" name="std_airport_counter" class="editor3 c" maxlength="50" value="<?=$std_airport_counter?>">
+                <?}else{?>
+                    <?=($airport_counter);?>
+                <?}?>                
+            </td>
           </tr>
 
           <tr>
@@ -780,9 +903,16 @@ include("inc_form_og.php");
                   checkVar("체크인 시간1",$chk_time1);
                   checkVar("체크인 시간2",$chk_time2);
                   */
-
-                  echo "$chk_time1 ~ $chk_time2";
                 ?>
+
+                    <?
+                    $std_chk_time=($std_chk_time)? $std_chk_time : "${chk_time1}~$chk_time2";
+                    ?>
+                    <?if($edit_mode){?>
+                    <input type="text" name="std_chk_time" class="editor3 c" maxlength="11" value="<?=$std_chk_time?>">
+                    <?}else{?>
+                        <?=$chk_time1?>~<?=$chk_time2?>
+                    <?}?> 
 
             </td>
           </tr>
@@ -790,31 +920,87 @@ include("inc_form_og.php");
           <tr>
             <td width="20%" rowspan="6" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'Malgun Gothic','돋움';font-weight:bold;color:#fff">현지 정보</span></td>
             <td width="20%" height="30" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;color:#fff">현지공항</td>
-            <td bgcolor="#ffffff" style="padding-left:10px;font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><?=$airport_out?></td>
+            <td bgcolor="#ffffff" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc">
+                <?  
+                $std_airport_out = ($std_airport_out)? $std_airport_out : $airport_out;    
+                ?>                
+                <?if($edit_mode){?>
+                <input type="text" name="std_airport_out" class="editor3 c" maxlength="50" value="<?=$std_airport_out?>">
+                <?}else{?>
+                    <?=($airport_out);?>
+                <?}?>                    
+            </td>
           </tr>
           <tr>
             <td width="20%" height="30" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;color:#fff">공항미팅위치</td>
-            <td bgcolor="#ffffff" style="padding-left:10px;font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><?=$meeting_place?></td>
+            <td bgcolor="#ffffff" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc">
+                <?  
+                $std_meeting_place = ($std_meeting_place)? $std_meeting_place : $meeting_place;    
+                ?>                
+                <?if($edit_mode){?>
+                <input type="text" name="std_meeting_place" class="editor3 c" maxlength="50" value="<?=$std_meeting_place?>">
+                <?}else{?>
+                    <?=($std_meeting_place);?>
+                <?}?>                  
+            </td>
           </tr>
 
           <tr>
             <td width="20%" height="30" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;color:#fff">미팅보드</td>
-            <td bgcolor="#ffffff" style="padding-left:10px;font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><?=$meeting_board?></td>
+            <td bgcolor="#ffffff" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc">
+                <?  
+                $std_meeting_board = ($std_meeting_board)? $std_meeting_board : $meeting_board;    
+                ?>                
+                <?if($edit_mode){?>
+                <input type="text" name="std_meeting_board" class="editor3 c" maxlength="50" value="<?=$std_meeting_board?>">
+                <?}else{?>
+                    <?=($std_meeting_board);?>
+                <?}?>                   
+            </td>
           </tr>
 
           <tr>
             <td width="20%" height="30" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;color:#fff">현지담당</td>
-            <td bgcolor="#ffffff" style="padding-left:10px;font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><?=$local_staff?></td>
+            <td bgcolor="#ffffff" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc">  
+                <?  
+                $std_local_staff = ($std_local_staff)? $std_local_staff : $local_staff;    
+                ?>                
+                <?if($edit_mode){?>
+                <input type="text" name="std_local_staff" class="editor3 c" maxlength="50" value="<?=$std_local_staff?>">
+                <?}else{?>
+                    <?=($std_local_staff);?>
+                <?}?>                 
+            </td>
           </tr>
           <tr>
             <td width="20%" height="30" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;color:#fff">비상연락처</td>
-            <td bgcolor="#ffffff" style="padding-left:10px;font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><?=$golf_phone?></td>
+            <td bgcolor="#ffffff" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc">
+                <?  
+                $std_golf_phone = ($std_golf_phone)? $std_golf_phone : $golf_phone;    
+                ?>                
+                <?if($edit_mode){?>
+                <input type="text" name="std_golf_phone" class="editor3 c" maxlength="50" value="<?=$std_golf_phone?>">
+                <?}else{?>
+                    <?=($std_golf_phone);?>
+                <?}?>                
+            </td>
           </tr>
           <tr>
             <td width="20%" height="30" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;color:#fff">호텔 주소</td>
-            <td bgcolor="#ffffff" style="padding-left:10px;font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;text-align:left" algin="left">
-              <p><?=$hotel_address?> <strong><?=$hotel_name?></strong></p>
-              <p><?=$hotel_address2?> <strong><?=$hotel_name2?></strong></p>
+            <td bgcolor="#ffffff" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;text-align:center">
+
+                <?  
+                $hotel_info="$hotel_address $hotel_name \r";    
+                $hotel_info.="$hotel_address2 $hotel_name2";    
+                $std_hotel_info = ($std_hotel_info)? $std_hotel_info : $hotel_info;    
+                ?>                
+                <?if($edit_mode){?>
+                <input type="text" name="std_hotel_info" class="editor3 c" maxlength="50" value="<?=$std_hotel_info?>">
+                <?}else{?>
+                    <?=($std_hotel_info);?>
+                <?}?> 
+
+
             </td>
           </tr>
         </table>
@@ -849,7 +1035,23 @@ include("inc_form_og.php");
           </tr>
           <tr>
             <td  width="20%" height="50" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;color:#fff"><span style="font-size:10pt;font-family:'Malgun Gothic','돋움';font-weight:bold">기내수화물</span></td>
-            <td align="left" height="50" colspan="5" align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'Malgun Gothic','돋움';padding-left:10px;border-left:1px solid #ccc;border-bottom:1px solid #ccc"><?=nl2br($cargo2)?></td>
+            <td align="left" height="50" colspan="5" align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc">
+                
+                <?  
+                $std_cargo2 = ($std_cargo2)? $std_cargo2 : $cargo2;    
+                ?>                
+                <?if($edit_mode){?>
+                <textarea name="std_cargo2" class="std_cargo2 editor3" style="height:50px"><?=$std_cargo2?></textarea>
+                <?}else{?>
+                    <?
+                    $txt2=$std_cargo2;
+                    include("inc_plan_color.php");
+                    $std_cargo2=$txt2;
+                    ?>
+                    <?=nl2br($std_cargo2)?>
+                <?}?> 
+
+            </td>
           </tr>
 </table></td>
       </tr>
@@ -880,73 +1082,73 @@ include("inc_form_og.php");
           </tr>
 </table></td>
       </tr>
-	  <tr>
+      <tr>
         <td height="20"></td>
       </tr>
 
-	  <tr>
+      <tr>
         <td align="left" height="40" style="font-size:14px;"><span style="font-size:10pt;font-family:'Malgun Gothic','돋움';font-weight:bold">5.날씨</span></td>
       </tr>
-	  <tr>
+      <tr>
         <td><table width="<?=$page_width?>" border="0" cellspacing="1" cellpadding="0" style="border-collapse:collapse;border:1px solid #ccc ">
           <tr>
             <td align="left" width="65%"  bgcolor="#ffffff" style="padding:10px;font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc">
 
-      			<?
-      			if(!$form3_text){
-      				$form3_text= "$nation $city $temperature";
-      			}
-      			?>
-      			<?if($edit_mode){?>
-      			<textarea name="form3_text" class="editor2"><?=$form3_text?></textarea>
-      			<?}else{?>
+                <?
+                if(!$form3_text){
+                    $form3_text= "$nation $city $temperature";
+                }
+                ?>
+                <?if($edit_mode){?>
+                <textarea name="form3_text" class="editor2"><?=$form3_text?></textarea>
+                <?}else{?>
                     <?
                     $txt2=$form3_text;
                     include("inc_plan_color.php");
                     $form3_text=$txt2;
                     ?>
                     <?=nl2br($form3_text)?>                                        
-      			<?}?>
+                <?}?>
 
-      			</td>
+                </td>
           </tr>
-		</table>
-		</td>
+        </table>
+        </td>
       </tr>
 
-	  <tr>
+      <tr>
         <td height="20"></td>
       </tr>
       <tr>
         <td align="left" height="40" style="font-size:14px;"><span style="font-size:10pt;font-family:'Malgun Gothic','돋움';font-weight:bold">6.기타 참고사항</span></td>
       </tr>
-	  <tr>
+      <tr>
         <td><table width="<?=$page_width?>" border="0" cellspacing="1" cellpadding="0" style="border-collapse:collapse;border:1px solid #ccc ">
           <tr>
             <td align="left" width="65%"  bgcolor="#ffffff" style="padding:10px;font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc">
 
-        			<?
-        			if(!$form3_text2){
-        				//$form3_text2= "$nation $city $temperature";
-        			}
-        			?>
-        			<?if($edit_mode){?>
-        			<textarea name="form3_text2" class="editor2" style="height:170px"><?=$form3_text2?></textarea>
-        			<?}else{?>
+                    <?
+                    if(!$form3_text2 && $etc2){
+                        $form3_text2= $etc2;
+                    }
+                    ?>
+                    <?if($edit_mode){?>
+                    <textarea name="form3_text2" class="editor2" style="height:170px"><?=$form3_text2?></textarea>
+                    <?}else{?>
                         <?
                         $txt2=$form3_text2;
                         include("inc_plan_color.php");
                         $form3_text2=$txt2;
                         ?>
                         <?=nl2br($form3_text2)?>
-        			<?}?>
+                    <?}?>
 
-		      	</td>
+                </td>
           </tr>
-		  </table>
-		  </td>
+          </table>
+          </td>
     </tr>
-	  <tr>
+      <tr>
       <td height="20"></td>
     </tr>
       <tr>
@@ -1001,8 +1203,8 @@ include("inc_form_og.php");
 
             </td>
           </tr>
-		</table>
-		</td>
+        </table>
+        </td>
       </tr>
 
 
@@ -1034,62 +1236,62 @@ include("inc_form_og.php");
       </tr>
 
 
-	  <tr>
+      <tr>
         <td>
 
-		<!--일정표 2016-04-06-->
-		<?
+        <!--일정표 2016-04-06-->
+        <?
 
-		/*2016-04-06*/
-		if(!$plan_type){
-			$plan_type = ($form_mode==2)?"A":"E";
-		}
+        /*2016-04-06*/
+        if(!$plan_type){
+            $plan_type = ($form_mode==2)?"A":"E";
+        }
 
-		/*
-		$plan_type = "F";
-		$night = 5;
-		$car = "car1";
-		$car2 = "car2";
-		checkVar($nation,$plan_type);
-		checkVar("박",$night);
-		*/
+        /*
+        $plan_type = "F";
+        $night = 5;
+        $car = "car1";
+        $car2 = "car2";
+        checkVar($nation,$plan_type);
+        checkVar("박",$night);
+        */
 
-		if($REMOTE_ADDR=="106.246.54.27"){
-			//$plan_type = "F";
-			checkVar($night,$plan_type);
-		}
+        if($REMOTE_ADDR=="106.246.54.27"){
+            //$plan_type = "F";
+            checkVar($night,$plan_type);
+        }
 
 
-		$edit_mode_origin = $edit_mode;
-	    //$edit_mode=1;
+        $edit_mode_origin = $edit_mode;
+        //$edit_mode=1;
         $color_time = "blue;font-weight:bold";
-		include("plan_type_${plan_type}.php");
-		?>
+        include("plan_type_${plan_type}.php");
+        ?>
 
-		<!--일정표-->
+        <!--일정표-->
 
-		</td>
+        </td>
       </tr>
-	  <tr>
+      <tr>
         <td height="20"></td>
       </tr>
 
 
       <!-- <tr>
         <td>
-		<table width="<?=$page_width?>" border="0" cellspacing="1" cellpadding="0" style="border-collapse:collapse;border:1px solid #ccc ">
+        <table width="<?=$page_width?>" border="0" cellspacing="1" cellpadding="0" style="border-collapse:collapse;border:1px solid #ccc ">
           <tr>
             <td width="20%" height="25" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;font-family:'Malgun Gothic','돋움';font-weight:bold;color:#FFF">취소수수료</span></td>
             <td height="25" bgcolor="#ffffff" colspan="3" style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding-left:5px;font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%text-align:left;padding:8px;" align="left"><?=nl2br($cancel_text)?></td>
           </tr>
-		</table>
-		</td>
+        </table>
+        </td>
       </tr>
-	  <tr>
+      <tr>
         <td height="20"></td>
       </tr> -->
 
-
+<!-- 
       <tr>
         <td><table width="<?=$page_width?>" border="0" cellspacing="1" cellpadding="0" style="border-collapse:collapse;border:1px solid #ccc ">
           <tr>
@@ -1100,30 +1302,30 @@ include("inc_form_og.php");
 
             </td>
           </tr>
-	    </table>
-		</td>
-      </tr>
+        </table>
+        </td>
+      </tr> -->
       <tr>
         <td height="30">&nbsp;</td>
       </tr>
-	  </table>
-	  <?
-	  $edit_mode = $edit_mode_origin;
-	  ?>
+      </table>
+      <?
+      $edit_mode = $edit_mode_origin;
+      ?>
 
 
-	  <?if($edit_mode){?>
-	  <div style="padding:20px 0 30px 0">
-	  <!-- Button Begin---------------------------------------------->
-	  <table border="0" width="200" cellspacing="0" cellpadding="0" align="right">
-		<tr align="right">
-			<td><span class="btn_pack medium bold"><a href="#" onClick="save()"> 저장 </a></span></td>
-			<td><span class="btn_pack medium bold"><a href="<?=SELF?>?id_no=<?=$rs[id_no]?>&doc_mode=1"> Word 저장 </a></span></td>
-			<td><span class="btn_pack medium bold"><a href="javascript:self.close()"> 창닫기 </a></span></td>
-		</tr>
-	  </table>
-	  <!-- Button End------------------------------------------------>
-	  </div>
+      <?if($edit_mode){?>
+      <div style="padding:20px 0 30px 0">
+      <!-- Button Begin---------------------------------------------->
+      <table border="0" width="200" cellspacing="0" cellpadding="0" align="right">
+        <tr align="right">
+            <td><span class="btn_pack medium bold"><a href="#" onClick="save()"> 저장 </a></span></td>
+            <td><span class="btn_pack medium bold"><a href="<?=SELF?>?id_no=<?=$rs[id_no]?>&doc_mode=1"> Word 저장 </a></span></td>
+            <td><span class="btn_pack medium bold"><a href="javascript:self.close()"> 창닫기 </a></span></td>
+        </tr>
+      </table>
+      <!-- Button End------------------------------------------------>
+      </div>
     <?}else{?>
 
       <?if(!$MOBILE){?>

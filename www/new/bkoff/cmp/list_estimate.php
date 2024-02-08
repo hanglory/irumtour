@@ -46,7 +46,7 @@ if($keyword){
 }
 
 $dtype = ($dtype)? $dtype : "send_date";
-if(!$date_s) $date_s=date("Y/m/d",strtotime(date("Y/m/d")." -2 year"));
+if(!$date_s) $date_s= "2015/06/01"; //date("Y/m/d",strtotime(date("Y/m/d")." -2 year"));
 if(!$date_e) $date_e=date("Y/m/d",strtotime(date("Y/m/d")." +1 month"));
 $filter.=" and a.$dtype >='$date_s'";
 $filter.=" and a.$dtype <='$date_e'";
@@ -72,30 +72,48 @@ $sql_1 = "
         $filter
         $FILTER_PARTNER_QUERY
     ";
+//cmp_golf table에 nation 존재.
 $sql_2 = $sql_1 . " order by a.id_no desc limit  $start, $view_row";    
 
 
-//checkVar("",$sql_2);
 
 
 
 ####자료갯수
 list($rows)=$dbo->query($sql_1);//검색된 자료의 갯수
+if($debug) checkVar("",$sql_2);
+
 $row_search = $rows;
 
 if($keyword){
     $sql_3 = "
         select 
-            count(b.origin_id_no) as cnt
-            from $table as a left join cmp_reservation as b
-            on a.id_no = b.origin_id_no
+            count(c.origin_id_no) as cnt
+            from $table as a left join cmp_reservation as c
+            on a.id_no = c.origin_id_no
+            left join cmp_golf b on b.id_no = a.golf_id_no
             where 
               a.id_no>0 
               and a.cp_id='$CP_ID'
               $filter
-              and b.origin_id_no<>''
+              and c.origin_id_no<>''
         ";
+    //cmp_reservatoin table 에 origin_id_no 라는 name 의 열이 존재 X
+        /*SELECT
+            COUNT(DISTINCT a.id_no) AS cnt
+        FROM $table AS a
+        LEFT JOIN cmp_reservation AS b ON a.id_no = b.origin_id_no
+        WHERE
+            a.id_no > 0
+            AND a.cp_id = '$CP_ID'
+            $filter
+            AND b.origin_id_no <> ''
+            AND ($target LIKE '%$keyword%' OR b.nation LIKE '%$keyword%')
+    ";*/
+
     $dbo3->query($sql_3);
+   if($debug) checkVar("",$sql_3);
+
     $rs3=$dbo3->next_record();
     $cnt_y = $rs3[cnt];
     $percent = @round(($cnt_y/$row_search)*100,1);
@@ -163,11 +181,9 @@ function del(){
     }
 }
 
-
 function copy(id_no){
     actarea.location.href="list_<?=$filecode?>_copy.php?id_no="+id_no;
 }
-
 
 function copy_to_clip(val) {
   var t = document.createElement("textarea");
