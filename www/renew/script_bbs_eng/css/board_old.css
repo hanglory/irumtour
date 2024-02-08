@@ -1,0 +1,125 @@
+/* [bbslist] */
+.bbslist {clear:both; width:100%; border-collapse:separate; border-spacing:0; border:none;}
+.bbslist .hide-caption {display:none;}
+.bbslist thead th {text-align:center; background:url(../images/board/bg_title.gif) 0 0 repeat-x; height:30px;}
+.bbslist thead th.only-child {}
+.bbslist tbody td {padding:9px 0 4px 0; line-height:16px; text-align:center; color:#000; border-bottom:1px solid #dadada;}
+.bbslist_udrline {position:relative; top:-1px; overflow:hidden; height:1px; margin-bottom:-1px; background:#dadada;} /* bbslist 테이블 하단라인 */
+/* bbslist - 정렬 */
+.bbslist td.subject {padding-left:10px; text-align:left;}
+.bbslist td.al_l {text-align:left;}
+.bbslist td.al_c {text-align:center;}
+.bbslist td.al_r {text-align:right;}
+
+#bbslist_msg{padding:50px;text-align:center;color:gray}  /*자료 없음 메시지*/
+
+/* bbslist - 버튼 */
+.bbslist_button {margin-top:15px; text-align:center;}
+.bbslist_button ul {margin:0 1px;}
+.bbslist_button ul li {display:inline;}
+.bbslist_button img,
+.bbslist_button input {vertical-align:top;}
+
+/* bbslist - 페이징 */
+.paging {margin-top:20px; text-align:center; font-size:11px; line-height:11px; color:#e5e5e5;}
+.paging strong {padding:0 3px; color:red; text-decoration:underline;} /* 활성화된 번호 */
+.paging a {display:inline-block; padding:0 3px; vertical-align:middle; font-family:dotum; color:#999;}
+.paging img {vertical-align:middle;}
+.paging a.first {padding:0 1px 0 0;}
+.paging a.prev {margin-right:8px; padding-left:0;}
+.paging a.next {margin-left:5px; padding-right:1px;}
+.paging a.end {padding-left:0;}
+.paging img.first {margin-right:1px;}
+.paging img.prev {margin-right:11px;}
+.paging img.next {margin-left:8px; margin-right:1px;}
+.paging img.end {}
+.paging a.first img, .paging a.prev img,
+.paging a.next img, .paging a.end img {margin:0; padding:0;}
+
+/* bbslist - 게시물검색 */
+.bbslist_srch {width:100%; margin-top:20px; padding:15px 0; text-align:center; line-height:18px;}
+.bbslist_srch legend {display:none;}
+.bbslist_srch .select {vertical-align:middle;}
+.bbslist_srch .input-text {vertical-align:middle;}
+.bbslist_srch .input-image {display:inline-block; vertical-align:middle;}
+
+/* bbsview - 정보 */
+.bbsview-info {clear:both; width:100%; border-collapse:separate; border-spacing:0; border:none;}
+.bbsview-info tbody tr.list_top {background:url(../images/board/bg_title.gif) 0 0 repeat-x; height:30px;}
+.bbsview-info tbody tr.list_tail {background:url(../images/board/bg_title02.gif) 0 0 repeat-x; height:30px;}
+.bbsview-info tbody th,
+.bbsview-info tbody td {padding:7px 0.9em 4px; line-height:16px;}
+.bbsview-info tbody th {text-align:center;}
+.bbsview-info tbody td {text-align:left;}
+.bbsview-info tbody td .htitle {} /* 리스트페이지 제목 h1~6 */
+.bbsview-info-udrline {position:relative; top:-1px; overflow:hidden; height:1px; margin-bottom:-1px; background:black;} /* bbsview-info 테이블 하단라인 */
+/*.bbsview-udrline {overflow:hidden; height:1px; background:black;}*/ /* 테이블하단 라인 */
+.list_top td{font-weight:bold;color:#000000;font-size:1.2em;font-family:"돋움";letter-spacing:-1px}
+/* bbsview - 컨텐츠영역 */
+.bbsview-contents {margin-top:15px; padding:5px 15px 15px 10px;line-height:180%}
+/* bbsview - 파일첨부 */
+.bbsview-attach {height:24px; margin-top:15px; border-top:1px solid #dadada; border-bottom:1px solid #dadada;}
+.bbsview-attach p.tit {float:left; width:75px; padding:5px 0 3px 0; text-align:center; line-height:16px; background:#dadada;} * html .bbsview-attach p.tit {margin-right:-3px;}
+.bbsview-attach ul.list {overflow:hidden; padding:5px 0 3px 10px;} * html .bbsview-attach ul.list {display:inline-block;} /* ie6 haslayout */
+.bbsview-attach ul.list li {line-height:16px;}
+
+.bbsview-comment {margin-top:15px; border-top:1px solid #dadada;padding:10px 0 10px}
+.bbsview-comment tr.trheight {height:30px;}
+.bbsview-comment .trheight2 {height:100px;}
+.bbsview-comment .cmt_col{padding: 0 20px 0 10px}
+.bbsview-comment textarea{margin-top:10px;width:85%;border: 1px #dadada solid}
+
+.bbscmt-comment .cmt{padding:10px;line-height:140%}
+.bbscmt-comment .cmt_info_name{color:#336699;font-weight:bold}
+.bbscmt-comment .cmt_info_date{color:gray;font-family:verdana;font-size:8pt}
+
+
+
+/* bbsview - 버튼 */
+.bbsview-button {margin-top:15px; text-align:center;}
+.bbsview-button ul {}
+.bbsview-button ul li {display:inline;}
+.bbsview-button img,
+.bbsview-button input {vertical-align:top;}
+
+
+/* bbswrite-정보 */
+/*
+.bbswrite {clear:both; width:100%; border-spacing:0; border:none; border-top:1px solid #dadada;}
+.bbswrite .hide-caption {overflow:hidden;visibility:hidden;width:0;height:0;font-size:0;line-height:0;}
+.bbswrite th {background:url(../images/board/bg_title.gif) 0 0 repeat-x; height:30px; text-align:center;}
+.bbswrite th.notop {background:url(../images/board/bg_title02.gif) 0 0 repeat-x; height:30px;}
+.bbswrite td.notop {background:url(../images/board/bg_title02.gif) 0 0 repeat-x; height:30px;}
+.bbswrite td.list_top {background:url(../images/board/bg_title.gif) 0 0 repeat-x;}
+*/
+.bbswrite .topline {background:url(../images/board/bg_title.gif) 0 0 repeat-x; height:30px;}
+.bbswrite td,th {background:url(../images/board/bg_title02.gif) 0 0 repeat-x; height:30px;}
+.bbswrite th {padding-left:20px}
+
+
+/* bbswrite-정보>서식 */
+.bbswrite tbody td .select {margin-top:-2px; #margin-top:-4px;}
+.bbswrite tbody td .input-text {margin-top:-2px; #margin-top:-4px;}
+.bbswrite tbody td .textarea {margin-top:-2px; #margin-top:-3px;}
+.bbswrite tbody td .input-file {margin-top:-2px; #margin-top:-3px;}
+.bbswrite tbody td .input-radio {}
+.bbswrite tbody td .input-check {}
+.bbswrite tbody td .img {margin-top:-2px;}
+/* bbswrite-정렬 */
+.bbswrite tbody tr .al_l {text-align:left;}
+.bbswrite tbody tr .al_c {text-align:center;}
+.bbswrite tbody tr .al_r {text-align:right;}
+/* bbswrite-정보>테이블하단라인 */
+.bbswrite_udrline {position:relative; top:-1px; overflow:hidden; height:1px; margin-bottom:-1px; background:black;}
+/* bbswrite - 버튼 */
+.bbswrite-button {margin-top:15px; text-align:right;}
+.bbswrite-button a {margin:0 1px;}
+.bbswrite-button img,
+.bbswrite-button input {vertical-align:top;}
+
+
+/* 비밀번호 확인 script_bbs/pass.php 2012-06-27 Kang_hs */
+#passWrap{width:380px;height:231px;margin-left:auto;margin-right:auto;margin-top:60px;background:url(../images/ez_bbs/imgpw02.gif);background-repeat:no-repeat;background-position:left bottom}
+#passWrap #passBox{position:relative;left:25px;width:330px;height:60px;text-align:center;padding-top:35px;border: 1px #dadada solid}
+#passWrap #passBox img{padding:0 5px 0 5px}
+

@@ -1,0 +1,92 @@
+ <link rel="stylesheet" type="text/css" href="css/import.css"/>
+
+  <div id="header">
+
+    <!--Header_gr-->
+    <div class="header_gr">
+
+      <!--Cts_Center-->
+      <div class="cts_center">
+
+        <!--Lnb_gr-->
+        <div class="lnb_gr">
+
+          <div class="lnb_cp_left">
+            <!-- <span class="irum_txt">골프여행사전용ERP 플랫폼 ㈜이룸플레이스</span> 공식파트너&nbsp;&nbsp;<span class="cp_txt">[<?=$CP_COMPANY?>]</span> -->
+            <!-- &nbsp;&nbsp;<span class="tel_txt">☎대표번호 : <?=$CP_PHONE?></span> -->
+          </div>
+
+          <div class="lnb_cp_right" style="<?=($CP_NAVER)?'width:320px;':''?>">
+            <ul>
+              <li><a href="index.html"><img src="images/common/cp_home.gif" alt="메인으로" /></a></li>
+              <!-- <li><a href="company01.html"><img src="images/common/cp_company.gif"  alt="회사소개" /></a></li> -->
+              <?if($CP_BLOG){?>
+              <li><a href="<?=$CP_BLOG?>" target="_blank"><img src="images/common/cp_blog.gif" alt="블로그" /></a></li>
+              <?}else{?>
+              <li><a href="javascript:alert('준비중입니다.')"><img src="images/common/cp_blog.gif" alt="블로그" /></a></li>
+              <?}?>
+              <?if($CP_NAVER){?>
+              <li><a href="<?=$CP_NAVER?>" target="_blank"><img src="images/common/cp_req.gif" alt="견적문의" /></a></li>
+              <?}else{?>
+              <!-- <li><a href="javascript:alert('준비중입니다.')"><img src="images/common/cp_req.gif" alt="견적문의" /></a></li> -->
+              <?}?>
+
+            </ul>
+          </div>
+
+        </div>
+        <!--//Lnb_gr-->
+
+        <!--Gnb_gr-->
+        <div class="gnb_gr">
+
+          <?if($CP_LOGO){?>
+            <div class="logo_cp" style=""><a href="index.html"><img src="/new/public/partner/<?=$CP_LOGO?>" style="max-width: 180px;max-height:77px;" alt="회사로고" /></a></div>
+          <?}else{?>
+            <div class="logo"><a href="index.html"><img src="images/common/top_logo.gif" alt="<?=$SITE_NAME2?> 로고" /></a></div>
+          <?}?>
+
+          <!--Gnb_Menu-->
+          <div class="gnb_menu">
+            <ul>
+              <li id="code2_1"  class="w15"><a href="submain.html?code1=30&sbt=<?=base64_encode('국내여행')?>"><img src="images/common/gnb08.gif" onmouseover="this.src='images/common/gnb08s.gif'" onmouseout="this.src='images/common/gnb08.gif'" alt="국내여행" /></a></li>
+              <li id="code2_2"><a href="submain.html?code1=26&sbt=<?=base64_encode('국가별')?>"><img src="images/common/gnb_menu01.gif" onmouseover="this.src='images/common/gnb_menu01s.gif'" onmouseout="this.src='images/common/gnb_menu01.gif'" alt="국가별" /></a></li>
+              <li id="code2_3"><a href="submain.html?code1=13&sbt=<?=base64_encode('시즌별')?>"><img src="images/common/gnb_menu02.gif" onmouseover="this.src='images/common/gnb_menu02s.gif'" onmouseout="this.src='images/common/gnb_menu02.gif'" alt="시즌별" /></a></li>
+              <li id="code2_4"><a href="submain.html?code1=14&sbt=<?=base64_encode('목적별')?>"><img src="images/common/gnb_menu03.gif" onmouseover="this.src='images/common/gnb_menu03s.gif'" onmouseout="this.src='images/common/gnb_menu03.gif'" alt="목적별" /></a></li>
+              <li id="code2_5" class="w15"><a href="submain.html?code1=15&sbt=<?=base64_encode('대회코스 프리미엄')?>"><img src="images/common/gnb_menu04.gif" onmouseover="this.src='images/common/gnb_menu04s.gif'" onmouseout="this.src='images/common/gnb_menu04.gif'" alt="대회코스 프리미엄" /></a></li>
+              <li id="code2_6"><a href="submain.html?code1=16&sbt=<?=base64_encode('특가&연휴')?>"><img src="images/common/gnb_menu05.gif" onmouseover="this.src='images/common/gnb_menu05s.gif'" onmouseout="this.src='images/common/gnb_menu05.gif'" alt="특가 &amp; 연휴" /></a></li>
+              <li id="code2_7" ><a href="sublist.html?code1=29&sbt=<?=base64_encode('패키지상품')?>"><img src="images/common/gnb_menu06.gif" onmouseover="this.src='images/common/gnb_menu06s.gif'" onmouseout="this.src='images/common/gnb_menu06.gif'" alt="패키지상품" /></a></li>
+              <!--<li class="w15"><a href="insentive.html"><img src="images/common/gnb06.gif" onmouseover="this.src='images/common/gnb06s.gif'" onmouseout="this.src='images/common/gnb06.gif'" alt="인센티브&단체" /></a></li>
+              <li id="code2_7"  class="w15"><a href="submain.html?code1=6&sbt=<?=base64_encode('부산/대구출발')?>"><img src="images/common/gnb07.gif" onmouseover="this.src='images/common/gnb07s.gif'" onmouseout="this.src='images/common/gnb07.gif'" alt="지방출발" /></a></li>-->
+            </ul>
+          </div>
+          <!--//Gnb_Menu-->
+
+
+        </div>
+        <!--//Gnb_gr-->
+
+      </div>
+      <!--//Cts_Center-->
+
+    </div>
+    <!--//Header_gr-->
+
+  </div>
+
+
+  <!--국가별메뉴-->
+  <div id="country_gr01">
+    <?include("country.html")?>
+  </div>
+  <!--//국가별메뉴-->
+
+  <!--서브메뉴-->
+  <?include("submenu.html")?>
+  <!--서브메뉴-->
+
+  <!--하단고정퀵링크-->
+  <?include("kakao.html")?>
+  <!--하단고정퀵링크-->
+
+

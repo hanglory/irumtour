@@ -1,0 +1,100 @@
+<?
+include_once("script/include_common_file.php");
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko">
+<head>
+<?include("header.php");?>
+</head>
+<body>
+<!--Wrap-->
+<div id="wrap">
+
+  <!--Header-->
+  <?include("header.html")?>
+  <!--//Header-->
+
+  <!--서브메인 비주얼-->
+  <?include("sub_visual06.html")?>
+  <!--//서브메인 비주얼-->
+
+
+  <!--Container-->
+  <div id="container">
+
+    <!--Contents-->
+    <div id="contents">
+
+      <!--Cts_Center-->
+      <div class="cts_center pdtb35">
+
+        <!--Prd_title-->
+        <div class="prd_title">
+          <h2>정책 &amp; 약관</h2>
+        </div>
+        <!--//Prd_title-->
+
+        <!--detail_gr-->
+        <div class="detail_gr">
+
+
+          <!--Left_Group-->
+          <div class="left_group">
+
+            <!--왼쪽메뉴-->
+            <?include("lm_terms.html")?>
+            <!--//왼쪽메뉴-->
+
+           <!--왼쪽배너-->
+           <?include("comm_banner.html")?>
+           <!--//왼쪽배너-->
+
+          </div>
+          <!--Left_Group-->
+
+
+          <!--Cts_Group-->
+          <div class="cts_group">
+
+            <!--title_h3_gr-->
+            <div class="title_h3_gr">
+              <div class="title_h3">이용약관</div>
+            </div>
+            <!--//title_h3_gr-->
+
+           <script type="text/javascript" src="./include/bbs_frame.js"></script>
+				<iframe width="100%" name="txt" id="txt"
+					onLoad="calcHeight(this.id);"
+					src="text/terms.html"
+					scrolling="no"
+					frameborder="0" class="center"
+					>
+				</iframe>
+
+          </div>
+          <!--//Cts_Group-->
+
+        </div>
+        <!--//detail_gr-->
+
+      </div>
+      <!--//Cts_Center-->
+
+      <!--Qucik Menu-->
+      <div class="side_s_right02"><?include("side_right.html")?></div>
+      <!--//Qucik Menu-->
+
+    </div>
+    <!--//Contents-->
+  </div>
+  <!--//Container-->
+
+
+  <!--Footer-->
+  <?include("footer.html")?>
+  <!--//Footer-->
+
+</div>
+<!--//Wrap-->
+</body>
+</html>

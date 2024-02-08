@@ -1,0 +1,115 @@
+/*index.html*/
+#main_contents01 {width:100%; float:left; overflow:hidden;}
+#main_contents02 {width:100%; padding-top:4%; float:left;}
+#main_contents03 {width:96%; background:url(../images/main/bg_cscenter.gif); margin:3% 0; border-top:1px solid #dbdbdb; border-bottom:1px solid #dbdbdb; padding:3% 2%;  float:left;}
+
+.main_rolling {width:100%; float:left;  text-align:center; overflow:hidden;z-index:1}
+
+.main_info  {width:100%; float:left; }
+.main_info h2  {width:100%; text-align:center; padding-bottom:3%;  float:left; }
+
+.best_gr {width:96%; padding:3% 2% 1% 2%; background:#f9f9f9; border-bottom:1px solid #dbdbdb; float:left;}
+
+.m_tabmenu {width:100%;  float:left}
+.m_tabmenu tr td {padding:2% 0; background:#969696; text-align:center; border-top:1px solid #828282; border-bottom:1px solid #828282; border-right:1px solid #828282; font-size:11pt;}
+.m_tabmenu tr td a {color:#fff; letter-spacing:-1pt;}
+.m_tabmenu tr td.tab_on {color:#fff; font-weight:600; background:#2d8ea3; border:1px solid #237485;}
+
+
+.m_item01 {width:48.5%; background:#fff; border:1px solid #dddfe5; margin-bottom:2%;  float:left; }
+.item01_tumb {width:100%; float:left; position:relative; top:0; left:0;}
+.item01_tumb .num_label {width:14%; position:absolute; top:-1px; left:-1px;}
+.item01_title {width:96%; height:40px; line-height:140%; padding:2% 2% 0 2%; border-top:1px solid #dbdbdb; text-align:center; font-weight:600; font-size:11pt; letter-spacing:-1pt; float:left; }
+.item01_info {width:96%; height:30px; padding:2%; line-height:140%; text-align:center; float:left;  font-size:9pt; line-height:140%;overflow:hidden }
+.item01_price {width:96%; padding:2%; border-top:1px solid #dbdbdb; color:#dd2c2c; text-align:center; font-weight:600; font-size:11pt; float:left; }
+
+.recomm_gr {width:96%; padding:2%; background:#f5faf7; border-top:1px solid #cdddd1; border-bottom:1px solid #cdddd1; float:left;}
+.recomm_gr ul {margin:0; padding:0;list-style:none}
+.recomm_gr ul li { padding:1% 0; }
+
+
+.m_item02 {width:100%; border-top:1px solid #dfdfdf; background:#fff; margin-bottom:2%; float:left}
+.m_item02 tr th {border-bottom:1px solid #dfdfdf; border-left:1px solid #dfdfdf; }
+.m_item02 tr td { padding:2%; border-bottom:1px solid #dfdfdf; border-left:1px solid #dfdfdf; border-right:1px solid #dfdfdf;}
+
+.item02_title {font-weight:600; font-size:11pt; letter-spacing:-1pt; }
+.item02_info {font-size:9pt; line-height:140%; }
+.item02_price01 {color:#41792b;  font-weight:600; font-size:11pt; }
+.item02_price02 {color:#e96207; text-align:center; font-weight:600; font-size:11pt; }
+
+#main_contents03 li {width:33%; padding-top:2%; display:inline; float:left;}
+
+/*Sub_menu*/
+.caterogy_group {width:100%; float:left;}
+.menu_v{position:relative;width:100%;}
+.menu_v ul{margin:0;padding:0;list-style:none}
+.menu_v li{position:relative;margin:0 0 -1px 0;vertical-align:top; border-bottom:1px solid #e7e7e7; font-size:11pt; *zoom:1}
+.menu_a li:last-child {border:0;}
+.menu_v li a{display:block; position:relative;padding:15px 10px;color:#666;font-weight:bold;text-decoration:none;background:#fafafa; border-bottom:1px solid #dcdcdc; *zoom:1}
+.menu_v li a .i{position:absolute;top:50%;left:100%;width:8px;height:8px;margin:-10px 0 0 -20px; }
+.menu_v li ul{background:#fff;}
+.menu_v li li{margin:0; padding:3px 0;}
+.menu_v li li:last-child{border:0;}
+.menu_v li li a{padding:5px 10px;border:0;background:#fff;font-weight:normal}
+.menu_v li li a span{color:#666; padding-left:5px; } 
+.menu_v li.active{z-index:2; }
+.menu_v li li.active {border-bottom:1px solid #e7e7e7; }
+.menu_v li.active a{border:0; color:#fff; background:#3e9aa4 }
+.menu_v li.active .i{background-position:0 -44px; }
+.menu_v li.active li a{border:0; background:#fff;}
+.menu_v li.active ul{display:block; border:0}
+.menu_v li.active li.active a span{font-weight:bold; color:#444; letter-spacing:-1px;}
+
+
+/*sub_list.html*/
+.sub_wrap .item_group {width:100%; float:left; background:#fff; border:1px solid #dddfe5; margin-bottom:15px; margin-top:3%;}
+.sub_wrap .item_group .item_thumb {width:100%; background:#f5f5f5; float:left; }
+.sub_wrap .item_group .item_title {width:96%; padding:2%;  border-bottom:1px solid #d3d3d3; float:left; }
+.sub_wrap .item_group .item_title .s_title {width:100%;  font-size:10pt;  padding-left:0;  }
+.sub_wrap .item_group .item_title .m_title {width:100%; color:#000; font-weight:600; font-size:13pt; letter-spacing:-1pt; padding-left:0; }
+.sub_wrap .item_group .item_title .s_title02 {width:100%;  color:#de3939; font-weight:600; font-size:11pt; letter-spacing:-1pt; padding-left:0;}
+
+.sub_wrap .item_group .item_info {width:100%;  padding:2% 0 2% 0; background-color:#f7f8fa; float:left; }
+.sub_wrap .item_group .item_info .gr_price {width:98%; padding-left:2%; font-size:12pt; font-weight:600; float:left;}
+.sub_wrap .item_group .item_info .gr_price .price { font-size:14px; font-weight:600; color:#e96207; font-family:Verdana, Geneva, sans-serif; }
+.sub_wrap .item_group .item_info .gr_subinfo {width:98%; padding-left:2%; font-size:11pt; font-weight:600; float:left;}
+
+
+
+
+
+
+/*detail_view.html*/
+
+.item_group02 {width:100%; float:left; background:#fff; border:1px solid #dddfe5; border-bottom:0;  border-top:2px solid #4f4f4f;}
+.item_detail {width:96%; padding:2%;  float:left;  }
+.box_cts {width:96%; background:#fff; border:1px solid #d9d9d9; border-top:0; padding:3% 2%; float:left; }
+
+
+
+/* 탭메뉴 - 메뉴3개씩정렬 */
+.tab_menu { width:100%; background:#f7f7f7;  text-align:center; overflow:hidden; }
+.tab_menu li { float:left; width:33%; height:40px;border-bottom:1px solid #dddfe5;}
+.tab_menu li.last { float:left; width:34%; height:40px; }
+.tab_menu li a { display:block; border:none; height:32px; padding-top:8px; letter-spacing:-1px; }
+.tab_menu li a.tab_m { border-right:1px solid #dddfe5;  }
+.tab_menu li a.tab_m_last {border-right:0; }
+.tab_menu li a.on { color:#fff; background:#328192; border-right:1px solid #2a7585; font-weight:bold;  }
+
+
+
+.btn_cal {width:90% !important}
+.btn_group {width:100%; float:left; text-align:center; letter-spacing:-1%; padding:2% 0;}
+.cts_info {width:95%; margin:0 auto; padding: 10px 0 50px 0; }
+.cts_info h2 {font-size:13pt; font-weight:600; letter-spacing:-1pt; color:#444; padding:2% 0;  }
+
+
+.g_search {width:97%;   border-top:1px solid #4f4f4f; border-left:1px solid #dddfe5; border-right:1px solid #dddfe5; border-bottom:1px solid #dddfe5; background:#f7f7f7; margin:0 auto; text-align:center; padding:10px 0;}
+.tbl_search {width:95%; border:none;   }
+.tbl_search tr td {text-align:center; padding-left:2%;}
+
+
+/*detailview의 contents*/
+.tab_contents{line-height:180% !important;}
+.tab_contents p{line-height:180% !important;}
+

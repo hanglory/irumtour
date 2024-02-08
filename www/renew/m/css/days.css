@@ -1,0 +1,19 @@
+
+/******상품선택/캘린더영역*******/
+.calender_group {width:100%; float:left;}
+.cal_date {text-align:center;}
+.cal_date .year {font-weight:bold; font-size:18px; color:#454545; padding-left:10px; }
+.cal_date .month { font-weight:bold; font-size:18px; color:#eb570e; padding-right:10px; }
+.calender_group .state {clear:both;width:98%; text-align:right;padding:5px 20px 0 0;}
+
+.calender_group .table {width:100%; float:left; margin:0}
+.calender_group .table .tbl_calender {width:100%; border-left:1px solid #e1e1e1;}
+.calender_group .table .tbl_calender tr th.sun {text-align:center; color:#fff; background:#e4130d; border:1px solid #bb2511; }
+.calender_group .table .tbl_calender tr th.sat {text-align:center; color:#fff; background:#0d8be4; border:1px solid #006ca4; }
+.calender_group .table .tbl_calender tr td.blue {color:#2394d4; font-weight:bold; font-size:13px;}
+.calender_group .table .tbl_calender tr td.red {color:#cc4300; font-weight:bold; font-size:13px;}
+.calender_group .table .tbl_calender td {line-height:100%}
+.calender_group .table .tbl_calender tr td a {text-decoration:none;}
+.tbl_calender .btn_cal img{width:90%;}
+.tbl_calender .seat{font-size:9px;font-size:14px;}
+.tbl_calender .mobile_text{display:none}

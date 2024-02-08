@@ -1,0 +1,298 @@
+<?
+include_once("script/include_common_file.php");
+
+if($_SESSION['sessMember']['id']){
+    redirect2("mypage01.html");
+    exit;
+}
+
+
+include_once "../new/SMS/xmlrpc.inc.php";
+include_once "../new/SMS/class.EmmaSMS.php";
+
+$id=secu(trim($id));
+$pwd=secu(rnf(trim($pwd)));
+$code=secu(rnf(trim($code)));
+$time=secu(rnf(trim($time)));
+$now = time();
+
+
+if($name && $cell && $step==1){
+  
+  $_SESSION["tmp_login_count"]=($_SESSION["tmp_login_count"])?$_SESSION["tmp_login_count"]:0;
+  
+  if($_SESSION["tmp_login_count"]>10){alert("인증횟수를 초과했습니다. 고객센터로 문의해 주세요.");exit;}   
+
+  $cell = rnf($cell);
+
+  $sql = "
+      select name from cmp_reservation where name='$name' and replace(phone,'-','')='$cell'
+      union all
+      select name from cmp_estimate where name='$name' and replace(phone,'-','')='$cell'
+      union all
+      select name from cmp_people where name='$name' and replace(phone,'-','')='$cell'      
+    ";
+  list($rows) = $dbo->query($sql);
+  //if(strstr("@211.226.255.74@221.154.110.119@","@".$_SERVER["REMOTE_ADDR"]."@")){checkVar($rows.mysql_error(),$sql);}    
+
+
+  if($rows){
+
+    $code = rand(10000,99999);
+
+    $sms_to = $pwd;
+    if(strstr("@211.226.255.74@221.154.110.119@","@".$_SERVER["REMOTE_ADDR"]."@")) $sms_to = "01053985785";
+    $message = "[${SITE_NAME}] 인증번호는 $code 입니다.";
+
+
+    $sms = new EmmaSMS();
+    $sms->login($SMS_ID, $SMS_PASSWD);
+    $ret = $sms->send($sms_to, $SMS_FROM, $message, $sms_date, $sms_type);
+
+    $now2 = time()+300;
+    $_SESSION["code"]=$code;
+    $_SESSION["tmp_login_count"]++;
+
+    echo "
+      <script>
+        parent.document.getElementById('step').value='2';
+        parent.document.getElementById('time').value='$now2';
+        parent.document.getElementById('box1').style.display='none';
+        parent.document.getElementById('box2').style.display='none';
+        parent.document.getElementById('box3').style.display='block';
+        parent.document.getElementById('btn1').style.display='none';
+        parent.document.getElementById('btn2').style.display='block';
+        parent.document.getElementById('code').focus();
+      </script>
+    ";
+  }else{
+    echo "
+      <script>
+        alert('성함과 핸드폰 번호를 다시 한번 확인해 주세요.');
+      </script>
+    ";
+  }
+
+}
+elseif($time && $code && $step==2){
+
+  if($time<$now){
+    echo "
+      <script>
+        alert('인증시간이 만료되었습니다. 다시 로그인 해주세요.');
+        parent.location.reload();
+      </script>
+    ";
+  }elseif($code!=$_SESSION["code"]){
+    echo "
+      <script>
+        alert('인증코드가 다릅니다.');
+        parent.location.reload();
+      </script>
+    ";    
+
+  }else{
+    $_SESSION["name"]=$name;
+    $_SESSION["phone"]=$cell;
+    $url = ($mobile)? "../m2/mypage01.html":"mypage01.html";
+    echo "
+      <script>
+        parent.location.href='mypage01.html';
+      </script>
+    ";      
+    exit;
+  }  
+
+}
+
+
+
+if($MOBILE){
+  Header( "HTTP/1.1 301 Moved Permanently" );
+  Header( "Location: ../m2/login.html" );
+}
+
+
+
+
+
+// 네이버 로그인 접근토큰 요청
+if($Client_ID){
+    $client_id = $Client_ID;
+    $CALLBACK_URL = $DOMAIN."/renew/script/naver_login.php";
+    $redirectURI = urlencode($CALLBACK_URL);
+    $state = "RAMDOM_STATE";
+    $apiURL_naver = "https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=".$client_id."&redirect_uri=".$redirectURI."&state=".$state;
+}
+
+// 카카오 로그인 접근토큰 요청
+if($API_KAKAO_ID){
+    $client_id = $API_KAKAO_ID;
+    $CALLBACK_URL = $DOMAIN."/renew/script/kakao_login.php";
+    $redirectURI = urlencode($CALLBACK_URL);
+    $apiURL_kakao = "https://kauth.kakao.com/oauth/authorize?client_id=${client_id}&redirect_uri=${redirectURI}&response_type=code";
+}
+
+// 페이스북 로그인 접근토큰 요청
+if($API_FACEBOOK_ID){
+    $client_id = $API_FACEBOOK_ID;
+    $apiURL_facebook = "javascript:facebookLogin()";
+}
+
+if(!$apiURL_naver && !$apiURL_kakao){
+    redirect2("join.html");
+    exit;
+}
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko">
+<head>
+<?include("header.php");?>
+<script type="text/javascript">
+function tab(i){
+    $(".tab").hide();
+    $("#tab"+i).show();
+}
+
+function check_form1(){
+  var fm = document.fmData1;
+
+  if(check_blank(fm.id,'아이디를',0)=='wrong'){return}
+  if(check_blank(fm.pwd,'비밀번호를',0)=='wrong'){return}
+  fm.submit();
+}
+
+function check_form2(){
+  var fm = document.fmData;
+  var step=$("#step").val();
+
+  if(step==1){
+    if(check_blank(fm.name,'한글성함을',0)=='wrong'){return false}
+    if(check_blank(fm.cell,'핸드폰번호를',11)=='wrong'){return false}
+  }else{
+    if(check_blank(fm.code,'인증번호를',5)=='wrong'){return false}
+  }
+  fm.submit();
+}
+</script>
+</head>
+<body>
+<!--Wrap-->
+<div id="wrap">
+
+  <!--Header-->
+  <?include("header.html")?>
+  <!--//Header-->
+
+  <!--서브메인 비주얼-->
+  <?include("sub_visual11.html")?>
+  <!--//서브메인 비주얼-->
+
+  <!--Container-->
+  <div id="container">
+
+    <!--Contents-->
+    <div id="contents">
+
+      <!--Cts_Center-->
+      <div class="cts_center pdtb35">
+
+        <!--Prd_title-->
+        <div class="prd_title">
+          <h2>회원공간</h2>
+        </div>
+        <!--//Prd_title-->
+
+        <!--detail_gr-->
+        <div class="detail_gr">
+
+
+          <!--Left_Group-->
+          <div class="left_group">
+
+            <!--왼쪽메뉴-->
+            <?include("lm_member02.html")?>
+            <!--//왼쪽메뉴-->
+
+           <!--왼쪽배너-->
+           <?include("comm_banner.html")?>
+           <!--//왼쪽배너-->
+
+          </div>
+          <!--Left_Group-->
+
+
+          <!--Cts_Group-->
+          <div class="cts_group">
+
+            <!--title_h3_gr02-->
+            <div class="title_h3_gr02">
+              <div class="title_h3">회원가입</div>
+           </div>
+           <!--//title_h3_gr02-->
+          
+          
+           <!--log_p-->
+           <div class="log_p" >
+           
+             <!--Login_Wrap : 회원로그인전체-->
+             <div class="login_wrap">
+             
+             
+             <!--mem_title-->
+             <div class="mem_title">간편 회원가입
+               <p>회원가입을 하시면 다양한 고객전용 서비스를 받으실 수 있습니다.</p>
+             </div>
+             <!--//mem_title-->
+
+           
+             
+             <!--sns_login-->
+             <div class="sns_login">
+            
+               <ul> 
+                 <?if($apiURL_naver){?><li onclick="location.href='<?=$apiURL_naver?>'"><a href="javascript:void(0)">네이버계정 간편로그인</a></li><?}?>
+                 <?if($apiURL_kakao){?><li onclick="location.href='<?=$apiURL_kakao?>'"><a href="javascript:void(0)">카카오톡계정 간편로그인</a></li><?}?>
+                 <li onclick="location.href='join.html'"><a href="javascript:void(0)">일반 회원가입</a></li>
+               </ul>
+            
+             </div>
+             <!--//sns_login-->
+        
+        
+           </div>
+           <!--//Login_Wrap -->
+
+		</div>	
+		<!--log_p-->
+
+            
+            
+
+          </div>
+          <!--//Cts_Group-->
+
+        </div>
+        <!--//detail_gr-->
+
+      </div>
+      <!--//Cts_Center-->
+
+      <!--Qucik Menu-->
+      <div class="side_s_right02"><?include("side_right.html")?></div>
+      <!--//Qucik Menu-->
+
+    </div>
+    <!--//Contents-->
+  </div>
+  <!--//Container-->
+
+
+  <!--Footer-->
+  <?include("footer.html")?>
+  <!--//Footer-->
+
+</div>
+<!--//Wrap-->
+</body>
+</html>

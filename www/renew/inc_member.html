@@ -1,0 +1,352 @@
+<?
+include_once("script/include_common_file.php");
+
+$cp_id = $_SESSION[CID];
+
+
+switch($mode){
+    case "chkid":
+        $id =($cp_id)? $cp_id.".".trim($id) : trim($id);
+        if($id){
+            $sql = "select * from ez_member where id='$id' limit 1 ";
+            list($rows) = $dbo->query($sql);
+
+            if($mobile){
+                if($rows){
+                    echo "<script>alert('이미 같은 아이디가 존재합니다.');parent.document.getElementById('id').value='';parent.document.getElementById('id').focus();parent.document.getElementById('id_chk').value=0;</script>";
+                }else{
+                    echo "<script>parent.document.getElementById('id_chk').value=1;</script>";
+                }                
+            }else{
+                if($rows){
+                    echo "<script>alert('이미 같은 아이디가 존재합니다.');parent.document.fmData.id.value='';parent.document.fmData.id.focus();parent.document.fmData.id_chk.value=0;</script>";
+                }else{
+                    echo "<script>alert('사용가능합니다.    ');parent.document.fmData.pwd.focus();parent.document.fmData.id_chk.value=1;</script>";
+                }
+            }
+        }else{
+            echo "<script>parent.document.fmData.id.value='';parent.document.fmData.id_chk.value=0;</script>";
+        }
+        exit;
+        break;
+
+    case "chkcell":
+        $cell= trim($cell);
+        if($cell){
+            $sql = "select * from ez_member where cell='$cell' and cp_id='$cp_id'";
+            list($rows) = $dbo->query($sql);
+            if($rows){
+                echo "<script>alert('이미 같은 핸드폰번호가 존재합니다.');parent.document.fmData.cell1.value='';parent.document.fmData.cell2.value='';parent.document.fmData.cell3.value='';parent.document.fmData.cell1.focus();parent.document.fmData.cell_chk.value=0;</script>";
+            }else{
+                echo "<script>alert('사용가능합니다.    ');parent.document.fmData.email.focus();parent.document.fmData.cell_chk.value=1;</script>";
+            }
+        }else{
+            echo "<script>parent.document.fmData.cell1.value='';parent.document.fmData.cell2.value='';parent.document.fmData.cell3.value='';parent.document.fmData.cell_chk.value=0;</script>";
+        }
+        exit;
+        break;
+
+    default:
+        $sql = "select * from ez_member where id='".$_SESSION[sessMember][id]."'  and cp_id='$cp_id'";
+        $dbo->query($sql);
+        $rs = $dbo->next_record();
+}
+
+//간편가입/로그인s
+if($_SESSION['EXT_LOGIN']['ID']){
+
+    $arr= @unserialize($_SESSION['EXT_LOGIN']['DATA']);
+    $rs[name]=$arr[name];
+    $rs[email]=$arr[email];
+    $rs[cell]=$arr[mobile];
+    if($rs[cell]){
+        $arr2=explode("-",$rs[cell]);
+        $rs[cell1]=$arr2[0];
+        $rs[cell2]=$arr2[1];
+        $rs[cell3]=$arr2[2];
+    }
+    $ext_id = $_SESSION['EXT_LOGIN']['ID'];
+}
+//간편가입/로그인f
+?>
+<script language="JavaScript">
+<!--
+function frm_check(){
+
+    var fm=document.fmData;
+
+<?if(!$_SESSION[sessMember][id]){?>
+    if($("#agree1:checked").length==0){ alert('이용약관에 동의하십니까?'); return ;}
+    if($("#agree2:checked").length==0){ alert('개인정보취급방침에 동의하십니까?.'); return;}
+    if($("#agree3:checked").length==0){ alert('개인정보 취급위탁에 동의하십니까?'); return;}
+
+    <?if(!$ext_id && !$rs[id_ext]){?>
+    if(check_blank(fm.id,'아이디를',5)=='wrong'){return}
+    if(check_strnum(fm.id,'아이디')=='wrong'){return}
+    if(fm.id_chk.value=="0"){alert('중복확인을 하지 않으셨습니다.');return}
+
+    if(check_blank(fm.pwd,'비밀번호를',6)=='wrong'){return}
+    if(check_blank(fm.pwd_check,'비밀번호 확인을',6)=='wrong'){return}
+    <?}?>
+<?}?>
+
+    <?if(!$ext_id && !$rs[id_ext]){?>
+    if(fm.pwd.value !=""){
+
+        var bit = chk_pwd(fm.pwd.value);
+        if(bit==false){
+            fm.pwd.focus();
+            fm.pwd.select();
+            return;
+        }
+    }    
+    //if(check_strnum(fm.pwd,'비밀번호')=='wrong'){return}
+    if(fm.pwd.value != fm.pwd_check.value){alert('비밀번호와 비밀번호 확인이 서로 다릅니다. 다시 한번 입력해 주세요.');fm.pwd_check.focus();fm.pwd_check.select();return}
+
+        <?if($rs[id]){?>
+        if(check_blank(fm.pwd_current,'현재비밀번호를',6)=='wrong'){return}
+        <?}?>    
+    <?}?>
+
+    if(check_blank(fm.name,'이름을',0)=='wrong'){return}
+
+    if(check_blank(fm.cell1,'휴대전화 번호를',3)=='wrong'){return}
+    if(check_blank(fm.cell2,'휴대전화 번호를',3)=='wrong'){return}
+    if(check_blank(fm.cell3,'휴대전화 번호를',4)=='wrong'){return}
+    if(check_blank(fm.email,'이메일을',0)=='wrong'){return}
+    if(fm.email_bit.value==""){alert('이메일 수신 여부를 선택해 주세요');return}
+
+    fm.submit();
+}
+
+function chk_id(){
+    var fm = document.fmData;
+    if(check_blank(fm.id,'아이디를',5)=='wrong'){return}
+    if(check_strnum(fm.id,'아이디')=='wrong'){return}
+
+    var id = document.fmData.id.value;
+
+    actarea.location.href="?mode=chkid&id="+id;
+}
+
+function chk_cell(){
+    var fm = document.fmData;
+    if(check_blank(fm.cell1,'휴대폰번호를',3)=='wrong'){return}
+    if(check_strnum(fm.cell1,'휴대폰번호')=='wrong'){return}
+
+    if(check_blank(fm.cell2,'휴대폰번호를',3)=='wrong'){return}
+    if(check_strnum(fm.cell2,'휴대폰번호')=='wrong'){return}
+
+    if(check_blank(fm.cell3,'휴대폰번호를',4)=='wrong'){return}
+    if(check_strnum(fm.cell3,'휴대폰번호')=='wrong'){return}
+
+    var cell = document.fmData.cell1.value + "-"+ document.fmData.cell2.value + "-" +document.fmData.cell3.value;
+
+    actarea.location.href="?mode=chkcell&cell="+cell;
+}
+
+$(function(){
+    $("#agree").on("click",function(){
+        if(this.checked==true){
+            $("#agree1").attr("checked",true);   
+            $("#agree2").attr("checked",true);   
+            $("#agree3").attr("checked",true);   
+        }else{
+            $("#agree1").attr("checked",false);   
+            $("#agree2").attr("checked",false);   
+            $("#agree3").attr("checked",false);               
+        }
+    });
+
+    <?if($ext_id || $rs[id_ext]){?>
+        $(".bx_normal").hide();
+        <?if($rs[name]){?>
+        $("#name").attr("readonly","readonly");
+        <?}?>
+        <?if($rs[cell]){?>
+        $("#cell1").attr("readonly","readonly");
+        $("#cell2").attr("readonly","readonly");
+        $("#cell3").attr("readonly","readonly");
+        <?}?>
+    <?}?>
+
+
+})
+//-->
+</script>
+
+        <form name="fmData" method="post" action="script/member_join.php" <?if(!$ext_id){?>target="actarea"<?}?>>
+        <input type="hidden" name="mode" value="<?=($rs[id])?"modify":"save"?>">
+        <input type="hidden" name="id_chk" value="0">
+        <input type="hidden" name="cell_chk" value="0">
+        <input type="hidden" name="address_old" id="address_old" value="<?=$rs[address_old]?>">
+
+             <div style="float:right"><img src="images/comty/ic_compulsory.png"  /> 필수항목</div>
+             <table class="tbl_group" cellpadding="0" cellspacing="0" summary="회원정보">
+				<caption>회원정보</caption>
+				<colgroup>
+					<col width="25%" />
+					<col width="*" />
+				</colgroup>
+				<tbody>
+
+
+                <?if($rs[id_ext]){?>
+                    <tr>
+                      <th scope="row">아이디</th>
+                      <td colspan="2"><strong><?=strtoupper($rs[assort_ext])?> 계정으로 가입하셨습니다.</strong></td>
+                    </tr>                    
+                <?}?>
+
+                <?if($_SESSION['sessMember'][id]){?>
+                    <tr class="bx_normal">
+                      <th scope="row">아이디</th>
+                      <td colspan="2"><strong><?=user_id($rs[id])?></strong></td>
+                    </tr>
+                <?}else{?>
+                <tr class="bx_normal">
+                  <th scope="row"><img src="images/comty/ic_compulsory.png"  />아이디</th>
+                  <td colspan="2">
+                        <div class="t_left">
+                            <input type="text" name="id" id="id"  class="input" size="15" value="<?=$rs[id]?>" onchange="document.fmData.id_chk.value=0" maxlength="30">
+                        </div>
+                        <div class="btn_etc hand" onclick="chk_id()"><a href="javascript:void(0)">중복확인</a></div>
+                </tr>
+                <?}?>       
+
+                <?if(!$rs[id_ext]){?>     
+
+                <?if($rs[id]){?>
+                <tr class="bx_normal">
+                  <th scope="row"><img src="images/comty/ic_compulsory.png"  />현재 비밀번호확인</th>
+                  <td><?=html_input("pwd_current",35,30)?></td>
+                </tr>
+                <?}?>
+
+                <tr class="bx_normal">
+                  <th scope="row"><?if($rs[id_no]){?>새로운 <?}else{?><img src="images/comty/ic_compulsory.png"  /><?}?>비밀번호</th>
+                  <td>
+                    <?=html_input("pwd",35,30)?> <br/>
+                    ※ 영문 소문자와 숫자,특수문자(!,@,#,$,%,^,&,*,_)를 혼합하여 6~30자까지 입력가능.
+                    <?if($rs[id]){?><span class="gray">(변경할 경우에만 입력하세요.)</span><?}?>
+                  </td>
+                </tr>
+                <tr class="bx_normal">
+                  <th scope="row"><?if($rs[id_no]){?>새로운 <?}else{?><img src="images/comty/ic_compulsory.png"  /><?}?>비밀번호확인</th>
+                  <td><?=html_input("pwd_check",35,30)?> <?if($rs[id]){?><span class="gray">(변경할 경우에만 입력하세요.)</span><?}?></td>
+                </tr>
+                <?}?>
+
+
+
+                <tr>
+                  <th scope="row"><img src="images/comty/ic_compulsory.png"  />이 름</th>
+                  <td><?=html_input("name",15,25)?></td>
+                </tr>
+                <tr>
+                  <th scope="row"><img src="images/comty/ic_compulsory.png"  />휴대폰번호</th>
+                  <td>
+                    <?=html_input("cell1",4,3,"box numberic num3 eng")?>
+                    <span>-</span>
+                    <?=html_input("cell2",4,4,"box numberic num4 eng")?>
+                    <span>-</span>
+                    <?=html_input("cell3",4,4,"box numberic num4 eng")?>                      
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row">전화번호</th>
+                  <td>
+                    <?=html_input("phone1",4,4,"box numberic num4 eng")?>
+                    <span>-</span>
+                    <?=html_input("phone2",4,4,"box numberic num4 eng")?>
+                    <span>-</span>
+                    <?=html_input("phone3",4,4,"box numberic num4 eng")?></td>                      
+                  </td>
+                </tr>
+                <tr>
+                  <th scope="row"><img src="images/comty/ic_compulsory.png"  />E-Mail</th>
+                  <td><?=html_input("email",40,50)?></td>
+                </tr>
+
+                <tr>
+                  <th scope="row">주 소</th>
+                  <td colspan="2">
+                    <?=html_input("zipcode",7,5)?> 
+
+                    <div class="btn_etc hand" style="float:right;margin-right:520px" onclick="set_zip()"><a href="javascript:void(0)">우편번호찾기</a></div>
+
+                    <p style="margin-top:10px"><?=html_input("address",80,240)?></p>
+                    <p style="margin-top:10px"><?=html_input("address2",90,240)?></p>
+
+
+                <!--다음 주소-->
+                <span id="guide" class="hide" style="color:#999"></span>
+                <script src="https://spi.maps.daum.net/imap/map_js_init/postcode.v2.js"></script>
+                <script>
+                function set_zip() {
+                    new daum.Postcode({
+                        oncomplete: function(data) {
+                            // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+                            // 도로명 주소의 노출 규칙에 따라 주소를 조합한다.
+                            // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                            var fullRoadAddr = data.roadAddress; // 도로명 주소 변수
+                            var extraRoadAddr = ''; // 도로명 조합형 주소 변수
+
+                            // 법정동명이 있을 경우 추가한다.
+                            if(data.bname !== ''){
+                                extraRoadAddr += data.bname;
+                            }
+                            // 건물명이 있을 경우 추가한다.
+                            if(data.buildingName !== ''){
+                                extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                            }
+                            // 도로명, 지번 조합형 주소가 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                            if(extraRoadAddr !== ''){
+                                extraRoadAddr = ' (' + extraRoadAddr + ')';
+                            }
+                            // 도로명, 지번 주소의 유무에 따라 해당 조합형 주소를 추가한다.
+                            if(fullRoadAddr !== ''){
+                                fullRoadAddr += extraRoadAddr;
+                            }
+
+                            // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                            //document.getElementById("zipcode").value = data.postcode1 + "-" + data.postcode2;
+                            document.getElementById("zipcode").value = data.zonecode;
+                            document.getElementById("address").value = fullRoadAddr;
+                            document.getElementById("address_old").value = data.jibunAddress;
+
+                            // 사용자가 '선택 안함'을 클릭한 경우, 예상 주소라는 표시를 해준다.
+                            if(data.autoRoadAddress) {
+                                //예상되는 도로명 주소에 조합형 주소를 추가한다.
+                                var expRoadAddr = data.autoRoadAddress + extraRoadAddr;
+                                document.getElementById("guide").innerHTML = '(예상 도로명 주소 : ' + expRoadAddr + ')';
+
+                            } else if(data.autoJibunAddress) {
+                                var expJibunAddr = data.autoJibunAddress;
+                                document.getElementById("guide").innerHTML = '(예상 지번 주소 : ' + expJibunAddr + ')';
+
+                            } else {
+                                document.getElementById("guide").innerHTML = '';
+                            }
+                        }
+                    }).open();
+                }
+                </script>
+                <!--다음 주소-->
+                
+                <tr>
+                  <th scope="row"><img src="images/comty/ic_compulsory.png"  />E-Mail 수신여부</th>
+                  <td><form id="form1" name="form1" method="post" action="">
+                      <label>
+                        <?=radio("수신에 동의합니다.&nbsp;&nbsp;&nbsp;&nbsp;,수신에 동의하지않습니다.","1,0",$rs[email_bit],'email_bit')?>
+                      </label>
+                  </form>
+                   </td>
+                </tr>
+			  </tbody>
+           </table>
+            
+            <div class="button_center"><a href="javascript:frm_check(this)"><img src="images/comty/btn_ok.gif" alt="확인" /></a>&nbsp;<a href="javascript:cancel()"><img src="images/comty/btn_cancel.gif" alt="취소하기" /></a></div>
+           
+        </form>

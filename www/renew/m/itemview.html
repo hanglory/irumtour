@@ -1,0 +1,287 @@
+<?
+include_once("./script/include_common_mobile.php");
+
+if($mode=="order"){
+
+	$reg_date=date("Y/m/d");
+	$reg_date2=date("H:i:s");
+
+	if($tour_options==":::선택하세요:::") $tour_options="";
+
+	//여행예약
+	$sd = tour_order_step1();
+	if($sd){
+		echo "<script>parent.location.href='booking01.html?sd=$sd'</script>";
+	}else{
+		error('예약되지 않았습니다. 관리자에게 문의하여 주시기 바랍니다.');
+	}
+	exit;
+}
+elseif($mode=="wishlist"){
+
+	if(!$sessMember[id]){
+		alert("로그인하셔야 합니다.");
+		exit;
+	}
+
+	$reg_date=date("Y/m/d");
+	$reg_date2=date("H:i:s");
+	if($tour_option==":::선택하세요:::") $tour_option = "";
+
+	$sql = "delete from wishlist where id='$sessMember[id]' and tid='$tid' and tour_date='$date' and tour_option_value='$tour_option_value'";
+	$dbo->query($sql);
+
+	$sql = "insert into wishlist (id,tid,tour_date,adult,child,reg_date,reg_date2,tour_option,tour_option_value,price) values ('$sessMember[id]','$tid','$date','$adult','$child','$reg_date','$reg_date2','$tour_option','$tour_option_value','$price')";
+	$dbo->query($sql);
+
+	checkVar(mysql_error(),$sql);
+	echo "<script>if(confirm('저장하였습니다.\\n\\n지금 확인하시겠습니까?')){parent.location.href='mypage03.html'}</script>";
+	exit;
+}
+ElseIf($mode=="sum"){
+	$tour_date = substr($tour_date,0,10);
+	$sql = "select * from ez_tour_calendar where tid=$tid and tour_date='$tour_date' and tour_date<>''";
+	$dbo->query($sql);
+	$rs=$dbo->next_record();
+
+	$total = ($rs[price_adult]*$people) + $tour_option;
+	$total2 = number_format($total);
+
+	echo "
+		<script>
+			parent.document.getElementById('total_price').innerHTML=\"$total2\";
+		</script>
+	";
+
+	exit;
+}
+
+$sql = "select * from ez_tour where tid='$tid' and bit=1";
+$dbo->query($sql);
+$rs=$dbo->next_record();
+
+$category1 = $rs[category1];
+$category2 = $rs[category2];
+$arr = explode("-",$category1);
+
+$code_link = "${code1}-${code2}";
+
+$p=1;
+While($chk_code!=$code_link){
+	$ctg = "category".$p;
+	$chk_code = substr($rs[$ctg],0,strlen($code_link));
+
+	$arr = explode("-",$rs[$ctg]);
+	$code3 = $arr[2];
+	$p++;
+	If($p==6) break;
+}
+
+$dbo2->query("update ez_tour set hit=hit+1 where tid=$rs[tid] limit 1");
+
+$sql2 = "select * from ez_tour_addprice where tid='$tid' order by id_no asc ";
+list($rows_opt) = $dbo2->query($sql2);
+while($rs2=$dbo2->next_record()){
+	$rs2[addprice] = ($rs2[addprice])? $rs2[addprice] : 0;
+	$opt_key .= "/" . $rs2[subject] . " (+" . number_format($rs2[addprice]) . ")";
+	$opt_val .= "/" .$rs2[addprice];
+}
+
+if(!$rs[tid]){
+	echo "<script>alert('판매할 수 없는 상품입니다.');top.history.back(-1)</script>";
+	exit;
+}
+
+$filename = "/new/public/goods/".$rs[filename1];
+$thumb = "/new/public/thumb/tb_".$rs[filename1];
+
+?>
+<!doctype html>
+<html>
+<head>
+<?include("header.php")?>
+<link rel="stylesheet" type="text/css" href="css/days_mobile.css"/>
+<script type="text/javascript">
+<!--
+function tab(i){
+
+	$("#t1,#t2,#t3,#t4,#t5,#t6").removeClass("on");
+	$("#tab1,#tab2,#tab3,#tab4,#tab5,#tab6").hide();
+	$("#tab"+i).show();
+	$("#t"+i).addClass("on");
+}
+
+$(function(){
+	$("#tab1 img,#tab3 img,#tab4 img,#tab5 img").attr("width","100%");
+	$("#tab5 img").css("width","100%");
+	$("#tab5 img").css("height","100%");
+	$("#tab1 img").css("margin-bottom","5px");
+	$("#tab5 img").css("margin-bottom","20px");
+});
+//-->
+</script>
+</head>
+<body>
+<!--header-->
+<?include("header.html")?>
+<!--//header-->
+
+<!--article-->
+<article>
+
+  <!--contents-->
+  <div id="contents">
+
+    <!--topmenu-->
+    <?include("topmenu.html")?>
+    <!--//topmenu-->
+
+    <!--title_group-->
+    <div class="title_group">
+      <?include("prev.html")?>
+      <h2 class="title">상품상세정보</h2>
+    </div>
+    <!--//title_group-->
+
+
+
+    <!--sub_wrap-->
+    <div class="sub_wrap">
+
+      <div class="item_group">
+
+        <div class="item_thumb"><img src="<?=thumbnail($filename, 483, 286, 0, 1, 100, 0, "", "", $thumb)?>" width="100%" alt="" onerror="this.src='./images/main/img_thumb01.gif'"  /></div>
+
+        <div class="item_title">
+          <p class="m_title"><?=$rs[subject]?></p>
+          <p class="s_title02">※항공 및 동반 인원수에 따라 동일 기간이라도 요금 다를 수 있으니 예약전에 꼭 견적문의 하시기 바랍니다. [문의 02-512-7705]</p>
+        </div>
+
+        <div class="item_info">
+          <div class="gr_price">
+            <span class="green bold">·상품가 :</span><span class="price"><?=number_format($rs[price_adult])?>원~</span>
+          </div>
+
+          <div class="gr_subinfo">
+            <span class="blue bold">·기본일정 :</span> <?=$rs[days]?>&nbsp;&nbsp;<span class="blue bold">·적용기간 :</span> <?=$rs[period]?>&nbsp;&nbsp;<span class="blue bold">·이용항공 :</span> <?=titleCut2($rs[air_name],5,'',1)?> </p>
+          </div>
+
+        </div>
+
+      </div>
+      <!--//item_group : 상품리스트-->
+
+
+
+
+      <!--상세정보-->
+      <!--탭메뉴별 상세정보-->
+      <div class="item_group02">
+
+		<div class="tab_menu">
+		  <ul>
+			<li class="tab_item1" id="t11"><a href="javascript:tab(1)" id="t1" class="tab_m on">상품안내</a></li>
+			<li class="tab_item2"><a href="javascript:tab(2)" id="t2" class="tab_m">일정표</a></li>
+			<li class="tab_item3 last"><a href="javascript:tab(3)" id="t3">골프장소개</a></li>
+            <li class="tab_item4"><a href="javascript:tab(4)" id="t4" class="tab_m">호텔/리조트소개</a></li>
+			<li class="tab_item5"><a href="javascript:tab(5)" id="t5" class="tab_m">포토갤러리 </a></li>
+			<li class="tab_item6 last"><a href="javascript:tab(6)" id="t6">예약/환불규정</a></li>
+		  </ul>
+		</div>
+
+      </div>
+      <!--탭메뉴별 상세정보-->
+
+		<!-- cts_info -->
+    <div class="box_cts">
+
+		   <div id="tab1">
+				<?
+				$sql2 = "select * from ez_tab_contents where tid='$tid' and left(assort,1)=1";
+				$dbo2->query($sql2);
+				$rs2=$dbo2->next_record();
+				echo stripslashes($rs2[content]);
+				?>
+		   </div>
+
+		   <div id="tab2" class="hide">
+					<?
+					$button_hide=1;
+					include("days_mobile.html");
+					?>
+		   </div>
+
+			<?
+			$sql2 = "select * from ez_tab_contents where tid='$tid' and left(assort,1)>=3 order by assort asc";
+			$dbo2->query($sql2);
+			While($rs2=$dbo2->next_record()){
+			?>
+			<div id="tab<?=substr($rs2[assort],0,1)?>" class="hide">
+				<?=stripslashes($rs2[content]);?>
+			</div>
+			<?
+			}
+			?>
+
+
+		  <?
+		  $rs[review_link] = str_replace("http://","",strip_tags(trim($rs[review_link])));
+		  $rs[review_link] = str_replace("https://","",$rs[review_link]);
+		  ?>
+            <div class="btn_group"><?If($rs[review_link]){?><a href="http://<?=$rs[review_link]?>" target="_blank"><img src="images/detail/btn_review.png" height="40" alt="답사후기보기" /></a>&nbsp;<?}?><a href="tel:02-512-7705"><img src="images/detail/btn_tel.png" height="40" alt="전화상담하기" /></a></div>
+
+	  </div>
+
+
+
+
+	  <div class="box_cts">
+
+		<table class="basic_info">
+		<tr>
+			<th>포함사항</th>
+			<td><?=nl2br(stripslashes($rs[content1]))?></td>
+		</tr>
+		<tr>
+			<th>불포함사항</th>
+			<td><?=nl2br(stripslashes($rs[content2]))?></td>
+		</tr>
+		<tr>
+			<th>참고사항</th>
+			<td><?=nl2br(stripslashes($rs[content3]))?></td>
+		</tr>
+		</table>
+
+
+
+
+	  </div>
+		<!-- cts_info -->
+
+
+
+
+
+
+
+    </div>
+    <!--//sub_wrap-->
+
+
+
+
+  </div>
+  <!--contents-->
+
+</article>
+<!--//article-->
+
+
+<!--footer-->
+<?include("footer.html")?>
+<!--//footer-->
+
+
+
+</body>
+</new>

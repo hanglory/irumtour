@@ -1,0 +1,105 @@
+<?
+include_once("script/include_common_file.php");
+
+if(!$_SESSION[sessMember][id]){redirect2("mem_login.html");exit;}
+
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko">
+<head>
+<?include("header.php");?>
+<link rel="stylesheet" type="text/css" href="css/import.css"/>
+</head>
+<body>
+<!--Wrap-->
+<div id="wrap">
+
+  <!--Header-->
+  <?include("header.html")?>
+  <!--//Header-->
+
+  <!--서브메인 비주얼-->
+  <?include("sub_visual09.html")?>
+  <!--//서브메인 비주얼-->
+
+  <!--Container-->
+  <div id="container">
+
+    <!--Contents-->
+    <div id="contents">
+
+      <!--Cts_Center-->
+      <div class="cts_center pdtb35">
+
+        <!--Prd_title-->
+        <div class="prd_title">
+          <h2>마이페이지</h2>
+        </div>
+        <!--//Prd_title-->
+
+        <!--detail_gr-->
+        <div class="detail_gr">
+
+
+          <!--Left_Group-->
+          <div class="left_group">
+
+            <!--왼쪽메뉴-->
+            <?include("lm_mypage.html")?>
+            <!--//왼쪽메뉴-->
+
+           <!--왼쪽배너-->
+           <?include("comm_banner.html")?>
+           <!--//왼쪽배너-->
+
+          </div>
+          <!--Left_Group-->
+
+
+          <!--Cts_Group-->
+          <div class="cts_group">
+
+            <!--title_h3_gr02-->
+            <div class="title_h3_gr02">
+              <div class="title_h3">회원정보수정</div>
+           </div>
+           <!--//title_h3_gr02-->
+           
+           
+                   
+           <div class="title_h4"><span class="green02 bold">회원정보</span>입력</div>    
+           
+            
+            <!--회원정보-->
+            <?include("inc_member.html")?>
+            <!--//-회원정보-->
+          
+
+            
+          </div>
+          <!--//Cts_Group-->
+
+        </div>
+        <!--//detail_gr-->
+
+      </div>
+      <!--//Cts_Center-->
+
+      <!--Qucik Menu-->
+      <div class="side_s_right02"><?include("side_right.html")?></div>
+      <!--//Qucik Menu-->
+
+    </div>
+    <!--//Contents-->
+  </div>
+  <!--//Container-->
+
+
+  <!--Footer-->
+  <?include("footer.html")?>
+  <!--//Footer-->
+
+</div>
+<!--//Wrap-->
+</body>
+</html>

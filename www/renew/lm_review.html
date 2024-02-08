@@ -1,0 +1,10 @@
+            <div class="leftmenu">
+              <ul>
+			    <?
+				$arr_ = explode(",",$NATIONS);
+				while(list($key_,$val_)=each($arr_)){
+				?>
+                <li class="<?if($code1==$val_){?>lm_on<?}?>"><a href="review.html?code1=<?=$val_?>"><?=$val_?></a></li>
+				<?}?>
+              </ul>
+            </div>

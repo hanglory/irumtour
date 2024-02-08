@@ -1,0 +1,123 @@
+<?
+include_once("script/include_common_file.php");
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko">
+<head>
+<title>이룸투어 챗봇상담</title>
+<link rel="stylesheet" type="text/css" href="css/import.css"/>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<script type="text/javascript">
+
+function msg(mode,message){
+
+  $.ajax({
+    url: "../new/api/ai/ai.php",
+    type: "POST",
+    data: {
+    'mode':mode,
+    'text':message
+    },
+    success: function(data) {
+      msg_add(data);
+    }
+  });
+
+  $("#chat_msg").scrollTop(9000);
+
+}
+
+function msg_add(ai_msg){
+  var msg_add="";
+  var msg_prev = $("#bx_chat").html();
+
+  if(ai_msg==""){
+    msg('open','');
+  }else{
+    msg_add="<div class='chat_gr01'>";
+    msg_add+="<div class='chat_irum'>"+ai_msg+"</div>";
+    msg_add+="</div>";
+
+    $("#bx_chat").html(msg_prev + msg_add);
+
+    scrolldown();
+  }
+}
+
+function send(){
+  var msg_add2="";
+  var message = $("#chat_msg").val();
+  var msg_prev2 = $("#bx_chat").html();
+
+  msg_add2="<div class='chat_gr02'>";
+  msg_add2+="<div class='chat_user'>"+message+"</div>";
+  msg_add2+="</div>";
+
+  $("#bx_chat").html(msg_prev2 + msg_add2);
+
+  msg('dialog',message);
+  $("#chat_msg").val('');
+  $("#chat_msg").focus();
+
+  scrolldown();
+
+}
+
+function scrolldown(){
+  var h = $("#bx_chat").height();
+  h = Math.floor(h)+99999;
+  $("#bx_chat").scrollTop(h);
+}
+
+$(function(){
+  msg('open','');
+  scrolldown();
+
+  $("#chat_msg").focus();
+
+  $('#chat_msg').keypress(function(e){
+    if(e.which == 13) send();
+  });
+
+});
+
+</script>
+
+</head>
+<body id="chatbot">
+
+<!--Chat_Wrap-->
+<div id="chat_wrap">
+
+  <!--Header_Chat-->
+  <div class="header_chat"><img src="images/chatbot/logo.png" alt="챗봇상담" /> 챗봇상담
+    <div class="chat_close"><img src="images/chatbot/bt_close.png" alt="닫기"  /></div>
+  </div>
+  <!--//Header_Chat-->
+
+  <!--Contents_Chat-->
+  <div class="contents_chat">
+
+    <!--Cts_Chat-->
+    <div class="cts_chat" id="bx_chat">
+
+    </div>
+    <!--//Cts_Chat-->
+
+    <!--Input_Chat : 문의내용입력-->
+    <div class="input_chat">
+      <ul>
+        <li style="width:310px"><input type="text" class="chat_cts" id="chat_msg" name="input" maxlength="50" tabindex="1" placeholder="문의사항을 입력해주세요."  style="width:100%"/></li>
+        <li><img src="images/chatbot/bt_send.png" alt="전송" width="90" onclick="send()"/></li>
+      </ul>
+    </div>
+    <!--//Input_Chat : 문의내용입력-->
+
+  </div>
+  <!--//Contents_Chat-->
+
+
+</div>
+<!--//Chat_Wrap-->
+</body>
+</html>

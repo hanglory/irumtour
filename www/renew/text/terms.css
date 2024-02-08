@@ -1,0 +1,35 @@
+*{font-family:NotoKR-Regular,sans-serif; }
+
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video {margin:0;padding:0;border:0;line-height:160%;letter-spacing:-0.5px;} /* delete vertical-align,font:inherit; */
+body,html { width:100%;  font-size:15px; color:#444; }
+img {border:0; vertical-align:middle}
+
+
+ul,ol,dl{ list-style:none;}
+ul li{ padding-bottom:5px;}
+ul li:last-child {padding-bottom:15px;}
+ul li.pdl10 { padding:0 0 10px 20px;}
+
+
+a:link , a:visited, a:active {color:#666; text-decoration:none;}
+a:hover {color:#009a5d; text-decoration:none; }
+caption,legend {display:none;}
+
+#wrap_terms {width:100%}
+.cts_normal {width:100%; padding-bottom:20px;}
+h1 {width:100%; font-size:18px; color:#000; padding:0 0 10px 0; }
+h2 {width:100%; font-size:16px; color:#333; padding-bottom:10px; }
+.cts_normal ul {list-style:none; padding:0; margin:0;}
+.cts_normal ul.pdl05 { padding:0 5px;}
+.cts_normal ul li.pdl10 { padding:0 0 0 20px;}
+
+table {width:100%}
+table th {text-align:center; padding:5px 0; border: 1px solid #e3e3e3; background:#fafafa;  color:#000; line-height:140%;}
+table td {text-align:center; padding:5px 0; border: 1px solid #e3e3e3; line-height:110%;}
+
+/*color*/
+.title_b { color:#086744; font-family:NotoKR-Medium }
+.title_b02 { color:#000}
+
+p { padding-bottom:10px;}
+

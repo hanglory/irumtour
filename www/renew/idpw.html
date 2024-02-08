@@ -1,0 +1,198 @@
+<?
+include_once("script/include_common_file.php");
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko">
+<head>
+<?include("header.php");?>
+<script type="text/javascript">
+function tab(i){
+    $(".tab").hide();
+    $("#tab"+i).show();
+}
+
+
+function check_form1(){
+  var fm = document.fmID;
+
+  if(check_blank(fm.name,'이름을',0)=='wrong'){return}
+  if(check_blank(fm.cell,'핸드폰번호를',11)=='wrong'){return}
+
+  $(".btn_nonemem").hide();    
+
+  fm.submit();
+}
+
+function check_form2(){
+  var fm = document.fmPWD;
+
+  if(check_blank(fm.id,'아이디를',0)=='wrong'){return}
+  if(check_blank(fm.name,'이름을',0)=='wrong'){return}
+  if(check_blank(fm.cell,'핸드폰번호를',11)=='wrong'){return}
+
+  $(".btn_nonemem").hide();  
+
+  fm.submit();
+}
+</script>
+</head>
+<body>
+<!--Wrap-->
+<div id="wrap">
+
+  <!--Header-->
+  <?include("header.html")?>
+  <!--//Header-->
+
+  <!--서브메인 비주얼-->
+  <?include("sub_visual11.html")?>
+  <!--//서브메인 비주얼-->
+
+  <!--Container-->
+  <div id="container">
+
+    <!--Contents-->
+    <div id="contents">
+
+      <!--Cts_Center-->
+      <div class="cts_center pdtb35">
+
+        <!--Prd_title-->
+        <div class="prd_title">
+          <h2>회원공간</h2>
+        </div>
+        <!--//Prd_title-->
+
+        <!--detail_gr-->
+        <div class="detail_gr">
+
+
+          <!--Left_Group-->
+          <div class="left_group">
+
+            <!--왼쪽메뉴-->
+            <?include("lm_member02.html")?>
+            <!--//왼쪽메뉴-->
+
+           <!--왼쪽배너-->
+           <?include("comm_banner.html")?>
+           <!--//왼쪽배너-->
+
+          </div>
+          <!--Left_Group-->
+
+
+          <!--Cts_Group-->
+          <div class="cts_group">
+
+            <!--title_h3_gr02-->
+            <div class="title_h3_gr02">
+              <div class="title_h3">아이디/비밀번호 찾기</div>
+           </div>
+           <!--//title_h3_gr02-->
+           
+
+           <!--log_p-->
+           <div class="log_p" >
+            
+            
+           <!--Login_Wrap -->
+          <div class="login_wrap">
+            
+            
+          <!--mem_title-->
+          <div class="mem_title mgb_30">아이디 · 비밀번호 찾기
+            <p>아래 정보를 정확히 입력해 주세요.</p>
+          </div>
+          <!--//mem_title-->
+
+            
+            
+            <!--1. 아이디 찾기-->
+            <div id="tab1" class="tab">
+             
+              <ul class="login_tab">
+    		    <li class="on"><a href="javascript:tab(1)">아이디 찾기</a></li>
+    	  	    <li><a href="javascript:tab(2)">비밀번호 찾기</a></li>
+              </ul>
+
+
+              <form name="fmID" method="post" action="script/identity_check.php">
+                <dl class="login_input">
+                  <dd class="input_id"><label for="uid"><input type="text" name="name" id="name" size="28" maxlength="10" class="input_login input_m" value="" tabindex="1" placeholder="이 름"  autocomplete="off"  /></label></dd>
+                  <dd class="input_phone"><label for="pwd"><input type="text" name="cell" id="cell" size="28" maxlength="11" class="input_login input_m numberic c" value="" tabindex="2" placeholder="핸드폰번호(숫자만)" autocomplete="off"  /></label></dd>
+                </dl> 
+          
+                <div class="btn_nonemem" onclick="check_form1()"><a href="javascript:void(0)">아이디 찾기</a></div>
+              </form>
+              
+          
+            </div>    
+            <!--//1. 아이디 찾기-->
+
+
+            <!--2. 비밀번호 찾기-->
+            <div id="tab2" class="tab hide">
+              <ul class="login_tab">
+                <li><a href="javascript:tab(1)">아이디 찾기</a></li>
+                <li class="on"><a href="javascript:tab(2)">비밀번호 찾기</a></li>
+              </ul>
+
+                <form name="fmPWD" method="post" action="script/identity_check.php">
+                
+                <dl class="login_input">
+                  <dd class="input_id"><label for="uid"><input type="text" name="id" id="id"   size="28" maxlength="30"  class="input_login input_m" value="" placeholder="아이디" tabindex="1" /></label></dd> 
+                  <dd class="input_name"><input  type="text" name="name" id="name" size="28" maxlength="30" class="input_login input_m" value="" placeholder="이 름"  tabindex="2" /></dd>
+                  <dd class="input_phone"><label for="cell"><input type="text" name="cell" id="cell"  size="28" maxlength="11" class="input_login input_m numberic c" value="" placeholder="핸드폰번호(숫자만)" tabindex="3"/></label></dd>
+                </dl>
+             
+                <div class="btn_nonemem" onclick="check_form2()"><a href="javascript:void(0)">비밀번호 찾기</a></div>
+             
+                </form>
+          
+          
+
+
+            </div>    
+            <!--//2. 비밀번호 찾기-->
+            
+            <div class="nonmem_txt">※ 가입 시 정보가 기억나지 않으시다면 고객센터로 연락주세요.</div>
+           
+           
+          </div>
+          <!--//Login_Wrap -->
+
+		</div>	
+		<!--log_p-->
+          
+
+            
+            
+
+          </div>
+          <!--//Cts_Group-->
+
+        </div>
+        <!--//detail_gr-->
+
+      </div>
+      <!--//Cts_Center-->
+
+      <!--Qucik Menu-->
+      <div class="side_s_right02"><?include("side_right.html")?></div>
+      <!--//Qucik Menu-->
+
+    </div>
+    <!--//Contents-->
+  </div>
+  <!--//Container-->
+
+
+  <!--Footer-->
+  <?include("footer.html")?>
+  <!--//Footer-->
+
+</div>
+<!--//Wrap-->
+</body>
+</html>

@@ -1,0 +1,167 @@
+<?
+include_once("script/include_common_file.php");
+include_once("../new/include/cmp_config.php");
+
+if(!$user_id){redirect2("login.html");exit;}
+
+
+$sql = "
+    select 
+        * 
+    from cmp_estimate 
+    where 
+        name='$user_id' 
+        and replace(phone,'-','') = '$user_phone' 
+        and golf_id_no<>'' 
+        and send_date<>'' 
+        and cp_id='$CID'
+    order by id_no desc 
+    limit 30
+  ";
+$dbo->query($sql);
+//if(strstr("@14.37.242.84@221.154.110.119@","@".$_SERVER["REMOTE_ADDR"]."@")){checkVar(mysql_error(),$sql);}    
+
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko">
+<head>
+<?include("header.php");?>
+<link rel="stylesheet" type="text/css" href="css/import.css"/>
+</head>
+<body>
+<!--Wrap-->
+<div id="wrap">
+
+  <!--Header-->
+  <?include("header.html")?>
+  <!--//Header-->
+
+  <!--서브메인 비주얼-->
+  <?include("sub_visual09.html")?>
+  <!--//서브메인 비주얼-->
+
+  <!--Container-->
+  <div id="container">
+
+    <!--Contents-->
+    <div id="contents">
+
+      <!--Cts_Center-->
+      <div class="cts_center pdtb35">
+
+        <!--Prd_title-->
+        <div class="prd_title">
+          <h2>마이페이지</h2>
+        </div>
+        <!--//Prd_title-->
+
+        <!--detail_gr-->
+        <div class="detail_gr">
+
+
+          <!--Left_Group-->
+          <div class="left_group">
+
+            <!--왼쪽메뉴-->
+            <?include("lm_mypage.html")?>
+            <!--//왼쪽메뉴-->
+
+           <!--왼쪽배너-->
+           <?include("comm_banner.html")?>
+           <!--//왼쪽배너-->
+
+          </div>
+          <!--Left_Group-->
+
+
+          <!--Cts_Group-->
+          <div class="cts_group">
+
+           <!--title_h3_gr02-->
+            <div class="title_h3_gr02">
+              <div class="title_h3">견적서현황</div>
+           </div>
+           <!--//title_h3_gr02-->
+            
+            
+            <div class="mypage_box"><span class="blue">· <?=$user_id?></span> 고객님의 견적서 정보를 확인해주세요.</div>
+    			
+              <!--예약현황-->
+              <table summary="나의 견적서를 확인하실 수있습니다." class="tbl_list mgt20" cellpadding="0" cellspacing="0" >
+              <caption>견적서현황</caption>
+                <thead>
+                  <tr>
+                    <th scope="col">상품명</th>
+                    <th width="12%" scope="col">총인원</th>
+                    <th width="12%" scope="col">발송일</th>
+                    <th width="12%" scope="col">출발일</th>
+                    <th width="12%" scope="col">귀국일</th>
+                    <th width="15%" scope="col">담당자</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <?
+                  while($rs=$dbo->next_record()){ 
+                    $arr  = explode(">",$rs[golf_name]);
+                    $golf_name  = $arr[count($arr)-1];
+
+                    $long_url1 =  $DOMAIN."/new/bkoff/cmp/form06.html?code=". str_replace("+","{p}",encrypt($rs[id_no],$SALT));
+
+                    $arr = explode("(",substr($rs[main_staff],0,-1));
+                    $staff_name = $arr[0];
+                    $staff_id = $arr[1];
+
+                    $sql2 = "select * from cmp_staff where id='$staff_id'";
+                    $dbo2->query($sql2);
+                    $rs2=$dbo2->next_record();
+                  ?>
+                  <tr>
+                    <td class="left"><a href="javascript:newWin('<?=$long_url1?>',870,650,1,1,'','esimatge')"><span class="bold"><?=$golf_name?></span></a></td>
+                    <td><span class="black"><?=nf($rs[people])?>명</span></td>
+                    <td><span class="black"><?=$rs[send_date]?></span></td>
+                    <td><span class="black"><?=$rs[d_date]?></span></td>
+                    <td><span class="black"><?=$rs[r_date]?></span></td>
+                    <td>
+                      <span class="black">
+                      <?=$staff_name?> <?=$rs2[mposition]?><br/> 
+                      <?=$rs2[cell1]?>-<?=$rs2[cell2]?>-<?=$rs2[cell3]?> 
+                      <?if($rs2[kakao_link]){?><br/><a href="<?=$rs2[kakao_link]?>" target="_blank">KAKAO LINK</a><?}?>
+                      </span>
+                    </td>
+                  </tr>
+                  <?}?>
+                </tbody>
+                
+            </table>
+            
+            <!--//예약현황-->
+
+
+          </div>
+          <!--//Cts_Group-->
+
+        </div>
+        <!--//detail_gr-->
+
+      </div>
+      <!--//Cts_Center-->
+
+      <!--Qucik Menu-->
+      <div class="side_s_right02"><?include("side_right.html")?></div>
+      <!--//Qucik Menu-->
+
+    </div>
+    <!--//Contents-->
+  </div>
+  <!--//Container-->
+
+
+  <!--Footer-->
+  <?include("footer.html")?>
+  <!--//Footer-->
+
+</div>
+<!--//Wrap-->
+</body>
+</html>

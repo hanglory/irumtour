@@ -1,0 +1,280 @@
+<?
+include_once("script/include_common_file.php");
+
+if(!$user_id){redirect2("login.html");exit;}
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko">
+<head>
+<?include("header.php");?>
+<link rel="stylesheet" type="text/css" href="css/import.css"/>
+</head>
+<body>
+<!--Wrap-->
+<div id="wrap">
+
+  <!--Header-->
+  <?include("header.html")?>
+  <!--//Header-->
+
+  <!--서브메인 비주얼-->
+  <?include("sub_visual09.html")?>
+  <!--//서브메인 비주얼-->
+
+  <!--Container-->
+  <div id="container">
+
+    <!--Contents-->
+    <div id="contents">
+
+      <!--Cts_Center-->
+      <div class="cts_center pdtb35">
+
+        <!--Prd_title-->
+        <div class="prd_title">
+          <h2>마이페이지</h2>
+        </div>
+        <!--//Prd_title-->
+
+        <!--detail_gr-->
+        <div class="detail_gr">
+
+
+          <!--Left_Group-->
+          <div class="left_group">
+
+            <!--왼쪽메뉴-->
+            <?include("lm_mypage.html")?>
+            <!--//왼쪽메뉴-->
+
+           <!--왼쪽배너-->
+           <?include("comm_banner.html")?>
+           <!--//왼쪽배너-->
+
+          </div>
+          <!--Left_Group-->
+
+
+          <!--Cts_Group-->
+          <div class="cts_group">
+
+           <!--title_h3_gr02-->
+            <div class="title_h3_gr02">
+              <div class="title_h3">견적서현황</div>
+           </div>
+           <!--//title_h3_gr02-->
+            
+            
+           <div class="mypage_box"><span class="blue">· <?=$user_id?></span> 고객님의 견적서 정보를 확인해주세요.</div>
+			
+           <!--1. 견적서-->
+           <div class="title_h4"><span class="green02 bold">(국내)강원도 하이원 </span>견적서</div>
+           
+           <table class="tbl_group" cellpadding="0" cellspacing="0" summary="견적서">
+             <caption>견적서</caption>
+               <colgroup>
+                 <col width="20%" />
+                 <col width="30%" />
+                 <col width="20%" />
+                 <col width="30%" />
+               </colgroup>
+               <tbody>
+                 <tr>
+                   <th scope="row">수신</th>
+                   <td>홍길동</td>
+                   <th scope="row" class="line_th">고객님 연락처 </th>
+                   <td>010-5442-3243 </td>
+                 </tr>
+                 <tr>
+                   <th scope="row"><span class="line_th">상품명</span></th>
+                   <td colspan="3">(국내)강원도 하이원 </td>
+                 </tr>
+                 <tr>
+                   <th scope="row">담당</th>
+                   <td>최경아 이사 (010-6271-4421) </td>
+                   <th scope="row" class="line_th">입금계좌</th>
+                   <td><span class="medium black">[국민은행] 813037-04-005009<br />(주)이룸플레이스</span></td>
+                 </tr>
+                 <tr>
+                   <th scope="row">요금(1인) </th>
+                   <td><span class="medium red">0원</span></td>
+                   <th scope="row" class="line_th">인원</th>
+                   <td><span class="medium black">3명</span></td>
+                 </tr>
+                 <tr>
+                   <th scope="row">출발일</th>
+                   <td>2020/06/20 (1박2일)</td>
+                   <th scope="row" class="line_th">귀국일</th>
+                   <td>2020/06/21</td>
+                 </tr>
+                 <tr>
+                   <th scope="row">항공사</th>
+                   <td>&nbsp;</td>
+                   <th scope="row" class="line_th">룸타입</th>
+                   <td>&nbsp;</td>
+                 </tr>
+                 <tr>
+                   <th scope="row">포함사항</th>
+                   <td colspan="3">&nbsp;</td>
+                 </tr>
+                 <tr>
+                   <th scope="row">불포함사항</th>
+                   <td colspan="3">&nbsp;</td>
+                 </tr>
+                 <tr>
+                   <th scope="row">예약방법</th>
+                   <td colspan="3" class="medium black">※ 담당자가 상품별로 안내드린 계약금을 입금해주시면 예약이 확정됩니다.<br />
+※ 법인명이나 타인명으로 입금 할 경우는 꼭 "고객명"을 같이 표기해주시기 바랍니다.
+<p style="width:360px; background:#a9f5a9; padding:5px 10px; font-family:NotoKR-Medium; color:#000 ">입금계좌 - 국민은행 813037-04-005009 (주)이룸플레이스</p> </td>
+                 </tr>
+                 <tr>
+                   <th scope="row">참고사항</th>
+                   <td colspan="3">&nbsp;</td>
+                 </tr>
+               </tbody>
+            </table>
+           <!--//1. 견적서-->
+           
+           
+           <!--2. 일정표-->
+           <div class="title_h4"><span class="green02 bold">일정표</span></div>
+           
+           <table summary="일정표" class="tbl_shedule" cellpadding="0" cellspacing="0" >
+            <caption>일정표</caption>
+               <colgroup>
+                 <col width="13%" />
+                 <col width="13%" />
+                 <col width="13%" />
+                 <col width="13%" />
+                 <col width="*" />
+                 <col width="13%" />
+               </colgroup>
+            <thead>
+              <tr>
+                <th scope="col">일자</th>
+                <th scope="col">지역</th>
+                <th scope="col">교통편</th>
+                <th scope="col">시간</th>
+                <th scope="col">여행일정 </th>
+                <th scope="col" class="none_th">비고</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <th scope="row" class="day_th">제1일<br />(06/20)<br />토</th>
+                <td>강원도 </td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td class="left">공항 출발 </td>
+                <td class="none_td"><img src="images/member/ic_meal03.png" alt="석식" /> 불포함</td>
+              </tr>
+              <tr>
+                <th scope="row" class="day_th">&nbsp;</th>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td class="left">도착 </td>
+                <td class="none_td">&nbsp;</td>
+              </tr>
+              <tr>
+                <th scope="row" class="day_th">&nbsp;</th>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td class="left"><> 미팅보드를 들고 있는 안내원과 미팅 후 <br />
+                을 이용하여 골프장으로 이동 00분 소요 <br />
+                <p style="width:40px; background:#ffff00; padding:0 10px; font-family:NotoKR-Medium; color:#000 ">라운드</p>
+                라운딩 후 호텔로 이동 - 00분 소요 <br />
+                호텔 체크인 후 석식 및 휴식</td>
+                <td class="none_td">&nbsp;</td>
+              </tr>
+              <tr>
+                <th scope="row" class="day_th">&nbsp;</th>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td class="left">호텔 :  </td>
+                <td class="none_td">&nbsp;</td>
+              </tr>
+            </tbody>
+            
+          </table>
+          
+          <div class="red_txt">**상기 일정은 항공기 및 현지사정으로 다소 변동 될 수 있습니다.</div>
+           <!--//2. 일정표-->
+           
+           
+           <!--3. 취소수수료-->
+           <table class="tbl_group" cellpadding="0" cellspacing="0" summary="취소수수료">
+             <caption>취소수수료</caption>
+               <colgroup>
+                 <col width="20%" />
+                 <col width="*" />
+               </colgroup>
+               <tbody>
+                 <tr>
+                   <th rowspan="5" scope="row" class="center_th">취소수수료</th>
+                   <td>■ 아래의 특별약관은 <span style="width:40px; background:#ffff00; padding:0 10px; font-family:NotoKR-Medium; color:#000 ">국외여행표준약관의 제5조(특약)조항</span>에 의거합니다.</td>
+                 </tr>
+                 <tr>
+                   <td>■ 특별약관<br />
+                     상기 상품은 항공(또는 선박)좌석, 호텔, 차량, 골프장 등<span style="width:40px; background:#ffff00; padding:0 10px; font-family:NotoKR-Medium; color:#000 ">예약에 필요한 비용을 선납해 놓은 상품</span>으로서, 상품 예약 후 취소 시 <span style="width:40px; background:#ffff00; padding:0 10px; font-family:NotoKR-Medium; color:#000 ">아래 "특별약관 취소 환불 규정"</span>의 취소 수수료가 부과 되오니 이점 양해 부탁드립니다. 
+                   <br />본 특별약관은 계약시점, 당사에서 고객에게 안내한 견적서 상에 첨부되는 것으로 고지의무를 준수한 것으로 갈음하며,<br /><span style="width:40px; background:#ffff00; padding:0 10px; font-family:NotoKR-Medium; color:#000 ">취소 수수료 부과 세부기준을 반드시 확인</span>하시기 바랍니다.</td>
+                 </tr>
+                 <tr>
+                   <td>■ 항공규정<br />
+                     ① 2017.1.1 이후 발권한 항공권은 여행상품 취소수수료와 별도로 출발 잔여 일수 및 지역 기준으로 항공사 자체 취소 수수료가 발생 되오니 참고하시기 바랍니다.<br />
+                     예) 대한항공기준 출발 91일 이전은 무료, 14~4일 이전 6~36만원(거리별, 클래스별 차등 적용)<br />
+                     ② 단, 전세기 및 일부 특별 항공권(선발권/특가할인/블럭항공 등) 은 예약 확정 또는 항공권 발권 후 취소 시 100% 비용이 부과 될 수 있습니다.<br />
+                   ③ 항공 좌석 배정은 항공 예약 클래스에 따라 사전 지정이 불가 할 수 있으며, 좌석 지정 후에도 항공사 사정(취소/지연/기종 변경 등)에 따라 예고 없이 변경 또는 취소 될 수 있습니다.</td>
+                 </tr>
+                 <tr>
+                   <td>■ 특별약관 취소 환불 규정<br />
+                     - 여행개시 32일전(~32)까지 통보시 : 계약금 환급<br />
+                     - 여행개시 31일전(31)까지 통보시 : 총상품가격의 20% 배상<br />
+                     - 여행개시 21일전(30~21)까지 통보시 : 총상품가격의 30% 배상<br />
+                     - 여행개시 14일전(20~14)까지 통보시 : 총상품가격의 40% 배상<br />
+                     - 여행개시 7일전(13~7)까지 통보시 : 총상품가격의 60% 배상<br />
+                     - 여행개시 6일전(6~1)까지 통보시 : 총상품가격의 80% 배상<br />
+                   - 여행개시 당일 통보시 : 총상품가격의 100% 배상</td>
+                 </tr>
+                 <tr>
+                   <td>▶ 근무일(공휴일 및 토, 일요일 제외) 및 근무시간(18시까지) 내에 취소 요청에 한함 <br />
+                   ▶ 천재지변이나, 항공사의 사정으로 인해 여행에 지장을 끼친 경우, 본사의 법적이나 도의적인 책임은 없음을 알려드립니다. </td>
+                 </tr>
+                 
+               </tbody>
+            </table>
+           <!--//3. 취소수수료-->
+
+            
+            
+
+          </div>
+          <!--//Cts_Group-->
+
+        </div>
+        <!--//detail_gr-->
+
+      </div>
+      <!--//Cts_Center-->
+
+      <!--Qucik Menu-->
+      <div class="side_s_right02"><?include("side_right.html")?></div>
+      <!--//Qucik Menu-->
+
+    </div>
+    <!--//Contents-->
+  </div>
+  <!--//Container-->
+
+
+  <!--Footer-->
+  <?include("footer.html")?>
+  <!--//Footer-->
+
+</div>
+<!--//Wrap-->
+</body>
+</html>

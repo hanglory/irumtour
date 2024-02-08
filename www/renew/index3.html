@@ -1,0 +1,441 @@
+<?
+include_once("script/include_common_file.php");
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko">
+<head>
+<?include("header.php");?>
+<script type="text/javascript">
+<!--
+function popup(){
+<?
+#### 팝업창 처리
+
+$cdate = date("Y/m/d H:i");
+
+$sql = "select * from popup where open=1 and cp_id ='".$_SESSION['CID']."'";
+$dbo->query($sql);
+while($rs =$dbo->next_record()){
+
+	$popup_id = "sessPopup_" . $rs[id_no];
+
+	$bit =1;
+	if($rs[period_start] && $rs[period_start]>$cdate) $bit=0;
+	if($rs[period_end] && $rs[period_end]<$cdate) $bit=0;
+
+	if($rs[open] && !$$popup_id && $bit){
+		$rs[position_top]=number_format($rs[position_top]);
+		$rs[position_left]=number_format($rs[position_left]);
+
+		echo "window.open ('popup.php?id_no=$rs[id_no]','','scrollbars=$rs[scroll],resizable=0,width=$rs[width],height=$rs[height],top=$rs[position_top],left=$rs[position_left]'); \n";
+	}
+}
+?>
+}
+
+function tab_thema(i){
+    $(".tab_recomm").hide();
+    $("#tab_recomm_"+i).show();
+}
+
+
+$(function(){
+    tab_thema(1);
+    popup();
+});
+//-->
+</script>
+<!-- 비주얼, 상품 롤링js -->
+<script src="/renew/js/slick.min.js"></script>
+
+</head>
+<body>
+<!--Wrap-->
+<div id="wrap">
+
+  <!--Header-->
+  <?include("header_new.html")?>
+  <!--//Header-->
+
+  <!--서브메인 비주얼-->
+  <?include("vsl_tpl03.html")?>
+  <!--//서브메인 비주얼-->
+
+
+  <!--Container-->
+  <div id="container">
+
+    <!--Contents-->
+    <div id="contents">
+      
+	  <!--1.tpl03_sec01 : 시즌별 추천상품-->
+      <div class="tpl03_sec01">
+        
+        <!--Cts_center-->
+        <div class="cts_center">
+          
+          <!--타이틀-->
+          <div class="tpl_tit_sec03">
+            <ul>
+              <li class="tpl03_title01">시즌별 추천상품<span  class="tpl03_eng01">&nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp;Seasonal Recomended Tour</span></li>
+              <li class="tpl03_cmt01">이번 시즌 골프전문가들이 추천하는 최고의 여행상품을 소개합니다.</li>
+            </ul>
+          </div>
+          <!--//타이틀-->
+          
+          <div class="season_img"><img src="images/templet03/img_season.png"  alt="" /></div>
+           
+          <script type="text/javascript">
+               $(document).on('ready', function() {
+               $(".regular4").slick({
+               dots: false,
+               infinite: true,
+               slidesToShow:3,
+               slidesToScroll: 1,
+               autoplay: true,
+               autoplaySpeed: 3000,
+			  });
+             });
+          </script>
+       
+          <!--season_cst-->
+          <div class="season_cst03">
+        
+            <ul class='slider regular4'>
+
+
+              <?
+              //시즌별 추천상품 
+              $dbo->query($sql_best_c1);
+              //if(strstr("@14.37.242.84@221.154.110.119@","@".$_SERVER["REMOTE_ADDR"]."@")){checkVar(mysql_error(),$sql_best_c1);}
+              while($rs=$dbo->next_record()){
+
+                  $filename = $PUBLIC_PATH . "public/goods/".$rs[filename1];
+                  $thumb = $PUBLIC_PATH . "public/thumb/tb_".$rs[filename1];
+                  $pic =($rs[filename1])? thumbnail($filename, 593, 544, 0, 1, 100, 0, "", "", $thumb) : "images/templet03/thumb01.gif";
+                  $rs[pr] = titleCut2($rs[pr],130);             
+                  if($rs[season] && !strstr($rs[season],"봄&가을")) $rs[season].="골프"; 
+              ?>                 
+              <li>
+                <a href="detailview.html?tid=<?=$rs[tid]?>">
+                <div class="img"><img src="<?=$pic?>" width="257" height="190" />
+                  <div class="season_label03"><?=($rs[season])?$rs[season]:"모든시즌"?></div>
+                </div>
+                    
+                <!--season_box03-->
+                <div class="season_box03">
+                  <div class="season_prdtit"><?=$rs[subject]?></div>
+                  <div class="season_prdcmt"><?=$rs[pr]?></div>
+                  <div class="season_prdprice"><?=nf($rs[price_adult])?><span class="won">원~</span></div>
+                </div>
+                </a>
+                <!--//season_box03-->
+              </li>
+              <?}?>
+              
+
+            </ul>
+        
+        
+          </div>
+          <!--//season_cst-->
+           
+        </div>
+        <!--//Cts_center-->
+      
+      </div>
+	  <!--//1.tpl03_sec01 : 시즌별 추천상품-->
+      
+      
+	  <!--2.tpl03_sec02 : 테마별 추천상품-->
+      <div class="tpl03_sec02">
+      
+        <!--Cts_center-->
+        <div class="cts_center">
+          
+          <!--타이틀-->
+          <div class="tpl_tit_sec03">
+            <ul>
+              <li class="tpl03_title02">테마별 추천상품<span  class="tpl03_eng02">&nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp;Theme Recomended Tour</span></li>
+              <li class="tpl03_cmt01">테마가 있는 골프여행! 색다른 해외골프여행 만나보실까요?</li>
+            </ul>
+          </div>
+          <!--//타이틀-->
+         
+          <?include("inc_thema_new3.php")?>
+         
+        </div>
+        <!--//Cts_center-->        
+      </div>
+	  <!--//2.tpl03_sec02 : 테마별 추천상품-->
+      
+      
+      
+	  <!--3.tpl03_sec03 : 초특가 추천상품-->
+      <?
+      //초특가
+      $dbo->query($sql_best_c4);
+      ?>        
+      <div class="tpl03_sec03">
+      
+        <!--Cts_center-->
+        <div class="cts_center">
+          
+          <!--타이틀-->
+          <div class="tpl_tit_sec03">
+            <ul>
+              <li class="tpl03_title01">초특가 추천상품<span  class="tpl03_eng03">&nbsp;&nbsp;&nbsp;·&nbsp;&nbsp;&nbsp;SPECIAL OFFER TOUR</span></li>
+              <li class="tpl03_cmt01">최고의 골프전문가들이 엄선한 가성비 최고의 여행을 소개합니다.</li>
+            </ul>
+          </div>
+          <!--//타이틀-->
+          
+          <?
+          for($i=0; $i<2;$i++){
+              $rs=$dbo->next_record();
+              $filename = $PUBLIC_PATH . "public/goods/".$rs[filename1];
+              $thumb = $PUBLIC_PATH . "public/thumb/tb_".$rs[filename1];
+              $pic =($rs[filename1])? thumbnail($filename, 593, 544, 0, 1, 100, 0, "", "", $thumb) : "images/templet03/thumb03.gif";
+              $rs[pr] = titleCut2($rs[pr],130);    
+              $arr = explode(">",get_category_name($rs[category1]));         
+          ?>
+          <!--tpl03_type01-->
+          <div class="tpl03_type01">
+            <a href="detailview.html?tid=<?=$rs[tid]?>">
+            <img src="<?=$pic?>" width="355" height="370" />
+            <div class="type01_txtgr">
+              <div class="tpl03_offer_tit"><?=$rs[subject]?></div>
+              <div class="tpl03_offer_cmt01"><?=$rs[pr]?></div>
+              <div class="tpl03_offer_price"><?=nf($rs[price_adult])?><span class="won">원~</span></div>
+            </div>
+            </a>
+          </div>
+          <!--//tpl03_type01-->
+          <?}?>
+          
+        
+          <?
+          for($i=0; $i<2;$i++){
+              $rs=$dbo->next_record();
+              $filename = $PUBLIC_PATH . "public/goods/".$rs[filename1];
+              $thumb = $PUBLIC_PATH . "public/thumb/tb_".$rs[filename1];
+              $pic =($rs[filename1])? thumbnail($filename, 593, 544, 0, 1, 100, 0, "", "", $thumb) : "images/templet03/thumb04.gif";
+              $rs[pr] = titleCut2($rs[pr],130);    
+              $arr = explode(">",get_category_name($rs[category1]));         
+          ?>
+
+          <!--tpl03_type02-->
+          <div class="tpl03_type02 mgb20">
+            <a href="detailview.html?tid=<?=$rs[tid]?>">
+            <div class="tpl03_type02_img"><img src="<?=$pic?>" width="210" height="175" /></div>
+          
+            <div class="tpl03_type02_box">
+              <div class="tpl03_offer_tit"><?=$rs[subject]?></div>
+              <div class="tpl03_offer_cmt02"><?=$rs[pr]?></div>
+              <div class="tpl03_offer_price"><?=nf($rs[price_adult])?><span class="won">원~</span></div>
+            </div>
+            </a>
+          </div>
+          <!--//tpl03_type02-->
+          <?}?>
+          
+        </div>
+        <!--//Cts_center-->
+        
+      </div>
+	  <!--3.tpl03_sec03 : 초특가 추천상품-->
+	  
+      
+      
+      
+	  <!--4.tpl_sec04 : 커뮤니티 -->
+      <div class="tpl_sec04">
+      
+        <!--Cts_center-->
+        <div class="cts_center">
+         
+           <!--tpl02_sec04_gr01 : 공지사항-->
+          <div class="tpl03_sec04_gr01 mgr30" >
+            
+            <!--tit_comty_gr02-->
+            <div class="tit_comty_gr02">
+              <h3><span class="t_notice02">공지</span>사항 <span class="t_cmt">·&nbsp;&nbsp;&nbsp;새소식 및 공지사항을 확인해 주세요.</span></h3>
+              <div class="more_right"><a href="comty01.html"><img src="images/newmain/btn_more.png"  alt="더보기" /></a></div>
+            </div>
+            <!--//tit_comty_gr02-->
+            
+            
+            <!--tpl02_sec04_box-->
+            <div class="tpl03_sec04_box">
+              <ul>
+              <?
+              //공지사항
+              $bbs_cp_filter = " and (cp_id='$CID' or bit_cp<>1)";
+              $sql = "select * from ez_bbs where bid='notice' $bbs_cp_filter order by id_no desc limit 3";
+              $dbo->query($sql);
+              while($rs=$dbo->next_record()){
+                $rs[subject] = stripslashes($rs[subject]);
+                $rs[content] = strip_tags($rs[content]);
+              ?>                
+                <li>
+                    <a href="comty01.html?bmode=read&bid=notice&id_no=<?=$rs[id_no]?>">
+                    <?=titleCut2($rs[subject],40)?> <div class="tpl03_n_date"><?=date("Y.m.d",$rs[reg_date])?></div>
+                    </a>
+                </li>
+              <?}?>
+              </ul>
+            </div>
+            <!--//tpl02_sec04_box-->
+            
+            
+            
+            
+          </div>
+          <!--//tpl02_sec04_gr01 : 공지사항-->
+          
+          
+          <!--tpl02_sec04_gr01 : 골프여행문의-->
+          <div class="tpl02_sec04_gr01" >
+          
+            <!--tit_comty_gr-->
+            <div class="tit_comty_gr02">
+              <h3><span class="t_qna02">골프여행</span>문의  <span class="t_cmt">·&nbsp;&nbsp;&nbsp;연락주시면 친절히 상담해 드리겠습니다.</span></h3>
+              <div class="more_right"><a href="comty02_main.html"><img src="images/newmain/btn_more.png"  alt="더보기" /></a></div>
+            </div>
+            <!--//tit_comty_gr-->
+            
+                      
+            <!--tpl03_sec04_box02-->
+            <div class="tpl03_sec04_box02 mgr15">
+              
+              <!--sec04_cscenter-->
+              <div class="tpl03_cscenter">
+                <ul>
+                  <li class="cs_title">고객상담센터</li>
+                  <li><p class="tpl03_tel_no"><?=$CP_PHONE?></p>
+                      <?if($CP_FAX){?><p class="tpl03_fax_no"><?=($CP_FAX_NAME)?$CP_FAX_NAME:'Fax'?>. <?=$CP_FAX?></p><?}?>
+                  </li>
+                  <li class="tpl03_cs_time">업무시간 : (평일) 09:00~18:00<br /><span>※토,일, 공휴일 휴무</span></li>
+                </ul>
+              </div>
+              <!--//sec04_cscenter-->
+          
+            </div>
+            <!--//tpl03_sec04_box02-->
+
+            <!--tpl02_sec04_box02-->
+            <div class="tpl03_sec04_box02">
+            
+              <!--sec04_cscenter-->
+              <div class="tpl03_cscenter">
+                <ul>
+                  <li class="bank_title">입금계좌안내</li>
+                  <li><p class="tpl03_bank_name"><?=$CP_BANK?></p> <p class="tpl03_bank_no"><?=$CP_BANK_ACCOUNT?></p><p class="tpl03_bank_user">예금주 : <?=$CP_BANK_OWNER?></p></li>
+                  
+                  <li><div class="btn_cs"><a href="comty02_main.html">맞춤여행문의</a></div></li>
+                </ul>
+              </div>
+              <!--//sec04_cscenter-->
+
+            </div>
+            <!--//tpl03_sec04_box02-->
+             
+            
+          </div>
+          <!--//tpl02_sec04_gr01 : 골프여행문의-->
+          
+          
+
+
+          <?if(!$_SESSION[CID]){?>
+          <!--tpl03_sec04_gr02 : 답사후기-->
+          <div class="tpl03_sec04_gr02">
+
+            <!--tpl03_sec04_revtit-->
+            <div class="tpl03_sec04_revtit">
+             
+               <!--tit_comty_gr02-->
+               <div class="tit_comty_gr02">
+                 <h3><span class="t_review02">답사</span>후기
+                   <p class="t_cmt02">직접 라운드해보고 추천하는<br />골프장 & 리조트 답사후기를 만나보세요.</p>
+                 </h3>
+                 <div class="more_right02"><a href="comty05.html">MORE</a></div>
+               </div>
+               <!--//tit_comty_gr02-->
+            
+            </div>
+            <!--//tpl03_sec04_revtit-->
+            
+
+
+            <!--tpl03_sec04_revcts-->
+            <div class="tpl03_sec04_revcts">
+              <ul>
+
+
+
+                <?
+                //답사후기
+                $sql = "select * from ez_bbs where bid='review' order by id_no desc limit 2";
+                $dbo->query($sql);
+                For($i=0;$i<2;$i++){
+                    $rs=$dbo->next_record();
+                    $rs[subject] = stripslashes($rs[subject]);
+                    $rs[content] = strip_tags($rs[content]);
+
+                    $filename = $PUBLIC_PATH . "public/bbs_files/".$rs[filename];
+                    $thumb = $PUBLIC_PATH . "public/thumb/tb_".$rs[filename];
+                    $pic =($rs[filename])? thumbnail($filename, 152, 152, 0, 1, 100, 0, "", "", $thumb) : "images/templet03/thumb05.gif";                
+                ?>                  
+                <li>
+                      <a href="comty05.html?bmode=read&bid=notice&id_no=<?=$rs[id_no]?>">
+                      <div class="tpl03_review_img"><img src="<?=$pic?>" width="152" height="152" /></div>
+                      <!--tpl03_review_cts-->
+                      <div class="tpl03_review_cts">
+                        <div class="tpl03_review_date"><?=date("Y.m.d",$rs[reg_date])?></div>
+                        <div class="tpl03_review_tit"><?=new_icon($rs[reg_date],"/renew/images/templet02/ico_new02.png")?>
+                    <?=titleCut2($rs[subject],30)?></div>
+                        <div class="tpl03_review_cmt"><?=titleCut2($rs[content],70)?></div>
+                      </div>
+                    </a>
+                  <!--//tpl03_review_cts-->
+                </li>
+                <?}?>
+              
+                
+              </ul>
+            </div>
+            <!--//tpl03_sec04_revcts-->
+            
+            
+          
+          </div>
+          <!--//tpl03_sec04_gr02 : 답사후기-->
+          <?}?>
+          
+          
+         
+        </div>
+        <!--//Cts_center-->
+      
+      </div>
+	  <!--//4.tpl_sec04 : 커뮤니티 -->
+      
+      
+    </div>
+    <!--//Contents-->
+  </div>
+  <!--//Container-->
+
+
+  <!--Footer-->
+  <?include("footer_new.html")?>
+  <!--//Footer-->
+
+</div>
+<!--//Wrap-->
+</body>
+</html>
+<map name="Map_req" id="Map_req">
+<area shape="rect" coords="89,168,296,205" href="comty02.html" />
+</map>

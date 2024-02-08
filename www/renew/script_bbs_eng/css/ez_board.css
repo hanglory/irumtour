@@ -1,0 +1,66 @@
+/*게시판 기본 설정*/
+
+#ez_conents_wrap{ font-family:'나눔고딕',NanumGothic,'돋움',Dotum,AppleGothic,sans-serif;font-size:12px;}
+#ez_conents_wrap input,textarea,select{ font-family:'나눔고딕',NanumGothic,'돋움',Dotum,AppleGothic,sans-serif;font-size:12px;border: 1px solid #c9c9c9}
+#ez_conents_wrap a{text-decoration: none;}
+#ez_conents_wrap a:hover{ color: #ff6600; text-decoration: none;border-bottom:1 dotted #F85E0C;}
+#ez_conents_wrap img{border:0px}
+
+
+/*List*/
+#ez_conents_wrap #tbl_bbslist{ text-align:center; border-collapse:collapse;width:100%}
+#ez_conents_wrap #tbl_bbslist td{height:25px; padding:5px; border-bottom: 1px solid #c9c9c9;}
+#ez_conents_wrap #tbl_bbslist_srch legend {display:none;}
+#ez_conents_wrap #tbl_bbslist_srch fieldset {border:0}
+#ez_conents_wrap #tbl_bbslist img{vertical-align:middle}
+
+/*List webzine style*/
+#ez_conents_wrap .list_webzine_content {padding-top:8px}
+#ez_conents_wrap .list_webzine_content a{color:#505050;line-height:180%}
+#ez_conents_wrap .webzine_img {margin:1px;padding:5px; border: 1px solid #c9c9c9;}
+#ez_conents_wrap .list_webzine {padding-top:10px !important;text-align:left}
+
+/*List faq style*/
+#ez_conents_wrap .tbl_faq_bbslist img{padding:0 10px 0 10px}
+#ez_conents_wrap .tbl_faq_bbslist {background-image:none !important;}
+#ez_conents_wrap .faq_content {font-weight:normal;padding-left:36px;line-height:160%;display:none;cursor:pointer}
+#ez_conents_wrap .tbl_faq_bbslist td{height:25px; padding:5px; border-top: 1px solid #c9c9c9;}
+
+/*gallery*/
+#ez_conents_wrap #tbl_bbslist .gallery_img{margin:7px;padding:5px; border: 1px solid #c9c9c9;}
+
+
+/*view*/
+#ez_conents_wrap #ez_view_wrap h1{font-size:1.7em;letter-spacing:-1px;line-height:160%;font-weight:bold;}
+#ez_conents_wrap #ez_view_wrap hr{border-bottom:1px solid #fff}
+#ez_conents_wrap #author{color:#666699}
+#ez_conents_wrap #wdate{color:#a0a0a0}
+#ez_conents_wrap #ez_view_btn {margin-top:15px; text-align:right;}
+#ez_conents_wrap #ez_view_btn ul li {display:inline;}
+#ez_conents_wrap #ez_view_btn input {vertical-align:top;}
+#ez_conents_wrap .attach_file { border: 1px solid #c9c9c9; margin-bottom:10px}
+#ez_conents_wrap .ez_view-contents { line-height:180%}
+
+
+/*view reply*/
+#ez_conents_wrap #ez_view_reply{border: 1px solid #c9c9c9;margin-bottom:20px;padding:15px;}
+#ez_conents_wrap #ez_view_reply_list{border: 1px solid #c9c9c9;padding:20px;background-color:#f2f2f2;line-height:180%;}
+#ez_conents_wrap #ez_view_reply_list div{margin-bottom:10px}
+#ez_conents_wrap #inlist {margin-top:50px}
+
+/*write*/
+#ez_conents_wrap #bbswrite { border: 1px solid #c9c9c9; border-bottom: 1px solid #ffffff; width:100%;margin-bottom:10px}
+#ez_conents_wrap #bbswrite th {background-color:#f2f2f2;text-align:right;font-weight:bold; height:25px;}
+#ez_conents_wrap #bbswrite th, #ez_conents_wrap #bbswrite td{height:25px; padding:5px; border-bottom: 1px solid #c9c9c9;}
+
+/* 비밀번호 확인 script_bbs/pass.php  */
+#ez_conents_wrap #pass_wrap{width:380px;height:231px;margin-left:50%;margin-right:auto;margin-top:60px;background:url("/new/images/ez_board/imgpw02.gif");background-repeat:no-repeat;background-position:left bottom}
+#ez_conents_wrap #pass_box{position:relative;left:25px;width:330px;height:110px;text-align:center;padding-top:35px;border: 1px #dadada solid}
+#ez_conents_wrap #pass_box img{padding:0 5px 0 5px}
+
+
+
+/*기타*/
+.hide-caption {overflow:hidden;visibility:hidden;width:0;height:0;font-size:0;line-height:0;}
+.underline {overflow:hidden; height:1px; background:#c9c9c9;margin:15px 0 15px}
+#ez_conents_wrap #bbslist_msg{text-align:center;color:#c9c9c9;padding:50px;border-bottom: 1px solid #c9c9c9;} / /*자료를 찾을 수 없습니다.*/

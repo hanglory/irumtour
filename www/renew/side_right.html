@@ -1,0 +1,101 @@
+<script type="text/javascript">
+<!--
+$(function(){
+
+	$('.history').bxSlider({
+		mode: 'vertical',
+		minSlides: 1,
+		maxSlides: 1,
+		moveSlides:1,
+		slideWidth: 107,
+		pager:false,
+		controls:true,
+		auto: false,
+		autoControls: false,
+		nextSelector: '.history_prev',
+		prevSelector: '.history_next',
+		nextText: '<img src=\"/renew/images/quickmenu/btn_prev.gif\" alt=\"앞으로\" />',
+		prevText: '<img src=\"/renew/images/quickmenu/btn_next.gif\" alt=\"뒤로\" />'
+	});
+
+	if($.cookie("rside_close")=="1"){
+		$("#rside_wrap").hide();
+		$(".today_open").hide();
+	}else{
+		$(".today_close").hide();
+	}
+
+	$(".today_close").on("click",function(){
+
+		$.cookie("rside_close",0);
+
+		$(".today_close").hide();
+		$("#rside_wrap").show();
+		$(".today_open").show();
+	});
+
+	$(".today_open").on("click",function(){
+
+		$.cookie("rside_close",1);
+
+		$(".today_close").show();
+		$("#rside_wrap").hide();
+		$(".today_open").hide();
+	});
+});
+
+//-->
+</script>
+
+
+<!--Side_quick-->
+<div class="side_quick hide">
+
+  <div id="rside_wrap">
+
+	  <!--side_today-->
+	  <div class="side_today">
+		<div class="today_tit">최근본상품(<?=nf(count($_SESSION[TODAY]))?>)</div>
+
+		<div class="today_cts">
+		  <div class="today_thumb2">
+			  <ul class="history">
+				  <?
+				  while(list($key,$val)=@each($_SESSION[TODAY])){
+						$filename = $PUBLIC_PATH ."public/goods/".$val;
+						$thumb = $PUBLIC_PATH . "public/thumb/tb_".$val;
+						$pic = thumbnail($filename, 107, 88, 0, 1, 100, 0, '','', $thumb);
+
+						$pic=($val)? $pic : "images/quickmenu/img_thumb.gif";
+				  ?>
+					<li><a href="detailview.html?tid=<?=$key?>"><img src="<?=$pic?>" width="107" height="88" alt="최근 본 상품 바로가기"/></a></li>
+				  <?
+				  }
+				  ?>
+			  </ul>
+		  </div>
+		  <div class="today_btn"><span class="history_prev"></span><span class="history_next"></span></div>
+		</div>
+
+	  </div>
+	  <!--//side_today-->
+
+	  <ul>
+		<!-- <li><a href="sublist.html?code1=16&code2=139&sbt=<?=base64_encode('추천상품')?>"><img src="images/quickmenu/quick01.gif"  alt="추천상품" /></a></li> -->
+		<li><a href="sublist.html?code1=16&code2=142&sbt=<?=base64_encode('특가&연휴')?>"><img src="images/quickmenu/quick02.gif" alt="특가안내" /></a></li>
+		<!--<li><a href="submain.html?code1=28&sbt=<?=base64_encode('장기체류')?>"><img src="images/quickmenu/quick03.gif" alt="장기체류" /></a></li>-->
+		<?if($CID && $CP_NAVER){?>
+        <li><a href="<?=$CP_NAVER?>" target="_blank"><img src="images/quickmenu/quick04.gif" alt="견적문의" /></a></li>
+        <?}else{?>
+        <li><a href="comty02.html"><img src="images/quickmenu/quick04.gif" alt="견적문의" /></a></li>
+        <?}?>
+		<!--<li><a href="#"><img src="images/quickmenu/quick_top.gif" alt="위로가기" /></a></li>-->
+	  </ul>
+
+  </div>
+
+  <div class="today_close"><img src="images/quickmenu/quick_open.gif" alt="열기" /></div>
+  <div class="today_open"><img src="images/quickmenu/quick_close.gif" alt="닫기" /></div>
+</div>
+<!--//Side_quick-->
+

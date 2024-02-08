@@ -1,0 +1,18 @@
+<?
+include_once("script/include_common_file.php");
+
+$qs=$_SERVER[QUERY_STRING];
+$arr_browser = array ("iPhone","iPod","IEMobile","Mobile","lgtelecom","PPC");
+for($indexi = 0 ; $indexi < count($arr_browser) ; $indexi++) {
+	if(strpos($_SERVER['HTTP_USER_AGENT'],$arr_browser[$indexi]) == true){
+		redirect2("/m2/index.html?".$qs);
+	}
+}
+
+
+
+$index="index_renew.html";
+if($CP_INDEX) $index="index${CP_INDEX}.html";
+include($index);
+exit;
+?>

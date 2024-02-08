@@ -1,0 +1,174 @@
+<?
+include_once("script/include_common_file.php");
+
+if(!strstr("@112.172.15.90@221.154.110.119@","@".$_SERVER["REMOTE_ADDR"]."@")){
+    if(!$user_id){redirect2("login.html");exit;}
+}
+
+$mobile=0;
+$arr_browser = array ("iPhone","iPod","IEMobile","Mobile","lgtelecom","PPC");
+for($indexi = 0 ; $indexi < count($arr_browser) ; $indexi++) {
+  if(strpos($_SERVER['HTTP_USER_AGENT'],$arr_browser[$indexi]) == true){
+     $mobile=1; 
+  }
+}
+
+if($mobile){
+  Header( "HTTP/1.1 301 Moved Permanently" );
+  Header( "Location: ../m2/mypage01.html" );
+}
+
+
+if(strstr("@112.172.15.90@221.154.110.119@","@".$_SERVER["REMOTE_ADDR"]."@")){
+  $user_id="김두기";
+  $user_phone="01066667684";
+}
+
+
+$sql = "
+  select 
+    * 
+    from cmp_reservation 
+    where 
+      (
+          (name='$user_id' and replace(phone,'-','') = '$user_phone')
+          or
+          code in (select code from cmp_people where name='$user_id' and replace(phone,'-','') = '$user_phone')
+      )
+      and cp_id='$CID'
+      and golf<>''
+  order by id_no desc";
+$dbo->query($sql);
+//if(strstr("@14.37.242.84@221.154.110.119@","@".$_SERVER["REMOTE_ADDR"]."@")){checkVar($CID.mysql_error(),$sql);}
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko">
+<head>
+<?include("header.php");?>
+<link rel="stylesheet" type="text/css" href="css/import.css"/>
+</head>
+<body>
+<!--Wrap-->
+<div id="wrap">
+
+  <!--Header-->
+  <?include("header.html")?>
+  <!--//Header-->
+
+  <!--서브메인 비주얼-->
+  <?include("sub_visual09.html")?>
+  <!--//서브메인 비주얼-->
+
+  <!--Container-->
+  <div id="container">
+
+    <!--Contents-->
+    <div id="contents">
+
+      <!--Cts_Center-->
+      <div class="cts_center pdtb35">
+
+        <!--Prd_title-->
+        <div class="prd_title">
+          <h2>마이페이지</h2>
+        </div>
+        <!--//Prd_title-->
+
+        <!--detail_gr-->
+        <div class="detail_gr">
+
+
+          <!--Left_Group-->
+          <div class="left_group">
+
+            <!--왼쪽메뉴-->
+            <?include("lm_mypage.html")?>
+            <!--//왼쪽메뉴-->
+
+           <!--왼쪽배너-->
+           <?include("comm_banner.html")?>
+           <!--//왼쪽배너-->
+
+          </div>
+          <!--Left_Group-->
+
+
+          <!--Cts_Group-->
+          <div class="cts_group">
+
+           <!--title_h3_gr02-->
+            <div class="title_h3_gr02">
+              <div class="title_h3">예약현황</div>
+           </div>
+           <!--//title_h3_gr02-->
+            
+            
+            <div class="mypage_box">
+              <span class="blue">· <?=$user_id?></span> 고객님의 예약정보를 확인해주세요.
+              <span style="font-size:10pt">상품명을 클릭하시면,  출발,안내문 예약 확정서, 이티켓 등을 확인 하실 수 있습니다,</span>
+            </div>
+			
+          <!--예약현황-->
+          <table summary="나의 여행예약/결제 예약상태를 확인하실 수있습니다." class="tbl_list mgt20" cellpadding="0" cellspacing="0" >
+          <caption>여행예약/결제현황</caption>
+            <thead>
+              <tr>
+                <th scope="col">상품명</th>
+                <th width="12%" scope="col">총인원</th>
+                <th width="12%" scope="col">예약일</th>
+                <th width="12%" scope="col">출발일</th>
+                <th width="12%" scope="col">귀국일</th>
+              </tr>
+            </thead>
+
+
+            <tbody>
+              <?
+              while($rs=$dbo->next_record()){ 
+                $arr  = explode(">",$rs[golf_name]);
+                $golf_name  = $arr[count($arr)-1];
+              ?>
+              <tr>
+                <td class="left"><a href="mypage01_detail.html?id_no=<?=$rs[id_no]?>"><span class="bold"><?=$rs[golf]?></span></a></td>
+                <td><span class="black"><?=nf($rs[people])?>명</span></td>
+                <td><span class="black"><?=$rs[tour_date]?></span></td>
+                <td><span class="black"><?=$rs[d_date]?></span></td>
+                <td><span class="black"><?=$rs[r_date]?></span></td>
+              </tr>
+              <?}?>
+            </tbody>
+            
+        </table>
+        
+        <!--//예약현황-->
+
+            
+            
+
+          </div>
+          <!--//Cts_Group-->
+
+        </div>
+        <!--//detail_gr-->
+
+      </div>
+      <!--//Cts_Center-->
+
+      <!--Qucik Menu-->
+      <div class="side_s_right02"><?include("side_right.html")?></div>
+      <!--//Qucik Menu-->
+
+    </div>
+    <!--//Contents-->
+  </div>
+  <!--//Container-->
+
+
+  <!--Footer-->
+  <?include("footer.html")?>
+  <!--//Footer-->
+
+</div>
+<!--//Wrap-->
+</body>
+</html>

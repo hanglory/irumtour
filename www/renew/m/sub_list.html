@@ -1,0 +1,107 @@
+<?
+include_once("./script/include_common_mobile.php");
+?>
+<!doctype html>
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="css/import.css"/>
+<?include("header.php")?>
+</head>
+<body>
+<!--header-->
+<?include("header.html")?>
+<!--//header-->
+
+<!--article-->
+<article>
+
+  <!--contents-->
+  <div id="contents">
+
+    <!--topmenu-->
+    <?include("topmenu.html")?>
+    <!--//topmenu-->
+
+    <!--title_group-->
+    <div class="title_group">
+      <?include("prev.html")?>
+      <?include("catagtory_info.html")?>
+    </div>
+    <!--//title_group-->
+
+
+
+    <!--sub_wrap-->
+    <div class="sub_wrap">
+
+	  <?
+		If($code1) $code ="${code1}-";
+		If($code2) $code ="${code1}-${code2}-";
+		If($code3) $code ="${code1}-${code2}-${code3}";
+
+	    $i=0;
+
+		If($code1 && $code2 && $code3) $filter .=" and (category1 ='$code' or category2 ='$code' or category3 ='$code' or category4 ='$code' or category5 ='$code' or category6 ='$code') ";
+		Else $filter .=" and (category1 like '$code%' or category2 like '$code%' or category3 like '$code%' or category4 like '$code%' or category5 like '$code%' or category6 like '$code%') ";
+
+	  $sql = "select * from ez_tour where bit=1 and sale_group='T' $filter order by seq asc ";
+	  $dbo->query($sql);
+	  //if($REMOTE_ADDR=="106.246.54.27") checkVar(mysql_error(),$sql);
+	  while($rs=$dbo->next_record()){
+		$margin17= (($i%3)!=2)?"margin17 marginb24":"";
+		$filename = "/new/public/goods/".$rs[filename1];
+		$thumb = "/new/public/thumb/tb_".$rs[filename1];
+
+		//checkVar("",$filename);
+	  ?>
+      <!--item_group : 상품리스트-->
+      <div class="item_group">
+
+        <div class="item_thumb"><a href="itemview.html?tid=<?=$rs[tid]?>"><img src="<?=thumbnail($filename, 483, 286, 0, 1, 100, 0, "", "", $thumb)?>" onerror="this.src='/new/images/main/img_dft01.gif'" width="100%" alt="" /></a></div>
+
+        <div class="item_title">
+          <p class="m_title"><?=$rs[subject]?></p>
+          <p class="s_title"><?=$rs[pr]?></p>
+        </div>
+
+        <div class="item_info">
+          <div class="gr_price">
+            <span class="green bold">·상품가 :</span><span class="price"><?=number_format($rs[price_adult])?>원~</span>
+          </div>
+
+          <div class="gr_subinfo">
+            <span class="blue bold">·기본일정 :</span> <?=$rs[days]?>&nbsp;&nbsp;<span class="blue bold">·적용기간 :</span> <?=$rs[period]?>&nbsp;&nbsp;<span class="blue bold">·이용항공 :</span> <?=titleCut2($rs[air_name],5,'',1)?> </p>
+          </div>
+
+        </div>
+
+      </div>
+      <!--//item_group : 상품리스트-->
+	  <?
+		$i++;
+	  }
+	  ?>
+
+
+
+    </div>
+    <!--//sub_wrap-->
+
+
+
+
+  </div>
+  <!--contents-->
+
+</article>
+<!--//article-->
+
+
+<!--footer-->
+<?include("footer.html")?>
+<!--//footer-->
+
+
+
+</body>
+</new>

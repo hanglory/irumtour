@@ -1,0 +1,167 @@
+<?
+include_once("script/include_common_file.php");
+
+
+if($MOBILE){
+    $url  = str_replace("renew/sublist.html","m2/sub_list.html",$CPAGE);
+    Header( "HTTP/1.1 301 Moved Permanently" );
+    Header( "Location: $url" );
+    exit;
+}
+
+
+if($code1 && !$code2){
+	$sql = "select * from ez_tour_category2 where code1=$code1 and bit_hide<>1 $CTGFILTER order by seq asc limit 1";
+	$dbo->query($sql);
+	$rs=$dbo->next_record();
+	$code2=$rs[id_no];
+}
+
+if($code1=="26") $code1_name= get_category_name_path($code2,2);
+else $code1_name= get_category_name_path($code1,1);
+
+
+if($code1==26 && !$code3){
+	$sql = "select * from ez_tour_category3 where code2=$code2  and bit_hide<>1 $CTGFILTER order by seq asc limit 1";
+	$dbo->query($sql);
+	$rs=$dbo->next_record();
+
+	$code3=$rs[id_no];
+}
+
+
+switch($code1){
+	case "13": $code1_name2 = "SAESON";break;
+	case "14": $code1_name2 = "THEME";break;
+	case "15": $code1_name2 = "PGA/LPGA";break;
+	case "16": $code1_name2 = "SPECIAL";break;
+	case "6": $code1_name2 = "BUSAN/DAEGU";break;
+}
+
+$DESCRIPTION =  "${SITE_NAME}에서 전개하는 ". str_replace("여행","",$code1_name) ." 여행상품을 소개합니다.";
+$SITE_NAME = $code1_name ." - " .$SITE_NAME;
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko">
+<head>
+<?include("header.php");?>
+<script language="JavaScript">
+<!--
+function load_sublist(total_rows,sort){
+
+	var divname =(total_rows!=undefined)? total_rows : "";
+
+	if(sort!=""){
+		$(".sort_gr li").removeClass('on_sort');
+		$("#sort0" + sort).addClass('on_sort');
+	}
+
+	$(".list_more").hide();
+
+	$("#sublist_wrap"+divname).load('inc_sublist.php', {
+	  'total_rows': total_rows,
+	  'sort': sort,
+	  'stype': '<?=$stype?>',
+	  'code1': '<?=$code1?>',
+	  'code2': '<?=$code2?>',
+	  'code3': '<?=$code3?>',
+	  'keyword': '<?=$keyword?>'
+	});
+}
+
+$(function(){
+
+	load_sublist('','');
+
+});
+
+//-->
+</script>
+</head>
+<body>
+<!--Wrap-->
+<div id="wrap">
+
+  <!--Header-->
+  <?include("header.html")?>
+  <!--//Header-->
+
+
+  <!--서브메인 비주얼-->
+  <?include("sub_visual.html")?>
+  <!--//서브메인 비주얼-->
+
+
+  <!--Container-->
+  <div id="container">
+
+    <!--Sub_Contents-->
+    <div id="sub_contents">
+
+      <!--Cts_Center-->
+      <div class="cts_center pdtb35">
+
+        <!--Prd_title-->
+        <div class="prd_title"  id="ptop">
+          <h2><?=$code1_name?> <span class="sublist_eng"><?=$code1_name2?></span></h2>
+
+          <div class="sort_gr">
+            <ul>
+              <li id="sort01" onclick="load_sublist('',1)"><a href="javascript:void(0)">신상품순</a></li>
+              <li id="sort02" onclick="load_sublist('',2)"><a href="javascript:void(0)">인기상품순</a></li>
+              <li id="sort03" onclick="load_sublist('',3)"><a href="javascript:void(0)">높은가격순</a></li>
+              <li id="sort04" onclick="load_sublist('',4)"><a href="javascript:void(0)">낮은가격순</a></li>
+            </ul>
+          </div>
+
+        </div>
+        <!--//Prd_title-->
+
+        <!--detail_gr-->
+        <div class="detail_gr">
+
+
+          <!--Left_Group-->
+          <div class="left_group">
+
+            <!--왼쪽메뉴-->
+            <?include("lm_product.html")?>
+            <!--//왼쪽메뉴-->
+
+           <!--왼쪽배너-->
+           <?include("comm_banner.html")?>
+           <!--//왼쪽배너-->
+
+          </div>
+          <!--Left_Group-->
+
+          <!--Cts_Group-->
+          <div class="cts_group" id="sublist_wrap"></div>
+          <!--//Cts_Group-->
+
+        </div>
+        <!--//detail_gr-->
+
+      </div>
+      <!--//Cts_Center-->
+
+      <!--Qucik Menu-->
+      <div class="side_s_right02"><?include("side_right.html")?></div>
+      <!--//Qucik Menu-->
+
+
+    </div>
+    <!--//Sub_Contents-->
+  </div>
+  <!--//Container-->
+
+
+  <!--Footer-->
+  <?include("footer.html")?>
+  <!--//Footer-->
+
+
+</div>
+<!--//Wrap-->
+</body>
+</html>

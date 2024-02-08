@@ -1,0 +1,238 @@
+<?
+include_once("script/include_common_file.php");
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko">
+<head>
+<?include("header.php");?>
+<link rel="stylesheet" type="text/css" href="css/import.css"/>
+<script type="text/javascript">
+function frm_check(){
+
+  var fm=document.fmData;
+
+  if(check_blank(fm.club_name,'골프장명을',3)=='wrong'){return false;}
+
+  fm.submit();
+}  
+</script>
+</head>
+<body>
+
+<!--Wrap-->
+<div id="wrap">
+
+  <!--Header-->
+  <?include("header.html")?>
+  <!--//Header-->
+
+
+  <!--서브메인 비주얼-->
+  <?include("sub_visual10.html")?>
+  <!--//서브메인 비주얼-->
+
+
+  <!--Container-->
+  <div id="container">
+
+    <!--Sub_Contents-->
+    <div id="sub_contents">
+      <div class="cts_center ">
+        <div id="sub_contents2">
+          <!--Cts_Center-->
+          <div class="cts_center pdtb35">
+           
+            <!--Prd_title-->
+            <div class="prd_title"  id="ptop">
+              <h2>골프장 정보 검색</h2>
+            </div>
+            <!--//Prd_title-->
+
+
+            <!--detail_gr-->
+            <div class="detail_gr">
+            
+              <!--Left_Group-->
+              <div class="left_group">
+                <!--왼쪽메뉴-->
+                <?include("lm_search.html")?>
+                <!--//왼쪽메뉴-->
+              
+                <!--왼쪽배너-->
+                <?include("comm_banner.html")?>
+                <!--//왼쪽배너-->
+              
+              </div>
+              <!--Left_Group-->
+              
+              <!--Cts_Group-->
+              <div class="cts_group">
+                
+                <!--cc_srh_box : 골프장검색-->
+                <div class="cc_srh_box" id="cc_srh_box">
+                
+                <form name="fmData" method="get" action="<?=SELF?>#cc_srh_box" onsubmit="return frm_check()">
+                  <div class="cc_srh_gr">
+                    <ul>
+                      <li>
+                        <!--<?
+                        $COUNTRY="";
+                        $sql = "
+                            select distinct country from cmp_golfclub order by country asc
+                          ";
+                        $dbo->query($sql);
+                        while($rs=$dbo->next_record()){
+                          $COUNTRY .=",".$rs[country];
+                        }
+                        $COUNTRY = substr($COUNTRY,1);
+                        ?>
+                        <select name="country" class="cc_input">
+                        <?=option_str("Country".$COUNTRY,$COUNTRY,$country)?>
+                        </select> -->
+
+
+                        <script type="text/javascript">
+                        $(function() {
+
+                          $("#club_name").on("keyup",function(){
+                            
+                            $("#club_name").autocomplete({
+                                source: "club_find.php?club_name="+this.value,
+                                minLength: 1,
+                                response: function(event, ui) {
+                                    console.log(ui);
+                                },
+                                select: function(event, ui) {
+                                    console.log("Selected:" + ui.item.value);
+                                },
+                                focus: function(event, ui) {
+                                    return false;
+                                }
+                            });
+
+                          });
+                        });
+                        </script>
+
+                        <input type="text" class="cc_input" id="club_name" name="club_name" placeholder="골프장명을 입력해 주세요." value="" maxlength="20"/></li>
+                      <li><input type="image" src="images/common/search.gif" alt="골프장검색"  /></li>
+                    </ul>
+                  </div>
+                </form>
+                
+                </div>
+                <!--//cc_srh_box : 골프장검색-->
+                
+                <?
+                if($club_name){
+                  $sql = "
+                    select 
+                      club_name,
+                      country,
+                      city, 
+                      state,
+                      phone,
+                      website,
+                      email_address,
+                      driving_range,
+                      motor_cart,
+                      caddie_hire
+                      from cmp_golfclub
+                      where 
+                        club_name like '%$club_name%'
+                      limit 100
+                  ";
+                  $dbo->query($sql);
+                  //if($_SERVER["REMOTE_ADDR"]=="106.246.54.27"){checkVar(mysql_error(),$sql);}
+                  while($rs=$dbo->next_record()){
+                ?>
+                <!--골프장검색결과-->
+                <div class="title_h4"><span class="green02 bold"><?=$rs[club_name]?></span></div>    
+                
+                <table class="tbl_group" cellpadding="0" cellspacing="0" summary="검색결과">
+                <caption>검색결과</caption>
+                <colgroup>
+                  <col width="15%" />
+                  <col width="35%" />
+                  <col width="15%" />
+                  <col width="35%" />
+                </colgroup>
+                <tbody>
+                  <tr>
+                    <th scope="row">국 가</th>
+                    <td><?=$rs[country]?>&nbsp;</td>
+                    <th scope="row" class="line_th">도 시</th>
+                    <td><?=$rs[city]?>&nbsp;</td>
+                  </tr>
+                  <?
+                  $sql2 = "select * from cmp_golfcourses where club_id='$rs[club_id]' and club_id<>'' order by course_name asc";
+                  $dbo2->query($sql2);
+                  while($rs2=$dbo2->next_record()){
+                  ?>
+                  <tr>
+                    <th scope="row">코스명</th>
+                    <td><?=$rs2[course_name]?>&nbsp;</td>
+                    <th scope="row" class="line_th">홀 수</th>
+                    <td><?=$rs2[holes]?>&nbsp;</td>
+                  </tr>
+                  <?}?>
+                  <tr>
+                    <th scope="row">주/도/현</th>
+                    <td><?=$rs[state]?>&nbsp;</td>
+                    <th scope="row" class="line_th">Phone</th>
+                    <td><?=$rs[phone]?>&nbsp;</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Website </th>
+                    <td colspan="3"><?=$rs[website]?>&nbsp;</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">E-Mail</th>
+                    <td><?=$rs[email_address]?>&nbsp;</td>
+                    <th scope="row" class="line_th">연습장</th>
+                    <td><?=$rs[driving_range]?>&nbsp;</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">전동카트</th>
+                    <td><?=$rs[motor_cart]?>&nbsp;</td>
+                    <th scope="row" class="line_th">캐 디</th>
+                    <td><?=$rs[caddie_hire]?>&nbsp;</td>
+                  </tr>
+                </tbody>
+              </table>
+              <!--//골프장검색결과-->
+              <?}}?>
+              
+                
+           
+              </div>
+              <!--//Cts_Group-->
+              
+            </div>
+            <!--//detail_gr-->
+
+          </div>
+          <!--//Cts_Center-->
+
+          <!--Qucik Menu-->
+          <div class="side_s_right02">
+            <?include("side_right.html")?>
+          </div>
+          <!--//Qucik Menu-->
+          
+        </div>
+      </div>
+    </div>
+    <!--//Sub_Contents-->
+  </div>
+  <!--//Container-->
+
+
+  <!--Footer-->
+  <?include("footer.html")?>
+  <!--//Footer-->
+
+</div>
+<!--//Wrap-->
+</body>
+</html>

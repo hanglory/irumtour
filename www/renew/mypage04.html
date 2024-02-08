@@ -1,0 +1,207 @@
+<?
+include_once("script/include_common_file.php");
+
+if(!$_SESSION[sessMember][id]){redirect2("mem_login.html");exit;}
+
+
+$cp_id = $_SESSION[CID];
+$user_id = $_SESSION[sessMember][id];
+
+if($content){
+
+    $pwd = $_POST[pwd];
+
+    $sql = "select * from ez_member where id='$user_id' and cp_id='$cp_id' ";
+    list($rows)= $dbo->query($sql);
+    $rs=$dbo->next_record();
+
+    if(!$rs[assort_ext]){
+        if(!validate_password($pwd, $rs[pwd])) {
+            $rows=0;
+        }
+    }
+
+    if($rows){
+
+        $reg_date = date("Y/m/d");
+        $name = substr($_SESSION[sessMember][name],0,2) . "*". substr($_SESSION[sessMember][name],-2);
+        $sql = "
+            insert into ez_withdraw (
+                cp_id,
+                id,
+                content,
+                reg_date
+            ) values(
+                '$cp_id',
+                '$user_id',
+                '$content',
+                '$reg_date'
+            )
+        ";
+        if($dbo->query($sql)){
+
+            $sql = "delete from ez_member where id='$user_id' and cp_id='$cp_id' limit 1  ";
+            $dbo->query($sql);
+
+            msggo("처리 되었습니다. 그동안 이용해 주셔서 감사합니다.","script/login.php?mode=logout");
+        }
+
+    }else{
+        if(!$rs[assort_ext]){
+            error("비밀번호를 다시 확인해 주세요.");
+        }else{
+            error("탈퇴 처리가 완료되지 않았습니다. 고객센터에 문의해 주세요.");
+        }
+        exit;
+    }
+}
+
+
+$sql = "select * from ez_member where id='$user_id' limit 1  ";
+$dbo->query($sql);
+$rs=$dbo->next_record();
+
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko">
+<head>
+<?include("header.php");?>
+<script language="JavaScript">
+<!--
+function frm_check(){
+
+    var fm=document.fmData;
+    <?if(!$rs[assort_ext]){?>          
+    if(check_blank(fm.pwd,'비밀번호를',0)=='wrong'){return }
+    <?}?>
+    if(check_blank(fm.content,'탈퇴사유를',0)=='wrong'){return }
+
+    fm.submit();
+}
+
+//-->
+</script>
+</head>
+<body>
+<!--Wrap-->
+<div id="wrap">
+
+  <!--Header-->
+  <?include("header.html")?>
+  <!--//Header-->
+
+  <!--서브메인 비주얼-->
+  <?include("sub_visual09.html")?>
+  <!--//서브메인 비주얼-->
+
+  <!--Container-->
+  <div id="container">
+
+    <!--Contents-->
+    <div id="contents">
+
+      <!--Cts_Center-->
+      <div class="cts_center pdtb35">
+
+        <!--Prd_title-->
+        <div class="prd_title">
+          <h2>마이페이지</h2>
+        </div>
+        <!--//Prd_title-->
+
+        <!--detail_gr-->
+        <div class="detail_gr">
+
+
+          <!--Left_Group-->
+          <div class="left_group">
+
+            <!--왼쪽메뉴-->
+            <?include("lm_mypage.html")?>
+            <!--//왼쪽메뉴-->
+
+           <!--왼쪽배너-->
+           <?include("comm_banner.html")?>
+           <!--//왼쪽배너-->
+
+          </div>
+          <!--Left_Group-->
+
+
+          <!--Cts_Group-->
+          <div class="cts_group">
+
+            <!--title_h3_gr02-->
+            <div class="title_h3_gr02">
+              <div class="title_h3">회원탈퇴</div>
+           </div>
+           <!--//title_h3_gr02-->
+           
+           
+                   
+           <div class="title_h4"><span class="green02 bold">탈퇴정보</span>입력</div>    
+           
+            
+            <!--회원정보-->
+            <form name="fmData" method="post" action="<?=SELF?>">
+            <table class="tbl_group" cellpadding="0" cellspacing="0" summary="회원정보">
+				<caption>회원정보</caption>
+				<colgroup>
+					<col width="25%" />
+					<col width="*" />
+				</colgroup>
+				<tbody>
+                <tr>
+                  <th scope="row"><img src="images/comty/ic_compulsory.png"  />아이디</th>
+                  <td><?=($rs[assort_ext])?"간편로그인 사용자입니다.":user_id($user_id)?></td>
+                </tr>
+                <?if(!$rs[assort_ext]){?>            
+                <tr>
+                  <th scope="row"><img src="images/comty/ic_compulsory.png"  />비밀번호</th>
+                  <td><input type="password" name="pwd" id="pwd"  class="input" size="20"  maxlength="30"></td>
+                </tr>
+                <?}?>
+                <tr>
+                  <th scope="row"><img src="images/comty/ic_compulsory.png"  />탈퇴사유</th>
+                  <td><textarea cols="30" rows="5" class="input"  name="content" style="width:96%; height:150px;"></textarea></td>
+                </tr>
+                
+			  </tbody>
+            </table>
+            
+            <div class="button_center"><a href="javascript:frm_check()"><img src="images/comty/btn_ok.gif" alt="확인" /></a>&nbsp;
+                <a href="javascript:cancel()"><img src="images/comty/btn_cancel.gif" alt="취소하기" /></a></div>
+
+            </form>
+           
+            <!--//-회원정보-->
+          
+
+            
+          </div>
+          <!--//Cts_Group-->
+
+        </div>
+        <!--//detail_gr-->
+
+      </div>
+      <!--//Cts_Center-->
+
+      <!--Qucik Menu-->
+      <div class="side_s_right02"><?include("side_right.html")?></div>
+      <!--//Qucik Menu-->
+
+    </div>
+    <!--//Contents-->
+  </div>
+  <!--//Container-->
+
+
+  <!--Footer-->
+  <?include("footer.html")?>
+  <!--//Footer-->
+
+</div>
+<!--//Wrap-->
+</body>
+</html>

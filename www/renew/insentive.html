@@ -1,0 +1,311 @@
+<?
+include_once("script/include_common_file.php");
+
+$mode = $_POST[mode];
+
+
+If($mode=="save"){
+
+	$reg_date = date('Y/m/d');
+	$reg_date2 = date('H:i:s');
+
+	$phone = "${phone1}-${phone2}-${phone3}";
+
+	if(!strstr($EVENT_NATION,$nation)){error("잘못된 접근입니다.");exit;}
+
+	$area="";
+	if($nation=="동남아"){
+		For($i=0; $i<count($area1);$i++){
+			$area .="," . $area1[$i];
+		}
+	}
+	elseif($nation=="일본"){
+		For($i=0; $i<count($area2);$i++){
+			$area .="," . $area2[$i];
+		}
+	}
+	elseif($nation=="중국"){
+		For($i=0; $i<count($area3);$i++){
+			$area .="," . $area3[$i];
+		}
+	}
+	elseif($nation=="기타해외"){
+		For($i=0; $i<count($area4);$i++){
+			$area .="," . $area4[$i];
+		}
+	}
+
+	$area = str_replace(",,",",",substr($area,1));
+
+	$sql="
+	   insert into ez_request2 (
+		  date_s,
+		  date_e,
+		  people,
+		  nation,
+		  area,
+		  org,
+		  name,
+		  phone,
+		  email,
+		  content,
+		  etc6,
+		  etc2,
+		  etc3,
+		  etc7,
+		  memo,
+		  status,
+		  reg_date,
+		  reg_date2
+	  ) values (
+		  '$date_s',
+		  '$date_e',
+		  '$people',
+		  '$nation',
+		  '$area',
+		  '$org',
+		  '$name',
+		  '$phone',
+		  '$email',
+		  '$content',
+		  '$etc6',
+		  '$etc2',
+		  '$etc3',
+		  '$etc7',
+		  '$memo',
+		  '$status',
+		  '$reg_date',
+		  '$reg_date2'
+	)";
+
+	if($dbo->query($sql)){
+
+		if($REMOTE_ADDR=="106.246.54.27"){$WEBMASTER = "support@easeplus.com";}
+
+		$fromMail = $WEBMASTER;
+		$fromName =$SITE_NAME2;
+		$toMail = $WEBMASTER;
+
+		$headers  = 'MIME-Version: 1.0' . "\r\n";
+		$headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
+		$headers .= 'From: ' . $fromName . ' <' . $fromMail . '>' . "\r\n";
+
+		$mailContent ="문의날짜 : $reg_date <br/>";
+		$mailContent .="여행출발일 : $date_s ~ $date_e <br/>";
+		$mailContent .="소속단체명 : $org <br/>";
+		$mailContent .="성명 : $reg_date $assort_memo1 $assort_memo2<br/>";
+		$mailContent .="연락처 : $reg_date <br/>";
+		$mailContent .="이메일주소 : $reg_date <br/>";
+		$mailContent .="예상인원 : $people <br/>";
+		$mailContent .="희망지역 : $reg_date <br/>";
+		$mailContent .="희망국가 : $nation <br/>";
+		$mailContent .="행사내용 : $etc6  <br/>";
+		$mailContent .="호텔/골프장 수준 : $etc2 <br/>";
+		$mailContent .="식사수준 : $etc3 <br/>";
+		$mailContent .="객실타입 : $etc7 <br/>";
+		$mailContent .="기타 요청사항 : $content <br/>";
+
+		mail($toMail,"골프 인센티브 및 단체 행사  문의", $mailContent, $headers );
+
+		msggo("접수되었습니다.","index.html");
+	}
+	exit;
+
+}
+
+
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko">
+<head>
+<?include("header.php");?>
+<script type="text/javascript">
+<!--
+$(function(){
+	$("[name=nation]").click(function(){
+		var str = $(this).val();
+		$("#area1").hide();$("#area2").hide();$("#area3").hide();$("#area4").hide();
+		if(str=="동남아") $("#area1").show();
+		else if(str=="일본") $("#area2").show();
+		else if(str=="중국") $("#area3").show();
+		else if(str=="기타해외") $("#area4").show();
+	});
+
+});
+
+function checkForm(){
+
+	var fm = document.fmData;
+
+	if(fm.nation_tmp.value=="") fm.nation_tmp.value="동남아";
+
+	if(check_blank(fm.date_s,'출발일을',0)=='wrong'){return }
+	if(check_blank(fm.date_e,'출발일을',0)=='wrong'){return }
+
+	if(check_blank(fm.org,'소속/단체명을',0)=='wrong'){return }
+	if(check_blank(fm.name,'성명을',0)=='wrong'){return }
+	if(check_blank(fm.phone1,'연락처를',0)=='wrong'){return }
+	if(check_blank(fm.phone2,'연락처를',0)=='wrong'){return }
+	if(check_blank(fm.phone3,'연락처를',0)=='wrong'){return }
+	if(check_num(fm.phone1,'연락처')=='wrong'){return }
+	if(check_num(fm.phone2,'연락처')=='wrong'){return }
+	if(check_num(fm.phone3,'연락처')=='wrong'){return }
+
+	if(check_blank(fm.email,'이메일주소를',0)=='wrong'){return }
+	if(check_email(fm.email)=='wrong'){return}
+
+	if(check_blank(fm.people,'예상인원을',0)=='wrong'){return }
+	if(check_num(fm.people,'예상인원')=='wrong'){return }
+	if(fm.nation_tmp.value==""){alert('희망국가를'); return}
+	if(fm.nation_tmp.value=="동남아" && fm.area1_tmp.value==1){alert('희망지역을 선택해 주세요.'); return}
+	if(fm.nation_tmp.value=="일본" && fm.area2_tmp.value==1){alert('희망지역을 선택해 주세요.'); return}
+	if(fm.nation_tmp.value=="중국" && fm.area3_tmp.value==1){alert('희망지역을 선택해 주세요.'); return}
+	if(fm.nation_tmp.value=="기타해외" && fm.area4_tmp.value==1){alert('희망지역을 선택해 주세요.'); return}
+
+	if(fm.etc6_tmp.value==""){alert('행사내용을 선택해 주세요.'); return}
+	if(fm.etc2_tmp.value==""){alert('호텔/골프장 수준을 선택해 주세요.'); return}
+	if(fm.etc3_tmp.value==""){alert('식사수준을 선택해 주세요.'); return}
+	if(fm.etc7_tmp.value==""){alert('객실타입을 선택해 주세요.'); return}
+
+	fm.submit();
+
+}
+//-->
+</script>
+</head>
+<body>
+<!--Wrap-->
+<div id="wrap">
+
+  <!--Header-->
+  <?include("header.html")?>
+  <!--//Header-->
+
+  <!--서브메인 비주얼-->
+  <?include("sub_visual02.html")?>
+  <!--//서브메인 비주얼-->
+
+
+  <!--Container-->
+  <div id="container">
+
+    <!--Sub_Contents-->
+    <div id="sub_contents">
+
+      <!--Cts_Center-->
+      <div class="cts_center pdtb35">
+
+        <!--Title_H2_Gr-->
+        <div class="submain_h2">
+          <div class="submain_titgr">
+            <div class="submain_title"><span class="bold">골프 인센티브 및 단체 행사 </span> 문의</div>
+            <div class="submain_comment">아래 내용으로 문의 주시면 국가별 담당자가 바로 연락드리겠습니다.</div>
+
+          </div>
+        </div>
+        <!--//Title_H2_Gr-->
+
+			<form name="fmData" method="post" action="<?=SELF?>">
+			<input type="hidden" name="mode" value="save">
+			<input type="hidden" name="assort_tmp" id="assort_tmp" value="">
+			<table class="tbl_group" cellpadding="0" cellspacing="0" summary="투어문의">
+				<caption>투어문의</caption>
+				<colgroup>
+					<col width="25%" />
+                    <col width="17%" />
+					<col width="*" />
+				</colgroup>
+				<tbody>
+                <tr>
+                  <th scope="row"><img src="images/comty/ic_compulsory.png"  />문의날짜</th>
+                  <td colspan="2"><span class="red bold"><?=date("Y년 m월 d일")?></span></td>
+                </tr>
+                 <tr>
+                  <th scope="row"><img src="images/comty/ic_compulsory.png"  />여행출발일</th>
+                  <td colspan="2"><?=html_input("date_s",13,10,'input dateinput')?> ~ <?=html_input("date_e",13,10,'input dateinput')?></td>
+                </tr>
+                 <tr>
+                   <th rowspan="4" scope="row"><img src="images/comty/ic_compulsory.png"  />문의자정보</th>
+                   <td class="sub_tit">소속/단체명</td>
+                   <td><?=html_input("org",30,40)?></td>
+                 </tr>
+                 <tr>
+                   <td class="sub_tit"><img src="images/comty/ic_compulsory.png"  /> 성명</td>
+                   <td><?=html_input("name",20,30)?></td>
+                 </tr>
+                 <tr>
+                   <td class="sub_tit"><img src="images/comty/ic_compulsory.png"  /> 연락처</td>
+                   <td><?=html_input("phone1",5,4)?> - <?=html_input("phone2",5,4)?> - <?=html_input("phone3",5,4)?></td>
+                 </tr>
+                 <tr>
+                   <td class="sub_tit"><img src="images/comty/ic_compulsory.png"  /> E-mail주소</td>
+                   <td><?=html_input("email",50,50)?></td>
+                 </tr>
+                 <tr>
+                  <th scope="row"><img src="images/comty/ic_compulsory.png"  />예상인원</th>
+                  <td colspan="2"><?=html_input("people",5,5)?>
+                  명</td>
+                </tr>
+                <tr>
+                  <th scope="row"><img src="images/comty/ic_compulsory.png"  />희망지역</th>
+                  <td colspan="2"><?=radio($EVENT_NATION,$EVENT_NATION,'동남아','nation')?></td>
+                </tr>
+                <tr>
+                  <th scope="row"><img src="images/comty/ic_compulsory.png"  />희망국가</th>
+                  <td colspan="2">
+					<div id="area1"><?=checkbox($EVENT_AREA1,$EVENT_AREA1,'','area1')?></div>
+					<div id="area2" class="hide"><?=checkbox($EVENT_AREA2,$EVENT_AREA2,'','area2')?></div>
+					<div id="area3" class="hide"><?=checkbox($EVENT_AREA3,$EVENT_AREA3,'','area3')?></div>
+					<div id="area4" class="hide"><?=checkbox($EVENT_AREA4,$EVENT_AREA4,'','area4')?></div>
+				  </td>
+                </tr>
+
+                <tr>
+                  <th scope="row"><img src="images/comty/ic_compulsory.png"  />행사내용</th>
+                  <td colspan="2"><?=radio($EVENT_ETC6,$EVENT_ETC6,'','etc6')?></td>
+                </tr>
+                <tr>
+                  <th scope="row"><img src="images/comty/ic_compulsory.png"  />호텔/골프장수준</th>
+                  <td colspan="2"><?=radio($EVENT_ETC2,$EVENT_ETC2,'','etc2')?></td>
+                </tr>
+                <tr>
+                  <th scope="row"><img src="images/comty/ic_compulsory.png"  />식사수준</th>
+                  <td colspan="2"><?=radio($EVENT_ETC3,$EVENT_ETC3,'','etc3')?></td>
+                </tr>
+                <tr>
+                  <th scope="row"><img src="images/comty/ic_compulsory.png"  />객실타입</th>
+                  <td colspan="2"><?=radio($EVENT_ETC7,$EVENT_ETC7,'','etc7')?></td>
+                </tr>
+                <tr>
+                  <th scope="row">기타 요청사항</th>
+                  <td colspan="2"><textarea cols="30" rows="5" class="input"  name="content" style="width:96%; height:150px;"></textarea></td>
+                </tr>
+			  </tbody>
+            </table>
+
+            <div class="button_center"><a href="javascript:checkForm()"><img src="images/comty/btn_qna.gif" alt="문의하기" /></a>&nbsp;<a href="javascript:cancel()"><img src="images/comty/btn_cancel.gif" alt="취소하기" /></a></div>
+
+			</form>
+
+      </div>
+      <!--//Cts_Center-->
+
+      <!--Qucik Menu-->
+      <div class="side_s_right02"><?include("side_right.html")?></div>
+      <!--//Qucik Menu-->
+
+
+    </div>
+    <!--//Sub_Contents-->
+  </div>
+  <!--//Container-->
+
+
+  <!--Footer-->
+  <?include("footer.html")?>
+  <!--//Footer-->
+
+</div>
+<!--//Wrap-->
+</body>
+</html>

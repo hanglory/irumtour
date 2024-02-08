@@ -1,0 +1,42 @@
+.btnstyle{padding:5px 60px 0 0;}
+.w100{display:inline-block;width:100%;overflow:hidden}
+.w1002{display:inline-block;width:100%;overflow:hidden;height:20px;}
+.wd{display:inline-block;width:23px;}
+
+/*tour detail pageÀÇ table*/
+.tour_table table {border-top:2px solid #80A3CF;border-left:1px solid #ccc;border-collapse: collapse;width:100%;}
+.tour_table .tbl_table th{background-color:#F7F9FB}
+.tour_table .tbl_table th,.tour_table .tbl_table td {padding: 5px;border-right: 1px solid #ccc;border-bottom: 1px solid #ccc;}
+.tour_table .tbl_table td {text-align:center}
+.tour_table .tbl_table .l {text-align:left;padding-left:10px;}
+.tour_table .tbl_table .day_bar{background-color:#F7F9FB;color:#1251A4;font-weight:bold;font-family:verdana;font-size:12pt}
+.button{ background-color: #D6D3D6; color:#000000 ;  height:18px; border: 1px #c0c0c0 solid;font-family:µ¸¿ò;font-size:8pt}
+.w10{width:10%}
+.tbl_title{font-weight:bold;padding:20px 0 10px 0;text-align:left;color:black}
+
+
+.basic_info{
+	width:100%;
+	border-collapse:collapse
+}
+
+.basic_info th,.basic_info td{
+	padding:5px;
+	border: 1px solid #ccc;
+	font-size:3vw;
+}
+
+.basic_info th{
+	font-weight:bold;
+	background-color:#eee;
+	width:23%;
+}
+
+.mgr{margin-right:1.5%;}
+
+.subject100{
+	display:inline-block;
+	width:95%;
+	overflow:hidden;
+	height:15px;
+}

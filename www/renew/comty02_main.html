@@ -1,0 +1,375 @@
+<?
+include_once("script/include_common_file.php");
+include_once "./SMS/xmlrpc.inc.php";
+include_once "./SMS/class.EmmaSMS.php";
+
+
+reset($_POST);while(list($key,$val)=each($_POST)){  $_POST[$key] = secu($_POST[$key]);}reset($_POST);
+reset($_GET);while(list($key,$val)=each($_GET)){  $_GET[$key] = secu($_GET[$key]);}reset($_GET);
+
+$_SESSION["anti_spam"]=session_id();
+
+
+If($mode=="save"){
+
+	if($_SESSION["anti_spam"]!=session_id()){error("잘못된 접근입니다1.");exit;}
+
+	if(!strstr($EVENT_NATION,$nation)){error("잘못된 접근입니다2.");exit;}//스팸처리
+
+
+	$reg_date = date('Y/m/d');
+	$reg_date2 = date('H:i:s');
+
+	$phone = "${phone1}-${phone2}-${phone3}";
+
+	For($i=0; $i<count($area1);$i++){
+		$area .="," . $area1[$i];
+	}
+	For($i=0; $i<count($area2);$i++){
+		$area .="," . $area2[$i];
+	}
+	For($i=0; $i<count($area3);$i++){
+		$area .="," . $area3[$i];
+	}
+	For($i=0; $i<count($area4);$i++){
+		$area .="," . $area4[$i];
+	}
+	For($i=0; $i<count($area5);$i++){
+		$area .="," . $area5[$i];
+	}
+
+	$area = secu(str_replace(",,",",",substr($area,1)));
+
+	$ip=$_SERVER[REMOTE_ADDR];
+    $status="접수";
+
+	$sql="
+	   insert into ez_request (
+		  date_s,
+		  date_e,
+		  people,
+		  nation,
+		  area,
+		  org,
+		  name,
+		  phone,
+		  email,
+		  assort,
+		  assort_memo1,
+		  assort_memo2,
+		  content,
+		  etc1,
+		  etc2,
+		  etc3,
+		  etc4,
+		  etc5,
+		  memo,
+		  ip,
+		  status,
+		  reg_date,
+		  reg_date2
+	  ) values (
+		  '$date_s',
+		  '$date_e',
+		  '$people',
+		  '$nation',
+		  '$area',
+		  '$org',
+		  '$name',
+		  '$phone',
+		  '$email',
+		  '$assort',
+		  '$assort_memo1',
+		  '$assort_memo2',
+		  '$content',
+		  '$etc1',
+		  '$etc2',
+		  '$etc3',
+		  '$etc4',
+		  '$etc5',
+		  '$memo',
+		  '$ip',
+		  '$status',
+		  '$reg_date',
+		  '$reg_date2'
+	)";
+
+	if($dbo->query($sql)){
+
+
+        $OFFICE_TEL_PARTNER = "01062714421";
+        $OFFICE_TEL="025127705";
+        if($OFFICE_TEL_PARTNER){
+            $sms_id="irumplace";
+            $sms_passwd="00615cmy!";
+
+            $sms_type = "L";
+            $sms = new EmmaSMS();
+            $sms->login($sms_id, $sms_passwd);
+            $message = "골프투어 문의(${name}님)가 접수되었습니다.";
+            $ret = $sms->send($OFFICE_TEL_PARTNER, $OFFICE_TEL, $message, $sms_date, $sms_type);
+        }
+
+
+		$fromMail = $WEBMASTER;
+		$fromName =$SITE_NAME2;
+		$toMail = $WEBMASTER;
+
+		$headers  = 'MIME-Version: 1.0' . "\r\n";
+		$headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
+		$headers .= 'From: ' . $fromName . ' <' . $fromMail . '>' . "\r\n";
+
+		$mailContent ="문의 날짜 : $reg_date <br/>";
+		$mailContent .="여행일정 : $date_s ~ $date_e <br/>";
+		$mailContent .="예상인원 : $people <br/>";
+		$mailContent .="희망국가 : $nation <br/>";
+		$mailContent .="희망지역 : $area <br/>";
+		$mailContent .="소속단체명 : $org <br/>";
+		$mailContent .="성명 : $reg_date $assort_memo1 $assort_memo2<br/>";
+		$mailContent .="연락처 : $reg_date <br/>";
+		$mailContent .="이메일주소 : $reg_date <br/>";
+		$mailContent .="투어성격 : $assort  <br/>";
+		$mailContent .="골프장종류 : $etc1 <br/>";
+		$mailContent .="호텔/골프장 수준 : $etc2 <br/>";
+		$mailContent .="식사수준 : $etc3 <br/>";
+		$mailContent .="객실 수준 : $etc4 <br/>";
+		$mailContent .="싱글룸사용여부 : $etc5 <br/>";
+		$mailContent .="기타 요청사항 : $content <br/>";
+
+		mail($toMail, $assort . "문의", $mailContent, $headers );
+?>
+<!-- NAVER SCRIPT* -->
+<script type="text/javascript" src="//wcs.naver.net/wcslog.js"></script>
+<script type="text/javascript">
+if (!wcs_add) var wcs_add={};
+wcs_add["wa"] = "s_1a8045f4534a";
+if (!_nasa) var _nasa={};
+_nasa["cnv"] = wcs.cnv("5","1");
+wcs_do(_nasa);
+</script>
+
+<!-- Mirae Log Analysis Conversion Script Ver 1.0   -->
+<script type='text/javascript'>
+var mi_type = 'CV_1';
+var mi_val = 'Y';
+var mi_adkey = "olxfm";
+var mi_is_defender = "";
+var mi_dt=new Date(),mi_y=mi_dt.getFullYear(),mi_m=mi_dt.getMonth()+1,mi_d=mi_dt.getDate(),mi_h=mi_dt.getHours();
+var mi_date=""+mi_y+(mi_m<=9?"0":"")+mi_m+(mi_d<=9?"0":"")+mi_d+(mi_h<=9?"0":"")+mi_h;
+var mi_script = "<scr"+"ipt "+"type='text/javascr"+"ipt' src='//log1.toup.net/mirae_log.js?t="+mi_date+"' async='true'></scr"+"ipt>";
+document.writeln(mi_script);
+</script>
+<!-- Mirae Log Analysis Script END  -->
+<?
+		msggo("접수가 완료되었습니다.  빠른 시간내에 담당자가 연락드리겠습니다.","index.html");
+	}
+	exit;
+
+}
+
+
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko">
+<head>
+<?include("header.php");?>
+<script type="text/javascript">
+<!--
+$(function(){
+	$("[name=nation]").click(function(){
+		var str = $(this).val();
+		$("#area1").hide();$("#area2").hide();$("#area3").hide();$("#area4").hide();
+		if(str=="동남아") $("#area1").show();
+		else if(str=="일본") $("#area2").show();
+		else if(str=="중국") $("#area3").show();
+		else if(str=="기타해외") $("#area4").show();
+		else if(str=="한국") $("#area5").show();
+	});
+
+	$(".assort").click(function(){
+		$("#assort_tmp").val($(this).val());
+	});
+
+});
+
+function checkForm(){
+
+	var fm = document.fmData;
+
+	if($("#agree").is(':checked') == false){alert("개인정보 수집 및 이용에 동의하십니까?");return;}
+
+	if(fm.nation_tmp.value=="") fm.nation_tmp.value="동남아";
+
+	if(check_blank(fm.date_s,'출발일을',0)=='wrong'){return }
+	if(check_blank(fm.date_e,'출발일을',0)=='wrong'){return }
+	if(check_blank(fm.people,'예상인원을',0)=='wrong'){return }
+	if(check_num(fm.people,'예상인원')=='wrong'){return }
+
+	if(fm.nation_tmp.value==""){alert('희망국가를'); return}
+	if(fm.nation_tmp.value=="동남아" && fm.area1_tmp.value==1){alert('희망지역을 선택해 주세요.'); return}
+	if(fm.nation_tmp.value=="일본" && fm.area2_tmp.value==1){alert('희망지역을 선택해 주세요.'); return}
+	if(fm.nation_tmp.value=="중국" && fm.area3_tmp.value==1){alert('희망지역을 선택해 주세요.'); return}
+	if(fm.nation_tmp.value=="기타해외" && fm.area4_tmp.value==1){alert('희망지역을 선택해 주세요.'); return}
+	if(fm.nation_tmp.value=="한국" && fm.area5_tmp.value==1){alert('희망지역을 선택해 주세요.'); return}
+
+	if(check_blank(fm.org,'단체명을',0)=='wrong'){return }
+	if(check_blank(fm.name,'성명을',0)=='wrong'){return }
+	if(check_blank(fm.phone1,'연락처를',0)=='wrong'){return }
+	if(check_blank(fm.phone2,'연락처를',0)=='wrong'){return }
+	if(check_blank(fm.phone3,'연락처를',0)=='wrong'){return }
+	if(check_num(fm.phone1,'연락처')=='wrong'){return }
+	if(check_num(fm.phone2,'연락처')=='wrong'){return }
+	if(check_num(fm.phone3,'연락처')=='wrong'){return }
+	if(check_blank(fm.email,'이메일주소를',0)=='wrong'){return }
+	if(check_email(fm.email)=='wrong'){return}
+
+	if(fm.assort_tmp.value==""){alert('투어성격을 선택해 주세요.'); return}
+	if(fm.etc1_tmp.value==""){alert('골프장종류를 선택해 주세요.'); return}
+	if(fm.etc2_tmp.value==""){alert('호텔/골프장 수준을 선택해 주세요.'); return}
+	if(fm.etc3_tmp.value==""){alert('식사수준을 선택해 주세요.'); return}
+	if(fm.etc4_tmp.value==""){alert('객실수준을 선택해 주세요.'); return}
+	if(fm.etc5_tmp.value==""){alert('싱글룸 사용여부를 선택해 주세요.'); return}
+
+	fm.submit();
+
+}
+//-->
+</script>
+
+</head>
+<body>
+<!--Wrap-->
+<div id="wrap">
+
+  <!--Header-->
+  <?include("header.html")?>
+  <!--//Header-->
+
+  <!--서브메인 비주얼-->
+  <?include("sub_visual03.html")?>
+  <!--//서브메인 비주얼-->
+
+
+  <!--Container-->
+  <div id="container">
+
+    <!--Contents-->
+    <div id="contents">
+
+      <!--Cts_Center-->
+      <div class="cts_center pdtb35">
+
+        <!--Prd_title-->
+        <div class="prd_title">
+          <h2>커뮤니티</h2>
+        </div>
+        <!--//Prd_title-->
+
+        <!--detail_gr-->
+        <div class="detail_gr">
+
+
+          <!--Left_Group-->
+          <div class="left_group">
+
+            <!--왼쪽메뉴-->
+            <?include("lm_comty.html")?>
+            <!--//왼쪽메뉴-->
+
+           <!--왼쪽배너-->
+           <?include("comm_banner.html")?>
+           <!--//왼쪽배너-->
+
+          </div>
+          <!--Left_Group-->
+
+
+          <!--Cts_Group-->
+          <div class="cts_group">
+
+            <!--title_h3_gr-->
+            <div class="title_h3_gr">
+              <div class="title_h3">맞춤여행문의</div>
+            </div>
+            <!--//title_h3_gr-->
+
+            <!--req_main-->
+            <div class="req_main">
+
+              <!--req_selbox-->
+              <div class="req_selbox">
+                <ul>
+                  <li>
+                    <div class="selbox_sec01">
+                      <div class="selbox_no">01</div>
+                      <div class="selbox_tit"><p>Indiviaua Tour</p>
+                      개별 맞춤여행</div>
+                    </div>
+
+                    <div class="selbox_sec01"><img src="images/comty/req01.png" /></div>
+                    <div class="selbox_sec02">- 2인 부부 및 커플<br />
+                    - 2인~ 이상 가족, 친구, 지인<br />
+                    <p>※인원에 상관없이 개인적인 골프여행</p>
+                    </div>
+
+                    <div class="secbtn01"><a href="comty02.html">개별 맞춤여행 문의하기</a></div>
+
+                  </li>
+
+                  <li>
+                    <div class="selbox_sec01">
+                      <div class="selbox_no">02</div>
+                      <div class="selbox_tit"><p>Group Tour</p>
+                      그룹 맞춤여행</div>
+                    </div>
+
+                    <div class="selbox_sec01"><img src="images/comty/req02.png" /></div>
+                    <div class="selbox_sec02">- 골프가 포함된 인센티브여행<br />
+                    - 협회, 동호회 등 단체골프여행<br />
+                    <p class="orange">※8명 이상의 그룹</p>
+                    </div>
+
+                    <div class="secbtn02"><a href="comty02_group.html">그룹 맞춤여행 문의하기</a></div>
+
+                  </li>
+
+                </ul>
+              </div>
+              <!--//req_selbox-->
+
+
+
+
+
+
+            </div>
+            <!--//req_main-->
+
+
+          </div>
+          <!--//Cts_Group-->
+
+        </div>
+        <!--//detail_gr-->
+
+      </div>
+      <!--//Cts_Center-->
+
+      <!--Qucik Menu-->
+      <div class="side_s_right02"><?include("side_right.html")?></div>
+      <!--//Qucik Menu-->
+
+    </div>
+    <!--//Contents-->
+  </div>
+  <!--//Container-->
+
+
+  <!--Footer-->
+  <?include("footer.html")?>
+  <!--//Footer-->
+
+</div>
+<!--//Wrap-->
+</body>
+</html>

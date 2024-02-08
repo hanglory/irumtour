@@ -1,0 +1,29 @@
+/*tour detail page의 table*/
+.tour_table table {border-top:1px solid #ccc;border-left:1px solid #ccc;border-collapse: collapse;width:100%;text-align:center;border:1px solid gray}
+.tour_table .tbl_table th{background-color:#eeeeff;color:#000}
+.tour_table .tbl_table th,.tour_table .tbl_table td {padding: 5px;border-right: 1px solid #ccc;border-bottom: 1px solid #ccc;}
+.tour_table .tbl_table td {text-align:center;color:#000}
+.tour_table .tbl_table .l {text-align:left;padding-left:10px;}
+.tour_table .tbl_table .day_bar{background-color:#eeeeff;color:#000;font-weight:bold;font-family:verdana;font-size:12pt;border-bottom:1px solid gray}
+.button{ background-color: #D6D3D6; color:#000 ;  height:18px; border: 1px #c0c0c0 solid;font-family:돋움;font-size:8pt}
+.tbl_title{font-weight:bold;padding:20px 0 10px 0;text-align:left;color:black}
+.w10{width:10%}
+
+/*일정표*/
+.remark{padding:10px;border:0;margin:10px 0 10px 0;padding:0;width:100%;}
+#tbl_day th,#tbl_day td{
+	font-size:3vw !important;
+	/*font-size:11px !important;*/
+	letter-spacing:-1px;
+}
+#tbl_day .etc{
+	border:1px solid #eee;
+	padding:5px;
+	background-color:#f7f7f7;
+	line-height:130%;
+}
+
+
+/*detailview의 contents*/
+.tab_contents{line-height:180% !important;}
+.tab_contents p{line-height:180% !important;}

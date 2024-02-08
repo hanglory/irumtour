@@ -1,0 +1,740 @@
+<?
+include_once("script/include_common_file.php");
+include_once("../new/include/cmp_config.php");
+include_once("../new/public/inc/cmp_config.inc");
+
+
+$tid = secu($tid);
+
+$arr_browser = array ("iPhone","iPod","IEMobile","Mobile","lgtelecom","PPC");
+for($indexi = 0 ; $indexi < count($arr_browser) ; $indexi++) {
+	if(strpos($_SERVER['HTTP_USER_AGENT'],$arr_browser[$indexi]) == true){
+		redirect2("/m2/itemview.html?tid=$tid");
+	}
+}
+
+
+
+$sql = "select * from ez_tour where tid='$tid' $PROOF_FILTER";
+$dbo->query($sql);
+$rs=$dbo->next_record();
+$night = $rs[days2];
+$plan_type = $rs[plan_type];
+$dbo2->query("update ez_tour set hit=hit+1 where tid=$rs[tid] limit 1");
+
+
+/*포함 불포함 참고사항*/
+if($rs[golf_id_no]){
+    $sql3 = "select * from cmp_golf where id_no=$rs[golf_id_no] limit 1";
+    $dbo3->query($sql3);
+    $rs3=$dbo3->next_record();
+    if(!$rs[content1]) $rs[content1]=$rs3[point_include];
+    if(!$rs[content2]) $rs[content2]=$rs3[point_not_include];
+    if(!$rs[content3]) $rs[content3]=$rs3[etc];
+    $golf_cancel_text = $rs3[cancel_text];
+}
+
+
+$sql3 = "select * from ez_tab_contents where tid=$rs[tid] and assort='10_information' order by id_no desc limit 1";
+$dbo3->query($sql3);
+$rs3=$dbo3->next_record();
+
+
+$category1 = $rs[category1];
+$arr = explode("-",$category1);
+
+if(!$rs[tid]){
+	echo "<script>alert('판매할 수 없는 상품입니다.');top.history.back(-1)</script>";
+	exit;
+}
+
+//패키지상품유무
+$BIT_PACK=0;
+if(strstr($rs[category1],'29-')) $BIT_PACK=1;
+if(strstr($rs[category2],'29-')) $BIT_PACK=1;
+if(strstr($rs[category3],'29-')) $BIT_PACK=1;
+if(strstr($rs[category4],'29-')) $BIT_PACK=1;
+if(strstr($rs[category5],'29-')) $BIT_PACK=1;
+if(strstr($rs[category6],'29-')) $BIT_PACK=1;
+
+
+$_SESSION[TODAY][$rs[tid]] = $rs[filename1];
+$meal_type = $rs[meal_type];
+
+
+$SITE_NAME = ($rs[seo_title])? $rs[seo_title] : $rs[subject];
+$CP_COMPANY2 = $SITE_NAME;
+if($rs[seo_description]) $DESCRIPTION = $rs[seo_description];
+
+
+$og_image = $DOMAIN."/renew/images/common/top_logo.gif";
+$META_CUST="1";//1:SNS 메타테그 직접지정
+if($rs[filename1]){
+    $og_image = $DOMAIN.$PUBLIC_PATH."public/goods/$rs[filename1]";
+}
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko">
+<head>
+<meta name="description" content="<?=$DESCRIPTION?>">    
+<meta property="og:title" content="<?=$SITE_NAME?>" />
+<meta property="og:url" content="<?=$CPAGE?>" />
+<meta property="og:type" content="website" />
+<meta property="og:image" content="<?=$og_image?>" />
+<meta property="og:description" content="<?=$DESCRIPTION?>" />
+
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="<?=$SITE_NAME?>" />
+<meta name="twitter:url" content="<?=$CPAGE?>" />
+<meta name="twitter:image" content="<?=$og_image?>" />
+<meta name="twitter:description" content="<?=$DESCRIPTION?>" />
+<meta name="keywords" content="<?=($rs[keyword])?$rs[keyword]:$SITE_NAME?>" />
+<?include("header.php");?>
+
+
+
+
+
+<script type="text/javascript">
+
+function tab(id){
+	$(".tab").hide();
+	$("#tab0"+id).show();
+}
+
+
+$(function(){
+
+	$('.pimage').bxSlider({
+		minSlides: 1,
+		maxSlides: 1,
+		moveSlides:1,
+		slideWidth: 660,
+		pager:false,
+		controls:true,
+		auto: false,
+		autoControls: false,
+		nextSelector: '.pimage_prev',
+		prevSelector: '.pimage_next',
+		prevText: '<img src=\"images/detail/btn_prev.png\" alt=\"앞으로\"/>',
+		nextText: '<img src=\"images/detail/btn_next.png\" alt=\"뒤로\"/>'
+	});
+
+	<?if($rs[bx_inter]){?>
+	$(".bx_inter").hide();
+	<?}?>
+
+    <?if(!$rs3[content]){?>
+    $(".tab5").hide();
+    <?}else{?>
+    $(".tab5").show();
+    <?}?>
+});
+</script>
+<script type="text/javascript" src="./lib/clipboard.min.js"></script>
+</head>
+<body>
+<!--Wrap-->
+<div id="wrap">
+
+  <!--Header-->
+  <?include("header.html")?>
+  <!--//Header-->
+
+
+  <!--Container-->
+  <div id="container">
+
+    <!--Contents-->
+    <div id="contents">
+
+      <!--Cts_Center-->
+      <div class="cts_center pdtb35">
+
+        <!--Prd_title-->
+        <div class="prd_title">
+          <h2><?=$rs[subject]?></h2>
+        </div>
+        <!--//Prd_title-->
+
+        <!--detail_gr-->
+        <div class="detail_gr">
+
+
+          <!--Left_Group-->
+          <div class="left_group">
+
+            <!--왼쪽메뉴-->
+            <?include("lm_product.html")?>
+            <!--//왼쪽메뉴-->
+
+           <!--왼쪽배너-->
+           <?include("comm_banner.html")?>
+           <!--//왼쪽배너-->
+
+          </div>
+          <!--Left_Group-->
+
+
+          <!--Cts_Group-->
+          <div class="cts_group">
+
+            <!--Detail_imggr-->
+            <div class="detail_imggr">
+
+				<ul class="pimage">
+
+				<?if($rs[filename1]){?>
+				<li><img src="<?=$PUBLIC_PATH?>/public/goods/<?=$rs[filename1]?>" onerror="this.src='images/detail/img_thumb.gif'" width="570" height="390" alt="골프여행 상품이미지"/></li>
+				<?}?>
+
+				<?
+				//골프장 이미지 불러오기
+				if($rs[golf2_1_id_no]) $sql2 = "select 1 as seq,filename1,filename2,filename3,filename4 from cmp_golf2 where id_no=$rs[golf2_1_id_no]";
+				if($rs[golf2_2_id_no]) $sql2 .= " union all select 2 as seq,filename1,filename2,filename3,filename4 from cmp_golf2 where id_no=$rs[golf2_2_id_no]";
+				if($rs[golf2_3_id_no]) $sql2 .= " union all select 3 as seq,filename1,filename2,filename3,filename4 from cmp_golf2 where id_no=$rs[golf2_3_id_no]";
+				if($rs[golf2_4_id_no]) $sql2 .= " union all select 4 as seq,filename1,filename2,filename3,filename4 from cmp_golf2 where id_no=$rs[golf2_4_id_no]";
+				if($rs[golf2_5_id_no]) $sql2 .= " union all select 5 as seq,filename1,filename2,filename3,filename4 from cmp_golf2 where id_no=$rs[golf2_5_id_no]";
+				if($rs[golf2_6_id_no]) $sql2 .= " union all select 6 as seq,filename1,filename2,filename3,filename4 from cmp_golf2 where id_no=$rs[golf2_6_id_no]";
+				if($sql2) $sql2 .= " order by seq asc ";
+
+				$dbo2->query($sql2);
+				//checkVar(mysql_error(),$sql2);
+				$PICS="";
+				while($rs2=$dbo2->next_record()){
+					$PICS[]=$rs2[filename1];
+					$PICS[]=$rs2[filename2];
+					$PICS[]=$rs2[filename3];
+					$PICS[]=$rs2[filename4];
+				}
+
+				while(list($key,$val)=@each($PICS)){
+				?>
+					<li><img src="<?=$PUBLIC_PATH?>/public/cmp/<?=$val?>" onerror="this.src='images/detail/img_thumb.gif'" width="570" height="390" alt="골프여행 상품이미지"/></li>
+				<?
+				}
+				?>
+				</ul>
+
+				<div class="detail_imgbtn"><span class="pimage_prev"><span class="pimage_next"></span></span></div>
+
+            </div>
+            <!--//Detail_imggr-->
+
+            <!--Detail_ctsgr-->
+            <div class="detail_ctsgr">
+
+			  <div class="detail_title_wrap">
+                <?if(!$BIT_PACK){?><div class="detail_title"><?=$rs[subject]?></div><?}?>
+                <div class="detail_comment"><?=$rs[pr]?></div>
+			  </div>
+
+			  <div class="detail_price"><?=nf($rs[price_adult])?><span class="detail_won">원 <?=($rs[bit_price_wave])?'':'부터'?></span></div>
+
+              <!--ico_gr-->
+              <div class="ico_gr">
+                <ul>
+                  <?if($rs[nation]){?>
+                    <li><img src="images/detail/ico_nation.png" alt="국가"/><br />
+                    <?=$rs[nation]?></li>
+                  <?}?>
+                  <?if($rs[days2]){?>
+				    <li><img src="images/detail/ico_day.png" alt="일정"/><br /><?=($rs[days1])?"$rs[days1]박 ":""?><?=$rs[days2]?>일</li>
+				  <?}else{?>
+				    <li><?=$rs[days]?></li>
+				  <?}?>
+				  <?if($rs[period]){?>
+                    <li><img src="images/detail/ico_period.png" alt="여행기간"/><br /><?=$rs[period]?></li>
+                  <?}?>
+                  <?if($rs[air_name]){?>
+                    <li><img src="images/detail/ico_air.png" alt="항공"/><br /><?=$rs[air_name]?></li>
+                  <?}?>
+                </ul>
+              </div>
+              <!--//ico_gr-->
+
+              <!--btn_detail-->
+              <div class="btn_detail">
+                <div class="btn_url"><a href="javascript:void(0)" id="clipboardButton"><img src="images/detail/ico_url.png" alt="url복사" /></a></div>
+                <div class="btn_qna"><a href="#pop_req01" class="open-popup-link">여행문의하기</a>
+
+
+                 <?
+                 $url = $DOMAIN."/renew/detailview.html?tid=${tid}";
+                 $surl = short_url($url);
+                 ?>   
+                 <div id="short_url" style="display:none"><?=$surl?></div>
+                  <script type="text/javascript">
+                    var clipboard = new ClipboardJS('#clipboardButton', {
+                        text: function() {
+                            return '<?=$surl?>';
+                        }
+                    });
+
+                    clipboard.on('success', function(e) {
+                        alert("주소가 복사되었습니다. \n원하시는 곳에 붙여넣기 할 수 있습니다.");
+                    });
+
+                    clipboard.on('error', function(e) {
+                        console.log(e);
+                    });
+                  </script>
+
+
+                  <!--모달레이어팝업 : 여행문의하기-->
+                  <div id="pop_req01" class="layer-popup mfp-hide">
+                    <div class="dea_box">
+                      <?include("pop_request.html")?>
+                    </div>
+                  </div>
+
+                  <script>
+                    $('.open-popup-link').magnificPopup({
+                    type:'inline',
+                    midClick: true // allow opening popup on middle mouse click. Always set it to true if you don't provide alternative source.
+                    });
+                  </script>
+                 <!--//모달레이어팝업 : 여행문의하기-->
+
+                </div>
+              </div>
+              <!--//btn_detail-->
+
+
+              <!--<div class="detail_article">
+                <ul>
+                  <?if($rs[nation]){?>
+                  <li>여행국가 : <?=$rs[nation]?></li>
+                  <?}?>
+                  <?if($rs[days2]){?>
+				  <li>일 정 : <?=($rs[days1])?"$rs[days1]박 ":""?><?=$rs[days2]?>일</li>
+				  <?}else{?>
+				  <li>일 정 : <?=$rs[days]?></li>
+				  <?}?>
+				  <?if($rs[period]){?>
+                  <li>기 간 : <?=$rs[period]?></li>
+                  <?}?>
+                  <?if($rs[air_name]){?>
+                  <li>항 공 : <?=$rs[air_name]?></li>
+                  <?}?>
+                  <li>URL : <?=short_url("http://".$_SERVER["HTTP_HOST"].$_SERVER["SCRIPT_NAME"]."?tid=$tid")?></li>
+                </ul>
+              </div>-->
+
+
+              <?if($BIT_PACK){?>
+              <div class="detail_table">
+
+                <table summary="여행가격" class="tbl_item_info" cellpadding="0" cellspacing="0" >
+                <caption>여행가격</caption>
+                <colgroup>
+                <col width="*" />
+                <col width="33%" />
+                <col width="33%" />
+                </colgroup>
+                <thead>
+                  <tr>
+                    <th scope="col">출발일</th>
+                    <th scope="col">상품가 </th>
+                    <th scope="col">상 태</th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                  <?
+                  $today = date("Y/m/d");
+				  $sql2 = "select * from ez_tour_calendar where tid=$rs[tid] and tour_date>'$today' and status in (1,2) order by tour_date asc";
+                  list($rows)=$dbo2->query($sql2);
+                  //if($_SERVER["REMOTE_ADDR"]=="106.246.54.27"){checkVar($rows.mysql_error(),$sql2);}
+                  while($rs2=$dbo2->next_record()){
+
+                  ?>
+                  <tr>
+                    <td><?=$rs2[tour_date]?></td>
+                    <td><?=nf($rs2[price_adult])?>원</td>
+                    <td>
+                    	<?if($rs2[status]==1){?>
+                    		<span class="red bold">예약가능</span>
+                    	<?}elseif($rs2[status]==2){?>
+                    		<span class="blue bold">출발확정</span>
+                    	<?}else{?>
+                    		<span class="gray bold">예약마감</span>
+                    	<?}?>
+                    </td>
+                  </tr>
+                  <?}?>
+
+                </tbody>
+              </table>
+
+              </div>
+              <?}else{?>
+              <!--<div class="detail_price"><img src="images/detail/ict_price.gif" width="60" height="26" />
+              <?=nf($rs[price_adult])?><span class="detail_won">원<?=($rs[bit_price_wave])?'':'~'?></span></div>-->
+              <?}?>
+
+
+            </div>
+            <!--//Detail_ctsgr-->
+
+
+			<div id="tab01" class="tab">
+
+
+                
+                <!--탭메뉴 : dta_tabmenu-->
+				<ul class="dta_tabmenu">
+				  <li class="on"><a href="javascript:tab(1)">일정표</a></li>
+				  <li class="tab5 hide"><a href="javascript:tab(5)">상세정보</a></li>
+				  <li><a href="javascript:tab(2)">골프장소개</a></li>
+				  <li><a href="javascript:tab(3)">호텔&amp;리조트소개</a></li>
+				  <li><a href="javascript:tab(4)">예약/환불규정</a></li>
+				</ul>
+                <!--//탭메뉴 : dta_tabmenu-->
+                
+                
+				<table class="tbl_option" cellpadding="0" cellspacing="0" summary="옵션정보">
+				  <caption>옵션정보</caption>
+				  <colgroup>
+					<col width="240px" />
+					<col width="*" />
+				  </colgroup>
+				  <tbody>
+					<tr>
+					  <th scope="row"><img src="images/detail/ict_option01.gif" alt="포함내역"/></th>
+					  <td><?=nl2br(check_content_https($rs[content1]))?></td>
+					</tr>
+					<tr>
+					  <th scope="row"><img src="images/detail/ict_option02.gif" alt="불포함내역"/></th>
+					  <td><?=nl2br(check_content_https($rs[content2]))?></td>
+					</tr>
+					<tr>
+					  <th scope="row" class="last_th"><img src="images/detail/ict_option03.gif" alt="참고사항"/></th>
+					  <td class="last_td"><?=nl2br(check_content_https($rs[content3]))?></td>
+					</tr>
+				  </tbody>
+				</table>
+
+
+				<!--일정표 시작-->
+				<?
+				include("inc_days.php");
+				//if(strstr("@14.37.242.84@221.154.110.119@","@".$_SERVER["REMOTE_ADDR"]."@")){checkVar("type",$plan_type_lower);}
+				include("inc_days_${plan_type_lower}.php");
+				?>
+			</div>
+
+
+			<!-- 골프장 -->
+			<div id="tab02" class="tab hide">
+
+                
+				<!--탭메뉴 : dta_tabmenu-->
+				<ul class="dta_tabmenu">
+				  <li><a href="javascript:tab(1)">일정표</a></li>
+				  <li class="tab5 hide"><a href="javascript:tab(5)">상세정보</a></li>
+				  <li class="on"><a href="javascript:tab(2)">골프장소개</a></li>
+				  <li><a href="javascript:tab(3)">호텔&amp;리조트소개</a></li>
+				  <li><a href="javascript:tab(4)">예약/환불규정</a></li>
+				</ul>
+                <!--//탭메뉴 : dta_tabmenu-->
+
+
+				<?
+				if($rs[golf2_1_id_no]) $sql2 = "select *,1 as seq from cmp_golf2 where id_no=$rs[golf2_1_id_no]";
+				if($rs[golf2_2_id_no]) $sql2 .= " union all select *,2 as seq from cmp_golf2 where id_no=$rs[golf2_2_id_no]";
+				if($rs[golf2_3_id_no]) $sql2 .= " union all select *,3 as seq from cmp_golf2 where id_no=$rs[golf2_3_id_no]";
+				if($rs[golf2_4_id_no]) $sql2 .= " union all select *,4 as seq from cmp_golf2 where id_no=$rs[golf2_4_id_no]";
+				if($rs[golf2_5_id_no]) $sql2 .= " union all select *,5 as seq from cmp_golf2 where id_no=$rs[golf2_5_id_no]";
+				if($rs[golf2_6_id_no]) $sql2 .= " union all select *,6 as seq from cmp_golf2 where id_no=$rs[golf2_6_id_no]";
+				if($sql2) $sql2 .= " group by id_no order by seq asc ";
+
+				$dbo2->query($sql2);
+				//checkVar(mysql_error(),$sql2);
+				$PICS="";
+				$codes="";
+				while($rs2=$dbo2->next_record()){
+
+					if(!strstr($codes,"$rs2[id_no]")){
+					$codes.="@$rs2[id_no]@";
+
+					$filename = $PUBLIC_PATH ."public/cmp/".$rs2[filename1];
+					$thumb = $PUBLIC_PATH . "public/thumb/tb_".$rs2[filename1];
+					$bpic1 = thumbnail($filename, 916, 0, 0, 1, 100, 0, '','', $thumb);
+
+					$filename = $PUBLIC_PATH ."public/cmp/".$rs2[filename2];
+					$thumb = $PUBLIC_PATH . "public/thumb/tb_".$rs2[filename2];
+					$bpic2 = thumbnail($filename, 916, 0, 0, 1, 100, 0, '','', $thumb);
+
+					$filename = $PUBLIC_PATH ."public/cmp/".$rs2[filename3];
+					$thumb = $PUBLIC_PATH . "public/thumb/tb_".$rs2[filename3];
+					$bpic3 = thumbnail($filename, 916, 0, 0, 1, 100, 0, '','', $thumb);
+
+					$filename = $PUBLIC_PATH ."public/cmp/".$rs2[filename4];
+					$thumb = $PUBLIC_PATH . "public/thumb/tb_".$rs2[filename4];
+					$bpic4 = thumbnail($filename, 916, 0, 0, 1, 100, 0, '','', $thumb);
+
+					$filename5 = $PUBLIC_PATH ."public/cmp/".$rs2[filename5];
+				?>
+
+							<?if($rs2[filename5]){?>
+							<center>
+							<img src="<?=$filename5?>" alt="상품 이미지">
+							</center>
+							<?}?>
+
+
+						   <div class="item_golf_title"><?=$rs2[name]?></div>
+
+
+
+                           <div class="pop_cts">
+
+						   <?=nl2br(check_content_https($rs2[content]))?>
+						   </div>
+
+                           <div class="pop_img">
+
+							   <center>
+
+								<div class="cc_imggr">
+								  <?if($rs2[filename1]){?><div class="mgb10"><img src="<?=$bpic1?>" onerror="this.src='images/detail/img_thumb02.gif'" width="916" alt="골프여행 상품이미지"/></div><?}?>
+								  <?if($rs2[filename2]){?><div class="mgb10"><img src="<?=$bpic2?>" onerror="this.src='images/detail/img_thumb02.gif'" width="916" alt="골프여행 상품이미지"/></div><?}?>
+								  <?if($rs2[filename3]){?><div class="mgb10"><img src="<?=$bpic3?>" onerror="this.src='images/detail/img_thumb02.gif'" width="916" alt="골프여행 상품이미지"/></div><?}?>
+								  <?if($rs2[filename4]){?><div class="mgb10"><img src="<?=$bpic4?>" onerror="this.src='images/detail/img_thumb02.gif'" width="916" alt="골프여행 상품이미지"/></div><?}?>
+								</div>
+
+							   </center>
+
+						   </div>
+
+                           <div class="pop_cts">
+						   <?=nl2br(check_content_https($rs2[content2]))?>
+						   </div>
+
+
+
+				<?
+				}
+				}
+				?>
+
+
+			</div>
+
+			<!-- 호텔 -->
+			<div id="tab03" class="tab hide">
+
+                <!--탭메뉴 : dta_tabmenu-->
+				<ul class="dta_tabmenu">
+				  <li><a href="javascript:tab(1)">일정표</a></li>
+				  <li class="tab5 hide"><a href="javascript:tab(5)">상세정보</a></li>
+				  <li><a href="javascript:tab(2)">골프장소개</a></li>
+				  <li class="on"><a href="javascript:tab(3)">호텔&amp;리조트소개</a></li>
+				  <li><a href="javascript:tab(4)">예약/환불규정</a></li>
+				</ul>
+                <!--//탭메뉴 : dta_tabmenu-->
+
+				<?
+				if($rs[hotel_id_no]) $sql2 = "select *,1 as seq from cmp_hotel where id_no=$rs[hotel_id_no]";
+				if($rs[hotel2_id_no]) $sql2 .= " union all select *,2 as seq from cmp_hotel where id_no=$rs[hotel2_id_no]";
+				if($sql2) $sql2 .= " group by id_no order by seq asc ";
+
+				$dbo2->query($sql2);
+				//checkVar(mysql_error(),$sql2);
+				$PICS="";
+				$codes="";
+				while($rs2=$dbo2->next_record()){
+
+					if(!strstr($codes,"$rs2[id_no]")){
+					$codes.="@$rs2[id_no]@";
+
+					$filename = $PUBLIC_PATH ."public/cmp/".$rs2[filename1];
+					$thumb = $PUBLIC_PATH . "public/thumb/tb_".$rs2[filename1];
+					$bpic1 = thumbnail($filename, 916, 0, 0, 1, 100, 0, '','', $thumb);
+
+					$filename = $PUBLIC_PATH ."public/cmp/".$rs2[filename2];
+					$thumb = $PUBLIC_PATH . "public/thumb/tb_".$rs2[filename2];
+					$bpic2 = thumbnail($filename, 916, 0, 0, 1, 100, 0, '','', $thumb);
+
+					$filename = $PUBLIC_PATH ."public/cmp/".$rs2[filename3];
+					$thumb = $PUBLIC_PATH . "public/thumb/tb_".$rs2[filename3];
+					$bpic3 = thumbnail($filename, 916, 0, 0, 1, 100, 0, '','', $thumb);
+
+					$filename = $PUBLIC_PATH ."public/cmp/".$rs2[filename4];
+					$thumb = $PUBLIC_PATH . "public/thumb/tb_".$rs2[filename4];
+					$bpic4 = thumbnail($filename, 916, 0, 0, 1, 100, 0, '','', $thumb);
+
+					$filename5 = $PUBLIC_PATH ."public/cmp/".$rs2[filename5];
+				?>
+
+							<?if($rs2[filename5]){?>
+							<center>
+							<img src="<?=$filename5?>" alt="골프여행 상품이미지">
+							</center>
+							<?}?>
+
+
+						   <div class="item_golf_title"><?=$rs2[name]?></div>
+
+
+
+                           <div class="pop_cts">
+
+						   <?=nl2br(check_content_https($rs2[content]))?>
+						   </div>
+
+                           <div class="pop_img">
+
+							   <center>
+
+								<div class="cc_imggr">
+								  <?if($rs2[filename1]){?><div class="mgb10"><img src="<?=$bpic1?>" onerror="this.src='images/detail/img_thumb02.gif'" width="916" alt="골프여행 상품이미지"/></div><?}?>
+								  <?if($rs2[filename2]){?><div class="mgb10"><img src="<?=$bpic2?>" onerror="this.src='images/detail/img_thumb02.gif'" width="916" alt="골프여행 상품이미지"/></div><?}?>
+								  <?if($rs2[filename3]){?><div class="mgb10"><img src="<?=$bpic3?>" onerror="this.src='images/detail/img_thumb02.gif'" width="916" alt="골프여행 상품이미지"/></div><?}?>
+								  <?if($rs2[filename4]){?><div class="mgb10"><img src="<?=$bpic4?>" onerror="this.src='images/detail/img_thumb02.gif'" width="916" alt="골프여행 상품이미지"/></div><?}?>
+								</div>
+
+							   </center>
+
+						   </div>
+
+                           <div class="pop_cts">
+						   <?=nl2br(check_content_https($rs2[content2]))?>
+						   </div>
+
+
+
+				<?
+				}
+				}
+				?>
+
+			</div>
+
+			<!-- 예약환불규정 -->
+			<div id="tab04" class="tab hide">
+
+                
+				<!--탭메뉴 : dta_tabmenu-->
+				<ul class="dta_tabmenu">
+				  <li><a href="javascript:tab(1)">일정표</a></li>
+				  <li class="tab5 hide"><a href="javascript:tab(5)">상세정보</a></li>
+				  <li><a href="javascript:tab(2)">골프장소개</a></li>
+				  <li><a href="javascript:tab(3)">호텔&amp;리조트소개</a></li>
+				  <li class="on"><a href="javascript:tab(4)">예약/환불규정</a></li>
+				</ul>
+                <!--//탭메뉴 : dta_tabmenu-->
+
+
+
+				<?
+				$rs[cancel_txt] = trim($rs[cancel_txt]);
+				if($rs[cancel_txt]) $cancel_txt = $rs[cancel_txt];
+				else $cancel_txt = $golf_cancel_text;
+                if(!$cancel_txt){                    
+    				$cancel_txt = $CANCEL_TXT;
+                    if($code1==30) $cancel_txt = $CANCEL_TXT_KO;
+                }
+                $cancel_txt = stripslashes($cancel_txt);
+				?>
+
+				<div class="etc_txt"><?=nl2br($cancel_txt);?></div>
+
+			</div>
+
+
+
+
+
+            <!-- 호텔 -->
+            <div id="tab05" class="tab hide">
+
+                <!--탭메뉴 : dta_tabmenu-->
+                <ul class="dta_tabmenu">
+                  <li><a href="javascript:tab(1)">일정표</a></li>
+                  <li class="on tab5 hide"><a href="javascript:tab(5)">상세정보</a></li>
+                  <li><a href="javascript:tab(2)">골프장소개</a></li>
+                  <li><a href="javascript:tab(3)">호텔&amp;리조트소개</a></li>
+                  <li><a href="javascript:tab(4)">예약/환불규정</a></li>
+                </ul>
+                <!--//탭메뉴 : dta_tabmenu-->
+
+
+               <div class="pop_cts">
+               <?=check_content_https($rs3[content])?>
+               </div>
+
+
+            </div>
+
+
+
+
+
+            <div class="detail_btn">
+               
+                <?if(!$CID){?>
+                <!--<a href="<?=($CP_NAVER)?$CP_NAVER:'comty02_main.html';?>" target="<?=($CP_NAVER)?'_blank':'_self';?>"><img src="images/detail/btn_qna.gif" alt="예약문의하기"  class="mgr10" /></a>-->
+
+                <a href="#pop_req01" class="open-popup-link"><img src="images/detail/btn_qna.gif" alt="예약문의하기"  class="mgr10" /></a>
+                
+                <!--모달레이어팝업 : 여행문의하기-->
+                  <div id="pop_req01" class="layer-popup mfp-hide">
+                    <div class="dea_box">
+                      <?include("pop_request.html")?>
+                    </div>
+                  </div>
+
+                  <script>
+                    $('.open-popup-link').magnificPopup({
+                    type:'inline',
+                    midClick: true // allow opening popup on middle mouse click. Always set it to true if you don't provide alternative source.
+                    });
+                  </script>
+                 <!--//모달레이어팝업 : 여행문의하기-->
+
+            
+                <?}else{?>
+                    <?if($CP_NAVER){?>
+                        <a href="<?=$CP_NAVER?>" target="_blank"><img src="images/detail/btn_qna.gif" alt="예약문의하기"  class="mgr10" /></a>
+                    <?}?>
+                <?}?>
+
+                <?if(!$CID){?>
+                    <?If($rs[review_link]){?>
+                        <a href="<?=$rs[review_link]?>" target="_blank"><img src="images/detail/btn_review.gif" alt="답사후기보기" class="mgr10" /></a>
+                    <?}?>
+                <?}?>
+
+				<a href="tour_terms.html"><img src="images/detail/btn_terms.gif" alt="국외여행표준약관"  /></a>
+			</div>
+
+
+          </div>
+          <!--//Cts_Group-->
+
+        </div>
+        <!--//detail_gr-->
+
+      </div>
+      <!--//Cts_Center-->
+
+      <!--Qucik Menu-->
+      <div class="side_s_right02"><?include("side_right.html")?></div>
+      <!--//Qucik Menu-->
+
+    </div>
+    <!--//Contents-->
+  </div>
+  <!--//Container-->
+
+
+  <!--Footer-->
+  <?include("footer.html")?>
+  <!--//Footer-->
+
+</div>
+<!--//Wrap-->
+</body>
+</html>

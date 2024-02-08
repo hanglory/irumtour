@@ -1,0 +1,67 @@
+<!--comm_banner-->
+<div class="comm_banner">
+  
+  <!--l_cs_title-->
+  <div class="l_cs_title">CUSTOMER CENTER</div>
+  <!--//l_cs_title-->
+  
+  <!--l_cs_ctsbox : 연락처-->
+  <div class="l_cs_ctsbox">
+    
+    <?
+    if($CP_PHONE){
+    if(strstr($CP_PHONE,"-")) $arr = explode("-",$CP_PHONE);
+    elseif(strstr($CP_PHONE,".")) $arr = explode(".",$CP_PHONE);
+    elseif(strstr($CP_PHONE," ")) $arr = explode(" ",$CP_PHONE);
+    ?>
+    <ul>
+      <li class="tel_cs"><span class="tel_tit">TEL.</span><span class="tel_02"><?=$arr[0]?>.</span><?=$arr[1]?>.<?=$arr[2]?></li>
+      <?
+      if($CP_FAX){
+      if(strstr($CP_FAX,"-")) $arr = explode("-",$CP_FAX);
+      elseif(strstr($CP_FAX,".")) $arr = explode(".",$CP_FAX);
+      elseif(strstr($CP_FAX," ")) $arr = explode(" ",$CP_FAX);
+      ?>      
+      <li class="tel_cs"><span class="tel_tit">FAX.</span><span class="tel_02"><?=$arr[0]?>.</span><?=$arr[1]?>.<?=$arr[2]?></li>
+      <?}?>
+      <li class="time">업무시간 : (평일) 09:00~18:30<br /><span>(토,일,공휴일 휴무)</span></li>
+      <!-- <li><div class="l_btn_cs"><a href="comty02.html">맞춤여행상담하기</a></div></li> -->
+    </ul>    
+    <?}else{?>    
+    <ul>
+      <li class="tel_cs"><span class="tel_tit">TEL.</span><span class="tel_02">02.</span>512.7705</li>
+      <li class="tel_cs"><span class="tel_tit">FAX.</span><span class="tel_02">02.</span>6442.4577</li>
+      <li class="time">업무시간 : (평일) 09:00~18:30<br /><span>(토,일,공휴일 휴무)</span></li>
+      <li><div class="l_btn_cs"><a href="comty02_main.html">맞춤여행상담하기</a></div></li>
+    </ul>
+    <?}?>
+  
+  </div>
+  <!--//l_cs_ctsbox : 연락처-->
+  
+  
+  <!--l_cs_ctsbox : 입금계좌-->
+  <div class="l_cs_ctsbox">
+    
+    <?if($CP_BANK_ACCOUNT){?>
+    <ul>
+      <li class="bank_title">BANK <span>INFORMATION</span></li>
+      <li><img src="images/common/bank_<?=get_bank_ico($CP_BANK)?>.png" alt="<?=$CP_BANK?>"  /></li>
+      <li class="bank_no"><?=$CP_BANK_ACCOUNT?></li>
+      <li class="bank_name">예금주 : <?=$CP_BANK_OWNER?></li>
+    </ul>
+    <?}else{?>
+    <ul>
+      <li class="bank_title">BANK <span>INFORMATION</span></li>
+      <li><img src="images/common/bank_kb.png" alt="국민은행"  /></li>
+      <li class="bank_no">813037-04-005009</li>
+      <li class="bank_name">예금주 : (주)이룸플레이스</li>
+    </ul>
+    <?}?>
+  
+  </div>
+  <!--//l_cs_ctsbox : 입금계좌-->
+  
+  
+</div>
+<!--//comm_banner-->

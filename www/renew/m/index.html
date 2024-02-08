@@ -1,0 +1,173 @@
+<?
+include_once("./script/include_common_mobile.php");
+?>
+<!doctype html>
+<html>
+<head>
+<?include("header.php")?>
+<link rel="stylesheet" type="text/css" href="css/import.css"/>
+
+<script src="/m/jquery.bxslider/jquery.bxslider.min.js"></script>
+<link href="/m/jquery.bxslider/jquery.bxslider.css" rel="stylesheet" />
+
+<script type="text/javascript" src="./include/zebra_datepicker.js"></script>
+<link rel="stylesheet" href="./include/zebra_datepicker.css" type="text/css">
+
+<script type="text/javascript">
+<!--
+
+function ctg_goods(code1){
+	$('#ctg_goods').load('ctg_goods.php', {
+	  'code1': code1
+	});
+}
+
+$(function(){
+
+	$('.bxslider').bxSlider({
+		auto:true,
+		pager:false,
+		controls:false
+	});
+
+	ctg_goods();
+
+});
+
+//-->
+</script>
+<script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
+
+
+</head>
+<body>
+<!--header-->
+<?include("header.html")?>
+<!--//header-->
+
+
+<!--article-->
+<article>
+
+  <!--main_contents01-->
+  <div id="main_contents01">
+
+    <!--topmenu-->
+    <?include("topmenu.html")?>
+    <!--//topmenu-->
+
+    <!--메인롤링 : img_main01~img_main03.jpg롤링-->
+    <div class="main_rolling"><?include("slider_banner_mobile.php");?><!-- <img src="http://irumtour.net/new/public/banner/1603/main_1458633424.jpg" width="100%" /> --></div>
+    <!--//메인롤링-->
+
+  </div>
+  <!--main_contents01-->
+
+
+  <!--main_contents02 :카테고리베스트-->
+  <div id="main_contents02">
+
+
+    <!--main_info-->
+    <div class="main_info">
+
+      <h2><img src="images/main/title_best.png" height="42"  alt="카테고리 베스트" /></h2>
+
+	  <div id="ctg_goods"></div>
+
+    </div>
+    <!--//main_info-->
+
+  </div>
+  <!--//main_contents02 :카테고리베스트-->
+
+
+  <!--main_contents02 :추천골프여행-->
+  <div id="main_contents02">
+
+    <!--main_info-->
+    <div class="main_info">
+
+      <h2><img src="images/main/title_recomm.png" height="42"  alt="추천골프여행" /></h2>
+
+      <!--recomm_gr : 배너표출영역-->
+      <div class="recomm_gr">
+        <ul>
+
+		<?
+		$sql = "select * from ez_banner1 order by seq asc limit 2";
+		$dbo->query($sql);
+		while($rs=$dbo->next_record()){
+			$rs[url] = str_replace("/new","/m",$rs[url]);
+		?>
+
+          <li><a href="<?=($rs[url])?"$rs[url]":"#"?>" target="<?=$rs[target]?>"><img src="/new/public/banner/<?=$rs[filename]?>" width="100%"></a></li>
+          <?}?>
+        </ul>
+      </div>
+      <!--//recomm_gr : 배너표출영역-->
+
+      <!--best_gr : 상품나오는곳-->
+      <div class="best_gr">
+
+        <table class="m_item02" cellpadding="0" cellspacing="0" >
+		<caption>상품리스트</caption>
+		<colgroup>
+		  <col width="43%" />
+			<col width="57%" />
+		  </colgroup>
+		  <tbody>
+			<?
+			$sql = "select * from ez_banner2 order by seq asc limit 4";
+			$dbo->query($sql);
+			while($rs=$dbo->next_record()){
+				$rs[url] = str_replace("/new","/m",$rs[url]);
+			?>
+			<tr>
+              <th><a href="<?=($rs[url])?"$rs[url]":"#"?>" target="<?=$rs[target]?>"><img src="/new/public/banner/<?=$rs[filename]?>" onerror="this.src='images/main/img_thumb01.gif'" width="100%" alt="" /></a></th>
+			  <td><a href="<?=($rs[url])?"$rs[url]":"#"?>" target="<?=$rs[target]?>"><span class="item02_info"><?=$rs[text1]?></span><br />
+              <span class="item02_title"><?=$rs[text2]?></span></a>
+            </tr>
+			<?}?>
+
+		  </tbody>
+      </table>
+
+      </div>
+      <!--//best_gr : 상품나오는곳-->
+    </div>
+    <!--//main_info-->
+
+  </div>
+  <!--//main_contents02 :추천골프여행-->
+
+  <!--main_contents03 :고객센터-->
+  <div id="main_contents03">
+    <p><img src="images/main/img_cscenter.png" width="100%" alt="고객지원센터" /></p>
+    <ul>
+      <li><a href="http://blog.naver.com/irum_jgolf" target="_blank"><img src="images/main/bt_japan.gif" width="100%" alt="일본골프블로그"></a></li>
+      <li><a href="http://blog.naver.com/irumtourthai" target="_blank"><img src="images/main/bt_tailand.gif" width="100%"  alt="태국골프블로그"></a></li>
+      <li><a href="http://blog.naver.com/irumtour" target="_blank"><img src="images/main/bt_irum.gif" width="100%"  alt="이룸투어블로그"></a></li>
+    </ul>
+  </div>
+  <!--//main_contents03 :고객센터-->
+
+
+
+
+
+
+
+
+</article>
+<!--//article-->
+
+
+<!--footer-->
+<?include("footer.html")?>
+<!--//footer-->
+
+
+
+</body>
+</html>

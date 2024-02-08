@@ -1,0 +1,64 @@
+<?
+$sql = "select * from ez_nbanner1 where bit_hide=0 and cp_id='".$_SESSION['CID']."' order by seq asc";
+list($rows) = $dbo->query($sql);
+if(!$rows){
+    $sql = "select * from ez_nbanner1 where bit_hide=0 and cp_id='".$_SESSION['CID']."'";
+    list($rows) = $dbo->query($sql);    
+    if(!$rows){
+        $sql = "select * from ez_nbanner1 where bit_hide=0 and cp_id='' order by seq asc";
+        list($rows) = $dbo->query($sql);    
+    }
+}
+?>
+<script type="text/javascript" src="js/slick.min.js"  charset="utf-8"></script><!-- 비주얼롤링 -->
+
+<!-- tpl02_visual -->
+<div id="tpl02_visual"> 
+  <?if($rows>1){?>
+  <script type="text/javascript">
+		$(document).on('ready', function() {
+		  $(".tpl02_visual_in").slick({
+			dots: false,
+			arrows: true,
+			infinite: true,
+			slidesToShow: 1,
+			slidesToScroll: 1,
+			autoplay: true,
+			autoplaySpeed: 4500
+		  });
+		});
+	</script> 
+    <?}?>
+  <!--tpl02_visual_in-->
+  <div class="tpl02_visual_in">
+   
+    
+
+    <?
+    while($rs=$dbo->next_record()){
+        $url = ($rs[url])? $rs[url] : "#";
+    ?>
+
+    <!--tpl02_v_img01-->
+    <div class="tpl02_v_img01" style="background:url(<?=$PUBLIC_PATH?>/public/banner/<?=$rs[filename]?>)top center no-repeat; width:100%; height:650px; position:relative; background-size:cover;">
+      <a href="<?=$url?>" target="<?=$rs[target]?>">  
+      <!--tpl02_v_txt-->
+      <div class="tpl02_v_txt">
+        <div class="tpl02_contry"><span><?=$rs[text1]?></span></div>
+        <div class="tpl02_tit"><?=nl2br($rs[text2])?></div>        
+        <div class="tpl02_cmt"><img src="images/templet02/vsl_cmt.png" /><?=$rs[text3]?><img src="images/templet02/vsl_cmt.png" /></div>
+      </div>
+      <!--tpl02_v_txt-->
+      </a>
+    </div>
+    <!--//tpl02_v_img01-->
+    
+    <?}?>
+
+
+    
+  </div>
+  <!--//tpl02_visual_in--> 
+  
+</div>
+<!--//tpl02_visual -->

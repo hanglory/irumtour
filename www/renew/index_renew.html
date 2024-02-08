@@ -1,0 +1,434 @@
+<?
+include_once("script/include_common_file.php");
+?>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<?include("header_index.php");?>
+<script type="text/javascript">
+<!--
+function popup(){
+<?
+#### 팝업창 처리
+
+$cdate = date("Y/m/d H:i");
+
+$sql = "select * from popup where open=1 and cp_id='' ";
+$dbo->query($sql);
+while($rs =$dbo->next_record()){
+
+	$popup_id = "sessPopup_" . $rs[id_no];
+
+	$bit =1;
+	if($rs[period_start] && $rs[period_start]>$cdate) $bit=0;
+	if($rs[period_end] && $rs[period_end]<$cdate) $bit=0;
+
+	if($rs[open] && !$$popup_id && $bit){
+		$rs[position_top]=number_format($rs[position_top]);
+		$rs[position_left]=number_format($rs[position_left]);
+
+		echo "window.open ('popup.php?id_no=$rs[id_no]','','scrollbars=$rs[scroll],resizable=0,width=$rs[width],height=$rs[height],top=$rs[position_top],left=$rs[position_left]'); \n";
+	}
+}
+?>
+}
+
+function tab_thema(i){
+    $(".tab_recomm").hide();
+    $("#tab_recomm_"+i).show();
+}
+
+
+$(function(){
+    tab_thema(1);
+    popup();
+});
+//-->
+</script>
+</head>
+<body>
+
+<!--Wrap-->
+<div id="wrap">
+
+  <!--Header-->
+  <?include("header_new.html")?>
+  <!--//Header-->
+
+  <!--메인 비주얼-->
+  <?include("vsl_renew.html")?>
+  <!--//메인 비주얼-->
+
+
+  <!--Container-->
+  <div id="container">
+
+    <!--Contents-->
+    <div id="contents">
+      
+	  <!--1.m_secgr01 : 시즌별추천상품-->
+      <div class="m_secgr01">
+        
+        <!--Cts_center-->
+        <div class="cts_center">
+           
+           <!--tit_sec01-->
+           <div class="tit_sec01">
+             <h2 class="titgr">
+               <p class="eng_t01">Seasonal Recomended Tour</p>
+               <p class="season_t01">시즌별 추천상품</p>
+             </h2>
+             
+             <div class="comt_title">이번 시즌 <?=($CP_COMPANY2)?$CP_COMPANY2:'이룸투어'?><?=has_batchim($CP_COMPANY2)?'이':'가'?> <br />추천하는 시즌 베스트 여행상품을 만나보세요.</div>
+           </div>
+           <!--//tit_sec01-->
+           
+           <!--season_gr-->
+           <div class="season_gr">
+            <script src="js/swiper.min.js" type="text/javascript"></script> <!--시즌추천js-->
+            <link rel="stylesheet" href="js/swiper.min.css"> <!--시즌추천js-->
+  
+             <!--swiper-container02-->
+             <div class="swiper-container02">
+               
+               <!--swiper-wrapper-->
+               <div class="swiper-wrapper">
+
+
+                <?
+                //시즌골프
+                $dbo->query($sql_best_c1);
+                //if(strstr("@14.37.242.84@221.154.110.119@","@".$_SERVER["REMOTE_ADDR"]."@")){checkVar(mysql_error(),$sql_best_c1);}
+                while($rs=$dbo->next_record()){
+
+                    $filename = $PUBLIC_PATH . "public/goods/".$rs[filename1];
+                    $thumb = $PUBLIC_PATH . "public/thumb/tb_".$rs[filename1];
+                    $pic =($rs[filename1])? thumbnail($filename, 370, 360, 0, 1, 80, 0, "", "", $thumb) : "images/main/thumb_recoom01.jpg";
+                    $rs[pr] = titleCut2($rs[pr],130);             
+                    if($rs[season] && !strstr($rs[season],"봄&가을")) $rs[season].="골프"; 
+                ?>  
+
+                 <div class="swiper-slide">
+                   <a href="detailview.html?tid=<?=$rs[tid]?>">
+                   <div class="img_box"><img src="<?=$pic?>" width="370" height="360" alt="<?=$rs[subject]?>"/>
+                     <div class="sea_label"><?=($rs[season])?$rs[season]:"모든시즌"?></div>
+                   </div>
+                   
+                   <div class="txt_box">
+                     <p class="tit"><?=$rs[subject]?></p>
+                     <p class="txt"><?=$rs[pr]?></p>
+                     <p class="sea_price"><?=nf($rs[price_adult])?><span class="won">원~</span></p>
+                   </div>
+                   </a>
+                 </div>
+                <?}?>
+                 
+            
+               </div>
+               <!--//swiper-wrapper-->
+               
+             </div>
+             <!--//swiper-container02-->
+    
+             <!-- Add Arrows -->
+             <div class="img_nav_area">
+               <div class="img_prev"><i class="fa fa-angle-left"></i></div>
+               <div class="img_next"><i class="fa fa-angle-right"></i></div>
+             </div>
+             <!-- Initialize Swiper -->
+    
+           </div>
+           <!--//season_gr-->
+        
+           <script>
+             var swiper = new Swiper('.swiper-container02', {
+             slidesPerView: 3,
+             spaceBetween: 21,
+             centeredSlides: true,
+             loop:true,
+             navigation: {
+             nextEl: '.img_next',
+             prevEl: '.img_prev',
+             },
+             });
+           </script>
+  
+           
+        </div>
+        <!--//Cts_center-->
+      
+      </div>
+	  <!--//1.m_secgr01 : 시즌별추천상품-->
+      
+      
+	  <!--2.m_secgr02 : 테마별추천상품-->
+      <div class="m_secgr02">
+        <?include("inc_thema_renew.php")?>
+      </div>
+	  <!--//2.m_secgr02 : 테마별추천상품-->
+      
+      
+	  <!--3.m_secgr03 : 초특가 추천상품-->
+      <div class="m_secgr03">
+        
+        <!--Cts_center-->
+        <div class="cts_center">
+           
+           <!--tit_sec01-->
+           <div class="tit_sec01">
+             <h2 class="titgr">
+               <p class="eng_t03">Special Offer tour</p>
+               <p class="season_t03">초특가 추천상품</p>
+             </h2>
+             <div class="comt_title"><?=($CP_COMPANY2)?$CP_COMPANY2:'이룸투어'?><?=has_batchim($CP_COMPANY2)?'의':'의'?> 최고의 골프전문가들이 엄선한<br />가성비 최고의 여행을 소개합니다. </div>
+           </div>
+           <!--//tit_sec01-->   
+           
+           <!--sec03_img-->
+           <div class="sec03_img"><img src="images/newmain/img_special.jpg" alt="초특가강력추천!"  /></div>
+           <!--//sec03_img-->
+           
+           <!--sec03_prdgr-->
+           <div class="sec03_prdgr">
+              
+              <ul>
+                <li>
+                <!--sec_offer-->
+                <div class="sec_offer">
+                  <ul>
+
+                    <?
+                    //초특가
+                    $dbo->query($sql_best_c4);
+                    $t=0;
+                    while($rs=$dbo->next_record()){
+                        $t++;
+                        $filename = $PUBLIC_PATH . "public/goods/".$rs[filename1];
+                        $thumb = $PUBLIC_PATH . "public/thumb/tb_".$rs[filename1];
+                        $pic =($rs[filename1])? thumbnail($filename, 380, 220, 0, 1, 80, 0, "", "", $thumb) : "images/main/thumb_recoom01.jpg";
+                        $rs[pr] = titleCut2($rs[pr],130);    
+                        $arr = explode(">",get_category_name($rs[category1]));         
+                        $mgr15 = ($t%2)? "mgr15":"";
+                    ?>  
+
+
+                    <li class="<?=$mgr15?>">
+                      <div class="offer_info">
+                        <div class="img"><a href="detailview.html?tid=<?=$rs[tid]?>"><img src="<?=$pic?>" width="380" height="220" alt="<?=$rs[subject]?>"/></a></div>
+                        <div class="context">
+                          <a href="detailview.html?tid=<?=$rs[tid]?>">
+                          <div class="tit"><?=$rs[subject]?></div> 
+                          <div class="cmt"><?=$rs[pr]?></div> 
+                          <div class="price02"><?=nf($rs[price_adult])?><span class="won">원~</span></div>
+                          </a>
+                        </div>
+                      </div>
+                    </li>
+                    
+                    <?}?>    
+
+
+
+                  </ul>
+              
+                </div>
+                <!--//sec_offer-->
+                
+              </li>
+            </ul>
+              
+           </div>
+           <!--//sec03_prdgr-->
+           
+           
+        </div>
+        <!--//Cts_center-->
+                     
+      </div>
+	  <!--//3.m_secgr03 : 초특가 추천상품-->
+      
+      
+      
+	  <!--4.m_secgr04 : 커뮤니티-->
+      <div class="m_secgr04">
+       
+        <!--Cts_center-->
+        <div class="cts_center">
+          
+          <!--sec04_gr01 : 공지사항-->
+          <div class="sec04_gr01 mgr35" >
+            
+            <!--tit_comty_gr-->
+            <div class="tit_comty_gr">
+              <h3><span class="t_notice">공지</span>사항<span class="t_eng">IRUM NEWS</span></h3>
+              <div class="more_right"><a href="comty01.html"><img src="images/newmain/btn_more.png"  alt="더보기" /></a></div>
+            </div>
+            <!--//tit_comty_gr-->
+            
+            <?
+            //공지사항
+            $bbs_cp_filter = " and cp_id='$CID'";
+            $sql = "select * from ez_bbs where bid='notice' $bbs_cp_filter order by id_no desc limit 2";
+            $dbo->query($sql);
+            For($i=0;$i<2;$i++){
+
+                $rs=$dbo->next_record();
+                $rs[subject] = stripslashes($rs[subject]);
+                $rs[content] = strip_tags($rs[content]);
+
+                $mgr20 = ($i%2)? "":"mgr20";
+            ?>
+            
+            <!--sec04_box-->
+            <div class="sec04_box <?=$mgr20?>">
+              <div class="sec04_notice">
+                <a href="comty01.html?bmode=read&bid=notice&id_no=<?=$rs[id_no]?>">
+                <ul>
+                  <li class="n_date"><?=date("Y.m.d",$rs[reg_date])?></li>
+                  <li class="n_title">
+                    <?=new_icon($rs[reg_date],'/renew/images/newmain/ico_new.png')?><?=titleCut2($rs[subject],44)?>
+                  </li>
+                  <li class="n_cts"><?=titleCut2($rs[content],70)?></li>
+                  <li><div class="notice_more">MORE</div></li>
+                </ul>
+                </a>
+              </div>  
+            </div>
+            <!--//sec04_box-->
+
+            <?}?>
+            
+
+          </div>
+          <!--//sec04_gr01 : 공지사항-->
+          
+          
+          <!--sec04_gr01 : 고객센터-->
+          <div class="sec04_gr01" >
+          
+            <!--tit_comty_gr-->
+            <div class="tit_comty_gr">
+              <h3><span class="t_cscenter">골프여행</span>문의<span class="t_eng">Golf Tour Inquiry</span></h3>
+              <div class="more_right"><a href="comty02_main.html"><img src="images/newmain/btn_more.png"  alt="더보기" /></a></div>
+            </div>
+            <!--//tit_comty_gr-->
+            
+                      
+            <!--sec04_box-->
+            <div class="sec04_box mgr20">
+              
+              <!--sec04_cscenter-->
+              <div class="sec04_cscenter">
+                <ul>
+                  <li>고객상담센터</li>
+                  <li><img src="images/newmain/cs_tel.png" alt="고객상담센터:02-512-7705" /></li>
+                  <li><p class="tel_no">02-512-7705</p>
+                      <p class="fax_no">Fax. 02-6442-4577</p>
+                  </li>
+                  <li class="cs_time">업무시간 : (평일) 09:00~18:00<br />
+                  <span>(토,일, 공휴일 휴무)</span></li>
+                </ul>
+              </div>
+              <!--//sec04_cscenter-->
+              
+            </div>
+            <!--//sec04_box-->
+
+            <!--sec04_box-->
+            <div class="sec04_box">
+              
+              <!--sec04_cscenter-->
+              <div class="sec04_cscenter">
+                <ul>
+                  <li>입금계좌안내</li>
+                  <li><img src="images/newmain/cs_bank.png"  alt="입금계좌 : 국민은행 813037-04-005009 예금주 : (주)이룸플레이스" /></li>
+                  <li><p class="bank_name">국민은행</p> <p class="bank_no">813037-04-005009</p><p class="bank_user">예금주 : (주)이룸플레이스</p></li>
+                  
+                  <li><div class="btn_cs"><a href="comty02_main.html">맞춤여행문의</a></div></li>
+                </ul>
+              </div>
+              <!--//sec04_cscenter-->
+            
+            </div>
+            <!--//sec04_box-->
+            
+          </div>
+          <!--//sec04_gr01 : 고객센터-->
+          
+          <!--sec04_gr02 : 답사후기-->
+          <div class="sec04_gr02">
+
+            <!--sec04_revtit-->
+            <div class="sec04_revtit">
+              <div class="tit_comty_gr">
+                <a href="comty05.html">
+                <h3><span class="t_review">답사</span>후기<span class="t_eng">Review of Field Trip</span></h3>
+                <div class="rev_cmt"><?=($CP_COMPANY2)?$CP_COMPANY2:'이룸투어'?><?=has_batchim($CP_COMPANY2)?'는':'은'?>  판매하는 골프여행상품의 <br />
+                99%는 직접가서 라운드를 해 보고 <br />
+                고객님들께 추천합니다. </div>
+                <div class="notice_more">MORE</div>
+                </a>
+              </div>
+            </div>
+            <!--//sec04_revtit-->
+            
+            <!--sec04_revcts-->
+            <div class="sec04_revcts">
+              <ul>
+
+
+                <?
+                //답사후기
+                $sql = "select * from ez_bbs where bid='review' order by id_no desc limit 4";
+                $dbo->query($sql);
+                For($i=0;$i<4;$i++){
+                    $rs=$dbo->next_record();
+                    $rs[subject] = stripslashes($rs[subject]);
+                    $rs[content] = strip_tags($rs[content]);
+
+                    $filename = $PUBLIC_PATH . "public/bbs_files/".$rs[filename];
+                    $thumb = $PUBLIC_PATH . "public/thumb/tb_".$rs[filename];
+                    $pic =($rs[filename])? thumbnail($filename, 210, 160, 0, 1, 80, 0, "", "", $thumb) : "images/templet02/thumb04.gif";                
+                ?>                  
+                <li>
+                  <a href="comty05.html?bmode=read&bid=notice&id_no=<?=$rs[id_no]?>">
+                  <div class="rev_img"><img src="<?=$pic?>" width="210" height="160" alt="<?=$rs[subject]?>"/>
+                    <div class="rev_tit"><?=titleCut2($rs[subject],30)?></div>
+                  </div>
+                  </a>
+                </li>
+                <?}?>            
+
+              </ul>
+            </div>
+            <!--//sec04_revcts-->
+            
+            
+          
+          </div>
+          <!--//sec04_gr02 : 답사후기-->
+          
+          
+        </div>
+        <!--//Cts_center-->
+        
+      </div>
+	  <!--//4.m_secgr04 : 커뮤니티-->
+      
+    </div>
+    <!--//Contents-->
+  </div>
+  <!--//Container-->
+
+
+  <!--Footer-->
+  <?include("footer_new.html")?>
+  <!--//Footer-->
+
+</div>
+<!--//Wrap-->
+</body>
+</html>
+<map name="Map_req" id="Map_req">
+<area shape="rect" coords="89,168,296,205" href="comty02.html" />
+</map>

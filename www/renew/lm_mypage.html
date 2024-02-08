@@ -1,0 +1,11 @@
+            <div class="leftmenu">
+              <ul>
+                <li <?if(strstr(SELF,'mypage01')){?>class="lm_on"<?}?>><a href="mypage01.html">예약현황</a></li>
+                <li <?if(strstr(SELF,'mypage02')){?>class="lm_on"<?}?>><a href="mypage02.html">견적서현황</a></li>
+                
+                <?if($_SESSION['sessMember']['id']){?>
+                <li <?if(strstr(SELF,'mypage03')){?>class="lm_on"<?}?>><a href="mypage03.html">회원정보수정</a></li>
+                <li <?if(strstr(SELF,'mypage04')){?>class="lm_on"<?}?>><a href="mypage04.html">회원탈퇴</a></li>
+                <?}?>
+              </ul>
+            </div>

@@ -1,0 +1,141 @@
+<?
+include_once("script/include_common_file.php");
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko">
+<head>
+<?include("header.php");?>
+<link rel="stylesheet" type="text/css" href="css/import.css"/>
+</head>
+<body>
+<!--Wrap-->
+<div id="wrap">
+
+  <!--Header-->
+  <?include("header.html")?>
+  <!--//Header-->
+
+  <!--서브메인 비주얼
+  <?include("sub_visual05.html")?>
+  <!--//서브메인 비주얼-->
+
+  <!--Container-->
+  <div id="container">
+
+    <!--Contents-->
+    <div id="contents">
+
+      <!--Cts_Center-->
+      <div class="cts_center pdtb35">
+
+        <!--Prd_title-->
+        <div class="prd_title">
+          <h2>회사소개</h2>
+        </div>
+        <!--//Prd_title-->
+
+        <!--detail_gr-->
+        <div class="detail_gr">
+
+
+          <!--Left_Group-->
+          <div class="left_group">
+
+            <!--왼쪽메뉴-->
+            <?include("lm_company.html")?>
+            <!--//왼쪽메뉴-->
+
+           <!--왼쪽배너-->
+           <?include("comm_banner.html")?>
+           <!--//왼쪽배너-->
+
+          </div>
+          <!--Left_Group-->
+
+
+          <!--Cts_Group-->
+          <div class="cts_group">
+
+            <!--title_h3_gr-->
+            <div class="title_h3_gr">
+              <div class="title_h3">오시는 길</div>
+            </div>
+            <!--//title_h3_gr-->
+            
+            <!--Con_wrap-->
+            <div class="con_wrap">
+              
+              
+               <!-- * 카카오맵 - 지도퍼가기 -->
+                <!-- 1. 지도 노드 -->
+                <div id="daumRoughmapContainer1699229339382" class="root_daum_roughmap root_daum_roughmap_landing"></div>
+
+                <!--
+                    2. 설치 스크립트
+                    * 지도 퍼가기 서비스를 2개 이상 넣을 경우, 설치 스크립트는 하나만 삽입합니다.
+                -->
+                <script charset="UTF-8" class="daum_roughmap_loader_script" src="https://ssl.daumcdn.net/dmaps/map_js_init/roughmapLoader.js"></script>
+
+                <!-- 3. 실행 스크립트 -->
+                <script charset="UTF-8">
+                    new daum.roughmap.Lander({
+                        "timestamp" : "1699229339382",
+                        "key" : "2gpvb",
+                        "mapWidth" : "960",
+                        "mapHeight" : "550"
+                    }).render();
+                </script>
+               
+               <!--map_cts-->
+               <div class="map_cts">
+                 <ul>
+                   <li>
+                     <div class="overcts_tit"><img src="images/company/ico_add.png" /><br />주 소</div>
+                     <div class="overcts_cts">서울시 종로구 종로19(종로1가 르메이에르 종로타운) 1216호<br />(주)이룸플레이스 / 이룸투어</div>
+                   </li>
+                   <li>
+                     <div class="overcts_tit"><img src="images/company/ico_tel.png" /><br />연락처</div>
+                     <div class="overcts_cts">대표전화 : (02)512-7705<br />팩스번호 : (02)6442-4577<br />이메일 : irumplace@irumtour.net</div>
+                   </li>
+                   <li>
+                     <div class="overcts_tit"><img src="images/company/ico_subway.png" /><br />오시는 방법</div>
+                     <div class="overcts_cts"><img src="images/company/ico_line02.png"  alt="2호선"/> <span style="color:#11aa19; font-family:'notokr-medium';">을지로입구역</span> 1-1번 출구 </span> 도보 6분<br />
+                     <img src="images/company/ico_line01.png"  alt="1호선"/> <img src="images/company/ico_line02.png"  alt="2호선"/> <span style="color:#11aa19; font-family:'notokr-medium';">시청역</span> 4번 출구</span>  도보 6분<br />
+                     <img src="images/company/ico_line01.png"  alt="1호선"/> <span style="color:#3155b5; font-family:'notokr-medium';">종각역</span> 5번 출구 </span>  도보 8분<br />
+                     <img src="images/company/ico_line05.png"  alt="5호선"/> <span style="color:#8445ce; font-family:'notokr-medium';">광화문역</span>  5번 출구</span>  도보 8분</div>
+                   </li>
+                 </ul>
+               </div>
+               <!--//map_cts-->
+               
+            </div>
+            <!--//Con_wrap-->
+            
+
+          </div>
+          <!--//Cts_Group-->
+
+        </div>
+        <!--//detail_gr-->
+
+      </div>
+      <!--//Cts_Center-->
+
+      <!--Qucik Menu-->
+      <div class="side_s_right02"><?include("side_right.html")?></div>
+      <!--//Qucik Menu-->
+
+    </div>
+    <!--//Contents-->
+  </div>
+  <!--//Container-->
+
+
+  <!--Footer-->
+  <?include("footer.html")?>
+  <!--//Footer-->
+
+</div>
+<!--//Wrap-->
+</body>
+</html>

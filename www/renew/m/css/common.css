@@ -1,0 +1,136 @@
+@charset "euc-kr";
+
+/* 모바일 코딩 필수 공통영역 */
+* { margin: 0; padding: 0; -webkit-text-size-adjust:none; }
+body,h1,h2,h3,h4,input,button,textarea {font-family:NanumBarunGothic, MalgunGothic, Helvetica,sans-serif; line-height:160%; color:#444; font-size:11pt;}
+img, fieldset {border:0; vertical-align:top;}
+h1, h2, h3, h4, h5, h6 { font-size:100%; font-weight:normal; }
+ul,ol,dl{ list-style:none;}
+
+a:link , a:visited, a:active {color:#444; text-decoration:none;}
+a:hover {color:#328192; text-decoration:none;}
+caption {display:none;}
+
+em, i, address { font-style:normal; font-weight:normal; }
+legend, caption { display:none; clear:both; }
+input, textarea, select, button, table {font-size:inherit; font-family:inherit; line-height:inherit; }
+section, nav, article, aside, hgroup, header, footer { display:block }
+textarea, input { background:url(none); -webkit-border-radius:1px; -webkit-apprearance:none; }
+textarea {resize:none; }
+label { cursor:pointer; }
+.font11 {font-size:11px;}
+.font12 {font-size:12px;}
+.font14 {font-size:14px;}
+.bold {font-weight:600;}
+.bold_normal {font-weight:normal; font-size:12px;}
+.middle { vertical-align:middle;}
+
+.input,.box {color:#444; border:solid 1px #ddd !important; background:#fff; height:23px; padding-left:5px; }
+.input_box {color:#444; border:solid 1px #ddd; background:#fff; padding-left:5px; }
+.input_login {width:100%; height:31px; background:#fff; border:1px solid #ccd0dd;}
+
+.input_search {color:#444; border:solid 1px #646464; background:#fff; height:25px; padding-left:5px; }
+.input_bbs {color:#444; border:solid 1px #ddd; background:#fff; height:20px; padding-left:5px; }
+.input_search02 {  color:#444; border:solid 1px #e9e9e9; background:#f6f6f6; height:25px; padding-left:5px; }
+
+
+/* margin / padding공통 */
+.mgt15 {margin:15px 0 20px 0;}
+.mgt20 {margin-top:20px;}
+.mt3 {margin-top:3px}
+.pdt10 {margin-top:10px}
+.pdt05 {margin-top:5px}
+.pdl10 {padding-left:10px;}
+.mgr1 { margin-right:2%;}
+.pdr02 {padding-right:2%;}
+.pd10{ padding:10px;}
+.pdt05 {padding-top:1px;}
+
+/* Font */
+.adult_price {font-size:14px; color:#3b3b3b; font-weight:bold;  font-family:Verdana, Geneva, sans-serif; padding-right:8px;}
+.child_price {font-size:14px; color:#3b3b3b; font-weight:bold; font-family:Verdana, Geneva, sans-serif; }
+.won { font-weight:bold; color:#000; }
+.font14 { font-size:14px; font-weight:bold; font-family:Verdana, Geneva, sans-serif;}
+.price_sum {font-size:15px; color:#f04832; padding-right:10px; font-family:Verdana, Geneva, sans-serif; }
+
+
+/*Table : 회원가입, 마이페이지 등*/
+.tbl_list {width:100%; border-top:1px solid #777;}
+.tbl_list tr th {padding-left:8px; background:#f8f8f8;  border-right:1px solid #dbdbdb; border-bottom:1px solid #dbdbdb; text-align:left; font-weight:bold; color:#4a4a4a;  letter-spacing:-1px;}
+.tbl_list tr td {padding:5px 0 5px 8px;  border-bottom:1px solid #dbdbdb;  line-height:130%;}
+.tbl_list tr td span img { vertical-align:top; padding-left:2px;}
+.tbl_list tr th.place_cts {padding:2%; background:#f8f8f8; border-right:none;  text-align:left; font-size:14px; color:#4a4a4a; }
+
+
+
+
+/*Table : 게시판 - 리스트 , 포인트현황 등*/
+.tbl_bbs {width:100%;border-top:1px solid #777;}
+.tbl_bbs thead tr th {background:#f8f8f8; color:#4a4a4a; border-right:1px solid #dbdbdb; border-bottom:1px solid #dbdbdb; vertical-align:middle; text-align:center; font-weight:bold; height:35px;}
+.tbl_bbs thead tr th:last-child {background:#fafafa; color:#4a4a4a; border-right:none; border-bottom:1px solid #dbdbdb; vertical-align:middle; text-align:center; font-weight:bold; height:35px;}
+.tbl_bbs tbody  tr th {padding:6px 0; border-bottom:1px solid #dbdbdb; text-align:center; border-right:1px solid #dbdbdb;  font-weight:normal; font-size:12px;}
+.tbl_bbs tbody  tr td {padding:6px 0; border-bottom:1px solid #dbdbdb; text-align:center; border-right:1px solid #dbdbdb; font-size:12px; }
+.tbl_bbs tbody  tr td.subject {padding-left:10px; text-align:left; }
+.tbl_bbs tbody  tr td:last-child  {padding:6px 0; border-bottom:1px solid #dbdbdb; text-align:center; border-right:none;  }
+
+/*Table : 게시판 - 뷰페이지*/
+.tbl_view {width:100%;border-top:1px solid #7a7a7a;}
+.tbl_view thead tr th {background:#f1f2f4; color:#000; border-right:1px solid #dbdbdb; border-bottom:1px solid #dbdbdb; vertical-align:middle; text-align:center; font-weight:bold; height:35px;}
+.tbl_view thead tr th:last-child {background:#f1f2f4; color:#4a4a4a; border-right:none; border-bottom:1px solid #dbdbdb; vertical-align:middle; text-align:center; font-weight:bold; height:35px;}
+.tbl_view thead tr td.s_title {text-align:center; font-weight:bold; background:#f8f8f8; }
+.tbl_view thead tr td {padding:6px 0; border-bottom:1px solid #dbdbdb; text-align:center; border-right:1px solid #dbdbdb; font-size:12px; }
+.tbl_view thead tr td:last-child {padding:6px 0; border-bottom:1px solid #dbdbdb; text-align:center; border-right:none; font-size:12px; }
+.tbl_view tbody  tr td {padding:6px; border-bottom:1px solid #dbdbdb; text-align:left; border-right:1px solid #dbdbdb; font-size:12px; }
+.tbl_view tbody  tr td:last-child  {padding:6px; border-bottom:1px solid #dbdbdb; text-align:left; border-right:none; font-size:12px; } 
+
+
+/*Table : 게시판 - 뷰페이지 코멘트*/
+.tbl_view2{width:100%; border-top:1px solid #777; border-bottom:1px solid #999; table-layout:fixed ; }
+.tbl_view2,.tbl_view2 th,.tbl_view2 td{border:0}
+.tbl_view2 td{padding:5px 0 3px 10px;line-height:1.4em;text-align:left;border-bottom:solid 1px #d2d2d2;}
+.tbl_view2 .input_txt td{padding:5px 0 5px 10px; vertical-align:top;}
+.tbl_view2 .input_txt td input,.tbl_view2 .input_txt td textarea{vertical-align:middle}
+.tbl_view2 .input_txt input.name{width:100%; height:20px; padding:2px 0 1px;border:solid 1px #d2d2d2}
+.tbl_view2 .input_txt textarea.comment{width:95%;height:50px;padding:2px 0 1px;border:solid 1px #d2d2d2; margin-right:7px;}
+.tbl_view2 .input_txt input.submit{width:79px; height:28px; border:0; background:url(../images/board/btn_coment.png); margin-top:5px;}
+
+/*Table : 게시판 - FAQ*/
+.tbl_faq {width:100%;border-top:1px solid #777;}
+.tbl_faq tbody  tr th {padding:10px 0; border-bottom:1px solid #dbdbdb; text-align:center; border-right:1px solid #dbdbdb;  font-weight:normal; vertical-align:top;}
+.tbl_faq tbody  tr td {padding:10px ; border-bottom:1px solid #dbdbdb; text-align:left; border-right:none;  }
+
+
+
+/* 게시판버튼 */
+.bbs_btn {width:100%; float:right; text-align:right; margin:10px 0; }
+.bbs_btn img {padding-left:3px;}
+
+/* 게시판 글검색 */
+.bbs_search {width:100%; float:left; text-align:center; background:#f8f8f8; border:1px solid #dbdbdb; padding:10px 0; }
+
+
+/* 상품리스트/게시판 페이지정보 */
+.page_info {margin:10px 0; text-align:center;}
+.page_info .paginate{padding:0;text-align:center;}
+.page_info .paginate span{padding:0 5px 0 5px}
+.page_info .paginate a,.paginate strong{display:inline-block;position:relative;_width /**/:17px;margin-right:1px;padding:4px 8px 4px; border:1px solid #aaaaaa;color:#000;font-family:Verdana;font-size:12px;font-weight:bold;line-height:normal;text-decoration:none}
+.page_info .paginate strong{border:1px solid #aaaaaa;color:#f23219;background-color:#fff !important}
+.page_info .paginate .pre{margin-right:6px;padding:6px 6px 3px 14px;_padding-bottom:1px;background:url(../images/board/bu_pg3_l_on.gif) no-repeat 6px 8px !important;letter-spacing:-1px;}
+.page_info .paginate .next{margin-left:4px;padding:6px 14px 3px 6px;_padding-bottom:1px;background:url(../images/board/bu_pg3_r_on.gif) no-repeat 30px 8px !important;letter-spacing:-1px;}
+.page_info .paginate .pre,.paginate .next{display:inline-block;position:relative;top:0;_top:-2px;_width /**/:75px;border:1px solid #aaaaaa;color:#ccc;font-family:'돋움',Dotum;font-size:11px;line-height:normal;color:#565656}
+.page_info .paginate a:hover{border:1px solid #d91f00;background-color:#fff !important}
+
+
+
+/*Font Color*/
+.red {color:#de3939;}
+.blue {color:#327ce2;}
+.orange {color:#f24c19;}
+.green {color:#41792b;}
+.green02 {color:#0a7164;}
+.black {color:#000;}
+.yellow { color:#ffeb42;}
+.vioet {color:#3342b3}
+.hide{display:none;}
+.w100{width:95% !important}
+.white{color:#fff !important}

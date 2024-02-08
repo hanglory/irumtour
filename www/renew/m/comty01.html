@@ -1,0 +1,81 @@
+<?
+include_once("./script/include_common_mobile.php");
+
+//if($REMOTE_ADDR=="106.246.54.27") checkVar("",$keyword);
+?>
+<!doctype html>
+<html>
+<head>
+<?include("header.php")?>
+<link rel="stylesheet" type="text/css" href="css/import.css"/>
+</head>
+<body>
+<!--header-->
+<?include("header.html")?>
+<!--//header-->
+
+<!--article-->
+<article>
+
+  <!--contents-->
+  <div id="contents">
+
+    <!--topmenu-->
+    <?include("topmenu.html")?>
+    <!--//topmenu-->
+
+    <!--title_group-->
+    <div class="title_group">
+      <?include("prev.html")?>
+      <h2 class="title">공지사항</h2>
+    </div>
+    <!--//title_group-->
+
+    <!--sub_wrap-->
+    <div class="sub_wrap">
+
+      <!--탭메뉴별 상세정보-->
+      <div class="item_group">
+
+
+        <!--cts_info-->
+        <div class="cts_info">
+
+
+	  	<!-- 게시판 -->
+		<?
+		$bid = ($bid)? $bid : "notice";
+		$bmode = ($bmode)? $bmode : "list";
+		$BOARD = "script_bbs/" . $bmode .  ".php";
+		include($BOARD);
+		?>
+		<!--// 게시판 -->
+
+
+        </div>
+        <!--//cts_info-->
+
+      </div>
+      <!--탭메뉴별 상세정보-->
+
+    </div>
+    <!--//sub_wrap-->
+
+
+
+
+  </div>
+  <!--contents-->
+
+</article>
+<!--//article-->
+
+
+<!--footer-->
+<?include("footer.html")?>
+<!--//footer-->
+
+
+
+</body>
+</html>

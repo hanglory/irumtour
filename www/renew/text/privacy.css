@@ -1,0 +1,92 @@
+*{font-family:NotoKR-Regular,sans-serif; }
+
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video {margin:0;padding:0;border:0;line-height:160%;letter-spacing:-0.5px;} /* delete vertical-align,font:inherit; */
+body,html { width:100%;  font-size:15px; color:#444; }
+img {border:0; vertical-align:middle}
+
+
+#privacy_wrap{
+	font-size:15px;
+	line-height:170%;
+	color:#414141;
+}
+
+#privacy_wrap h1{
+	font-size: 18px;
+	
+	color:#000;
+	padding-top:30px;
+}
+
+#privacy_wrap h2{
+	font-size: 16px;
+	
+	color:#333;
+	padding-top:10px;
+}
+
+#privacy_wrap h3{
+	font-size: 15px;
+	
+}
+
+#privacy_wrap .line1{
+	position:relative;
+	top:-10px;
+}
+
+#privacy_wrap .line2{
+	position:relative;
+	top:-20px;
+	left:18px;
+}
+
+#privacy_wrap h4{
+	position:relative;
+	left:-19px;
+	font-size: 15px;
+	margin:0 0 3px;
+	padding:10px 0 0 0;
+	font-weight:normal;
+}
+
+#privacy_wrap {
+	padding:0 0 10px 18px;
+}
+
+
+
+.privacy_box{
+	padding:10px 0 10px 18px;
+}
+
+
+#privacy_wrap ul,ol{
+	position:relative;
+	top:-10px;
+}
+
+
+#privacy_wrap li{
+	position:relative;
+	list-style:circle;
+	left:-15px;
+}
+
+#privacy_wrap ol li{
+	position:relative;
+	list-style:decimal;
+	left:-15px;
+}
+
+#privacy_wrap table{
+	width:100%
+}
+
+#privacy_wrap th,td{
+	font-size:15px;
+	text-align:center;
+	padding:10px;
+	border: 1px #c0c0c0 solid;
+
+}

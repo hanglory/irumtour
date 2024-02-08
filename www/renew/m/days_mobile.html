@@ -1,0 +1,151 @@
+<?
+include_once("./script/include_common_mobile.php");
+$table = "ez_tour_days";
+
+
+If(!$button_hide){
+?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+<body>
+<?}?>
+
+<div class="tour_table">
+
+<?
+//remark 상단
+$sql9 ="select * from ez_days_contents where tid=$tid and assort='remark_1_days' and content<>'' order by id_no desc limit 1";
+list($rows) = $dbo9->query($sql9);
+If($rows){
+	$rs9 = $dbo9->next_record();
+	$rs9[content] = stripslashes($rs9[content]);
+	echo "<div class='remark'>$rs9[content]</div>";
+
+}
+?>
+
+<?
+//remark 상단2
+$sql9 ="select * from ez_days_contents where tid=$tid and assort='remark_3_days' and content<>'' order by id_no desc limit 1";
+list($rows) = $dbo9->query($sql9);
+If($rows){
+	$rs9 = $dbo9->next_record();
+	$rs9[content] = stripslashes($rs9[content]);
+	echo "<div class='remark'>$rs9[content]</div>";
+
+}
+?>
+
+<table class="tbl_table" id="tbl_day">
+<?
+$sql9 ="select distinct days from $table where tid=$tid order by days asc";
+list($rows)=$dbo9->query($sql9);
+if($rows){
+?>
+	<tr>
+		<th style="width:15%" class="th1">지역</th>
+		<th style="width:15%" class="th2">교통</th>
+		<th style="width:36px" class="th3">시간</th>
+		<th class="th4">세부일정</th>
+	</tr>
+
+<?
+}
+while($rs9 = $dbo9->next_record()){
+
+	$area = "";
+	$cdays = $rs9[days];
+	$sql_ ="select * from $table where days='$cdays' and tid=$tid order by timetable asc";
+	$dbo_->query($sql_);
+
+	If($cdays=="0day") $cdays="First Day";
+	elseIf($cdays=="99day") $cdays="Last Day";
+	?>
+		<tr>
+			<td colspan="5" class="day_bar l"><?=$cdays?></td>
+		</tr>
+	<?
+	$j=0;
+	$y=0;
+	while($rs_  =$dbo_->next_record()){
+		if($area != $rs_[area]){
+			$sql2 ="select area from $table where tid=$tid and days='$rs_[days]' and timetable>'$rs_[timetable]' order by timetable asc limit 1";
+			$dbo2->query($sql2);
+			$rs2 =$dbo2->next_record();
+			$rows = ($rs2[area]==$rs_[area])?1:0;
+			//checkVar($rows,$sql2);
+			if($rows){
+				$y=1;
+				$sql2 ="select area from $table where tid=$tid and days='$rs_[days]' and timetable>'$rs_[timetable]' order by timetable asc ";
+				$dbo2->query($sql2);
+				//checkVar($rs_[area],$sql2);
+
+				while($rs2=$dbo2->next_record()){
+					//checkVar($rs2[area],$rs_[area]);
+					if($rs2[area]==$rs_[area]) $y++;
+					else break;
+				}
+			}
+			$j=1;
+		}else{
+			$sql2 ="";
+			$j=0;
+			$y=0;
+		}
+
+	//checkVar("$area / $rs_[area]","$rows,$j,$y");
+	?>
+		<tr>
+			<?if($area != $rs_[area]){?>
+			<td <?=($rows && $j && $y)?"rowspan=$y":""?>><?=$rs_[area]?></td>
+			<?}?>
+			<td><?=$rs_[bus]?></td>
+			<td valign='<?=$rs_[time_valign]?>'><?=($rs_[timetable_txt])?$rs_[timetable_txt]:substr($rs_[timetable],0,5)?></td>
+			<td class="l"><div><?=$rs_[content]?></div>
+			<?if($sessLogin[id] && !$button_hide){?>
+			<br>
+
+			<input type="button" class="button" value=" 수정 " onclick="top.location.href='/new/bkoff/tour/pop_days.php?tid=<?=$tid?>&id_no=<?=$rs_[id_no]?>'">
+			<input type="button" class="button" value=" 삭제 " onclick="if(confirm('삭제하시겠습니까?'))top.location.href='/new/bkoff/tour/pop_days.php?mode=drop&tid=<?=$tid?>&id_no=<?=$rs_[id_no]?>'">
+			<?}?>
+
+			<?if($rs_[etc]){?>
+			<div class="etc">
+				<?=nl2br($rs_[etc])?>
+			</div>
+			<?}?>
+
+			</td>
+		</tr>
+	<?
+		$area = $rs_[area];
+	}
+}
+?>
+</table>
+
+<?
+//remark 하단
+$sql9 ="select * from ez_days_contents where tid=$tid and assort='remark_2_days' and content<>'' order by id_no desc limit 1";
+list($rows) = $dbo9->query($sql9);
+If($rows){
+	$rs9 = $dbo9->next_record();
+	$rs9[content] = stripslashes($rs9[content]);
+	echo "<div class='remark'>$rs9[content]</div>";
+
+}
+?>
+
+</div>
+
+<p style="height:20px"></p>
+
+<?
+If(!$button_hide){
+?>
+</body>
+</html>
+<?}?>

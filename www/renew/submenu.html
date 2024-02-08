@@ -1,0 +1,19 @@
+<div class="submenu_gr_wrap">
+	<?
+	$sql_="select * from ez_tour_category1 order by seq asc limit 6";
+	$dbo_->query($sql_);
+	while($rs_=$dbo_->next_record()){
+	?>
+	<div class="submenu_gr" id="menu_code2_<?=$rs_[seq]?>">
+	  <ul>
+		<?
+		$sql9="select * from ez_tour_category2 where code1=$rs_[id_no] and bit_hide<>1 order by seq asc";
+		$dbo9->query($sql9);
+		while($rs9=$dbo9->next_record()){
+		?>
+		<li class="<?=($code2==$rs9[id_no])?'on_sub':''?>"><a href="sublist.html?code1=<?=$rs_[id_no]?>&code2=<?=$rs9[id_no]?>"><?=$rs9[subject]?></a></li>
+		<?}?>
+	  </ul>
+	</div>
+	<?}?>
+</div>

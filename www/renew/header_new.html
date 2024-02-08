@@ -1,0 +1,298 @@
+<script type="text/javascript">
+<!--
+function reset_nation_icon(){
+	var code2="<?=$code2?>";
+	if(code2==75) $("#cm01 img").attr("src","images/common/ctr_japan_on.png");
+	else if(code2==76) $("#cm02 img").attr("src","images/common/ctr_china_on.png");
+	else if(code2==77) $("#cm03 img").attr("src","images/common/ctr_thailand_on.png");
+	else if(code2==78) $("#cm04 img").attr("src","images/common/ctr_vietnam_on.png");
+	else if(code2==79) $("#cm05 img").attr("src","images/common/ctr_asean_on.png");
+	else if(code2==80) $("#cm06 img").attr("src","images/common/ctr_philippines_on.png");
+	else if(code2==81) $("#cm07 img").attr("src","images/common/ctr_eu_on.png");
+	else if(code2==82) $("#cm08 img").attr("src","images/common/ctr_malaysia_on.png");
+	else if(code2==83) $("#cm09 img").attr("src","images/common/ctr_america_on.png");
+	else if(code2==84) $("#cm10 img").attr("src","images/common/ctr_eu_on.png");
+	else if(code2==85) $("#cm11 img").attr("src","images/common/ctr_oz_on.png");
+}
+
+function check_top_find(){
+    var fm=document.fm_top_find;
+    if(check_blank(fm.keyword,'검색어를',2)=='wrong'){return false;}
+}
+
+$(function(){
+
+	reset_nation_icon();
+
+	$(".twoDep_menu02 img").on("mouseover",function(){
+		$(this).attr("src",$(this).attr("src").replace('_on.png', '.png'));
+		$(this).attr("src",$(this).attr("src").replace('.png', '_on.png'));
+	});
+
+	$(".twoDep_menu02 img").on("mouseout",function(){
+		$(this).attr("src",$(this).attr("src").replace('_on.png', '.png'));
+		reset_nation_icon();
+	});
+
+});
+//-->
+</script>
+
+<!--N_Header-->
+
+<section id="n_header">
+  <div class="header_cont"> 
+    
+    <!--Header_400-->
+    <div class="header_400"> 
+      
+      <!--Lnb_L_top-->
+      <div class="lnb_L_top">
+        <ul>
+          <?if($_SESSION['sessMember']['id']){?>  
+          <li><a href="./script/login.php?mode=logout">로그아웃</a></li>
+          <li><a href="mypage03.html">마이페이지</a></li>   
+          <?}else{?>
+          <li><a href="mem_login.html">로그인</a></li>
+          <li><a href="join_main.html">회원가입</a></li>          
+          <?}?>
+          <?if(!$CID){?>
+          <li><a href="mypage01.html">예약내역</a></li>
+          <li><a href="greeting.html">회사소개</a></li>
+          <li><a href="review.html?code1=태국">답사후기</a></li>
+          <li><a href="comty07.html">여행정보</a></li>
+          <?}?>
+        </ul>
+      </div>
+      <!--Lnb_L_top--> 
+      
+      <!--Lnb_L_sns-->
+      <div class="lnb_L_sns">
+
+        <?
+        if($CID){
+            $SNS_BLOG = $CP_SNS[blog];
+            $SNS_FACEBOOK = $CP_SNS[facebook];
+            $SNS_INSTAGRAM = $CP_SNS[instagram];
+            $SNS_YOUTUBE = $CP_SNS[youtube];
+        }
+        ?>        
+        <ul>
+
+          <?if($SNS_BLOG){?><li><a href="<?=$SNS_BLOG?>" target="_blank"><img src="images/common/btn_blog.png"  onmouseover="this.src='images/common/btn_blog_on.png'" onMouseOut="this.src='images/common/btn_blog.png'" alt="blog" /></a></li><?}?>
+          <?if($SNS_FACEBOOK){?><li><a href="<?=$SNS_FACEBOOK?>" target="_blank"><img src="images/common/btn_facebook.png"  onmouseover="this.src='images/common/btn_facebook_on.png'" onMouseOut="this.src='images/common/btn_facebook.png'" alt="facebook" /></a></li><?}?>
+          <?if($SNS_INSTAGRAM){?><li><a href="<?=$SNS_INSTAGRAM?>" target="_blank"><img src="images/common/btn_instagram.png"  onmouseover="this.src='images/common/btn_instagram_on.png'" onMouseOut="this.src='images/common/btn_instagram.png'" alt="instagram" /></a></li><?}?>
+          <?if($SNS_YOUTUBE){?><li><a href="<?=$SNS_YOUTUBE?>" target="_blank"><img src="images/common/btn_youtube.png"  onmouseover="this.src='images/common/btn_youtube_on.png'" onMouseOut="this.src='images/common/btn_youtube.png'" alt="youtube" /></a></li><?}?>
+        </ul>
+      </div>
+      <!--//Lnb_L_sns--> 
+      
+    </div>
+    <!--//Header_400--> 
+    
+    <!--Header_400-->
+    <div class="header_400">
+      <h1>
+        <a href="index.html">
+            <?if($CP_LOGO){?>
+            <img src="/new/public/partner/<?=$CP_LOGO?>" alt="<?=$COMPANY_NAME?> 로고" />
+            <?}else{?>
+            <img src="/renew/images/common/top_logo.gif" alt="<?=$COMPANY_NAME?> 로고" width="119" height="65"/>
+            <?}?>
+        </a>
+      </h1>
+    </div>
+    <!--//Header_400--> 
+    
+    <!--Header_400-->
+    <div class="header_400"> 
+      
+      <!--Lnb_R_top-->
+      <div class="lnb_R_top">
+        <ul>
+          <li><a href="comty02_main.html"><img src="images/common/top_req.png" alt="맞춤여행문의" />
+            <p>맞춤여행문의</p>
+            </a></li>
+          <li><a href="comty01.html"><img src="images/common/top_notice.png" alt="공지사항" />
+            <p>공지사항</p>
+            </a></li>
+        </ul>
+      </div>
+      <!--//Lnb_R_top--> 
+      
+      <!--Lnb_R_serch-->
+      <div class="lnb_R_serch">
+        <form name="fm_top_find" method="get" action="sublist.html" onsubmit="return check_top_find()">
+        <ul>
+          <li>
+            <input type="text" class="input_srh" id="keyword" name="keyword" placeholder="Find Your Golf Trip" value="" maxlength="20" autocomplete="off" />
+          </li>
+          <li><input type="image" src="images/common/btn_t_search.png" alt="검색" /></li>
+        </ul>
+        </form>
+      </div>
+      <!--Lnb_R_serch--> 
+      
+    </div>
+    <!--//Header_400--> 
+    
+  </div>
+  
+  <!-- Gnb-->
+  <div id="gnb">
+    <div class="menu">
+      <ul class="gnbDiv">
+
+        <?if(!$CP_BIT_CLOSE_DOMESTIC){?>
+        <li class="one"><a href="sublist.html?code1=30&code2=120&sbt=<?=base64_encode('국내골프')?>" onMouseOver='this.innerHTML="DOMESTIC GOLF"' onMouseOut='this.innerHTML="국내골프"'>국내골프</a></a>
+          <div class="twoDep">
+            <div class="twoDep_in">
+              <div class="twoDep_tit">
+                <h3>국내골프</h3>
+              </div>
+              <dl class="twoDep_menu">
+                <?
+                $code1_=30;
+                $sql_="select * from ez_tour_category2 where code1=$code1_ and bit_hide=0 and cp_id='$CID' order by seq asc";
+                $dbo_->query($sql_);
+                while($rs_=$dbo_->next_record()){
+                ?>                
+                <dd><a href="sublist.html?code1=<?=$rs_[code1]?>&code2=<?=$rs_[id_no]?>"><?=$rs_[subject]?></a></dd>
+                <?}?>
+              </dl>
+            </div>
+          </div>
+        </li>
+        <?}?>
+        <li class="two"><a href="sublist.html?code1=26&code2=75&sbt=<?=base64_encode('국가별')?>" onMouseOver='this.innerHTML="OVERSEAS GOLF"' onMouseOut='this.innerHTML="해외골프"'>해외골프</a></a>
+          <div class="twoDep">
+            <div class="twoDep_in">
+              <dl class="twoDep_menu02">
+                <!--<dd id="cm12"><a href="sublist.html?code1=30&code2=115&sbt=<?=base64_encode('국내여행')?>"><img src="images/common/ctr_korea.png" alt="한국" /></a></dd>-->
+                <dd id="cm01"><a href="sublist.html?code1=26&code2=75&sbt=<?=base64_encode('일본')?>"><img src="images/common/ctr_japan.png" alt="일본" width="52" height="76" /></a></dd>
+                <dd id="cm03"><a href="sublist.html?code1=26&code2=77&sbt=<?=base64_encode('태국')?>"><img src="images/common/ctr_thailand.png" alt="태국" width="52" height="76" /></a></dd>
+                <dd id="cm04"><a href="sublist.html?code1=26&code2=78&sbt=<?=base64_encode('베트남')?>"><img src="images/common/ctr_vietnam.png" alt="베트남" width="52" height="76"  /></a></dd>
+                <dd id="cm02"><a href="sublist.html?code1=26&code2=76&sbt=<?=base64_encode('중국')?>"><img src="images/common/ctr_china.png" alt="중국" width="52" height="76" /></a></dd>
+                <dd id="cm06"><a href="sublist.html?code1=26&code2=80&sbt=<?=base64_encode('대만')?>"><img src="images/common/ctr_taiwan.png" alt="대만" width="52" height="76" /></a></dd>
+                <dd id="cm08"><a href="sublist.html?code1=26&code2=128&sbt=<?=base64_encode('라오스')?>"><img src="images/common/ctr_laos.png" alt="라오스" width="52" height="76" /></a></dd>
+                <dd id="cm05"><a href="sublist.html?code1=26&code2=79&sbt=<?=base64_encode('아세안')?>"><img src="images/common/ctr_asean.png" alt="아세안"  width="52" height="76"  /></a></dd>
+                <dd id="cm09"><a href="sublist.html?code1=26&code2=83&sbt=<?=base64_encode('미국')?>"><img src="images/common/ctr_america.png" alt="미국"  width="52" height="76" /></a></dd>
+                <dd id="cm11"><a href="sublist.html?code1=26&code2=85&sbt=<?=base64_encode('호주')?>"><img src="images/common/ctr_oz.png" alt="호주" width="52" height="76"  /></a></dd>
+                <dd id="cm07"><a href="sublist.html?code1=26&code2=84&sbt=<?=base64_encode('유럽')?>"><img src="images/common/ctr_eu.png" alt="유럽" width="52" height="76"  /></a></dd>
+                <!--
+                  <dd id="cm08"><a href="sublist.html?code1=26&code2=82&sbt=<?=base64_encode('말레이시아')?>"><img src="images/common/ctr_malaysia.png" alt="말레이시아" /></a></dd>
+                  <dd id="cm07"><a href="sublist.html?code1=26&code2=81&sbt=<?=base64_encode('인도네시아')?>"><img src="images/common/ctr_indonesia.png" alt="인도네시아" /></a></dd>
+                  <dd id="cm05"><a href="sublist.html?code1=26&code2=79&sbt=<?=base64_encode('브루나이')?>"><img src="images/common/ctr_brunei.png" alt="브루나이" /></a></dd>
+                  <dd id="cm10"><a href="sublist.html?code1=26&code2=84&sbt=<?=base64_encode('프랑스')?>"><img src="images/common/ctr_france.png" alt="프랑스" /></a></dd>
+                  <dd id="cm11"><a href="sublist.html?code1=26&code2=85&sbt=<?=base64_encode('터키')?>"><img src="images/common/ctr_turkey.png" alt="터키" /></a></dd>
+                  <dd id="cm06"><a href="sublist.html?code1=26&code2=80&sbt=<?=base64_encode('필리핀')?>"><img src="images/common/ctr_philippines.png" alt="필리핀" width="52" height="76" /></a></dd>
+                  -->
+              </dl>
+            </div>
+          </div>
+        </li>
+        <li class="three"><a href="sublist.html?code1=14&sbt=<?=base64_encode('테마별')?>" onMouseOver='this.innerHTML="THEME GOLF"' onMouseOut='this.innerHTML="테마골프"'>테마골프</a>
+          <div class="twoDep">
+            <div class="twoDep_in">
+              <div class="twoDep_tit">
+                <h3>테마골프</h3>
+              </div>
+              <dl class="twoDep_menu">
+                <?
+                $ctg_theme=array();
+                $code1_=14;
+                $CTGFILTER= " and (cp_id='$CID' or cp_id='')";
+                $sql_="select * from ez_tour_category2 where code1=$code1_ and bit_hide=0 $CTGFILTER order by seq asc";
+                $dbo_->query($sql_);
+                while($rs_=$dbo_->next_record()){
+                    $ctg_theme[$rs_[id_no]]=$rs_[subject];
+                ?>                
+                <dd><a href="sublist.html?code1=<?=$rs_[code1]?>&code2=<?=$rs_[id_no]?>"><?=$rs_[subject]?></a></dd>
+                <?}?>
+              </dl>
+            </div>
+          </div>
+        </li>
+        <li class="four"><a href="sublist.html?code1=15&sbt=<?=base64_encode('세계100대코스')?>" onMouseOver='this.innerHTML="TOP100 in the WORLD"' onMouseOut='this.innerHTML="세계100대코스"'>세계100대코스</a>
+          <div class="twoDep">
+            <div class="twoDep_in">
+              <div class="twoDep_tit">
+                <h3>세계100대코스</h3>
+              </div>
+              <dl class="twoDep_menu">
+                <?
+                $code1_=15;
+                $sql_="select * from ez_tour_category2 where code1=$code1_ and bit_hide=0 $CTGFILTER order by seq asc";
+                $dbo_->query($sql_);
+                while($rs_=$dbo_->next_record()){
+                ?>                
+                <dd><a href="sublist.html?code1=<?=$rs_[code1]?>&code2=<?=$rs_[id_no]?>"><?=$rs_[subject]?></a></dd>
+                <?}?>
+              </dl>
+            </div>
+          </div>
+        </li>
+        <li class="five"><a href="sublist.html?code1=16&sbt=<?=base64_encode('특가골프')?>" onMouseOver='this.innerHTML="SPECIAL OFFER"' onMouseOut='this.innerHTML="특가골프"'>특가골프</a>
+          <div class="twoDep">
+            <div class="twoDep_in">
+              <div class="twoDep_tit">
+                <h3>특가골프</h3>
+              </div>
+              <dl class="twoDep_menu">
+                <?
+                $code1_=16;
+                $sql_="select * from ez_tour_category2 where code1=$code1_ and bit_hide=0 $CTGFILTER order by seq asc";
+                $dbo_->query($sql_);
+                while($rs_=$dbo_->next_record()){
+                ?>                
+                <dd><a href="sublist.html?code1=<?=$rs_[code1]?>&code2=<?=$rs_[id_no]?>"><?=$rs_[subject]?></a></dd>
+                <?}?>
+              </dl>
+            </div>
+          </div>
+        </li>
+        <li class="six"><a href="sublist.html?code1=31&sbt=<?=base64_encode('휴가골프(연휴)')?>" onMouseOver='this.innerHTML="GOLF HOLIDAYS"' onMouseOut='this.innerHTML="휴가골프(연휴)"'>휴가골프(연휴)</a>
+          <div class="twoDep">
+            <div class="twoDep_in">
+              <div class="twoDep_tit">
+                <h3>휴가골프(연휴)</h3>
+              </div>
+              <dl class="twoDep_menu">
+                <?
+                $code1_=31;
+                $sql_="select * from ez_tour_category2 where code1=$code1_ and bit_hide=0 $CTGFILTER order by seq asc";
+                $dbo_->query($sql_);
+                while($rs_=$dbo_->next_record()){
+                ?>                
+                <dd><a href="sublist.html?code1=<?=$rs_[code1]?>&code2=<?=$rs_[id_no]?>"><?=$rs_[subject]?></a></dd>
+                <?}?>
+              </dl>
+            </div>
+          </div>
+        </li>
+        <li class="seven"><a href="comty01.html" onMouseOver='this.innerHTML="COMMUNITY"' onMouseOut='this.innerHTML="커뮤니티"'>커뮤니티</a>
+          <div class="twoDep">
+            <div class="twoDep_in">
+              <div class="twoDep_tit">
+                <h3>커뮤니티</h3>
+              </div>
+              <dl class="twoDep_menu">
+                <dd><a href="comty01.html">공지사항</a></dd>
+                <dd><a href="comty02_main.html">맞춤여행문의</a></dd>
+                <?if(!$CID){?>
+                <dd><a href="comty05.html">여행후기</a></dd>
+                <?}?>
+                <dd><a href="comty07.html">여행정보</a></dd>
+              </dl>
+            </div>
+          </div>
+        </li>
+        <div class="bg"></div>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!--하단고정퀵링크-->
+<?include("kakao.html")?>
+<!--하단고정퀵링크-->

@@ -1,0 +1,19 @@
+<div class="quickmenu">
+  <ul>
+    <?
+    if(!$CID || ($CID && $CP_KAKAO)){
+        $CP_KAKAO = str_replace("http://","https://",$CP_KAKAO);
+        $KAKAO_LINK = str_replace("http://","https://",$KAKAO_LINK);
+    ?>
+    <li><a href="<?=($CP_KAKAO)?$CP_KAKAO : $KAKAO_LINK?>" target="_blank"><img src="images/common/r_kakao.png"  alt="카톡문의"/></a></li>
+    <?}?>
+    <li><a href="#" class="scroll_top"><img src="images/common/r_top.png"  alt="top"/></a></li>
+  </ul>
+</div>
+
+<script>
+	$('.scroll_top').click(function(){
+		$('html, body').animate({scrollTop : 0},800);
+		return false;
+	});
+</script>

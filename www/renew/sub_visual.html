@@ -1,0 +1,77 @@
+<?
+$filter = "";
+/*
+if($code1==26){
+	$filter .= " and b.code1=$code1";
+	$filter .= " and b.code2='$code2'";
+	$filter .= " and b.code3=''";
+}else{
+	$filter .= " and b.code1=$code1";
+	$filter .= " and b.code2=''";
+	$filter .= " and b.code3=''";
+}
+*/
+
+$cp_id = $_SESSION[CID];
+$filter .= " and b.code1=$code1";
+$filter .= " and b.code2='$code2'";
+$filter .= " and b.code3=''";
+$filter .= " and a.cp_id='$cp_id'";
+
+$sql = "
+		select
+			a.*
+		from ez_nbanner2 as a left join ez_nbanner2_seq as b
+		on a.id_no=b.code
+		where
+			bit_hide<>1
+			$filter
+        group by a.id_no
+		order by b.seq asc
+	";
+list($rows) = $dbo->query($sql);
+//if(strstr("@14.37.242.84@221.154.110.119@","@".$_SERVER["REMOTE_ADDR"]."@")) checkVar(mysql_error(),$sql);
+?>
+
+<?if($rows>1){?>
+<script type="text/javascript">
+<!--
+$(function(){
+	$('.main_slider').bxSlider({
+		minSlides: 1,
+		maxSlides: 1,
+		pager:false,
+		controls:false,
+		auto: true,
+		autoControls: false
+	});
+
+});
+//-->
+</script>
+<?}?>
+
+<ul class="main_slider" >
+	<?
+	//if($REMOTE_ADDR=="106.246.54.27") checkVar(mysql_error(),$sql);
+	while($rs=$dbo->next_record()){
+		$url = ($rs[url])? $rs[url] : "#";
+	?>
+	<li>
+	  <a href="<?=$url?>" target="<?=$rs[target]?>">
+	  <div id="main_visual"  style="width:100%; height:360px; padding:90px 0 0 0;  background:url(<?=$PUBLIC_PATH?>/public/banner/<?=$rs[filename]?>) top center; float:left">
+
+		<div class="visual_textgr">
+		  <ul>
+			<li class="v_text01"><?=$rs[text1]?></li>
+			<li class="v_text02"><?=nl2br($rs[text2])?></li>
+			<li class="v_text03"><?=$rs[text3]?></li>
+		  </ul>
+		 </div>
+
+	  </div>
+	  </a>
+	</li>
+	<?}?>
+</ul>
+

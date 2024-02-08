@@ -1,0 +1,508 @@
+<?
+include_once("script/include_common_file.php");
+
+
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko">
+<head>
+<?include("header.php");?>
+<style type="text/css">
+#header_wrap {
+    height:127px;
+}
+#header_blank {
+    height:127px;
+}
+</style>
+
+<script type="text/javascript">
+<!--
+function popup(){
+<?
+#### 팝업창 처리
+
+$cdate = date("Y/m/d H:i");
+
+$sql = "select * from popup where open=1 ";
+$dbo->query($sql);
+while($rs =$dbo->next_record()){
+
+    $popup_id = "sessPopup_" . $rs[id_no];
+
+    $bit =1;
+    if($rs[period_start] && $rs[period_start]>$cdate) $bit=0;
+    if($rs[period_end] && $rs[period_end]<$cdate) $bit=0;
+
+    if($rs[open] && !$$popup_id && $bit){
+        $rs[position_top]=number_format($rs[position_top]);
+        $rs[position_left]=number_format($rs[position_left]);
+
+        echo "window.open ('popup.php?id_no=$rs[id_no]','','scrollbars=$rs[scroll],resizable=0,width=$rs[width],height=$rs[height],top=$rs[position_top],left=$rs[position_left]'); \n";
+    }
+}
+?>
+}
+popup();
+//-->
+</script>
+
+<script>
+
+
+$(document).ready(function() {
+
+    var move = -15
+         zoom = 1.1;
+
+    $('.item').hover(function() {
+        width = $('.item').width() * zoom;
+        height = $('.item').height() * zoom;
+
+        $(this).find('img').stop(false,true).animate({'width':width, 'height':height, 'top':move, 'left':move}, {duration:300});
+        $(this).find('div.caption').stop(false,true).fadeIn(300);
+    },
+    function() {
+        $(this).find('img').stop(false,true).animate({'width':$('.item').width(), 'height':$('.item').height(), 'top':'0', 'left':'0'}, {duration:300});
+        $(this).find('div.caption').stop(false,true);
+    });
+
+
+    $('.item2').hover(function() {
+        width = $('.item2').width() * zoom;
+        height = $('.item2').height() * zoom;
+
+        $(this).find('img').stop(false,true).animate({'width':width, 'height':height, 'top':move, 'left':move}, {duration:300});
+        $(this).find('div.caption').stop(false,true).fadeIn(300);
+    },
+    function() {
+        $(this).find('img').stop(false,true).animate({'width':$('.item2').width(), 'height':$('.item2').height(), 'top':'0', 'left':'0'}, {duration:300});
+        $(this).find('div.caption').stop(false,true);
+    });
+
+
+    $('.item3').hover(function() {
+        width = $('.item3').width() * zoom;
+        height = $('.item3').height() * zoom;
+
+        $(this).find('img').stop(false,true).animate({'width':width, 'height':height, 'top':move, 'left':move}, {duration:300});
+        $(this).find('div.caption').stop(false,true).fadeIn(300);
+    },
+    function() {
+        $(this).find('img').stop(false,true).animate({'width':$('.item3').width(), 'height':$('.item3').height(), 'top':'0', 'left':'0'}, {duration:300});
+        $(this).find('div.caption').stop(false,true);
+    });
+
+
+
+    $('.item4').hover(function() {
+    width = $('.item4').width() * zoom;
+    height = $('.item4').height() * zoom;
+
+    $(this).find('img').stop(false,true).animate({'width':width, 'height':height, 'top':move, 'left':move}, {duration:300});
+    $(this).find('div.caption').stop(false,true).fadeIn(300);
+    $(this).find('div.caption02').stop(false,true);
+
+    },
+    function() {
+        $(this).find('img').stop(false,true).animate({'width':$('.item4').width(), 'height':$('.item4').height(), 'top':'0', 'left':'0'}, {duration:300});
+        $(this).find('div.caption').stop(false,true).fadeOut(400);
+        $(this).find('div.caption02').stop(false,true);
+
+    });
+
+
+
+    $('.item5').hover(function() {
+    width = $('.item5').width() * zoom;
+    height = $('.item5').height() * zoom;
+
+    $(this).find('img').stop(false,true).animate({'width':width, 'height':height, 'top':move, 'left':move}, {duration:300});
+    $(this).find('div.caption').stop(false,true).fadeIn(300);
+    $(this).find('div.caption02').stop(false,true);
+
+    },
+    function() {
+        $(this).find('img').stop(false,true).animate({'width':$('.item5').width(), 'height':$('.item5').height(), 'top':'0', 'left':'0'}, {duration:300});
+        $(this).find('div.caption').stop(false,true).fadeOut(400);
+        $(this).find('div.caption02').stop(false,true);
+
+    });
+
+
+    $('#thema').load('inc_thema.php');
+
+});
+
+</script>
+<script type="text/javascript">
+<!--
+function active_img(bit){
+    if(bit==1) $("#border_b01").hide();
+    else $("#border_b01").show();
+}
+//-->
+</script>
+
+
+</head>
+<body>
+<!--Wrap-->
+<div id="wrap">
+
+  <!--Header-->
+  <?include("header.html")?>
+  <!--//Header-->
+
+
+  <!--서브메인 비주얼-->
+  <?include("main_visual.html")?>
+  <!--//서브메인 비주얼-->
+
+
+  <!--Container-->
+  <div id="container">
+
+    <!--Sub_Contents-->
+    <div id="sub_contents">
+
+      <?
+      $sql = "select * from ez_tour where top_c1=1 $PROOF_FILTER order by hit desc limit 4";
+      list($rows) = $dbo->query($sql);
+      ?>
+      <!--1.Cts_Center : 시즌별추천상품-->
+      <div class="cts_center ">
+
+        <!--Title_H2_Gr-->
+        <div class="submain_h2 mgt30">
+          <div class="main_titgr">
+            <div class="submain_title"><span class="bold">시즌별</span> 추천상품 <span class="eng_title01">Seasonal</span> <span class="eng_title02">Recomended Tour</span></div>
+            <div class="submain_comment"><?=($CP_COMPANY2)?$CP_COMPANY2:'이룸투어'?><?=has_batchim($CP_COMPANY2)?'이':'가'?> 추천하는 시즌 베스트 여행상품</div>
+          </div>
+        </div>
+        <!--//Title_H2_Gr-->
+
+        <!--Section01-->
+        <div class="section01">
+
+          <!--베스트1-->
+          <?
+          $rs=$dbo->next_record();
+          $filename = $PUBLIC_PATH . "public/goods/".$rs[filename1];
+          $thumb = $PUBLIC_PATH . "public/thumb/tb_".$rs[filename1];
+          $pic =($rs[filename1])? thumbnail($filename, 593, 544, 0, 1, 100, 0, "", "", $thumb) : "images/main/thumb_recoom01.jpg";
+
+          $rs[pr] = titleCut2($rs[pr],130);
+          ?>
+          <div class="sec01_best01 hand" onclick="location.href='detailview.html?tid=<?=$rs[tid]?>'">
+
+            <div class="item3"><img src="<?=$pic?>" width="593" height="544" onmouseover="active_img()" onmouseout="active_img(1)"   />
+
+                <div id="border_b01"><img src="images/border/border_main01.gif" onmouseover="active_img()" onmouseout="active_img(1)" /></div>
+
+              <div class="caption"><a href="detailview.html?tid=<?=$rs[tid]?>"><?=$rs[subject]?></p>
+                  <p><?=$rs[pr]?></p>
+                  <div class="price_b1"><?=nf($rs[price_adult])?><span class="won_price">원<?=($rs[bit_price_wave])?'':'~'?></span></div>
+                  </a>
+                </div>
+              </div>
+
+          </div>
+          <!--//베스트1-->
+
+          <!--베스트2-->
+          <?
+          $rs=$dbo->next_record();
+          $filename = $PUBLIC_PATH . "public/goods/".$rs[filename1];
+          $thumb = $PUBLIC_PATH . "public/thumb/tb_".$rs[filename1];
+          $pic =($rs[filename1])? thumbnail($filename, 593, 265, 0, 1, 100, 0, "", "", $thumb) : "images/main/thumb_recoom02.jpg";
+          ?>
+          <div class="sec01_best02">
+
+            <div class="item4"><img src="<?=$pic?>" width="593" height="265"  />
+              <div class="caption02"><a href="detailview.html?tid=<?=$rs[tid]?>"><?=$rs[subject]?></a></div>
+
+              <div class="caption"><a href="detailview.html?tid=<?=$rs[tid]?>"><?=$rs[subject]?>
+                <div class="price_b2"><?=nf($rs[price_adult])?><span class="won_price02">원<?=($rs[bit_price_wave])?'':'~'?></span></div>
+                <div class="cap_more">자세히보기</div></a>
+              </div>
+            </div>
+
+          </div>
+          <!--//베스트2-->
+
+          <!--베스트3-->
+          <?
+          $rs=$dbo->next_record();
+          $filename = $PUBLIC_PATH . "public/goods/".$rs[filename1];
+          $thumb = $PUBLIC_PATH . "public/thumb/tb_".$rs[filename1];
+          $pic =($rs[filename1])? thumbnail($filename, 290, 265, 0, 1, 100, 0, "", "", $thumb) : "images/main/thumb_recoom03.jpg";
+          ?>
+          <div class="sec01_best03 mgr13">
+
+            <div class="item5"><img src="<?=$pic?>" width="290" height="265" />
+              <div class="caption02"><a href="detailview.html?tid=<?=$rs[tid]?>"><?=titleCut2($rs[subject],24)?></a></div>
+
+              <div class="caption"><a href="detailview.html?tid=<?=$rs[tid]?>"><?=$rs[subject]?>
+                <div class="price_b3"><?=nf($rs[price_adult])?><span class="won_price03">원<?=($rs[bit_price_wave])?'':'~'?></span></div>
+                <div class="cap_more">자세히보기</div></a>
+              </div>
+            </div>
+
+
+          </div>
+          <!--//베스트3-->
+
+          <!--베스트4-->
+          <?
+          $rs=$dbo->next_record();
+          $filename = $PUBLIC_PATH . "public/goods/".$rs[filename1];
+          $thumb = $PUBLIC_PATH . "public/thumb/tb_".$rs[filename1];
+          $pic =($rs[filename1])? thumbnail($filename, 290, 265, 0, 1, 100, 0, "", "", $thumb) : "images/main/thumb_recoom03.jpg";
+          ?>
+          <div class="sec01_best03">
+
+            <div class="item5"><img src="<?=$pic?>" width="290" height="265" />
+              <div class="caption02"><a href="detailview.html?tid=<?=$rs[tid]?>"><?=titleCut2($rs[subject],24)?></a></div>
+
+              <div class="caption"><a href="detailview.html?tid=<?=$rs[tid]?>"><?=$rs[subject]?>
+                <div class="price_b3"><?=nf($rs[price_adult])?><span class="won_price03">원<?=($rs[bit_price_wave])?'':'~'?></span></div>
+                <div class="cap_more">자세히보기</div></a>
+              </div>
+            </div>
+
+
+          </div>
+          <!--//베스트4-->
+
+        </div>
+        <!--//Section01-->
+
+      </div>
+      <!--//1.Cts_Center : 시즌별추천상품-->
+
+
+      <!--2.Section02 : 테마별추천상품-->
+      <div class="section02">
+
+        <!--Title_H2_Gr-->
+        <div class="submain_h2 mgt30">
+          <div class="main_titgr">
+            <div class="submain_title"><span class="bold">테마별</span> 추천상품 <span class="eng_title01">Theme</span> <span class="eng_title02">Recomended Tour</span></div>
+            <div class="submain_comment"><?=($CP_COMPANY2)?$CP_COMPANY2:'이룸투어'?>의 테마가 있는 여행을 만나보세요.</div>
+          </div>
+        </div>
+        <!--//Title_H2_Gr-->
+
+        <!--Cts_Center-->
+        <div class="cts_center" id="thema"></div>
+        <!--//Cts_Center-->
+
+
+
+      </div>
+      <!--//2.Section02 : 테마별추천상품-->
+
+      <!--3.Section03 : 커뮤니티-->
+      <div class="section03">
+
+        <!--Cts_Center-->
+        <div class="cts_center">
+
+          <!--M_Ccomty_Gr-->
+          <div class="m_comty_gr">
+
+            <!--M_BBS_GR : 공지사항-->
+            <div class="m_bbs_gr">
+
+              <div class="m_bbs_tit">
+                <h2><img src="images/main/title_notice.png" alt="<?=has_batchim($CP_COMPANY2)?>사항"  /></h2>
+                <div class="bbs_more"><a href="comty01.html"><img src="images/main/btn_more.png" alt="더보기" /></a></div>
+              </div>
+
+              <!--M_bbs_ctsgr-->
+              <div class="m_bbs_ctsgr">
+
+              <?
+              $bbs_cp_filter = " and cp_id='$CID'";
+              $sql = "select * from ez_bbs where bid='notice' $bbs_cp_filter order by id_no desc limit 3";
+              $dbo->query($sql);
+              For($i=0;$i<3;$i++){
+                $rs=$dbo->next_record();
+                $rs[subject] = stripslashes($rs[subject]);
+                $rs[content] = strip_tags($rs[content]);
+              ?>
+                <div class="m_bbs_cts <?if($i<2){?>bor_bottom<?}?>">
+                  <a href="comty01.html?bmode=read&bid=notice&id_no=<?=$rs[id_no]?>">
+                  <ul>
+                    <li class="notice"><?=titleCut2($rs[subject],30)?> <?//=new_icon($rs[reg_date])?></li>
+                    <li><?=titleCut2($rs[content],70)?></li>
+                    <li class="date"><?=date("Y.m.d",$rs[reg_date])?></li>
+                  </ul>
+                  </a>
+                </div>
+              <?}?>
+
+
+              </div>
+              <!--//M_bbs_ctsgr-->
+
+
+            </div>
+            <!--//M_BBS_GR : 공지사항-->
+
+                        <!--ㅡM_cs_cp : 고객센터-->
+            <div class="m_cs_cp">
+              
+              <!--tel_gr-->
+              <div class="tel_gr">
+                
+                <div class="cs_title"><img src="images/main/tit_cs.png" alt="cs center" /></div>
+                <div class="cs_cst01"><img src="images/main/ic_tel.png"/></div>
+              
+                <div class="cs_cst02">
+                  <ul>
+                    <?
+                    if($CP_PHONE){
+                    if(strstr($CP_PHONE,"-")) $arr = explode("-",$CP_PHONE);
+                    elseif(strstr($CP_PHONE,".")) $arr = explode(".",$CP_PHONE);
+                    elseif(strstr($CP_PHONE," ")) $arr = explode(" ",$CP_PHONE);
+                    ?>
+                    <li>Tel. <span class="t_cs01"><?=$arr[0]?>.</span><span class="t_cs02"><?=$arr[1]?>.<?=$arr[2]?></span></li>
+                    <?}else{?>
+                    <li>Tel. <span class="t_cs01">02.</span><span class="t_cs02">512.7705</span></li>
+                    <?}?>
+
+                    <?
+                    if($CP_FAX){
+                    if(strstr($CP_FAX,"-")) $arr = explode("-",$CP_FAX);
+                    elseif(strstr($CP_FAX,".")) $arr = explode(".",$CP_FAX);
+                    elseif(strstr($CP_FAX," ")) $arr = explode(" ",$CP_FAX);
+                    ?>
+                    <li>Fax. <span class="t_cs01"><?=$arr[0]?>.</span><span class="t_cs02"><?=$arr[1]?>.<?=$arr[2]?></span></li>
+                    <?}else{?>
+                    <li>Fax. <span class="t_cs01">02.</span><span class="t_cs02">6442.4577</span></li>
+                    <?}?>
+                  </ul>
+                </div>
+                
+                <div class="cs_cst03">업무시간 : (평일) 09:00~18:00 (토,일, 공휴일 전화상담가능)</div>
+                <div class="cs_cst04"><a href="<?=($CP_NAVER)?$CP_NAVER:'comty02.html';?>" target="<?=($CP_NAVER)?'_blank':'_self';?>"><img src="images/main/btn_req.png" alt="맞춤여행상담" /></a></div>
+
+              </div>
+              <!--//tel_gr-->
+          
+              <!--bank_gr-->
+              <div class="bank_gr">
+              
+                <div class="cs_title"><img src="images/main/tit_bank.png" alt="계좌정보" /></div>
+
+                <?if($CP_BANK_ACCOUNT){?>
+                    <div class="cs_cst01"><img src="images/main/bank_<?=get_bank_ico($CP_BANK)?>.png"  /></div>
+                  
+                    <div class="cs_cst02">
+                      <ul>
+                        <li><span class="t_cs03"><?=$CP_BANK_ACCOUNT?></span></li>
+                        <li><span class="t_cs04">예금주 : <?=$CP_BANK_OWNER?></span></li>
+                      </ul>
+                    </div>                    
+                <?}else{?>
+                    <div class="cs_cst01"><img src="images/main/ic_bank.png"  /></div>
+                  
+                    <div class="cs_cst02">
+                      <ul>
+                        <li><span class="t_cs03">813037-04-005009</span></li>
+                        <li><span class="t_cs04">예금주 : (주)이룸플레이스</span></li>
+                      </ul>
+                    </div>
+                <?}?>
+              
+              </div>
+              <!--//bank_gr-->
+            
+            </div>
+            <!--//M_cs_cp : 고객센터-->
+
+            <!--M_BBS_GR : 여행후기-->
+            <div class="m_bbs_gr">
+
+              <div class="m_bbs_tit">
+                <h2><img src="images/main/title_review.png" alt="여행후기"  /></h2>
+                <div class="bbs_more"><a href="comty05.html"><img src="images/main/btn_more.png" alt="더보기" /></a></div>
+              </div>
+
+              <!--M_bbs_ctsgr-->
+              <div class="m_bbs_ctsgr">
+
+                  <?
+                  $sql = "select * from ez_bbs where bid='review' $bbs_cp_filter order by id_no desc limit 2";
+                  $dbo->query($sql);
+
+                  $rs=$dbo->next_record();
+                  $filename = $PUBLIC_PATH . "public/bbs_files/".$rs[filename];
+                  $thumb = $PUBLIC_PATH . "public/thumb/tb_".$rs[filename];
+                  $pic = ($rs[filename])? thumbnail($filename, 376, 130, 0, 1, 100, 0, "", "", $thumb) : "images/main/review_thumb.gif";
+                  ?>
+
+                 <div class="m_review_thumb bor_bottom">
+                   <a href="comty01.html?bmode=read&bid=notice&id_no=<?=$rs[id_no]?>">
+                   <img src="<?=$pic?>" height="130" />
+                   <div class="m_review_tit"><?=titleCut2($rs[subject],40)?><?=new_icon($rs[reg_date])?>
+                     <div class="review_more">more</div>
+                   </div>
+                   </a>
+                 </div>
+
+                  <?
+                  $rs=$dbo->next_record();
+                  $filename = $PUBLIC_PATH . "public/bbs_files/".$rs[filename];
+                  $thumb = $PUBLIC_PATH . "public/thumb/tb_".$rs[filename];
+                  $pic = ($rs[filename])? thumbnail($filename, 376, 130, 0, 1, 100, 0, "", "", $thumb) : "images/main/review_thumb.gif";
+                  ?>
+                 <div class="m_review_thumb">
+                   <a href="comty01.html?bmode=read&bid=notice&id_no=<?=$rs[id_no]?>">
+                   <img src="<?=$pic?>" height="130" />
+                   <div class="m_review_tit"><?=titleCut2($rs[subject],40)?><?=new_icon($rs[reg_date])?>
+                     <div class="review_more">more</div>
+                   </div>
+                   </a>
+                 </div>
+
+
+              </div>
+              <!--M_bbs_ctsgr-->
+
+            </div>
+            <!--//M_BBS_GR : 여행후기-->
+
+
+          </div>
+          <!--//M_Ccomty_Gr-->
+
+        </div>
+        <!--//Cts_Center-->
+
+
+      </div>
+      <!--//3.Section03 : 커뮤니티-->
+
+
+
+
+    </div>
+    <!--//Sub_Contents-->
+  </div>
+  <!--//Container-->
+
+
+  <!--Footer-->
+  <?include("footer.html")?>
+  <!--//Footer-->
+
+</div>
+<!--//Wrap-->
+</body>
+</html>
+<map name="Map_req" id="Map_req">
+<area shape="rect" coords="89,168,296,205" href="comty02.html" />
+</map>

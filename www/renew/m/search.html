@@ -1,0 +1,150 @@
+<?
+include_once("./script/include_common_mobile.php");
+
+//if($REMOTE_ADDR=="106.246.54.27") checkVar("",$keyword);
+?>
+<!doctype html>
+<html>
+<head>
+<?include("header.php")?>
+<link rel="stylesheet" type="text/css" href="css/import.css"/>
+</head>
+<body>
+<!--header-->
+<?include("header.html")?>
+<!--//header-->
+
+<!--article-->
+<article>
+
+  <!--contents-->
+  <div id="contents">
+
+    <!--topmenu-->
+    <?include("topmenu.html")?>
+    <!--//topmenu-->
+
+    <!--title_group-->
+    <div class="title_group">
+      <?include("prev.html")?>
+      <h2 class="title">골프장검색하기</h2>
+    </div>
+    <!--//title_group-->
+
+    <!--sub_wrap-->
+    <div class="sub_wrap">
+
+      <!--탭메뉴별 상세정보-->
+      <div class="item_group">
+
+
+        <!--cts_info-->
+        <div class="cts_info">
+
+          <!--검색-->
+          <?if($keyword!="cweek"){?>
+		  <h2><span class="green">검색</span>하기</h2>
+          <div class="g_search">
+
+          <form name="fmFind" method="get" action="search.html">
+		  <table class="tbl_search" cellpadding="0" cellspacing="0">
+		    <caption>검색하기</caption>
+		    <colgroup>
+			  <col width="85%" />
+              <col width="15%" />
+			</colgroup>
+		      <tr>
+    	        <td><input type="text" class="input_login" id="keyword" name="keyword" value="<?=($keyword!="cweek")? $keyword:""?>" maxlength="30"  tabindex="1"/></td>
+                <td> <a href="javascript:document.fmFind.submit()"><img src="images/common/btn_search02.gif"  height="32" alt="검색"></a></td>
+		      </tr>
+              <tr>
+
+		      </tr>
+          </table>
+		  </form>
+          </div>
+		  <?}?>
+          <!--//검색-->
+
+    <!--sub_wrap-->
+    <div class="sub_wrap">
+
+	  <?
+
+	  if($keyword){
+		$keyword = secu($keyword);
+		$filter = " and subject like '%$keyword%'";
+	  }else{
+		$filter = " and id_no=0 ";
+	  }
+
+	  $sql = "select * from ez_tour where bit=1 and sale_group='T' $filter order by seq asc ";
+	  $dbo->query($sql);
+	//  if($REMOTE_ADDR=="106.246.54.27") checkVar(mysql_error(),$sql);
+	  while($rs=$dbo->next_record()){
+		$margin17= (($i%3)!=2)?"margin17 marginb24":"";
+		$filename = "/new/public/goods/".$rs[filename1];
+		$thumb = "/new/public/thumb/tb_".$rs[filename1];
+	  ?>
+      <!--item_group : 상품리스트-->
+      <div class="item_group">
+
+        <div class="item_thumb"><a href="itemview.html?tid=<?=$rs[tid]?>"><img src="<?=thumbnail($filename, 483, 286, 0, 1, 100, 0, "", "", $thumb)?>" onerror="this.src='./images/main/img_thumb01.gif'" width="100%" alt="" /></a></div>
+
+        <div class="item_title">
+          <p class="m_title"><?=$rs[subject]?></p>
+          <p class="s_title"><?=$rs[pr]?></p>
+        </div>
+
+        <div class="item_info">
+          <div class="gr_price">
+            <span class="green bold">·상품가 :</span><span class="price"><?=number_format($rs[price_adult])?>원~</span>
+          </div>
+
+          <div class="gr_subinfo">
+            <span class="blue bold">·기본일정 :</span> <?=$rs[days]?>&nbsp;&nbsp;<span class="blue bold">·적용기간 :</span> <?=$rs[period]?>&nbsp;&nbsp;<span class="blue bold">·이용항공 :</span> <?=titleCut2($rs[air_name],5,'',1)?> </p>
+          </div>
+
+        </div>
+
+      </div>
+      <!--//item_group : 상품리스트-->
+	  <?
+		$i++;
+	  }
+	  ?>
+
+
+
+    </div>
+    <!--//sub_wrap-->
+
+
+
+        </div>
+        <!--//cts_info-->
+
+      </div>
+      <!--탭메뉴별 상세정보-->
+
+    </div>
+    <!--//sub_wrap-->
+
+
+
+
+  </div>
+  <!--contents-->
+
+</article>
+<!--//article-->
+
+
+<!--footer-->
+<?include("footer.html")?>
+<!--//footer-->
+
+
+
+</body>
+</html>

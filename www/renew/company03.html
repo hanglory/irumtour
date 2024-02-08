@@ -1,0 +1,164 @@
+<?
+include_once("script/include_common_file.php");
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko">
+<head>
+<?include("header.php");?>
+<link rel="stylesheet" type="text/css" href="css/import.css"/>
+</head>
+<body>
+<!--Wrap-->
+]
+<div id="wrap">
+
+  <!--Header-->
+  <?include("header.html")?>
+  <!--//Header-->
+
+  <!--서브메인 비주얼-->
+  <?include("sub_visual05.html")?>
+  <!--//서브메인 비주얼-->
+
+
+  <!--Container-->
+  <div id="container">
+
+    <!--Contents-->
+    <div id="contents">
+
+      <!--Cts_Center-->
+      <div class="cts_center pdtb35">
+
+        <!--Prd_title-->
+        <div class="prd_title">
+          <h2>회사소개</h2>
+        </div>
+        <!--//Prd_title-->
+
+        <!--detail_gr-->
+        <div class="detail_gr">
+
+
+          <!--Left_Group-->
+          <div class="left_group">
+
+            <!--왼쪽메뉴-->
+            <?include("lm_company.html")?>
+            <!--//왼쪽메뉴-->
+
+           <!--왼쪽배너-->
+           <?include("comm_banner.html")?>
+           <!--//왼쪽배너-->
+
+          </div>
+          <!--Left_Group-->
+
+
+          <!--Cts_Group-->
+          <div class="cts_group">
+
+            <!--title_h3_gr-->
+            <div class="title_h3_gr">
+              <div class="title_h3">오시는 길</div>
+            </div>
+            <!--//title_h3_gr-->
+
+            <!--map_info-->
+            <div class="map_info">
+
+              <div class="map_logo"><img src="images/company/logo.png" alt="" /></div>
+              <div class="map_add">
+                <p><img src="images/company/ic_address.png" class="pdr05" /><span  class="add_tit">주소 :</span> 서울시 중구 남대문로 9길 40 센터플레이스 2109호   <span class="com_tit">(주)이룸플레이스 / 이룸투어</span></p>
+                <p><img src="images/company/ic_tel.png" class="pdr05"  /><span  class="add_tit">대표전화 :</span> (02)512.7705  , <span  class="add_tit">팩스번호 :</span> (02)6442-4577 , <span  class="add_tit">대표메일 :</span> <a href="mailto:irumplace@naver.com">irumplace@naver.com</a></p>
+              </div>
+
+            </div>
+            <!--//map_info-->
+
+
+            <!--map_gr-->
+            <div class="map_gr">
+
+              <!-- * 카카오맵 - 지도퍼가기 --><!-- 1. 지도 노드 -->
+              <div id="daumRoughmapContainer1617778270111" class="root_daum_roughmap root_daum_roughmap_landing"></div>
+              <!--	2. 설치 스크립트	* 지도 퍼가기 서비스를 2개 이상 넣을 경우, 설치 스크립트는 하나만 삽입합니다.-->
+              <script charset="UTF-8" class="daum_roughmap_loader_script" src="https://ssl.daumcdn.net/dmaps/map_js_init/roughmapLoader.js"></script>
+              <!-- 3. 실행 스크립트 -->
+              <script charset="UTF-8">
+			  	new daum.roughmap.Lander({"timestamp" : "1617778270111","key" : "25965","mapWidth" : "940","mapHeight" : "450"	}).render();
+			  </script>
+
+
+            </div>
+            <!--//map_gr-->
+
+            <!--map_bus-->
+            <div class="map_bus">
+
+              <div class="traffic_tit">버스를 이용하시는 경우
+                <div class="traffic_s_tit">시청 방면</div>
+              </div>
+
+              <div class="traffic_map">
+                <ul>
+                  <li><img src="images/company/ic_traffic05.gif" alt="간선" /> 172, 400, 472, 500, 504, N62(심야)</li>
+                  <li><img src="images/company/ic_traffic06.gif" alt="지선" /> 7018 </li>
+                </ul>
+              </div>
+              
+              
+
+
+            </div>
+            <!--//map_bus-->
+
+            <!--map_subway-->
+            <div class="map_subway">
+
+              <div class="traffic_tit">지하철을 이용하시는 경우
+                <div class="traffic_s_tit">시청역 ,을지로입구역  하차</div>
+              </div>
+
+              <div class="traffic">
+                <ul>
+                  <li><img src="images/company/ic_traffic07.gif" alt="마을" /> <span class="subway_line5">시청역 4번 출구</span>   도보 5분</li>
+                  <li><img src="images/company/ic_traffic08.gif" alt="일반" /> <span class="subway_line3">을지로입구역  1-1번 출구  </span> 도보 4분 </li>
+                </ul>
+              </div>
+
+
+
+            </div>
+            <!--//map_subway-->
+
+
+
+
+          </div>
+          <!--//Cts_Group-->
+
+        </div>
+        <!--//detail_gr-->
+
+      </div>
+      <!--//Cts_Center-->
+
+      <!--Qucik Menu-->
+      <div class="side_s_right02"><?include("side_right.html")?></div>
+      <!--//Qucik Menu-->
+
+    </div>
+    <!--//Contents-->
+  </div>
+  <!--//Container-->
+
+
+  <!--Footer-->
+  <?include("footer.html")?>
+  <!--//Footer-->
+
+</div>
+<!--//Wrap-->
+</body>
+</html>

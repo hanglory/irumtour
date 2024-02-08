@@ -1,0 +1,45 @@
+<?
+$sql = "select * from ez_nbanner1 where bit_hide<>1 order by seq asc";
+list($rows) = $dbo->query($sql);
+?>
+
+<?if($rows>1){?>
+<script type="text/javascript">
+<!--
+$(function(){
+	$('.main_slider').bxSlider({
+		minSlides: 1,
+		maxSlides: 1,
+		pager:false,
+		controls:false,
+		auto: true,
+		autoControls: false
+	});
+
+});
+//-->
+</script>
+<?}?>
+
+<ul class="main_slider">
+	<?
+	while($rs=$dbo->next_record()){
+		$url = ($rs[url])? $rs[url] : "#";
+	?>
+	<li>
+	  <a href="<?=$url?>" target="<?=$rs[target]?>">
+	  <div id="main_visual" style="width:100%; height:450px; padding:150px 0 0 0;  background:url(<?=$PUBLIC_PATH?>/public/banner/<?=$rs[filename]?>) top center; float:left">
+
+		<div class="visual_textgr">
+		  <ul>
+			<li class="v_text01"><?=$rs[text1]?></li>
+			<li class="v_text02"><?=nl2br($rs[text2])?></li>
+			<li class="v_text03"><?=$rs[text3]?></li>
+		  </ul>
+		 </div>
+
+	  </div>
+	  </a>
+	</li>
+	<?}?>
+</ul>

@@ -1,0 +1,17 @@
+<?
+if(SELF=="comty02.html") $file = "text/privacy5.html";
+elseif(SELF=="comty02_group.html") $file = "text/privacy5.html";
+elseif(SELF=="self_req02.html") $file = "text/privacy6.html";
+elseif(SELF=="request.html") $file = "text/privacy5.html";
+?>
+
+            <div class="title_h4"><span class="green02 bold">개인정보 수집 </span>및 이용에 대한 안내</div>
+            
+            <div class="privacy">
+              <div class="privacy_box">
+                <iframe width="100%" height="170" src="<?=$file?>" frameborder="0"  scrolling="no"></iframe>
+              </div>
+              <div class="acceet01">
+                <input type="checkbox" id="agree" name="agree" />
+                <label for="agree">위의 <strong>개인정보취급방침</strong>에 동의합니다.</label> </div>
+            </div>

@@ -1,0 +1,255 @@
+<?
+include_once("script/include_common_file.php");
+include_once("../new/include/cmp_config.php");
+
+if(!$user_id){redirect2("login.html");exit;}
+
+
+if($_SERVER["REMOTE_ADDR"]=="1106.246.54.27"){
+  $user_id="김두기";
+  $user_phone="01066667684";
+}
+
+
+$id_no=rnf($id_no);
+$sql = "
+    select * from cmp_reservation where name='$user_id' and replace(phone,'-','') = '$user_phone' and id_no=$id_no
+  ";
+
+$sql = "
+  select 
+    * 
+    from cmp_reservation 
+    where 
+      id_no=$id_no
+      and 
+      (
+        (name='$user_id' and replace(phone,'-','') = '$user_phone')
+        or
+        code in (select code from cmp_people where name='$user_id' and replace(phone,'-','') = '$user_phone')
+      )
+  order by id_no desc";  
+$dbo->query($sql);
+$rs=$dbo->next_record();
+//if($_SERVER["REMOTE_ADDR"]=="106.246.54.27"){checkVar(mysql_error(),$sql);}    
+
+$sql2 = "select * from cmp_golf where id_no=$rs[golf_id_no]";
+$dbo2->query($sql2);
+$rs2 = $dbo2->next_record();
+$nation=$rs2[nation];
+$city=$rs2[city];
+$golf_name  = $rs2[name];
+
+$arr2 = explode("(",$rs[main_staff]);
+$staff=$arr2[0];
+$staff_id=substr($arr2[1],0,-1);
+
+$sql2 = "
+    select * from cmp_staff where id='$staff_id'
+  ";
+$dbo2->query($sql2);
+$rs2=$dbo2->next_record();
+$staff .=" ".$rs2[mposition];
+$staff_cell= "${rs2[cell1]}-${rs2[cell2]}-${rs2[cell3]}";
+$staff_kakao_link = $rs2[kakao_link];
+
+$make_code = encrypt($rs[id_no],$SALT);
+$make_code = str_replace("+","{p}",$make_code);
+
+
+$long_url2 = short_url("http://irumtour.net/new/bkoff/cmp/form02.html?code=$make_code");
+$long_url3 = short_url("http://irumtour.net/new/bkoff/cmp/form03.html?code=$make_code");
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko">
+<head>
+<?include("header.php");?>
+<link rel="stylesheet" type="text/css" href="css/import.css"/>
+</head>
+<body>
+<!--Wrap-->
+<div id="wrap">
+
+  <!--Header-->
+  <?include("header.html")?>
+  <!--//Header-->
+
+  <!--서브메인 비주얼-->
+  <?include("sub_visual09.html")?>
+  <!--//서브메인 비주얼-->
+
+  <!--Container-->
+  <div id="container">
+
+    <!--Contents-->
+    <div id="contents">
+
+      <!--Cts_Center-->
+      <div class="cts_center pdtb35">
+
+        <!--Prd_title-->
+        <div class="prd_title">
+          <h2>마이페이지</h2>
+        </div>
+        <!--//Prd_title-->
+
+        <!--detail_gr-->
+        <div class="detail_gr">
+
+
+          <!--Left_Group-->
+          <div class="left_group">
+
+            <!--왼쪽메뉴-->
+            <?include("lm_mypage.html")?>
+            <!--//왼쪽메뉴-->
+
+           <!--왼쪽배너-->
+           <?include("comm_banner.html")?>
+           <!--//왼쪽배너-->
+
+          </div>
+          <!--Left_Group-->
+
+
+          <!--Cts_Group-->
+          <div class="cts_group">
+
+            <!--title_h3_gr02-->
+            <div class="title_h3_gr02">
+              <div class="title_h3">예약현황</div>
+           </div>
+            <!--//title_h3_gr02-->
+            
+            <div class="mypage_box"><span class="blue">· <?=$user_id?></span> 고객님의 예약정보를 확인해주세요.</div>
+
+           <!--1. 예약정보-->
+           <div class="title_h4"><!-- <span class="green02 bold">예약</span>정보 --></div>
+           
+           <table class="tbl_group" cellpadding="0" cellspacing="0" summary="예약정보">
+             <caption>예약정보</caption>
+               <colgroup>
+                 <col width="25%" />
+                 <col width="*" />
+               </colgroup>
+               <tbody>
+                 <tr>
+                   <th scope="row">출발일</th>
+                   <td colspan="2"><?=$rs[d_date]?></td>
+                 </tr>
+                 <tr>
+                   <th scope="row">국가 / 지역</th>
+                   <td colspan="2"><?=$nation?> / <?=$city?></td>
+                 </tr>
+                 <tr>
+                   <th scope="row">상품명</th>
+                   <td colspan="2" class="black bold"><?=$golf_name?></td>
+                 </tr>
+                 <tr>
+                   <th scope="row">예약인원</th>
+                   <td colspan="2"><?=nf($rs[people])?>명</td>
+                 </tr>
+                 <tr>
+                   <th scope="row">상품가</th>
+                   <td colspan="2"><span class="orange"><?=nf($rs[price])?>원</span></td>
+                 </tr>
+                 <tr>
+                   <th scope="row">입금내역</th>
+                   <td colspan="2">
+                     
+                    <?
+                    $DATA="";
+                    $sql2 = "select * from cmp_people where code=$rs[code] and name='$rs[name]'";
+                    $dbo2->query($sql2);
+                    //if(strstr("@211.226.255.74@221.154.110.119@","@".$_SERVER["REMOTE_ADDR"]."@")){checkVar(mysql_error(),$sql2);}
+                    $i=0;
+                    $my_id_no=0;
+                    while($rs2=$dbo2->next_record()){
+                      $i++;
+
+                      $id1=rnf($rs2[date_in]).$i;
+                      $id2=rnf($rs2[date_in2]).$i;
+                      if($rs2[price_prev]) $DATA[$id1]=$rs2[date_in] ."_" . $rs2[price_prev];
+                      if($rs2[price_prev2]) $DATA[$id2]=$rs2[date_in2] ."_" . $rs2[price_prev2];
+
+                      if(trim($user_id)==trim($rs2[name]) && rnf($user_phone)==rnf($rs2[phone])) $my_id_no = $rs2[id_no];
+                    }
+
+                    @sort($DATA);
+
+                    while(list($key,$val)=@each($DATA)){
+                      $arr = explode("_",$val);
+                    ?>
+                      <p>□ <span style="display:inline-block;width:80px"><?=($arr[0])?$arr[0] : "날짜없음"?></span> : <span class="orange" style="text-align:right;display:inline-block;width:80px"><?=nf($arr[1])?>원</span></p>
+                    <?
+                    }
+                    ?>
+
+                   </td>
+                 </tr>
+                 <tr>
+                   <th scope="row">확정서</th>
+                   <td colspan="2"><a href="javascript:newWin('<?=$long_url2?>',870,650,1,1,'','reservation')">예약확정서</a>&nbsp;</td>
+                 </tr>
+                 <tr>
+                   <th scope="row">출발안내문</th>
+                   <td colspan="2"><a href="javascript:newWin('<?=$long_url3?>',870,650,1,1,'','reservation')">출발안내문</a>&nbsp;</td>
+                 </tr>
+                 <tr>
+                   <th scope="row">이티켓</th>
+                   <td colspan="2">
+                      <?
+                      $id_code2 = $rs[code] . "_" . $my_id_no;
+                      $sql2 = "select * from cmp_files where id_code='${id_code2}_4'";
+                      $dbo2->query($sql2);
+                      $rs2=$dbo2->next_record();
+                      if($rs2[filename]){
+                      ?>
+                      <!-- <span class="btn_pack medium bold"><a href="../new/include/download.php?file=<?=$rs2[filename]?>&orgin_file_name=<?=$rs2[filename_real]?>&dir=public/cmp_files"> 다운로드 </a></span> -->
+
+                        <a href="../new/public/cmp_files/<?=$rs2[filename]?>" target="_blank">보기</a>
+                      <?}?>
+                   </td>
+                 </tr>
+                 <tr>
+                   <th scope="row">담당자</th>
+                   <td colspan="2">
+                      <?=$staff?>&nbsp;
+                      <?=$staff_cell?>
+                      <?if($staff_kakao_link){?><br/><a href="<?=$staff_kakao_link?>" target="_blank">KAKAO LINK</a><?}?>
+                   </td>
+                 </tr>
+
+               </tbody>
+            </table>
+           <!--//1. 예약정보-->
+           
+           <span style="width:100%;display:inline-block;padding:20px"><center><a href="javascript:history.back()"><img src="images/detail/btn_list.gif"></a></center></span style="padding:20px">
+
+          </div>
+          <!--//Cts_Group-->
+
+        </div>
+        <!--//detail_gr-->
+
+      </div>
+      <!--//Cts_Center-->
+
+      <!--Qucik Menu-->
+      <div class="side_s_right02"><?include("side_right.html")?></div>
+      <!--//Qucik Menu-->
+
+    </div>
+    <!--//Contents-->
+  </div>
+  <!--//Container-->
+
+
+  <!--Footer-->
+  <?include("footer.html")?>
+  <!--//Footer-->
+
+</div>
+<!--//Wrap-->
+</body>
+</html>

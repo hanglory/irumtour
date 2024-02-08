@@ -1,0 +1,59 @@
+<script type="text/javascript">
+<!--
+$(function(){
+
+
+	$(window).scroll(function(){
+		var scroll_top = $(document).scrollTop();
+		//$("#test").text(scroll_top);
+		if(scroll_top>865){
+			$(".leftmenu").addClass("leftmenu_fixed");
+		}else{
+			$(".leftmenu").removeClass("leftmenu_fixed");
+		}
+
+	});
+
+});
+//-->
+</script>
+<style type="text/css">
+.leftmenu_fixed{
+	position:fixed;
+	top:10px;
+	left:50%;
+	margin-left:-600px;
+	z-index:99999999;
+}
+</style>
+
+		<?if($code1==26){?>
+
+			<div class="leftmenu">
+              <ul>
+			    <?
+				$sql_="select * from ez_tour_category3 where code2=$code2  and bit_hide<>1 order by seq asc";
+				$dbo_->query($sql_);
+				while($rs_=$dbo_->next_record()){
+				?>
+                <li class="<?if($code3==$rs_[id_no]){?>lm_on<?}?>"><a href="sublist.html?code1=<?=$code1?>&code2=<?=$code2?>&code3=<?=$rs_[id_no]?>#ptop"><?=$rs_[subject]?></a></li>
+				<?}?>
+              </ul>
+            </div>
+
+
+		<?}else{?>
+
+			<div class="leftmenu">
+              <ul>
+			    <?
+				$sql_="select * from ez_tour_category2 where code1=$code1 and bit_hide<>1 order by seq asc";
+				$dbo_->query($sql_);
+				while($rs_=$dbo_->next_record()){
+				?>
+                <li class="<?if($code2==$rs_[id_no]){?>lm_on<?}?>"><a href="sublist.html?code1=<?=$code1?>&code2=<?=$rs_[id_no]?>#ptop"><?=$rs_[subject]?></a></li>
+				<?}?>
+              </ul>
+            </div>
+
+		<?}?>

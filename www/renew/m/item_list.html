@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=euc-kr" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, target-densitydpi=medium-dpi" />
+<title>♠♤학원토탈경영시스템 - ACA2000♠♤</title>
+<link rel="stylesheet" type="text/css" href="css/import.css"/>
+<script src="http://code.jquery.com/jquery-latest.js" type="text/javascript"></script>
+<script type="text/javascript" src="./include/jquery.easing.min.js"></script>
+<script type="text/javascript" src="./include/jquery.easing.compatibility.js"></script>
+
+
+<script type="text/javascript">
+jQuery(function($){
+
+	// Side Menu
+	var menu_v = $('div.menu_v');
+	var sItem = menu_v.find('>ul>li');
+	var ssItem = menu_v.find('>ul>li>ul>li');
+	var lastEvent = null;
+
+	sItem.find('>ul').css('display','none');
+	menu_v.find('>ul>li>ul>li[class=active]').parents('li').attr('class','active');
+	menu_v.find('>ul>li[class=active]').find('>ul').css('display','block');
+
+	function menu_vToggle(event){
+		var t = $(this);
+
+		if (this == lastEvent) return false;
+		lastEvent = this;
+		setTimeout(function(){ lastEvent=null }, 200);
+
+		if (t.next('ul').is(':hidden')) {
+			sItem.find('>ul').slideUp(100);
+			t.next('ul').slideDown(100);
+		} else if(!t.next('ul').length) {
+			sItem.find('>ul').slideUp(100);
+		} else {
+			t.next('ul').slideUp(100);
+		}
+
+		if (t.parent('li').hasClass('active')){
+			t.parent('li').removeClass('active');
+		} else {
+			sItem.removeClass('active');
+			t.parent('li').addClass('active');
+		}
+	}
+	sItem.find('>a').click(menu_vToggle).focus(menu_vToggle);
+
+	function subMenuActive(){
+		ssItem.removeClass('active');
+		$(this).parent(ssItem).addClass('active');
+	};
+	ssItem.find('>a').click(subMenuActive).focus(subMenuActive);
+
+	//icon
+	menu_v.find('>ul>li>ul').prev('a').append('<span class="i"></span>');
+});
+</script>
+</head>
+
+<body>
+
+<!--header-->
+<?include("header.html")?>
+<!--//header-->
+
+<!--article-->
+<article>
+
+  <!--contents-->
+  <div id="contents">
+
+    <!--title_group-->
+
+    <div class="title_group">
+      <?include("prev.html")?>
+      <h2 class="title">제품소개</h2>
+    </div>
+    <!--//title_group-->
+
+    <!--Caterogy_group-->
+    <div class="caterogy_group">
+
+      <div class="menu_v" id="menu_v">
+	    <ul>
+	      <li><a href="#"><span>ACA2000 통합솔루션</span>
+          <span class="i">&gt;</span></a>
+		    <ul style="display:block;">
+		      <li><a href="product01-01.html"><span>- 개 괄</span></a></li>
+              <li><a href="product01-02.html"><span>- 경영정보시스템</span></a></li>
+              <li><a href="product01-03.html"><span>- 중심업무시스템</span></a></li>
+              <li><a href="product01-04.html"><span>- 학생관리시스템</span></a></li>
+              <li><a href="product01-05.html"><span>- MOBILE ACA2000</span></a></li>
+              <li><a href="product01-06.html"><span>- 동영상보기</span></a></li>
+		    </ul>
+	      </li>
+          <li><a href="#"><span>ACA2000 부가서비스</span>
+          <span class="i">&gt;</span></a>
+            <ul style="display:none;">
+              <li><a href="product02-01.html"><span>- 인터넷전화 연동서비스</span></a></li>
+              <li><a href="product02-02.html"><span>- 신용카드단말기 연동서비스</span></a></li>
+              <li><a href="product02-03.html"><span>- 080수신거부 연동서비스</span></a></li>
+              <li><a href="product02-04.html"><span>- 문자전송 연동서비스</span></a></li>
+              <li><a href="product02-05.html"><span>- 동영상호스팅 서비스</span></a></li>
+              <li><a href="product02-06.html"><span>- 온라인카드결제 연동서비스</span></a></li>
+              <li><a href="product02-07.html"><span>- CMS(수강료자동이체) 연동서비스</span></a></li>
+              <li><a href="product02-08.html"><span>- 진단평가 연동서비스</span></a></li>
+              <li><a href="product02-09.html"><span>- 출결관리 연동서비스</span></a></li>
+              <li><a href="product02-10.html"><span>- 현금영수증 연동서비스</span></a></li>
+              <li><a href="product02-11.html"><span>- 학원명 검색등록 대행 서비스</span></a></li>
+            </ul>
+          </li>
+          <li><a href="#"><span>홈페이지 제작</span>
+          <span class="i">&gt;</span></a>
+            <ul style="display:none;">
+              <li><a href="product03-01.html"><span>- 홈페이지빌더</span></a></li>
+              <li><a href="product03-02.html"><span>- 마이페이지</span></a></li>
+              <li><a href="product03-03.html"><span>- 교재사이트</span></a></li>
+            </ul>
+          </li>
+	    </ul>
+      </div>
+
+
+
+    </div>
+    <!--//Caterogy_group-->
+
+  </div>
+  <!--//contents-->
+
+</article>
+<!--//article-->
+
+
+<!--footer-->
+<?include("footer.html")?>
+<!--//footer-->
+
+
+
+</body>
+</html>

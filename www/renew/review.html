@@ -1,0 +1,225 @@
+<?
+include_once("script/include_common_file.php");
+
+$code1 = secu($_GET[code1]);
+$keyword = secu($keyword);
+
+if(!$code1 && !$keyword){
+	$arr = explode(",",$NATIONS);
+	$code1=$arr[0];
+}
+
+####각종 기초 정보 결정
+$view_row=10;	//한 페이지에 보여줄 행 수를 결정
+
+if(!$page){		//페이지 디폴트 정보 결정
+	$page=1;
+}
+$start=($view_row*($page-1))+1;	//페이지에 따라 처음 불러올 row의 포인터를 결정
+$start=$start-1;
+
+
+####데이터를 불러오기 위한 쿼리(search의 경우를 위해)
+$filter=" and cp_id='$CID'";
+
+$code1 = secu($code1);
+if($code1) $filter .= " and nation='$code1' ";
+
+if($keyword){
+	$keyword = secu(trim($keyword));
+	$filter .= " and (name like '%$keyword%' or content like '%$keyword%') ";
+}
+
+$filter = ($filter)? " where " . substr($filter,4) : "";
+
+#query
+$sql1 = "select * from ez_review $filter";			//자료수
+$sql2 = $sql1 . " order by id_no desc limit  $start, $view_row";
+
+
+
+####자료갯수
+list($rows)=$dbo->query($sql1);//검색된 자료의 갯수
+$row_search = $rows;
+
+
+####페이지 처리
+$var=ceil($row_search/$view_row);
+if ($var > 1){
+	$total_page=$var;
+}
+else{
+	$total_page=1;
+}
+
+
+#### Link
+$link = "keyword=$keyword&code1=$code1";
+$sessLink = "page=$page&" . $link;
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko">
+<head>
+<?include("header.php");?>
+</head>
+<body>
+<!--Wrap-->
+<div id="wrap">
+
+  <!--Header-->
+  <?include("header.html")?>
+  <!--//Header-->
+
+  <!--서브메인 비주얼-->
+  <?include("sub_visual04.html")?>
+  <!--//서브메인 비주얼-->
+
+
+
+  <!--Container-->
+  <div id="container">
+
+    <!--Contents-->
+    <div id="contents">
+
+      <!--Cts_Center-->
+      <div class="cts_center pdtb35">
+
+        <!--Prd_title-->
+        <div class="prd_title">
+          <h2>골프장답사후기</h2>
+        </div>
+        <!--//Prd_title-->
+
+        <!--detail_gr-->
+        <div class="detail_gr">
+
+
+          <!--Left_Group-->
+          <div class="left_group">
+
+            <!--왼쪽메뉴-->
+            <?include("lm_review.html")?>
+            <!--//왼쪽메뉴-->
+
+           <!--왼쪽배너-->
+           <?include("comm_banner.html")?>
+           <!--//왼쪽배너-->
+
+          </div>
+          <!--Left_Group-->
+
+
+          <!--Cts_Group-->
+          <div class="cts_group">
+
+            <!--title_h3_gr-->
+            <div class="title_h3_gr">
+              <div class="title_h3"><?=($keyword)? $keyword : $code1?></div>
+
+			  <form name="fmData" method="get" action="<?=SELF?>">
+			  <input type="hidden" name="mode" value="find">
+
+              <div class="srh_cc_gr">
+                <div class="srh_cc_cts"><input type="text" name="keyword" id="keyword"  onFocus="this.style.backgroundImage=''" style=" background:#fff  url(images/review/txt_search.gif)3px center no-repeat;"  class="search_input" maxlength="30"></div>
+                <div class="srh_cc_btn"><input type="image" src="images/review/btn_search.gif" width="45" height="40" /></div>
+              </div>
+
+			  </form>
+
+            </div>
+            <!--//title_h3_gr-->
+
+
+
+
+              <div class="box_comment">임직원들이 직접 현지 익스펙션 (Inspection)을 진행한 골프장위주로 맞춤형 투어 상품을 판매하고 있습니다. <br />국가별 골프장의 답사후기를  보시고 원하시는 골프장을 선택해 주시기 바랍니다.</div>
+
+			<?
+			if($page!=1){$num=$row_search-($view_row*($page-1));}
+			else{$num=$row_search;}
+
+			$dbo->query($sql2);
+			while($rs=$dbo->next_record()){
+				$filename = $PUBLIC_PATH . "public/review/".$rs[filename1];
+				$thumb = $PUBLIC_PATH . "public/thumb/tb_".$rs[filename1];
+				$pic = ($rs[filename1])? thumbnail($filename, 240, 155, 0, 1, 100, 0, "", "", $thumb) : "images/review/thumb_review.gif";
+
+				$rs[url] = ($rs[url])? $rs[url] :"#";
+			?>
+              <!--Box_list_gr : 후기리스트-->
+              <div class="box_list_gr">
+
+				<a href="<?=$rs[url]?>" target="_blank">
+                <!--box_list_thumb : 이미지-->
+                <div class="box_list_thumb"><img src="<?=$pic?>" width="240" height="155" /></div>
+                <!--//box_list_thumb : 이미지-->
+
+                <!--box_list_info : 정보-->
+                <div class="box_list_info">
+
+                  <div class="review_title"><?=$rs[name]?></div>
+
+                  <div class="review_intro"><?=nl2br(stripslashes(check_content_https($rs[content])))?></div>
+
+                  <div class="review_option">
+                    <ul>
+                      <li><img src="images/review/ic_nation.gif"  alt="국가" /></li>
+                      <li class="option_red"><?=$rs[nation]?></li>
+                      <li><img src="images/review/ic_area.gif"  alt="국가" /></li>
+                      <li class="option_green"><?=$rs[city]?></li>
+                      <li><img src="images/review/ic_date.gif"  alt="국가" /></li>
+                      <li class="option_green"><?=$rs[ag]?></li>
+                    </ul>
+                  </div>
+
+                </div>
+                <!--//box_list_info : 정보-->
+			    </a>
+
+              </div>
+              <!--//Box_list_gr : 후기리스트-->
+
+			<?
+				$num--;
+			}
+
+			?>
+
+
+			<div style="padding:10px;text-align:center;">
+				<!-- navigation Begin---------------------------------------------->
+				<?include_once('./include/navigation.php')?>
+				<?=$navi?>
+				<!-- navigation End------------------------------------------------>
+			</div>
+
+
+
+          </div>
+          <!--//Cts_Group-->
+
+        </div>
+        <!--//detail_gr-->
+
+      </div>
+      <!--//Cts_Center-->
+
+      <!--Qucik Menu-->
+      <div class="side_s_right02"><?include("side_right.html")?></div>
+      <!--//Qucik Menu-->
+
+    </div>
+    <!--//Contents-->
+  </div>
+  <!--//Container-->
+
+
+  <!--Footer-->
+  <?include("footer.html")?>
+  <!--//Footer-->
+
+</div>
+<!--//Wrap-->
+</body>
+</html>

@@ -1,0 +1,112 @@
+<?
+include_once("script/include_common_file.php");
+
+
+if($MOBILE){
+    $url  = str_replace("renew/submain.html","m2/sub_main.html",$CPAGE);
+    Header( "HTTP/1.1 301 Moved Permanently" );
+    Header( "Location: $url" );
+    exit;
+}
+
+
+$code1_name= get_category_name_path($code1,1);
+
+/*
+if($sbt){
+	$code1_name=base64_decode($sbt);
+}
+*/
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko">
+<head>
+<?include("header.php");?>
+<script language="JavaScript">
+<!--
+function load_submain(total_rows){
+
+	var divname =(total_rows!=undefined)? total_rows : "";
+
+	$(".list_more02").hide();
+
+	$("#submain_wrap"+divname).load('inc_submain.php', {
+	  'total_rows': total_rows,
+	  'stype': '<?=$stype?>',
+	  'code1': '<?=$code1?>',
+	  'code2': '<?=$code2?>',
+	  'code3': '<?=$code3?>',
+	  'keyword': '<?=$keyword?>'
+	});
+}
+
+$(function(){
+	load_submain();
+});
+//-->
+</script>
+</head>
+<body>
+<!--Wrap-->
+<div id="wrap">
+
+  <!--Header-->
+  <?include("header.html")?>
+  <!--//Header-->
+
+
+  <!--서브메인 비주얼-->
+  <?include("sub_visual.html")?>
+  <!--//서브메인 비주얼-->
+
+
+  <!--Container-->
+  <div id="container" >
+
+    <!--Sub_Contents-->
+    <div id="sub_contents">
+
+      <!--Cts_Center-->
+      <div class="cts_center pdtb35">
+
+        <!--Title_H2_Gr-->
+        <div class="submain_h2">
+          <div class="submain_titgr">
+            <div class="submain_title"><span class="bold"><?=$code1_name?></span> <?if($code1!=27 && $code1!=28){?>인기상품<?}?></div>
+            <div class="submain_comment">
+              <?if(strstr($code1_name,"추천")){?>
+              <?=($CP_COMPANY2)?$CP_COMPANY2:'이룸투어'?>에서 지금 이 시즌 가장 추천 드리는 상품입니다
+              <?}else{?>
+              <?=($CP_COMPANY2)?$CP_COMPANY2:'이룸투어'?>에서 <?=$code1_name?> 여행을 추천해 드립니다.
+              <?}?>
+            </div>
+
+          </div>
+        </div>
+        <!--//Title_H2_Gr-->
+
+        <!--detail_gr-->
+        <div class="detail_gr" id="submain_wrap"></div>
+        <!--//detail_gr-->
+
+      </div>
+      <!--//Cts_Center-->
+
+      <!--Qucik Menu-->
+      <div class="side_s_right02"><?include("side_right.html")?></div>
+      <!--//Qucik Menu-->
+
+    </div>
+    <!--//Sub_Contents-->
+  </div>
+  <!--//Container-->
+
+
+  <!--Footer-->
+  <?include("footer.html")?>
+  <!--//Footer-->
+
+</div>
+<!--//Wrap-->
+</body>
+</html>

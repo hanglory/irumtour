@@ -1,0 +1,22 @@
+
+    <div class="top_menu">
+      <ul>
+
+         <?
+		  $j=1;
+		  $sql_ = "select * from ez_tour_category1 order by id_no asc limit 4";
+		  $dbo_->query($sql_);
+		  for($i=0; $i<=4;$i++){
+			  $rs_=$dbo_->next_record();
+			  if($rs_[id_no]){
+		  ?>
+		  <li class="<?=($j==5)?"top_menu_last":""?>"><a href="sub_menu.html?code1=<?=$rs_[id_no]?>" target="<?=$target?>"  class="<?=($code1==$rs_[id_no])?'on':''?>"><?=$rs_[subject]?></a></li>
+		  <?
+			}
+		  $j++;
+		  }?>
+		  <li class="top_menu_last"><a href="comty01.html?bmode=read&bid=notice&page=1&id_no=46&l=1"   class="<?=(strstr(SELF,'comty01'))?'on':''?>">추천상품</a></li>
+
+      </ul>
+    </div>
+

@@ -1,0 +1,368 @@
+<?
+include_once("script/include_common_file.php");
+
+reset($_POST);while(list($key,$val)=each($_POST)){  $_POST[$key] = secu($_POST[$key]);}reset($_POST);
+reset($_GET);while(list($key,$val)=each($_GET)){  $_GET[$key] = secu($_GET[$key]);}reset($_GET);
+
+
+If($mode=="save"){
+
+	$reg_date = date('Y/m/d');
+	$reg_date2 = date('H:i:s');
+
+	$code1 = $category_step1;
+	$code2 = $category_step2;
+	$code3 = $category_step3;
+
+	$phone = "${phone1}-${phone2}-${phone3}";
+	$cell = "${cell1}-${cell2}-${cell3}";
+
+	For($i=0; $i<count($area1);$i++){
+		$area .="," . $area1[$i];
+	}
+	For($i=0; $i<count($area2);$i++){
+		$area .="," . $area1[$i];
+	}
+	For($i=0; $i<count($area3);$i++){
+		$area .="," . $area1[$i];
+	}
+
+	$area = str_replace(",,",",",substr($area,1));
+
+	$arr = explode(">",get_category_name("${code1}-${code2}-${code3}"));
+	$nation  =$arr[1];
+	$city  =$arr[2];
+
+  if(strlen($cell)<12){error("잘못된 접근입니다.");exit;}
+
+	$sql="
+	   insert into ez_pack_request (
+	      date_s,
+	      days1,
+	      people,
+	      name,
+	      phone,
+	      cell,
+	      code1,
+	      code2,
+	      code3,
+	      bit_single,
+	      status,
+	      nation,
+	      city,
+	      reg_date,
+	      reg_date2
+	  ) values (
+	      '$date_s',
+	      '$days1',
+	      '$people',
+	      '$name',
+	      '$phone',
+	      '$cell',
+	      '$code1',
+	      '$code2',
+	      '$code3',
+	      '$bit_single',
+	      '접수',
+	      '$nation',
+	      '$city',
+	      '$reg_date',
+	      '$reg_date2'
+	)";
+	if($dbo->query($sql)){
+
+		$WEBMASTER = "irumplace@naver.com";
+		$fromMail = $WEBMASTER;
+		$fromName = $SITE_NAME2;
+		$toMail = $WEBMASTER;
+
+		$headers  = 'MIME-Version: 1.0' . "\r\n";
+		$headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
+		$headers .= 'From: ' . $fromName . ' <' . $fromMail . '>' . "\r\n";
+
+		$mailContent ="문의 날짜 : $reg_date <br/>";
+		$mailContent .="여행일정 : $date_s ~ $date_e <br/>";
+		$mailContent .="예상인원 : $people <br/>";
+		$mailContent .="희망지역 : $reg_date <br/>";
+		$mailContent .="희망국가 : $nation <br/>";
+		$mailContent .="소속단체명 : $org <br/>";
+		$mailContent .="성명 : $reg_date $assort_memo1 $assort_memo2<br/>";
+		$mailContent .="연락처 : $reg_date <br/>";
+		$mailContent .="이메일주소 : $reg_date <br/>";
+		$mailContent .="투어성격 : $assort  <br/>";
+		$mailContent .="골프장종류 : $etc1 <br/>";
+		$mailContent .="호텔/골프장 수준 : $etc2 <br/>";
+		$mailContent .="식사수준 : $etc3 <br/>";
+		$mailContent .="객실 수준 : $etc4 <br/>";
+		$mailContent .="싱글룸사용여부 : $etc5 <br/>";
+		$mailContent .="기타 요청사항 : $content <br/>";
+
+		mail($toMail, $assort . "문의", $mailContent, $headers );
+
+		msggo("접수가 완료되었습니다.  빠른 시간내에 담당자가 연락드리겠습니다.","index.html");
+
+
+		$par = "code1=$code1";
+		$par .= "&code2=$code2";
+		$par .= "&code3=$code3";
+		$par .= "&bit_single=$bit_single";
+		$par .= "&tour_date=$date_s";
+		$par .= "&tour_date2=$date_e";
+
+		redirect2("http://irumtour.net/renew/self_req01.html?$par");
+
+	}
+	exit;
+
+}
+
+
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko">
+<head>
+<?include("header.php");?>
+<?include("../new/include/tour_options.php");?>
+<?include("../new/include/tour_options2.php");?>
+<script type="text/javascript">
+<!--
+$(function(){
+	$("[name=nation]").click(function(){
+		var str = $(this).val();
+		$("#area1").hide();$("#area2").hide();$("#area3").hide();$("#area4").hide();
+		if(str=="동남아") $("#area1").show();
+		else if(str=="일본") $("#area2").show();
+		else if(str=="중국") $("#area3").show();
+		else if(str=="기타해외") $("#area4").show();
+	});
+
+	$(".assort").click(function(){
+		$("#assort_tmp").val($(this).val());
+	});
+
+});
+
+function checkForm(){
+
+	var fm = document.fmData;
+
+  if($("#agree").is(':checked') == false){alert("개인정보 수집 및 이용에 동의하십니까?");return;}
+
+	if(check_blank(fm.date_s,'출발일을',0)=='wrong'){return }
+	if(check_select(fm.days1,'체류일수를')=='wrong'){return }
+	if(check_select(fm.people,'체류일수')=='wrong'){return }
+	if(check_blank(fm.name,'성명을',0)=='wrong'){return }
+
+	/*
+	if(check_blank(fm.phone1,'연락처를',0)=='wrong'){return }
+	if(check_blank(fm.phone2,'연락처를',0)=='wrong'){return }
+	if(check_blank(fm.phone3,'연락처를',0)=='wrong'){return }
+	if(check_num(fm.phone1,'연락처')=='wrong'){return }
+	if(check_num(fm.phone2,'연락처')=='wrong'){return }
+	if(check_num(fm.phone3,'연락처')=='wrong'){return }
+	*/
+
+	if(check_blank(fm.cell1,'핸드폰 번호를',3)=='wrong'){return }
+	if(check_blank(fm.cell2,'핸드폰 번호를',4)=='wrong'){return }
+	if(check_blank(fm.cell3,'핸드폰 번호를',4)=='wrong'){return }
+	if(check_num(fm.cell1,'핸드폰')=='wrong'){return }
+	if(check_num(fm.cell2,'핸드폰')=='wrong'){return }
+	if(check_num(fm.cell3,'핸드폰')=='wrong'){return }
+
+	if(check_select(fm.category_step2,'희망국가')=='wrong'){return }
+	//if(check_select(fm.category_step3,'희망도시')=='wrong'){return }
+	fm.submit();
+
+}
+
+function page_cancel(){
+	if(confirm('취소하세겠습니까?')){
+		history.back(-1);
+	}
+}
+
+$(function(){
+	document.getElementById('category_step1').selectedIndex=1;
+	setOption(document.getElementById('category_step1'),'','26');
+});
+//-->
+</script>
+<link rel="stylesheet" type="text/css" href="css/import.css"/>
+
+</head>
+<body>
+<!--Wrap-->
+<div id="wrap">
+
+  <!--Header-->
+  <?include("header.html")?>
+  <!--//Header-->
+
+
+  <!--서브메인 비주얼-->
+  <?include("sub_visual07.html")?>
+  <!--//서브메인 비주얼-->
+
+
+  <!--Container-->
+  <div id="container">
+
+    <!--Sub_Contents-->
+    <div id="sub_contents">
+      <div class="cts_center pdtb35">
+        <div id="sub_contents2">
+          <!--Cts_Center-->
+          <div class="cts_center pdtb35">
+            <!--Prd_title-->
+            <div class="prd_title"  id="ptop">
+              <h2>셀프견적서</h2>
+              <!--<div class="sort_gr">
+            <ul>
+              <li id="sort01"><a href="javascript:load_sublist('',1)">신상품순</a></li>
+              <li id="sort02"><a href="javascript:load_sublist('',2)">인기상품순</a></li>
+              <li id="sort03"><a href="javascript:load_sublist('',3)">높은가격순</a></li>
+              <li id="sort04"><a href="javascript:load_sublist('',4)">낮은가격순</a></li>
+            </ul>
+          </div>-->
+            </div>
+            <!--//Prd_title-->
+            <!--req_search : 셀프견적 검색-->
+            <?//include("search.html")?>
+            <!--req_search : 셀프견적 검색-->
+            <!--detail_gr-->
+            <div class="detail_gr">
+              <!--Left_Group-->
+              <div class="left_group">
+                <!--왼쪽메뉴-->
+                <?include("lm_selfreq.html")?>
+                <!--//왼쪽메뉴-->
+                <!--왼쪽배너-->
+                <?include("comm_banner.html")?>
+                <!--//왼쪽배너-->
+              </div>
+              <!--Left_Group-->
+              <!--Cts_Group-->
+              <div class="cts_group">
+                <div class="req_img"><img src="images/comty/img_self.jpg" alt=""  /></div>
+
+            <!--Privacy : 이용약관 동의-->
+            <?include("inc_privacy.html")?>
+            <!--//Privacy : 이용약관 동의-->
+
+            <div class="title_h4"><span class="green02 bold">정보</span>입력</div>
+
+
+                <form name="fmData" method="post" action="<?=SELF?>">
+                  <input type="hidden" name="mode" value="save" />
+                  <input type="hidden" name="assort_tmp" id="assort_tmp" value="" />
+                  <table class="tbl_group" cellpadding="0" cellspacing="0" summary="투어문의">
+                    <caption>
+                      투어문의
+                    </caption>
+                    <colgroup>
+                      <col width="25%" />
+                      <col width="17%" />
+                      <col width="*" />
+                    </colgroup>
+                    <tbody>
+                      <tr>
+                        <th scope="row"><img src="images/comty/ic_compulsory.png"  />문의날짜</th>
+                        <td colspan="2"><span class="red bold">
+                          <?=date("Y년 m월 d일")?>
+                        </span></td>
+                      </tr>
+                      <tr>
+                        <th scope="row"><img src="images/comty/ic_compulsory.png"  />여행출발일</th>
+                        <td colspan="2"><?=html_input("date_s",13,10,'input dateinput')?>
+                          ~
+                          <?=html_input("date_e",13,10,'input dateinput')?></td>
+                      </tr>
+                      <tr>
+                        <th scope="row"><img src="images/comty/ic_compulsory.png"  />체류일수</th>
+                        <td colspan="2"><select name="days1" class="search_select">
+                          <option selected>선택</option>
+                          <?=option_int(1,10,1)?>
+                        </select>
+                          박 </td>
+                      </tr>
+                      <tr>
+                        <th scope="row"><img src="images/comty/ic_compulsory.png"  />여행인원</th>
+                        <td colspan="2"><select name="people" class="search_select">
+                          <option selected>선택</option>
+                          <?=option_int(1,50,1)?>
+                        </select></td>
+                      </tr>
+                      <tr>
+                        <th rowspan="2" scope="row"><img src="images/comty/ic_compulsory.png"  />개인정보</th>
+                        <td class="sub_tit"><img src="images/comty/ic_compulsory.png"  /> 성명</td>
+                        <td><?=html_input("name",20,30)?></td>
+                      </tr>
+                      <!-- <tr>
+                   <td class="sub_tit"><img src="images/comty/ic_compulsory.png"  /> 연락처</td>
+                   <td>
+					<?=html_input("phone1",5,4)?> - <?=html_input("phone2",5,4)?> - <?=html_input("phone3",5,4)?>
+				   </td>
+                 </tr> -->
+                      <tr>
+                        <td class="sub_tit"><img src="images/comty/ic_compulsory.png"  /> 휴대폰번호</td>
+                        <td><?=html_input("cell1",4,3)?>
+                          -
+                          <?=html_input("cell2",5,4)?>
+                          -
+                          <?=html_input("cell3",5,4)?></td>
+                      </tr>
+                      <tr>
+                        <th scope="row"><img src="images/comty/ic_compulsory.png" />희망국가</th>
+                        <td colspan="2"><?
+					$sql3 = "select * from ez_tour_category1 where id_no=26 order by binary seq asc";
+					$dbo3->query($sql3);
+					while($rs3= $dbo3->next_record()){
+						$keys .= "," . $rs3[subject];
+						$vals .= "," . $rs3[id_no];
+					}
+					?>
+                          <select name="category_step1" id="category_step1" onchange="setOption(this,'','');" class="search_select hide">
+                            <?=option_str("대분류".$keys,$vals,'')?>
+                          </select>
+                          <select name="category_step2" id="category_step2" onchange="setOption2(this,'','');" class="search_select">
+                          </select>
+                          <select name="category_step3" id="category_step3" class="search_select hide">
+                          </select></td>
+                      </tr>
+                      <tr>
+                        <th scope="row"><img src="images/comty/ic_compulsory.png"  />싱글사용여부</th>
+                        <td colspan="2"><label>
+                          <input type="checkbox" name="bit_single" value="1" <?=($rs[bit_single])?"checked":""?> />
+                          싱글사용</label></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <div class="button_center"><a href="javascript:checkForm()"><img src="images/comty/btn_req.gif" alt="견적서보기" /></a>&nbsp;<a href="javascript:page_cancel()"><img src="images/comty/btn_cancel.gif" alt="취소하기" /></a></div>
+                </form>
+              </div>
+              <!--//Cts_Group-->
+            </div>
+            <!--//detail_gr-->
+          </div>
+          <!--//Cts_Center-->
+          <!--Qucik Menu-->
+          <div class="side_s_right02">
+            <?include("side_right.html")?>
+          </div>
+          <!--//Qucik Menu-->
+        </div>
+      </div>
+    </div>
+    <!--//Sub_Contents-->
+  </div>
+  <!--//Container-->
+
+
+  <!--Footer-->
+  <?include("footer.html")?>
+  <!--//Footer-->
+
+</div>
+<!--//Wrap-->
+</body>
+</html>

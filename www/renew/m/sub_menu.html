@@ -1,0 +1,152 @@
+<?
+include_once("./script/include_common_mobile.php");
+?>
+<!doctype html>
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="css/import.css"/>
+<?include("header.php")?>
+<script src="http://code.jquery.com/jquery-latest.js" type="text/javascript"></script>
+<script type="text/javascript" src="./include/jquery.easing.min.js"></script>
+<script type="text/javascript" src="./include/jquery.easing.compatibility.js"></script>
+
+<script type="text/javascript">
+jQuery(function($){
+
+	// Side Menu
+	var menu_v = $('div.menu_v');
+	var sItem = menu_v.find('>ul>li');
+	var ssItem = menu_v.find('>ul>li>ul>li');
+	var lastEvent = null;
+
+	sItem.find('>ul').css('display','none');
+	menu_v.find('>ul>li>ul>li[class=active]').parents('li').attr('class','active');
+	menu_v.find('>ul>li[class=active]').find('>ul').css('display','block');
+
+	function menu_vToggle(event){
+		var t = $(this);
+
+		if (this == lastEvent) return false;
+		lastEvent = this;
+		setTimeout(function(){ lastEvent=null }, 200);
+
+		if (t.next('ul').is(':hidden')) {
+			sItem.find('>ul').slideUp(100);
+			t.next('ul').slideDown(100);
+		} else if(!t.next('ul').length) {
+			sItem.find('>ul').slideUp(100);
+		} else {
+			t.next('ul').slideUp(100);
+		}
+
+		if (t.parent('li').hasClass('active')){
+			t.parent('li').removeClass('active');
+		} else {
+			sItem.removeClass('active');
+			t.parent('li').addClass('active');
+		}
+	}
+	sItem.find('>a').click(menu_vToggle).focus(menu_vToggle);
+
+	function subMenuActive(){
+		ssItem.removeClass('active');
+		$(this).parent(ssItem).addClass('active');
+	};
+	ssItem.find('>a').click(subMenuActive).focus(subMenuActive);
+
+	//icon
+	menu_v.find('>ul>li>ul').prev('a').append('<span class="i"></span>');
+});
+</script>
+</head>
+<body>
+<!--header-->
+<?include("header.html")?>
+<!--//header-->
+
+<!--article-->
+<article>
+
+  <!--contents-->
+  <div id="contents">
+
+    <!--topmenu-->
+    <?include("topmenu.html")?>
+    <!--//topmenu-->
+
+    <!--title_group-->
+    <div class="title_group">
+      <?include("prev.html")?>
+      <?include("catagtory_info.html")?>
+    </div>
+    <!--//title_group-->
+
+    <!--Caterogy_group-->
+    <div class="caterogy_group">
+
+      <div class="menu_v" id="menu_v">
+	    <ul>
+
+         <?
+		  $j=1;
+
+		  $sql_ = "select * from ez_tour_category2 where code1=$code1 $NOTCTG order by seq asc";
+		  $dbo_->query($sql_);
+		  while($rs_=$dbo_->next_record()){
+
+			$sql9 = "select * from ez_tour_category3 where code2=$rs_[id_no] order by seq asc";
+			list($rows9)=$dbo9->query($sql9);
+
+			$url = ($rows9)? "#":"sub_list.html?code1=$code1&code2=$rs_[id_no]";
+		  ?>
+          <li><a href="<?=$url?>"><span>· <?=$rs_[subject]?></span>
+          <span class="i">&gt;</span></a>
+
+			 <?
+			  $sql9 = "select * from ez_tour_category3 where code2=$rs_[id_no] order by seq asc";
+			  list($rows9)=$dbo9->query($sql9);
+			  if($rows9){
+			  ?>
+				<ul style="display:block;">
+				  <?while($rs9=$dbo9->next_record()){?>
+				  <li><a href="sub_list.html?code1=<?=$code1?>&code2=<?=$rs_[id_no]?>&code3=<?=$rs9[id_no]?>"><span>- <?=$rs9[subject]?></span></a></li>
+				  <?}?>
+				</ul>
+			<?}else{?>
+				<ul style="display:block;">
+				  <li><a href="sub_list.html?code1=<?=$code1?>&code2=<?=$rs_[id_no]?>"><span>- <?=$rs_[subject]?></span></a></li>
+				</ul>
+			<?}?>
+
+          </li>
+		  <?
+		  $j++;
+		  }?>
+
+
+	    </ul>
+      </div>
+
+
+
+    </div>
+    <!--//Caterogy_group-->
+
+
+
+
+  </div>
+  <!--contents-->
+
+</article>
+<!--//article-->
+
+
+<!--footer-->
+<?include("footer.html")?>
+<!--//footer-->
+
+
+
+</body>
+</html>

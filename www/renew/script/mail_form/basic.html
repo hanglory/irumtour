@@ -1,0 +1,82 @@
+<?
+/*
+$toMail : 받는 사람 이메일
+$toName : 받는 사람 이름
+$fromMail : 보내는 사람 이메일
+$fromName : 보내는 사람 이름
+$content : 메일 내용
+$homepage
+*/
+
+$homepage = "http://www.irumtour.net/new";
+$imagePath = $homepage;
+
+$mailContent = "
+
+<html>
+<head>
+<meta http-equiv='content-type' content='text/html; charset=euc-kr'>
+<title>메일서비스.</title>
+<style>
+<!--
+body,td,select { font-family:Verdana,굴림; font-size:9pt;letter-spacing:-1px; line-height:120%; text-decoration:none; }
+-->
+</style>
+</head>
+<body bgcolor='white' text='black' link='blue' vlink='purple' alink='red' leftmargin='0' marginwidth='0' topmargin='0' marginheight='0'>
+
+<table border='0' cellpadding='0' cellspacing='0' width='600'>
+<tr>
+<td width='600' height='6' colspan='6'></td>
+</tr>
+<tr>
+<td width='6' rowspan='8'></td>
+<td colspan='4' bgcolor='#A5A5A5' height='1'></td>
+<td width='6' rowspan='8'></td>
+</tr>
+<tr>
+<td width='1' bgcolor='#A5A6A5' rowspan='6'></td>
+<td height='100' align='center' colspan='2'>
+<p><img src='$imagePath/images/mail/mail_title.gif' width='570' height='84' border='0'></p>
+</td>
+<td width='1' bgcolor='#A5A6A5' rowspan='6'></td>
+</tr>
+<tr>
+<td width='293' align='right' valign='bottom'>&nbsp;</td>
+<td width='293' align='right'>&nbsp;</td>
+</tr>
+<tr>
+<td width='586' colspan='2' height='20'>
+<p style='line-height:150%;'>&nbsp;
+</td>
+</tr>
+<tr>
+<td width='586' colspan='2' align='center'>
+<table style='line-height:150%;' border='0' cellpadding='0' cellspacing='0' width='510'>
+<tr>
+<td bgcolor='#F4F4F4' style='padding:20px; line-height:170%;' align='left'>
+<p>$content</p>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td width='586' colspan='2' height='49' align='right'>
+
+</td>
+</tr>
+<tr>
+<td colspan='4' bgcolor='#A5A6A5' height='1'></td>
+</tr>
+<tr>
+<td width='600' height='6' colspan='6'></td>
+</tr>
+</table>
+</body>
+</html>
+
+";
+
+//echo($mailContent);
+?>

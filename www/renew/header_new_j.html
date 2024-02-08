@@ -1,0 +1,70 @@
+<script type="text/javascript">
+<!--
+function reset_nation_icon(){
+    var code2="<?=$code2?>";
+    if(code2==75) $("#cm01 img").attr("src","images/common/ctr_japan_on.png");
+    else if(code2==76) $("#cm02 img").attr("src","images/common/ctr_taiwan_on.png");
+    else if(code2==77) $("#cm03 img").attr("src","images/common/ctr_thailand_on.png");
+    else if(code2==78) $("#cm04 img").attr("src","images/common/ctr_vietnam_on.png");
+    else if(code2==79) $("#cm05 img").attr("src","images/common/ctr_asean_on.png");
+    else if(code2==80) $("#cm06 img").attr("src","images/common/ctr_philippines_on.png");
+    else if(code2==81) $("#cm07 img").attr("src","images/common/ctr_eu_on.png");
+    else if(code2==82) $("#cm08 img").attr("src","images/common/ctr_malaysia_on.png");
+    else if(code2==83) $("#cm09 img").attr("src","images/common/ctr_america_on.png");
+    else if(code2==84) $("#cm10 img").attr("src","images/common/ctr_eu_on.png");
+    else if(code2==85) $("#cm11 img").attr("src","images/common/ctr_oz_on.png");
+}
+
+function check_top_find(){
+    var fm=document.fm_top_find;
+    if(check_blank(fm.keyword,'검색어를',2)=='wrong'){return false;}
+}
+
+$(function(){
+
+    reset_nation_icon();
+
+    $(".twoDep_menu02 img").on("mouseover",function(){
+        $(this).attr("src",$(this).attr("src").replace('_on.png', '.png'));
+        $(this).attr("src",$(this).attr("src").replace('.png', '_on.png'));
+    });
+
+    $(".twoDep_menu02 img").on("mouseout",function(){
+        $(this).attr("src",$(this).attr("src").replace('_on.png', '.png'));
+        reset_nation_icon();
+    });
+
+});
+//-->
+</script>
+
+<!--N_Header-->
+
+
+  <div class="header_cont"> 
+    
+    <!--Header_400-->
+    <div class="header_400"> 
+    
+      
+    </div>
+    <!--//Header_400--> 
+    
+    <!--Header_400-->
+    <div class="header_400">
+
+    </div>
+    <!--//Header_400--> 
+    
+    <!--Header_400-->
+    <div class="header_400"> 
+      
+
+    </div>
+    <!--//Header_400--> 
+    
+  </div>
+  
+
+
+

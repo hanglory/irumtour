@@ -1,0 +1,180 @@
+<?
+include_once("script/include_common_file.php");
+
+if($MOBILE){
+    $url = "/m2/join_form.html?$qs";
+    Header( "HTTP/1.1 301 Moved Permanently" );
+    Header( "Location: $url" );
+    exit;
+}
+
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko">
+<head>
+<?include("header.php");?>
+</head>
+<body>
+<!--Wrap-->
+<div id="wrap">
+
+  <!--Header-->
+  <?include("header.html")?>
+  <!--//Header-->
+
+  <!--서브메인 비주얼-->
+  <?include("sub_visual11.html")?>
+  <!--//서브메인 비주얼-->
+
+  <!--Container-->
+  <div id="container">
+
+    <!--Contents-->
+    <div id="contents">
+
+      <!--Cts_Center-->
+      <div class="cts_center pdtb35">
+
+        <!--Prd_title-->
+        <div class="prd_title">
+          <h2>회원공간</h2>
+        </div>
+        <!--//Prd_title-->
+
+        <!--detail_gr-->
+        <div class="detail_gr">
+
+
+          <!--Left_Group-->
+          <div class="left_group">
+
+            <!--왼쪽메뉴-->
+            <?include("lm_member02.html")?>
+            <!--//왼쪽메뉴-->
+
+           <!--왼쪽배너-->
+           <?include("comm_banner.html")?>
+           <!--//왼쪽배너-->
+
+          </div>
+          <!--Left_Group-->
+
+
+          <!--Cts_Group-->
+          <div class="cts_group">
+
+            <!--title_h3_gr02-->
+            <div class="title_h3_gr02">
+              <div class="title_h3">회원가입</div>
+           </div>
+           <!--//title_h3_gr02-->
+           
+           <div class="title_h4"><span class="green02 bold">약관</span>동의</div>
+           
+           <!--terms_gr-->
+           <div class="terms_gr">
+             <ul>
+               <li class="all"><span id="chk_all"><label><input type="checkbox" id="agree" onclick="all_check(this.checked)"/> 모든 내용에 동의합니다.</label></span></li>
+               <li><label><input type="checkbox" id="agree1" /> 이용약관 내용에 동의합니다.</label> <div class="btn_terms"><a href="#popup1" class="open-popup-link">약관보기</a></div>
+                 
+                 <!--모달레이어팝업 : 이용약관-->
+                 <div id="popup1" class="layer-popup mfp-hide">
+                   <div class="mpbox">
+                     <p class="potit">이용약관</p>
+                     <div class="txt">
+                       <iframe width="100%" height="350"  src="text/agreement.html"  frameborder="0"></iframe>
+                     </div>
+                   </div>
+                 </div>
+                 
+                 <script>
+                   $('.open-popup-link').magnificPopup({
+                   type:'inline',
+                   midClick: true // allow opening popup on middle mouse click. Always set it to true if you don't provide alternative source.
+                   });
+                 </script>
+                 <!--//모달레이어팝업 : 이용약관-->
+            </li>
+            <li><label><input type="checkbox" id="agree2" /> 개인정보수집 및 이용에 대한 내용에 동의합니다. </label> <div class="btn_terms"><a href="#popup2" class="open-popup-link">약관보기</a></div>
+              
+                 <!-- 모달레이어팝업 : 개인정보수집 및 이용 -->
+                 <div id="popup2" class="layer-popup mfp-hide">
+                  <div class="mpbox">
+                     <p class="potit">개인정보수집 및 이용</p>
+                     <div class="txt">
+                       <iframe width="100%" height="350"  src="text/privacy1.html"   frameborder="0"></iframe>
+                     </div>
+                  </div>
+                 </div>
+                 
+                 <script>
+                   $('.open-popup-link').magnificPopup({
+                   type:'inline',
+                   midClick: true // allow opening popup on middle mouse click. Always set it to true if you don't provide alternative source.
+                   });
+                 </script>
+                 <!-- //모달레이어팝업 : 개인정보수집 및 이용 -->
+              
+            </li>
+            <li><label><input type="checkbox" id="agree3" /> 개인정보의 취급위탁 내용에 동의합니다. </label> <div class="btn_terms"><a href="#popup3" class="open-popup-link">약관보기</a></div>
+              
+                 <!-- 모달레이어팝업 : 개인정보수집 및 이용 -->
+                 <div id="popup3" class="layer-popup mfp-hide">
+                  <div class="mpbox">
+                     <p class="potit">개인정보취급위탁안내</p>
+                     <div class="txt">
+                       <iframe width="100%" height="350"  src="text/privacy4.html" frameborder="0"></iframe>
+                     </div>
+                  </div>
+                 </div>
+                 
+                 <script>
+                   $('.open-popup-link').magnificPopup({
+                   type:'inline',
+                   midClick: true // allow opening popup on middle mouse click. Always set it to true if you don't provide alternative source.
+                   });
+                 </script>
+                 
+                 <!-- //모달레이어팝업 : 개인정보수집 및 이용 -->              
+              
+              </li>
+            </ul>
+        </div>
+        <!--//terms_gr-->    
+                   
+           <div class="title_h4"><span class="green02 bold">회원정보</span>입력</div>    
+            <!--회원정보-->
+            <?include("inc_member.html")?>
+            <!--//-회원정보-->
+           
+
+          
+
+            
+          </div>
+          <!--//Cts_Group-->
+
+        </div>
+        <!--//detail_gr-->
+
+      </div>
+      <!--//Cts_Center-->
+
+      <!--Qucik Menu-->
+      <div class="side_s_right02"><?include("side_right.html")?></div>
+      <!--//Qucik Menu-->
+
+    </div>
+    <!--//Contents-->
+  </div>
+  <!--//Container-->
+
+
+  <!--Footer-->
+  <?include("footer.html")?>
+  <!--//Footer-->
+
+</div>
+<!--//Wrap-->
+</body>
+</html>

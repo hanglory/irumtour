@@ -1,0 +1,89 @@
+<script type="text/javascript">
+function chatbot(bit){
+	if(bit==1){
+		$("#chatbot").attr("src","chatbot.html");
+		$("#bx_chatbot").show();
+	}else{
+		$("#bx_chatbot").hide();
+	}
+}	
+</script>
+<link rel="stylesheet" type="text/css" href="css/import.css"/>
+
+
+<div class="quickmenu">
+  <ul>
+    <!-- <li><a href="javascript:chatbot(1)"><img src="images/common/chatbot.png"  alt="챗봇" /></a></li> -->
+    <li><a href="<?=$KAKAO_LINK?>" target="_blank"><img src="images/common/kakaotalk.png"  alt="카톡문의"/></a></li>
+  </ul>
+</div>
+
+<style type="text/css">
+#bx_chatbot{
+	position:fixed;
+	top:50%;
+	left:50%;
+	margin-top:-350px;
+	margin-left:10px;
+	z-index:999 !important;
+}	
+</style>
+
+<div id="bx_chatbot" class="chatbot hide">
+	<?//include("chatbot.html")?>
+	<iframe width="470" name="chatbot" id="chatbot"
+		height="680"
+		src="chatbot.html"
+		scrolling="NO"
+		frameborder="0"
+		>
+	</iframe>
+</div>
+
+
+<?if(!$CID){?>
+<!-- Channel Plugin Scripts -->
+<script>
+  (function() {
+    var w = window;
+    if (w.ChannelIO) {
+      return (window.console.error || window.console.log || function(){})('ChannelIO script included twice.');
+    }
+    var ch = function() {
+      ch.c(arguments);
+    };
+    ch.q = [];
+    ch.c = function(args) {
+      ch.q.push(args);
+    };
+    w.ChannelIO = ch;
+    function l() {
+      if (w.ChannelIOInitialized) {
+        return;
+      }
+      w.ChannelIOInitialized = true;
+      var s = document.createElement('script');
+      s.type = 'text/javascript';
+      s.async = true;
+      s.src = 'https://cdn.channel.io/plugin/ch-plugin-web.js';
+      s.charset = 'UTF-8';
+      var x = document.getElementsByTagName('script')[0];
+      x.parentNode.insertBefore(s, x);
+    }
+    if (document.readyState === 'complete') {
+      l();
+    } else if (window.attachEvent) {
+      window.attachEvent('onload', l);
+    } else {
+      window.addEventListener('DOMContentLoaded', l, false);
+      window.addEventListener('load', l, false);
+    }
+  })();
+  ChannelIO('boot', {
+    "pluginKey": "a996a533-b90b-4ee3-af3d-2f335a187475"
+  });
+</script>
+<!-- End Channel Plugin -->
+<?}?>
+
+
