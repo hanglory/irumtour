@@ -1,0 +1,310 @@
+<?
+include_once("./script/include_common_mobile.php");
+
+reset($_POST);while(list($key,$val)=each($_POST)){  $_POST[$key] = secu($_POST[$key]);}reset($_POST);
+reset($_GET);while(list($key,$val)=each($_GET)){  $_GET[$key] = secu($_GET[$key]);}reset($_GET);
+
+
+If($mode=="save"){
+
+  $reg_date = date('Y/m/d');
+  $reg_date2 = date('H:i:s');
+
+  $phone = "${phone1}-${phone2}-${phone3}";
+
+  For($i=0; $i<count($area1);$i++){
+    $area .="," . $area1[$i];
+  }
+  For($i=0; $i<count($area2);$i++){
+    $area .="," . $area1[$i];
+  }
+  For($i=0; $i<count($area3);$i++){
+    $area .="," . $area1[$i];
+  }
+
+  $area = str_replace(",,",",",substr($area,1));
+
+  $sql="
+     insert into ez_request (
+      date_s,
+      date_e,
+      people,
+      nation,
+      area,
+      org,
+      name,
+      phone,
+      email,
+      assort,
+      assort_memo1,
+      assort_memo2,
+      content,
+      etc1,
+      etc2,
+      etc3,
+      etc4,
+      etc5,
+      memo,
+      status,
+      reg_date,
+      reg_date2
+    ) values (
+      '$date_s',
+      '$date_e',
+      '$people',
+      '$nation',
+      '$area',
+      '$org',
+      '$name',
+      '$phone',
+      '$email',
+      '$assort',
+      '$assort_memo1',
+      '$assort_memo2',
+      '$content',
+      '$etc1',
+      '$etc2',
+      '$etc3',
+      '$etc4',
+      '$etc5',
+      '$memo',
+      '$status',
+      '$reg_date',
+      '$reg_date2'
+  )";
+
+  if($dbo->query($sql)){
+
+    $fromMail = $WEBMASTER;
+    $fromName = $SITE_NAME2;
+    $toMail = $WEBMASTER;
+
+    $headers  = 'MIME-Version: 1.0' . "\r\n";
+    $headers .= 'Content-type: text/html; charset=utf-8' . "\r\n";
+    $headers .= 'From: ' . $fromName . ' <' . $fromMail . '>' . "\r\n";
+
+    $mailContent ="문의 날짜 : $reg_date <br/>";
+    $mailContent .="여행일정 : $date_s ~ $date_e <br/>";
+    $mailContent .="예상인원 : $people <br/>";
+    $mailContent .="희망지역 : $reg_date <br/>";
+    $mailContent .="희망국가 : $nation <br/>";
+    $mailContent .="소속단체명 : $org <br/>";
+    $mailContent .="성명 : $reg_date $assort_memo1 $assort_memo2<br/>";
+    $mailContent .="연락처 : $reg_date <br/>";
+    $mailContent .="이메일주소 : $reg_date <br/>";
+    $mailContent .="투어성격 : $assort  <br/>";
+    $mailContent .="골프장종류 : $etc1 <br/>";
+    $mailContent .="호텔/골프장 수준 : $etc2 <br/>";
+    $mailContent .="식사수준 : $etc3 <br/>";
+    $mailContent .="객실 수준 : $etc4 <br/>";
+    $mailContent .="싱글룸사용여부 : $etc5 <br/>";
+    $mailContent .="기타 요청사항 : $content <br/>";
+
+    mail($toMail, $assort . "문의", $mailContent, $headers );
+?>
+<!-- NAVER SCRIPT* -->
+<script type="text/javascript" src="//wcs.naver.net/wcslog.js"></script>
+<script type="text/javascript">
+if (!wcs_add) var wcs_add={};
+wcs_add["wa"] = "s_1a8045f4534a";
+if (!_nasa) var _nasa={};
+_nasa["cnv"] = wcs.cnv("5","1");
+wcs_do(_nasa);
+</script>
+
+<!-- Mirae Log Analysis Conversion Script Ver 1.0   -->
+<script type='text/javascript'>
+var mi_type = 'CV_1';
+var mi_val = 'Y';
+var mi_adkey = "olxfm";
+var mi_is_defender = "";
+var mi_dt=new Date(),mi_y=mi_dt.getFullYear(),mi_m=mi_dt.getMonth()+1,mi_d=mi_dt.getDate(),mi_h=mi_dt.getHours();
+var mi_date=""+mi_y+(mi_m<=9?"0":"")+mi_m+(mi_d<=9?"0":"")+mi_d+(mi_h<=9?"0":"")+mi_h;
+var mi_script = "<scr"+"ipt "+"type='text/javascr"+"ipt' src='//log1.toup.net/mirae_log.js?t="+mi_date+"' async='true'></scr"+"ipt>";
+document.writeln(mi_script);
+</script>
+<!-- Mirae Log Analysis Script END  -->
+<?
+    msggo("접수가 완료되었습니다.  빠른 시간내에 담당자가 연락드리겠습니다.","index.html");
+  }
+  exit;
+
+}
+
+
+?>
+<!doctype html>
+<html lang="ko">
+<head>
+<?include("header.php")?>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script type="text/javascript">
+<!--
+$(function(){
+  $("[name=nation]").click(function(){
+    var str = $(this).val();
+    $("#area1").hide();$("#area2").hide();$("#area3").hide();$("#area4").hide();
+    if(str=="동남아") $("#area1").show();
+    else if(str=="일본") $("#area2").show();
+    else if(str=="중국") $("#area3").show();
+    else if(str=="기타해외") $("#area4").show();
+  });
+
+  $(".assort").click(function(){
+    $("#assort_tmp").val($(this).val());
+  });
+
+  $(".dateinput").datepicker({
+    dateFormat: "yy/mm/dd"
+  });
+
+
+    <?if($CP_NAVER){?>
+        window.open('<?=$CP_NAVER?>');
+    <?}?>
+
+});
+
+function checkForm(){
+
+  var fm = document.fmData;
+
+  if($("#agree").is(':checked') == false){alert("개인정보 수집 및 이용에 동의하십니까?");return;}
+
+  if(fm.nation_tmp.value=="") fm.nation_tmp.value="동남아";
+
+  if(check_blank(fm.date_s,'출발일을',0)=='wrong'){return }
+  if(check_blank(fm.date_e,'출발일을',0)=='wrong'){return }
+  if(check_blank(fm.people,'예상인원을',0)=='wrong'){return }
+  if(check_num(fm.people,'예상인원')=='wrong'){return }
+
+  if(fm.nation_tmp.value==""){alert('희망국가를'); return}
+  if(fm.nation_tmp.value=="동남아" && fm.area1_tmp.value==1){alert('희망지역을 선택해 주세요.'); return}
+  if(fm.nation_tmp.value=="일본" && fm.area2_tmp.value==1){alert('희망지역을 선택해 주세요.'); return}
+  if(fm.nation_tmp.value=="중국" && fm.area3_tmp.value==1){alert('희망지역을 선택해 주세요.'); return}
+  if(fm.nation_tmp.value=="기타해외" && fm.area4_tmp.value==1){alert('희망지역을 선택해 주세요.'); return}
+
+  if(check_blank(fm.org,'단체명을',0)=='wrong'){return }
+  if(check_blank(fm.name,'성명을',0)=='wrong'){return }
+  if(check_blank(fm.phone1,'연락처를',0)=='wrong'){return }
+  if(check_blank(fm.phone2,'연락처를',0)=='wrong'){return }
+  if(check_blank(fm.phone3,'연락처를',0)=='wrong'){return }
+  if(check_num(fm.phone1,'연락처')=='wrong'){return }
+  if(check_num(fm.phone2,'연락처')=='wrong'){return }
+  if(check_num(fm.phone3,'연락처')=='wrong'){return }
+  if(check_blank(fm.email,'이메일주소를',0)=='wrong'){return }
+  if(check_email(fm.email)=='wrong'){return}
+
+  if(fm.assort_tmp.value==""){alert('투어성격을 선택해 주세요.'); return}
+  if(fm.etc1_tmp.value==""){alert('골프장종류를 선택해 주세요.'); return}
+  if(fm.etc2_tmp.value==""){alert('호텔/골프장 수준을 선택해 주세요.'); return}
+  if(fm.etc3_tmp.value==""){alert('식사수준을 선택해 주세요.'); return}
+  if(fm.etc4_tmp.value==""){alert('객실수준을 선택해 주세요.'); return}
+  if(fm.etc5_tmp.value==""){alert('싱글룸 사용여부를 선택해 주세요.'); return}
+
+  fm.submit();
+
+}
+//-->
+</script>
+</head>
+<body>
+<!--header-->
+<?include("header_new.html")?>
+<!--//header-->
+
+<!--article-->
+<article>
+
+  <!--contents-->
+  <div id="contents">
+
+
+    <!--sub_wrap-->
+    <div class="sub_wrap">
+
+      <div class="sm_title">
+        <ul>
+          <li>맞춤여행문의</li>
+          <li class="ctg_comment">아래 내용을 정확히 입력해 주시면 검토 후 견적을 드리겠습니다.</li>
+        </ul>
+      </div>
+
+      <!--탭메뉴별 상세정보-->
+      <div class="item_group">
+
+        <!--cts_info-->
+        <div class="cts_info">
+
+
+              <!--req_selbox-->
+              <div class="req_selbox">
+                <ul>
+                  <li>
+                    <div class="selbox_sec01">
+                      <div class="selbox_no">01</div>
+                      <div class="selbox_tit"><p>Indiviaua Tour</p>
+                      개별 맞춤여행</div>
+                    </div>
+
+                    <div class="selbox_sec01"><img src="images/comty/req01.png" /></div>
+                    <div class="selbox_sec02">- 2인 부부 및 커플<br />
+                    - 2인~ 이상 가족, 친구, 지인<br />
+                    <p>※인원에 상관없이 개인적인 골프여행</p>
+                    </div>
+
+                    <div class="secbtn01"><a href="request.html">개별 맞춤여행 문의하기</a></div>
+
+                  </li>
+
+                  <li>
+                    <div class="selbox_sec01">
+                      <div class="selbox_no">02</div>
+                      <div class="selbox_tit"><p>Group Tour</p>
+                      그룹 맞춤여행</div>
+                    </div>
+
+                    <div class="selbox_sec01"><img src="images/comty/req02.png" /></div>
+                    <div class="selbox_sec02">- 골프가 포함된 인센티브여행<br />
+                    - 협회, 동호회 등 단체골프여행<br />
+                    <p class="orange">※8명 이상의 그룹</p>
+                    </div>
+
+                    <div class="secbtn02"><a href="request_group.html">그룹 맞춤여행 문의하기</a></div>
+
+                  </li>
+
+                </ul>
+              </div>
+              <!--//req_selbox-->
+
+
+
+        </div>
+        <!--//cts_info-->
+
+      </div>
+      <!--탭메뉴별 상세정보-->
+
+    </div>
+    <!--//sub_wrap-->
+
+
+
+
+  </div>
+  <!--contents-->
+
+</article>
+<!--//article-->
+
+
+<!--footer-->
+<?include("footer.html")?>
+<!--//footer-->
+
+
+
+</body>
+</html>

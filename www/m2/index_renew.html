@@ -1,0 +1,310 @@
+<?
+include_once("./script/include_common_mobile.php");
+?>
+<!doctype html>
+<html lang="ko">
+<head>
+<?include("header_index.php")?>
+</head>
+<body>
+
+<script type="text/javascript" src="../renew/include/jquery.min.js" ></script>
+<script type="text/javascript" src="js/webpublisher.js" ></script>  
+<script type="text/javascript" src="js/TweenMax.min.js"></script>
+<script type="text/javascript" src="js/swiper.min.js"></script>
+<script type="text/javascript" src="js/jquery.sticky.js"></script>
+
+<link type="text/css" rel="stylesheet" href="./css/import_index.css">
+<link type="text/css" rel="stylesheet" href="js/swiper.min.css">
+
+<script type="text/javascript">
+<!--
+function tab_thema(i){
+    $(".tab_recomm").hide();
+    $("#tab_recomm_"+i).show();
+}
+
+$(function(){
+    tab_thema(1);
+});
+//-->
+</script>
+
+
+<!--header-->
+<?include("header_new.html")?>
+<!--//header-->
+
+<!--메인 비주얼-->
+<?include("vsl_renew.html")?>
+<!--//메인 비주얼-->
+
+<!--article-->
+<article>
+
+  <!--main_cts01-->
+  <div id="main_cts01">
+
+
+    <!--m_secgr01 : 시즌추천-->
+    <div class="m_secgr01">
+
+      <!--tit_sec01-->
+      <div class="tit_sec01">
+        <h2 class="titgr">
+         <p class="eng_t01">Seasonal Recomended Tour</p>
+          <p class="season_t01">시즌별 추천상품</p>
+        </h2>
+
+        <div class="comt_title">이번 시즌 베스트 여행 상품을 만나보세요.</div>
+
+      </div>
+      <!--//tit_sec01-->
+
+
+         <script type="text/javascript">
+                $(document).on('ready', function() {
+                  $(".season").slick({
+                    dots: false,
+                    arrows: false,
+                    infinite: true,
+                    slidesToShow: 1,
+                    slidesToScroll: 1,
+                    autoplay: true,
+                    autoplaySpeed: 3500,
+                  });
+                });
+            </script>
+
+        <!--season-->
+        <div class="season">
+
+
+          <?
+          //시즌골프
+          $dbo->query($sql_best_c1);
+          while($rs=$dbo->next_record()){
+
+              $filename = $PUBLIC_PATH . "public/goods/".$rs[filename1];
+              $thumb = $PUBLIC_PATH . "public/thumb/tb_".$rs[filename1];
+              $pic =($rs[filename1])? thumbnail($filename, 593, 544, 0, 1, 100, 0, "", "", $thumb) : "images/main/thumb_recoom01.jpg";
+              $rs[pr] = titleCut2($rs[pr],130);
+              if(!strstr($rs[season],"봄&가을")) $rs[season].="골프";
+          ?>
+          <div class="season_prd">
+            <dl>
+              <a href="itemview.html?tid=<?=$rs[tid]?>">
+              <dt><img src="<?=$pic?>" width="100%" height="300" alt="<?=$rs[subject]?>"/><div class="sea_label"><?=($rs[season])?$rs[season]:"사계절"?></div></dt>
+              <dd>
+                <p class="pname"><?=$rs[subject]?></p>
+                <!--<p class="pcmt"><?=$rs[pr]?></p>-->
+                <p class="price"><?=nf($rs[price_adult])?><span>원~</span></p>
+              </dd>
+              </a>
+            </dl>
+          </div>
+          <?}?>
+
+        </div>
+        <!--//season-->
+
+    </div>
+    <!--//m_secgr01 : 시즌추천-->
+
+
+    <!--m_secgr02 : 테마추천-->
+    <div class="m_secgr02">
+
+      <!--tit_sec01-->
+      <div class="tit_sec01">
+        <h2 class="titgr">
+          <p class="eng_t02">Theme Recomended Tour</p>
+          <p class="season_t02">테마별 추천상품</p>
+        </h2>
+        <div class="comt_title02">테마가 있는 골프여행! 색다른 해외골프여행 만나보실까요? </div>
+
+      </div>
+      <!--//tit_sec01-->
+
+      <?include("inc_thema_renew.php")?>
+
+
+    </div>
+    <!--//m_secgr02 : 테마추천-->
+
+    <!--m_secgr03 : 초특가 추천-->
+    <div class="m_secgr03">
+
+       <!--tit_sec01-->
+       <div class="tit_sec01">
+         <h2 class="titgr">
+           <p class="eng_t03">Special Offer tour</p>
+           <p class="season_t03">초특가 추천상품</p>
+         </h2>
+         <div class="comt_title">최고의 골프전문가들이 엄선한 가성비 최고의 여행! </div>
+       </div>
+       <!--//tit_sec01-->
+
+
+       <!--sec03_img-->
+       <div class="sec03_img"><img src="images/renew/img_offer.png" width="100%" alt="초특가강력추천!"  /></div>
+       <!--//sec03_img-->
+
+
+      <?
+      //초특가
+      $i=0;
+      $dbo->query($sql_best_c4);
+      while($rs=$dbo->next_record()){
+          $i++;
+          $filename = $PUBLIC_PATH . "public/goods/".$rs[filename1];
+          $thumb = $PUBLIC_PATH . "public/thumb/tb_".$rs[filename1];
+          $pic =($rs[filename1])? thumbnail($filename, 593, 544, 0, 1, 100, 0, "", "", $thumb) : "images/main/thumb_recoom01.jpg";
+          $rs[pr] = titleCut2($rs[pr],130);
+          $mgr2 = ($i%2)? "mgr2":"";
+      ?>
+       <!--sec03_prdgr-->
+       <div class="sec03_prdgr <?=$mgr2?>">
+         <a href="itemview.html?tid=<?=$rs[tid]?>">
+             <img src="<?=$pic?>" width="100%" height="200px"  alt="<?=$rs[subject]?>"/>
+             <div class="sec03_prdtit">
+               <p><?=$rs[subject]?></p>
+             </div>
+         </a>
+       </div>
+       <!--//sec03_prdgr-->
+      <?}?>
+
+
+
+    </div>
+    <!--//m_secgr03 : 초특가 추천-->
+
+
+    <!--m_secgr04 : 골프여행문의-->
+    <div class="m_secgr04">
+
+      <!--tit_comty_gr-->
+      <div class="tit_comty_gr">
+        <h3><span class="t_cscenter">골프여행</span>문의<span class="t_eng">Golf Tour Inquiry</span></h3>
+      </div>
+      <!--//tit_comty_gr-->
+
+      <!--sec04_box-->
+            <div class="sec04_box mgr2">
+
+              <!--sec04_cscenter-->
+              <div class="sec04_cscenter">
+                <ul>
+                  <li>고객상담센터</li>
+                  <li><img src="/renew/images/newmain/cs_tel.png" alt="고객상담센터" /></li>
+                  <li><p class="tel_no">02-512-7705</p>
+                      <p class="fax_no">Fax. 02-6442-4577</p>
+                      <p class="cs_time">업무시간 : (평일) 09:00~18:00<br /><span>(토,일,공휴일 휴무)</span></p>
+                  </li>
+                </ul>
+              </div>
+              <!--//sec04_cscenter-->
+
+            </div>
+            <!--//sec04_box-->
+
+            <!--sec04_box-->
+            <div class="sec04_box">
+
+              <!--sec04_cscenter-->
+              <div class="sec04_cscenter">
+                <ul>
+                  <li>입금계좌안내</li>
+                  <li><img src="/renew/images/newmain/cs_bank.png"  alt="입금계좌 안내" /></li>
+                  <li><p class="bank_name">국민은행</p> <p class="bank_no">813037-04-005009</p><p class="bank_user">예금주 : (주)이룸플레이스</p></li>
+                </ul>
+              </div>
+              <!--//sec04_cscenter-->
+
+            </div>
+            <!--//sec04_box-->
+
+            <!--btn_cs-->
+            <div class="btn_cs"><a href="#pop_req01" class="open-popup-link">맞춤여행문의</a>
+
+              <!--모달레이어팝업 : 여행문의하기-->
+              <div id="pop_req01" class="layer-popup mfp-hide">
+                <div class="dea_box">
+                  <?include("pop_request.html")?>
+                </div>
+              </div>
+              <script type="text/javascript" src="css/jquery.magnific-popup.min.js" ></script>
+              <link type="text/css" rel="stylesheet" href="css/magnific-popup.css">
+              <script>
+                $('.open-popup-link').magnificPopup({
+                type:'inline',
+                midClick: true // allow opening popup on middle mouse click. Always set it to true if you don't provide alternative source.
+                });
+              </script>
+              <!--//모달레이어팝업 : 여행문의하기-->
+
+            </div>
+            <!--//btn_cs-->
+
+    </div>
+    <!--//m_secgr04 : 골프여행문의-->
+
+
+  </div>
+  <!--//main_cts01-->
+
+</article>
+<!--//article-->
+
+
+
+
+<style type="text/css" media="screen">
+/*popup*/
+.pop_win{
+    position: absolute;
+    top:50px;
+    left:5%;
+    width:90%;
+    z-index:999999 !important;
+}
+</style>
+<?
+#### 팝업창 처리
+$cdate = date("Y/m/d H:i");
+$sql = "
+    select * from popup where open=1 and cp_id='$CID'
+    order by id_no asc
+";
+$dbo->query($sql);
+while($rs =$dbo->next_record()){
+    $popup_id =(strstr($_SESSION["chk_popup"],"@${rs[id_no]}@"))?1:0;
+    if($rs[open] && !$popup_id){
+?>
+    <script>
+    $(function(){
+        $('#popup_<?=$rs[id_no]?>').load('popup2.php', {
+          'id_no': '<?=$rs[id_no]?>'
+        });
+    });     
+    </script>
+    <div id="popup_<?=$rs[id_no]?>" class="pop_win"></div>
+
+<?
+    }
+}
+?>
+
+
+
+
+
+<!--footer-->
+<?include("footer.html")?>
+<!--//footer-->
+
+
+
+</body>
+</html>

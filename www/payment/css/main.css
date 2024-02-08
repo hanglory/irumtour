@@ -1,0 +1,96 @@
+@charset "utf-8";
+@import url("common.css");
+
+.sub_imgbox{height:100%;}
+
+/* sub visual */
+#s_visual {position:Relative; width:100%; /*height:100%;*/height:40%; z-index:9; }
+#s_visual .sub_m01{background:#000 url(../images/sub_v1.jpg) center center/cover no-repeat}
+#s_visual .sub_m02{background:#000 url(../images/sub_v2.jpg) center center/cover no-repeat}
+#s_visual .sub_m03{background:#000 url(../images/sub_v3.jpg) center center/cover no-repeat}
+
+#s_visual .section02{margin-bottom:2px;width:100%; height:100%; min-height:200px; position:relative;overflow:hidden;background-position:center;background-size:cover; border:0;}
+
+.vtxt02 {position:absolute; top:45%; left:50%; transform: translate(-50%, -35%); text-align:center; box-sizing:border-box; width:100%; z-index:9999}
+.vtxt02 h3 {font-size:34px; letter-spacing:-2pt; line-height:120%; color:#fff; font-weight:300; margin:10px 0; position:relative;}
+.vtxt02 h3 span {font-size:36px; font-weight:600; letter-spacing:-2pt; line-height:120%; line-height:inherit; color:#fff;}
+.vtxt02 p {position:Relative; font-size:16px; letter-spacing:-1pt; color:#fff; font-weight:300;  line-height:120%;   display:inline-block;}
+
+
+.cts_sub { width:96%; padding:0 2% 6% 2%}
+.stitle { width:100%; margin:5% 0 2% 0; padding-bottom:3%; border-bottom:2px solid #333; font-size:18px; color:#333;  letter-spacing:-1px; font-weight:700; float:left}
+
+.tbl_req {width:100%; float:left}
+.tbl_req tr th {padding:2% 2% 0 2%; font-weight:600; font-size:16px; color:#333;  text-align:left; letter-spacing:-1px; }
+.tbl_req tr td {padding:2%; text-align:left; font-size:15px;  color:#444; letter-spacing:-1px; border-bottom:1px solid #ddd}
+
+.input_form {background:#f8f8f8; border:1px solid #ddd;  padding:2%; font-size:14px; color:#666; border-radius:3px  !important; }
+.input_price {background:#f8f8f8; border:1px solid #ddd;  padding:2%; font-size:16px; color:#ea3d0f; letter-spacing:-1px; font-family:Verdana; font-weight:600; border-radius:3px  !important;}
+
+.fileBox .fileName {display:inline-block; background:#f8f8f8; border:1px solid #ddd;  padding:2% 3%; font-size:14px; color:#666; border-radius:3px !important; margin-right:2px;-webkit-border-radius:0;-moz-border-radius:0;border-radius:0;  vertical-align:middle}
+.fileBox .btn_file {display:inline-block; text-align:center; letter-spacing:-1px; background:#6e6e6e; border:1px solid #6e6e6e; color:#fff;  vertical-align:middle; padding:2% 4%;  border-radius:3px !important; -webkit-border-radius:0;-moz-border-radius:0;border-radius:0;   }
+.fileBox input[type="file"] {position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+
+.select {border:solid 1px #ddd; padding:8px 10px; font-size:17px;  color:#444; }
+
+.privacy_box {width:97%; background:#fff; border:1px solid #e4e4e4; padding:0 0 0 2%; float:left; }
+.acceet {width:100%; margin:2% 0;  padding:2% 0; text-align:center; color:#333;  font-size:15px; font-weight:600; float:left; }
+.point { color:#ea520f; padding-left:3px; font-size:16px; font-weight:600}
+
+.card_txt {width:100%; font-size:14px; color:#444;    }
+.red02 { color:#e43535; text-decoration:underline }
+
+
+/* 버튼 */
+.subBtn {position:relative; overflow:hidden; text-align:center; margin:5% auto 0 auto}
+.subBtn a {display:inline-block; margin-bottom:4%; border-radius:5px;  font-size:16px; letter-spacing:-0.3pt; color:#333; font-weight:600; border:1px solid #651c1a; background:#fff; padding:4% 0; width:100%; line-height:100%; box-sizing:border-box; text-align:center; transition: all 0.3s ease-out}
+.subBtn a.inquiry {color:#fff; background-color:#651c1a; margin-right:0; }
+
+
+.subBtn.blue a {color:#651c1a; border-color:#651c1a; }
+.subBtn.blue a.inquiry {background-color:#651c1a; color:#fff; }
+
+
+/*체크, 라디오버튼 CSS*/
+input[type="checkbox"] {display:none;}
+input[type="checkbox"] + label {color:#444;}
+input[type="checkbox"] + label span {display:inline-block; width:24px;  height:25px; margin:-1px 1px 0 0;  vertical-align:middle;  background: url(../images/check_radio_sheet.png); cursor:pointer;}
+input[type="checkbox"]:checked + label span {background: url(../images/check_radio_sheet.png) -23px top no-repeat; }
+input[type="radio"] {display:none;}
+input[type="radio"] + label {color:#444;}
+input[type="radio"] + label span {display:inline-block;  width:24px;  height:25px; margin:-2px 3px 0 0;  vertical-align:middle;  background: url(../images/check_radio_sheet.png) -47px -2px no-repeat;  cursor:pointer;}
+input[type="radio"]:checked + label span {background: url(../images/check_radio_sheet.png) -71px -2px  no-repeat; }
+
+
+
+
+
+
+/*******************************************************************************
+	@media ~680px
+*******************************************************************************/
+@media all and (max-width:680px){
+}
+
+
+/*******************************************************************************
+	@media 421~480px
+*******************************************************************************/
+@media all and (max-width:480px){
+}
+
+
+/*******************************************************************************
+	@media 321~420px
+*******************************************************************************/
+
+@media all and (max-width:420px){
+.vtxt h3 {font-size:28px}
+}
+
+
+/*******************************************************************************
+	@media ~320px
+*******************************************************************************/
+@media all and (max-width:320px){
+}

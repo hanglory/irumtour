@@ -1,0 +1,124 @@
+<?
+include_once("./script/include_common_mobile.php");
+?>
+<!doctype html>
+<html lang="ko">
+<head>
+<?include("header.php")?>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+</head>
+<body>
+<!--header-->
+<?include("header_new.html")?>
+<!--//header-->
+
+<!--article-->
+<article>
+
+  <!--contents-->
+  <div id="contents">
+
+
+    <!--sub_wrap-->
+    <div class="sub_wrap">
+
+      <div class="sm_title">
+        <ul>
+          <li>회사소개</li>
+          <li class="ctg_comment">골프전문여행사와 함께하시면<br />여행의 품격이 달라집니다.</li>
+        </ul>
+      </div>
+
+      <!--탭메뉴별 상세정보-->
+      <div class="item_group">
+
+        <!--tab_menu02-->
+        <div class="tab_menu02">
+          <ul>
+            <li><a href="greeting.html">CEO인사말</a></li>
+            <li><a href="history.html">회사연혁</a></li>
+            <li><a href="overview.html">일반현황</a></li>
+            <li><a href="business.html">사업영역</a></li>
+            <li class="on"><a href="location.html">오시는 길</a></li>
+          </ul>
+        </div>
+        <!--//tab_menu02-->
+
+        <!--cts_info-->
+        <div class="cts_info">
+
+
+               <!-- * 카카오맵 - 지도퍼가기 -->
+                <!-- 1. 지도 노드 -->
+                <div id="daumRoughmapContainer1699229339382" class="root_daum_roughmap root_daum_roughmap_landing" style="width:100%"></div>
+                <script charset="UTF-8" class="daum_roughmap_loader_script" src="https://ssl.daumcdn.net/dmaps/map_js_init/roughmapLoader.js"></script>
+
+                <!-- 3. 실행 스크립트 -->
+                <script charset="UTF-8">
+                    new daum.roughmap.Lander({
+                        "timestamp" : "1699229339382",
+                        "key" : "2gpvb",
+                        "mapHeight" : "330"
+                    }).render();
+                </script>
+
+           <!--overview_box-->
+               <div class="overview_box" style="margin-top:20px;">
+                 <ul>
+                   <li>
+                     <div class="overcts_ico"><img src="/renew/images/company/ico_add.png" /></div>
+                     <div class="overcts_tit">주소</div>
+                     <div class="overcts_cts">서울시 종로구 종로19(종로1가 르메이에르 종로타운) 1216호</div>
+                   </li>
+
+                   <li>
+                     <div class="overcts_ico"><img src="/renew/images/company/ico_tel.png"  alt=""/></div>
+                     <div class="overcts_tit">연락처</div>
+                     <div class="overcts_cts">대표번호 : 02-512-7705<br />
+                     팩스번호 :  02-6442-4577<br />
+                     이메일 : irumplace@irumtour.net<br />
+                     </div>
+                   </li>
+
+                   <li>
+                     <div class="overcts_ico"><img src="/renew/images/company/ico_subway.png"  alt=""/></div>
+                     <div class="overcts_tit">오시는 방법</div>
+                     <div class="overcts_cts"><img src="/renew/images/company/ico_line02.png"  alt="2호선"/> <span style="color:#11aa19; font-family:'notokr-medium';">을지로입구역</span> 1-1번 출구 </span> 도보 6분<br />
+                     <img src="/renew/images/company/ico_line01.png"  alt="1호선"/> <img src="/renew/images/company/ico_line02.png"  alt="2호선"/> <span style="color:#11aa19; font-family:'notokr-medium';">시청역</span> 4번 출구</span>  도보 6분<br />
+                     <img src="/renew/images/company/ico_line01.png"  alt="1호선"/> <span style="color:#3155b5; font-family:'notokr-medium';">종각역</span> 5번 출구 </span>  도보 8분<br />
+                     <img src="/renew/images/company/ico_line05.png"  alt="5호선"/> <span style="color:#8445ce; font-family:'notokr-medium';">광화문역</span>  5번 출구</span>  도보 8분</div>
+                   </li>
+                 </ul>
+               </div>
+               <!--//overview_box-->
+
+
+
+        </div>
+        <!--//cts_info-->
+
+      </div>
+      <!--탭메뉴별 상세정보-->
+
+    </div>
+    <!--//sub_wrap-->
+
+
+
+
+  </div>
+  <!--contents-->
+
+</article>
+<!--//article-->
+
+
+<!--footer-->
+<?include("footer.html")?>
+<!--//footer-->
+
+
+
+</body>
+</html>

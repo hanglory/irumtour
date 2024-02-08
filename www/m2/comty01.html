@@ -1,0 +1,77 @@
+<?
+include_once("./script/include_common_mobile.php");
+?>
+<!doctype html>
+<html lang="ko">
+<head>
+<?include("header.php")?>
+</head>
+<body>
+<!--header-->
+<?include("header_new.html")?>
+<!--//header-->
+
+<!--article-->
+<article>
+
+  <!--contents-->
+  <div id="contents">
+
+    <!--국가별메뉴-->
+    <?include("smenu.html")?>
+    <!--//국가별메뉴-->
+
+    <!--비주얼롤링-->
+    <//?include("sub_visual.html");?>
+    <!--//비주얼롤링-->
+
+
+    <!--sub_wrap-->
+    <div class="sub_wrap02">
+
+    <!--menu_group-->
+    <?include("list_smenu.html");?>
+    <!--menu_group-->
+
+
+
+        <!-- 게시판 -->
+        <?
+        $bid = ($bid)? $bid : "notice";
+        $bmode = ($bmode)? $bmode : "list";
+        $BOARD = "script_bbs/" . $bmode .  ".php";
+        include($BOARD);
+        ?>
+        <!--// 게시판 -->
+
+
+
+    </div>
+    <!--//sub_wrap-->
+
+
+
+
+  </div>
+  <!--contents-->
+
+</article>
+<!--//article-->
+
+<!-- 전환페이지 설정 -->
+<script type="text/javascript" src="//wcs.naver.net/wcslog.js"></script>
+<script type="text/javascript">
+if(document.URL.indexOf("?code1=26&code2=75")>=0){
+var _nasa={};
+_nasa["cnv"] = wcs.cnv("5","1");
+}
+</script>
+
+<!--footer-->
+<?include("footer.html")?>
+<!--//footer-->
+
+
+
+</body>
+</html>

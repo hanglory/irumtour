@@ -1,0 +1,26 @@
+
+   <div class="sub_menu02">
+      <table class="tbl_smenu02" cellpadding="0" cellspacing="0" summary="서브메뉴">
+	   <caption>서브메뉴</caption>
+          <tbody>
+          <tr>
+
+			  <?
+			  $sql9 = "select * from ez_tour_category2 where code1=$code1 order by seq asc";
+			  $dbo9->query($sql9);
+			  while($rs9=$dbo9->next_record()){
+			  ?>
+			   <td class="tab_m <?=($rs9[id_no] && $code2==$rs9[id_no])?'on':''?>" style="width:16%;letter-spacing:-1px; "><a href="sub_list.html?code1=<?=$code1?>&code2=<?=$rs9[id_no]?>" class="<?=($rs9[id_no] && $code2==$rs9[id_no])?'black':''?>" ><?=$rs9[subject]?></a></td>
+			  <?}?>
+
+          </tr>
+          </tbody>
+     </table>
+    </div>
+
+
+
+
+
+
+

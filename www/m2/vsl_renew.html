@@ -1,0 +1,68 @@
+<?
+$sql = "select * from ez_nbanner1 where bit_hide<>1 and cp_id='".$_SESSION['CID']."' order by seq asc";
+list($rows) = $dbo->query($sql);
+if(!$rows){
+    $sql = "select * from ez_nbanner1 where cp_id='".$_SESSION['CID']."'";
+    list($rows) = $dbo->query($sql);    
+    if(!$rows){
+        $sql = "select * from ez_nbanner1 where bit_hide<>1 and cp_id='' order by seq asc";
+        list($rows) = $dbo->query($sql);    
+    }
+}
+?>
+<script type="text/javascript" src="js/slick.min.js"  charset="utf-8"></script><!-- 비주얼롤링 -->
+
+<!-- Visual -->
+<div id="visual"> 
+  <script type="text/javascript">
+		$(document).on('ready', function() {
+		  $(".visual_in").slick({
+			dots: true,
+			arrows: false,
+			infinite: true,
+			slidesToShow: 1,
+			slidesToScroll: 1,
+			autoplay: true,
+			autoplaySpeed: 4500
+		  });
+		});
+	</script> 
+  
+  <!--visual_in-->
+  <div class="visual_in">
+   
+
+    <?
+    while($rs=$dbo->next_record()){
+        $url = ($rs[url])? $rs[url] : "#";
+        $rs[filename2] = ($rs[filename2])?$rs[filename2] : $rs[filename];
+    ?>         
+    <!--v_img01-->
+    <div class="v_img01" style="background:url(<?=$PUBLIC_PATH?>/public/banner/<?=$rs[filename2]?>)top center no-repeat; width:100%; height:450px; position:relative; background-size:cover;">
+      <!--v_txt-->
+      <div class="v_txt">
+      <a href="<?=$url?>" target="<?=$rs[target]?>">   
+       
+        <div class="v_contry">
+          <div class="txt_tit"><?=titleCut2($rs[text1],28)?></div>
+          <div class="txt_line"></div>
+          <div class="v_gobtn"><img src="/renew/images/newmain/vsl_more.png" alt="더보기"></div>
+        </div>
+        
+        <h2><?=nl2br($rs[text2])?></h2>
+        <div class="v_cmt"><?=$rs[text3]?></div>
+      
+      </a>
+      </div>
+      <!--//v_txt-->
+    </div>
+    <!--//v_img01-->
+    <?}?>
+
+    
+    
+  </div>
+  <!--//visual_in--> 
+  
+</div>
+<!--//Visual -->

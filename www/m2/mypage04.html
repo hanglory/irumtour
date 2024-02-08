@@ -1,0 +1,121 @@
+<?
+include_once("./script/include_common_mobile.php");
+
+$user_id = $_SESSION[sessMember][id];
+
+
+$sql = "select * from ez_member where id='".$_SESSION[sessMember][id]."' ";
+$dbo->query($sql);
+$rs = $dbo->next_record();
+
+?>
+<!doctype html>
+<html lang="ko">
+<head>
+<?include("header.php")?>
+<script language="JavaScript">
+<!--
+function frm_check(){
+
+    var fm=document.fmData;
+    <?if(!strstr($user_id,".")){?>
+    if(check_blank(fm.pwd,'비밀번호를',0)=='wrong'){return }
+    <?}?>
+    if(check_blank(fm.content,'탈퇴사유를',0)=='wrong'){return }
+
+    fm.submit();
+}
+
+//-->
+</script>
+</head>
+<body>
+<!--header-->
+<?include("header_new.html")?>
+
+<!--//header-->
+
+<!--article-->
+<article>
+
+  <!--contents-->
+  <div id="contents">
+
+    <!--sub_wrap-->
+    <div class="sub_wrap">
+
+      <div class="sm_title">
+        <ul>
+          <li>회원탈퇴</li>
+          <li class="ctg_comment">아래 정보를 정확히 입력해주세요.</li>
+        </ul>
+      </div>
+
+
+      <!--탭메뉴별 상세정보-->
+      <div class="item_group">
+
+
+        <!--tab_menu02-->
+        <div class="tab_menu02">
+          <ul>
+            <li><a href="mypage03.html">회원정보</a></li>
+            <li><a href="mypage01.html">예약현황</a></li>
+            <li><a href="mypage02.html">견적서현황</a></li>
+            <li class="on"><a href="mypage04.html">회원탈퇴</a></li>
+          </ul>
+        </div>
+        <!--//tab_menu02-->
+
+        <!--cts_info-->
+        <div class="cts_info">
+
+
+        <div class="login_box">
+            <form name="fmData" method="post" action="../renew/mypage04.html">
+             <ul>
+               <li class="t_join">아이디 <img src="images/common/ico_check.png" width="11" height="8"></li>
+               <li><input type="text" class="input_login" id="id" name="id" maxlength="30"  tabindex="1" value="<?=($rs[id_ext])?"간편로그인 사용자입니다.":user_id($user_id)?>" readonly /></li>
+
+               <?if(!$rs[id_ext]){?>
+               <li class="t_join">비밀번호 <img src="images/common/ico_check.png" width="11" height="8"></li>
+               <li><input type="password" class="input_login" id="pwd" name="pwd" maxlength="30"  tabindex="1"  /></li>
+               <?}?>
+               <li class="t_join">탈퇴사유 </li>
+               <li><input type="text" class="input_login" id="content" name="content" maxlength="30"  tabindex="1" /></li>
+             </ul>
+
+            </form>
+           </div>
+           <!--//Login_Box-->
+
+           <div class="btn_join03" onclick="javascript:frm_check()"><a href="javascript:void(0)">탈퇴하기</a></div>
+
+
+        </div>
+        <!--//cts_info-->
+
+      </div>
+      <!--탭메뉴별 상세정보-->
+
+    </div>
+    <!--//sub_wrap-->
+
+
+
+
+  </div>
+  <!--contents-->
+
+</article>
+<!--//article-->
+
+
+<!--footer-->
+<?include("footer.html")?>
+<!--//footer-->
+
+
+
+</body>
+</html>

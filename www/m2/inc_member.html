@@ -1,0 +1,169 @@
+<?
+$sql = "select * from ez_member where id='".$_SESSION[sessMember][id]."' ";
+$dbo->query($sql);
+$rs = $dbo->next_record();
+
+
+
+//간편가입/로그인s
+if($_SESSION['EXT_LOGIN']['ID']){
+
+    $arr= @unserialize($_SESSION['EXT_LOGIN']['DATA']);
+    $rs[name]=$arr[name];
+    $rs[email]=$arr[email];
+    $rs[cell]=$arr[mobile];
+    $ext_id = $_SESSION['EXT_LOGIN']['ID'];
+}
+//간편가입/로그인f
+?>
+<script language="JavaScript">
+<!--
+function frm_check(){
+
+    var fm=document.fmData;
+
+<?if(!$_SESSION[sessMember][id]){?>
+    <?if(!$ext_id && !$rs[id_ext]){?>
+    if(check_blank(fm.id,'아이디를',5)=='wrong'){return}
+    if(check_strnum(fm.id,'아이디')=='wrong'){return}
+    if(fm.id_chk.value!="1"){fm.id.value='';alert('아이디를 다시 입력해 주세요.');return}
+
+    if(check_blank(fm.pwd,'비밀번호를',6)=='wrong'){return}
+    if(check_blank(fm.pwd_check,'비밀번호 확인을',6)=='wrong'){return}
+    <?}?>
+<?}?>
+
+    <?if(!$ext_id && !$rs[id_ext]){?>
+    //if(check_strnum(fm.pwd,'비밀번호')=='wrong'){return}
+    if(fm.pwd.value != fm.pwd_check.value){alert('비밀번호와 비밀번호 확인이 서로 다릅니다. 다시 한번 입력해 주세요.');fm.pwd_check.focus();fm.pwd_check.select();return}
+        
+        <?if($rs[id]){?>
+        if(check_blank(fm.pwd_current,'현재비밀번호를',6)=='wrong'){return}
+        <?}?>
+    <?}?>
+
+
+    if(check_blank(fm.name,'이름을',0)=='wrong'){return}
+
+    if(check_blank(fm.cell,'휴대전화 번호를',13)=='wrong'){return}
+    if(fm.email_bit.value==""){alert('이메일 수신 여부를 선택해 주세요');return}
+
+<?if(!$_SESSION[sessMember][id]){?>
+    if($("#agree1:checked").length==0){ alert('이용약관에 동의하십니까?'); return ;}
+    if($("#agree2:checked").length==0){ alert('개인정보취급방침에 동의하십니까?.'); return;}
+    if($("#agree3:checked").length==0){ alert('개인정보 수집 이용목적에 동의하십니까?'); return;}
+    if($("#agree4:checked").length==0){ alert('개인정보 보유 및 이용기간에 동의하십니까?'); return;}
+<?}?>
+
+    fm.submit();
+}
+
+function chk_id(){
+    var fm = document.fmData;
+    if(check_blank(fm.id,'아이디를',5)=='wrong'){return}
+    if(check_strnum(fm.id,'아이디')=='wrong'){return}
+
+    var id = document.fmData.id.value;
+    document.fmData.id_chk.value=0;
+    actarea.location.href="/renew/inc_member.html?mode=chkid&mobile=1&id="+id;
+}
+
+function chk_cell(){
+    var fm = document.fmData;
+    if(check_blank(fm.cell,'휴대전화 번호를',14)=='wrong'){return}
+
+    var cell = document.fmData.cell1.value + "-"+ document.fmData.cell2.value + "-" +document.fmData.cell3.value;
+
+    actarea.location.href="?mode=chkcell&cell="+cell;
+}
+
+$(function(){
+    $("#agree").on("click",function(){
+        if($("#agree:checked").length==1){
+            $("#agree1").prop("checked",true);   
+            $("#agree2").prop("checked",true);   
+            $("#agree3").prop("checked",true);   
+            $("#agree4").prop("checked",true);   
+        }else{
+            $("#agree1").prop("checked",false);   
+            $("#agree2").prop("checked",false);   
+            $("#agree3").prop("checked",false);               
+            $("#agree4").prop("checked",false);               
+        }
+    });
+
+    <?if($ext_id || $rs[id_ext]){?>
+        $(".bx_normal").hide();
+        <?if($rs[name]){?>
+        $("#name").attr("readonly","readonly");
+        <?}?>
+        <?if($rs[cell]){?>
+        $("#cell").attr("readonly","readonly");
+        <?}?>
+    <?}?>
+
+    $('#cell').mask('000-0000-0000');    
+})
+//-->
+</script>
+
+            <img src="images/common/ico_check.png" width="11" height="8"> 필수항목
+            <form name="fmData" method="post" action="../renew/script/member_join.php" <?if(!$ext_id){?>target="actarea"<?}?>>
+            <input type="hidden" name="mode" value="<?=($rs[id])?"modify":"save"?>">
+            <input type="hidden" name="mobile" value="1">
+            <input type="hidden" name="id_chk" id="id_chk" value="0">
+            <input type="hidden" name="cell_chk" name="cell_chk" value="0">
+            <input type="hidden" name="address_old" id="address_old" value="<?=$rs[address_old]?>">
+
+
+
+             <ul>
+
+                <?if($rs[id_ext]){?>
+                    <li class="t_join"><?=strtoupper($rs[assort_ext])?> 계정으로 가입하셨습니다.</li>                                  
+
+                <?}elseif($_SESSION['sessMember'][id]){?>
+                    <li class="t_join">고객님의 아이디는 <?=user_id($rs[id])?> 입니다.</li>
+                <?}else{?>
+                    <li class="t_join bx_normal">아이디 <img src="images/common/ico_check.png" width="11" height="8"></li>
+                    <li class="bx_normal"><input type="text" class="input_login" id="id" name="id" maxlength="15"  tabindex="1" placeholder="영문 소문자와 숫자를 혼합하여 5자~15자" onchange="chk_id()" /></li>
+                <?}?>   
+
+                <?if(!$rs[id_ext]){?>           
+                <?
+                $placeholder=($rs[id])?"변경할 경우에만 입력하세요.":"영문 소문자와 숫자를 혼합하여 6자~20자";
+                ?>  
+
+                <?if($rs[id]){?>
+                <li class="t_join bx_normal">현재 비밀번호 <img src="images/common/ico_check.png" width="11" height="8"></li>
+                <li class="bx_normal"><input type="password" class="input_login" id="pwd_current" name="pwd_current" maxlength="11"  tabindex="1" placeholder="<?=$placeholder?>"  /></li>                
+                <?}?>
+                <li class="t_join bx_normal"><?if($rs[id_no]){?>새로운 <?}?>비밀번호</li>
+                <li class="bx_normal"><input type="password" class="input_login" id="pwd" name="pwd" maxlength="30"  tabindex="1" placeholder="<?=$placeholder?>"  />
+                    <div style="padding:5px">※ 영문 소문자와 숫자,특수문자(!,@,#,$,%,^,&,*,_)를 혼합하여 6~30자까지 입력가능.</div>
+                </li>
+                <li class="t_join bx_normal"><?if($rs[id_no]){?>새로운 <?}?>비밀번호확인</li>
+
+                <li class="bx_normal"><input type="password" class="input_login" id="pwd_check" name="pwd_check" maxlength="11"  tabindex="1" placeholder="<?=$placeholder?>"  /></li>                
+
+                <?}?>
+
+               <li class="t_join">이름 <img src="images/common/ico_check.png" width="11" height="8"></li>
+               <li><?=html_input("name",15,25,'input_login')?></li>
+               <li class="t_join">휴대폰번호 <img src="images/common/ico_check.png" width="11" height="8"></li>
+               <li><?=html_input("cell",14,13,"input_login numberic")?></li>
+               <li class="t_join">E-mail주소 <img src="images/common/ico_check.png" width="11" height="8"></li>
+               <li><?=html_input("email",40,50,"input_login")?></li>
+
+               <li class="t_join">E-Mail 수신여부 <img src="images/common/ico_check.png" width="11" height="8"></li>
+               <li><?=radio("동의&nbsp;&nbsp;&nbsp;,거부","1,0",$rs[email_bit],'email_bit')?></li>
+
+             </ul>
+
+      
+           </div>
+           <!--//Login_Box-->
+
+
+           </form>
+           

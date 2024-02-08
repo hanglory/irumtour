@@ -1,0 +1,249 @@
+<?
+include_once("./script/include_common_mobile.php");
+?>
+<!doctype html>
+<html lang="ko">
+<head>
+<?include("header.php")?>
+<script type="text/javascript" src="./include/zebra_datepicker.js"></script>
+<link rel="stylesheet" href="./include/zebra_datepicker.css" type="text/css">
+
+<script type="text/javascript">
+<!--
+$(function(){
+
+});
+//-->
+</script>
+
+
+</head>
+<body>
+<!--header-->
+<?include("header_new.html")?>
+<!--//header-->
+
+<!--메인 비주얼-->
+<?include("vsl_tpl02.html")?>
+<!--//메인 비주얼-->
+
+<!--article-->
+<article>
+
+  <!--main_cts01-->
+  <div id="main_cts01">
+
+
+    <!--tpl01_secgr01 : 시즌추천-->
+    <div class="tpl02_secgr01">
+
+          <!--타이틀-->
+          <div class="tpl_tit_sec02">
+            <ul>
+              <li class="tpl02_eng01">Seasonal Recomended Tour</li>
+              <li class="tpl02_title01">시즌별 추천상품</li>
+              <li class="tpl02_cmt01">이번 시즌 골프전문가들이 추천하는 최고의 여행상품!</li>
+            </ul>
+          </div>
+          <!--//타이틀-->
+
+
+         <script type="text/javascript">
+                $(document).on('ready', function() {
+                  $(".tpl02_season").slick({
+                    dots: false,
+                    arrows: false,
+                    infinite: true,
+                    slidesToShow: 1,
+                    slidesToScroll: 1,
+                    autoplay: true,
+                    autoplaySpeed: 3500,
+                  });
+                });
+            </script>
+
+        <!--season-->
+        <div class="tpl02_season">
+
+
+
+          <?
+          //시즌골프
+          $dbo->query($sql_best_c1);
+          while($rs=$dbo->next_record()){
+
+              $filename = $PUBLIC_PATH . "public/goods/".$rs[filename1];
+              $thumb = $PUBLIC_PATH . "public/thumb/tb_".$rs[filename1];
+              $pic =($rs[filename1])? thumbnail($filename, 593, 544, 0, 1, 100, 0, "", "", $thumb) : "images/main/thumb_recoom01.jpg";
+              $rs[pr] = titleCut2($rs[pr],130);
+              if(!strstr($rs[season],"봄&가을")) $rs[season].="골프";
+          ?>
+
+          <div class="tpl02_prd">
+            <dl>
+              <a href="itemview.html?tid=<?=$rs[tid]?>">
+              <dt><img src="<?=$pic?>" width="100%" height="240" /><div class="sea_label02"><?=($rs[season])?$rs[season]:"사계절"?></div></dt>
+              <dd>
+                <p class="tpl02_pname"><?=$rs[subject]?></p>
+                <p class="tpl02_pcmt"><?=$rs[pr]?></p>
+                <p class="tpl02_price"><?=nf($rs[price_adult])?><span class="won">원~</span></p>
+              </dd>
+              </a>
+            </dl>
+          </div>
+
+         <?}?>
+
+
+
+        </div>
+        <!--//season-->
+
+    </div>
+    <!--//tpl02_secgr01 : 시즌추천-->
+
+
+    <!--tpl02_secgr02 : 테마추천-->
+    <div class="tpl02_secgr02">
+
+
+      <!--타이틀-->
+      <div class="tpl_tit_sec02">
+        <ul>
+          <li class="tpl02_eng02">Theme  RECOMENDED TOUR</li>
+          <li class="tpl02_title02">테마별 추천상품</li>
+          <li class="tpl02_cmt02">테마가 있는 골프여행! 색다른 해외골프여행!</li>
+        </ul>
+      </div>
+      <!--//타이틀-->
+
+      <?include("inc_thema_new2.php");?>
+
+
+    </div>
+    <!--//tpl02_secgr02 : 테마추천-->
+
+
+
+    <!--tpl02_secgr03 : 초특가 추천-->
+    <div class="tpl02_secgr03">
+
+      <!--타이틀-->
+      <div class="tpl_tit_sec02">
+        <ul>
+          <li class="tpl02_eng03">SPECIAL OFFER TOUR</li>
+          <li class="tpl02_title01">초특가 추천상품</li>
+          <li class="tpl02_cmt01">최고의 골프전문가들이 엄선한 가성비 최고의 여행!</li>
+        </ul>
+      </div>
+      <!--//타이틀-->
+
+      <!--tpl02_sec03_prdgr-->
+      <div class="tpl02_sec03_prdgr  no_scroll">
+        <ul>
+
+
+          <?
+          //초특가
+          $dbo->query($sql_best_c4);
+          while($rs=$dbo->next_record()){
+
+              $filename = $PUBLIC_PATH . "public/goods/".$rs[filename1];
+              $thumb = $PUBLIC_PATH . "public/thumb/tb_".$rs[filename1];
+              $pic =($rs[filename1])? thumbnail($filename, 593, 544, 0, 1, 100, 0, "", "", $thumb) : "images/main/thumb_recoom01.jpg";
+              $rs[pr] = titleCut2($rs[pr],130);
+          ?>
+
+          <li>
+            <a href="itemview.html?tid=<?=$rs[tid]?>">
+                <p class="offer_img">  <img src="<?=$pic?>" width="100%" height="160" /></p>
+                <p class="offer_tit"><?=$rs[subject]?></p>
+                <p class="offer_cmt"><?=$rs[pr]?></p>
+                <p class="offer_price"><?=nf($rs[price_adult])?><span class="won">원~</span></p>
+            </a>
+          </li>
+
+          <?}?>
+
+        </ul>
+      </div>
+      <!--//tpl02_sec03_prdgr-->
+
+
+    </div>
+    <!--//tpl02_secgr03 : 초특가 추천-->
+
+
+    <!--tpl02_secgr04 : 골프여행문의-->
+    <div class="tpl02_secgr04">
+
+      <!--tpl02_sec04_boxgr-->
+      <div class="tpl02_sec04_boxgr">
+
+        <h4 class="tpl02_titcs"><span>고객상담</span>센터</h4>
+
+        <!--tpl02_tel-->
+        <div class="tpl02_tel">
+          <?=$CP_PHONE?>
+          <?if($CP_FAX){?><p class="tpl02_fax"><?=($CP_FAX_NAME)?$CP_FAX_NAME:'Fax'?>. <?=$CP_FAX?></p><?}?>
+
+          <div class="tpl02_time">업무시간 : (평일) 09:00~18:00 <span>(토,일,공휴일 휴무)</span>
+        </div>
+        </div>
+        <!--//tpl02_tel-->
+
+
+        <h4 class="tpl02_titcs"><span>입금계좌</span>안내</h4>
+
+        <!--tpl02_account-->
+        <div class="tpl02_account">
+          <span><?=$CP_BANK?></span> <?=$CP_BANK_ACCOUNT?>
+          <p>예금주 : <?=$CP_BANK_OWNER?></p>
+        </div>
+        <!--//tpl02_account-->
+
+        <!--tpl02_reqbtn-->
+        <div class="tpl02_reqbtn"><a href="#pop_req01" class="open-popup-link">맞춤여행문의</a>
+
+          <!--모달레이어팝업 : 여행문의하기-->
+          <div id="pop_req01" class="layer-popup mfp-hide">
+            <div class="dea_box">
+              <?include("pop_request.html")?>
+            </div>
+          </div>
+
+          <script>
+          $('.open-popup-link').magnificPopup({
+          type:'inline',
+          midClick: true // allow opening popup on middle mouse click. Always set it to true if you don't provide alternative source.
+          });
+          </script>
+          <!--//모달레이어팝업 : 여행문의하기-->
+
+        </div>
+        <!--//tpl02_reqbtn-->
+
+      </div>
+      <!--//tpl02_sec04_boxgr-->
+
+
+
+    </div>
+    <!--//tpl02_secgr04 : 골프여행문의-->
+
+
+  </div>
+  <!--//main_cts01-->
+
+</article>
+<!--//article-->
+
+
+<!--footer-->
+<?include("footer.html")?>
+<!--//footer-->
+
+
+
+</body>
+</html>

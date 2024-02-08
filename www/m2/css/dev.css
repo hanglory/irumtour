@@ -1,0 +1,75 @@
+.btnstyle{padding:5px 60px 0 0;}
+.w100{display:inline-block;width:100%;overflow:hidden}
+.w1002{display:inline-block;width:100%;overflow:hidden;height:20px;}
+.wd{display:inline-block;width:23px;}
+
+/*tour detail page의 table*/
+.tour_table table {border-top:2px solid #80A3CF;border-left:1px solid #ccc;border-collapse: collapse;width:100%;}
+.tour_table .tbl_table th{background-color:#F7F9FB}
+.tour_table .tbl_table th,.tour_table .tbl_table td {padding: 5px;border-right: 1px solid #ccc;border-bottom: 1px solid #ccc;}
+.tour_table .tbl_table td {text-align:center}
+.tour_table .tbl_table .l {text-align:left;padding-left:10px;}
+.tour_table .tbl_table .day_bar{background-color:#F7F9FB;color:#1251A4;font-weight:600;font-family:verdana;font-size:11pt}
+.button{ background-color: #D6D3D6; color:#000000 ;  height:18px; border: 1px #c0c0c0 solid;font-family:돋움;font-size:8pt}
+.w10{width:10%}
+.tbl_title{font-weight:bold;padding:20px 0 10px 0;text-align:left;color:black}
+
+
+.basic_info{
+	width:100%;
+	border-collapse:collapse	
+}
+
+.basic_info td{
+	padding:2%;
+	border:1px solid #d7d7d7;
+	line-height:120%;
+}
+
+.basic_info th{
+	background-color:#e4f6f9;
+	border:1px solid #b1d8de;
+	width:25%;
+	padding:2%; font-weight:normal; font-family:NotoKR-bold
+}
+
+.mgr{margin-right:1.5%;}
+
+.subject100{
+	display:inline-block;
+	width:95%;
+	overflow:hidden;
+	height:15px;
+}
+
+
+/****일정표****/
+.tbl_schedule  {width:100%;border-top:1px solid #374f6d; border-left:1px solid #c4cad8;   float:left}
+.tbl_schedule tbody tr th.dat_t {background:#f5f6f9; color:#374f6d; font-size:22px; border-right:1px solid #c4cad8; border-bottom:1px solid #c4cad8; vertical-align:middle; text-align:left; padding:10px; font-family:NotoKR-Bold;} 
+.tbl_schedule tbody tr th {background:#f6f9fc url(../images/detail/bg_location.png) no-repeat 12px center ; padding:10px 10px 10px 30px; border-bottom:1px solid #c4cad8;  border-right:1px solid #c4cad8; text-align:left;  font-family:NotoKR-Medium; font-size:16px; color:#316a9a;}
+.tbl_schedule tbody  tr td {padding:15px; border-bottom:1px solid #c4cad8;  border-right:1px solid #c4cad8; text-align:left; font-size:15px; font-family:NotoKR-Medium; }
+.tbl_schedule tbody  tr td.traffic {background:#fafafa; border-bottom:1px solid #c4cad8;  border-right:1px solid #c4cad8; text-align:center; color:#444;  }
+.tbl_schedule tbody  tr td.time {background:#fafafa; border-bottom:1px solid #c4cad8;  border-right:1px solid #c4cad8; text-align:center; color:#2b4f6c;  }
+.tbl_schedule tbody  tr td span {font-size:15px; font-family:NotoKR-Medium;}
+
+/*deteail_골프장css*/
+.cc_group {width:100%; float:left}
+.cc_title {width:96%; padding:2% 2% 2% 2%; background:#42b299;   float:left }
+.cc_name {width:78%; padding-left:2%; background:url(../images/detail/cc_name.png) no-repeat left 5px; color:#fff; font-size:16px; font-family:NotoKR-Medium; float:left }
+.cc_more {width:20%; text-align:right; float:left }
+
+.cc_cts {width:95.5%; padding:2% 2% 2% 2%; border:1px solid #42b299; float:left }
+.cc_imggr {width:100%; margin-top:15px; float:left}
+.cc_thumb {width:180px; float:left}
+.cc_thumb2 {width:220px; float:left}
+
+/*deteail_호텔css*/
+.hotel_group {width:100%; float:left}
+.hotel_title {width:96%; padding:2% 2% 2% 2%; background:#da4e48;   float:left }
+.hotel_name {width:77.5%; padding-left:2.5%; background:url(../images/detail/hotel_name.png) no-repeat left 3px; color:#fff; font-size:16px; font-family:NotoKR-Medium; float:left }
+.hotel_more {width:20%; text-align:right; float:left }
+.hotel_cts {width:95.5%; padding:2% 2% 2% 2%; border:1px solid #da4e48; float:left }
+.hotel_imggr {width:100%; margin-top:15px; float:left}
+.hotel_thumb {width:180px; float:left}
+.hotel_thumb2 {width:220px; float:left}
+.hide{display: none;}

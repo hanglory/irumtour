@@ -1,0 +1,226 @@
+<?
+include_once("./script/include_common_mobile.php");
+
+$mobile=0;
+$arr_browser = array ("iPhone","iPod","IEMobile","Mobile","lgtelecom","PPC");
+for($indexi = 0 ; $indexi < count($arr_browser) ; $indexi++) {
+  if(strpos($_SERVER['HTTP_USER_AGENT'],$arr_browser[$indexi]) == true){
+     $mobile=1;
+  }
+}
+
+if(!$mobile){
+  Header( "HTTP/1.1 301 Moved Permanently" );
+  Header( "Location: ../renew/login.html" );
+}
+
+?>
+<!doctype html>
+<html lang="ko">
+<head>
+<?include("header.php")?>
+<script type="text/javascript">
+<!--
+function cForm1(fm){
+  var step=$("#step").val();
+
+  if(step==1){
+    if(check_blank(fm.id,'한글성함을',0)=='wrong'){return false}
+    if(check_blank(fm.pwd,'핸드폰번호를',0)=='wrong'){return false}
+  }else{
+    if(check_blank(fm.code,'인증번호를',0)=='wrong'){return false}
+
+  }
+}
+//-->
+</script>
+</head>
+<body>
+<!--header-->
+<?include("header_new.html")?>
+<!--//header-->
+
+<!--article-->
+<article>
+
+  <!--contents-->
+  <div id="contents">
+
+
+    <!--sub_wrap-->
+    <div class="sub_wrap">
+
+      <!--<div class="sm_title">
+        <ul>
+          <li>견적 및 예약정보</li>
+          <li class="ctg_comment">테마형 골프전문 여행사 이룸투어와 함께하시면 여행의 품격이 달라집니다.</li>
+        </ul>
+      </div>-->
+
+      <div class="sm_title">
+        <ul>
+          <li>회원가입</li>
+          <li class="ctg_comment">회원이 되시면 더욱 다양한 혜택을 누리실 수 있습니다.</li>
+        </ul>
+      </div>
+
+
+      <!--item_group-->
+      <div class="item_group">
+
+        <!--cts_info-->
+        <div class="cts_info">
+
+
+
+           <!--Login_Box-->
+           <div class="title_h4"><span class="green02 bold">기본정보</span>입력</div>
+
+
+           <div class="login_box">
+
+           <?include("inc_member.html")?>
+
+           <!--Login_Box-->
+           <div class="title_h4"><span class="green02 bold">약관</span>동의</div>
+
+           <div class="login_box"><input type="checkbox"  id="agree" name="agree" />
+          <label for="agree" class="all"><span></span> 모든 약관에 동의합니다. </label></div>
+
+
+           <!--join_terms-->
+           <div class="join_terms"><input type="checkbox"  id="agree1" name="agree1" />
+             <label for="agree1" class="sub"><span></span> [필수] 서비스 이용약관에 동의 </label>
+             <div class="temrms_btn"><a href="#popup1" class="open-popup-link">약관보기</a></div>
+
+             <div id="popup1" class="layer-popup mfp-hide">
+                <div class="mpbox">
+                   <p class="potit">이용약관</p>
+                   <div class="txt">
+                      <iframe width="100%" height="350"  src="/renew/text/agreement.html" frameborder="0"></iframe>
+                   </div>
+                </div>
+             </div>
+
+             <script>
+             // Example 1: From an element in DOM
+             $('.open-popup-link').magnificPopup({
+             type:'inline',
+             midClick: true
+             });
+             </script>
+
+
+           </div>
+           <!--//join_terms-->
+
+
+           <!--join_terms-->
+           <div class="join_terms"><input type="checkbox"  id="agree2" name="agree2" />
+            <label for="agree2" class="sub"><span></span> [필수] 개인정보취급방침 동의</label>
+             <div class="temrms_btn"><a href="#popup2" class="open-popup-link">약관보기</a></div>
+
+             <div id="popup2" class="layer-popup mfp-hide">
+                <div class="mpbox">
+                   <p class="potit">수집하는 개인정보의 항목</p>
+                   <div class="txt">
+                      <iframe width="100%" height="350"  src="/renew/text/privacy.html" frameborder="0"></iframe>
+                   </div>
+                </div>
+             </div>
+
+             <script>
+             // Example 1: From an element in DOM
+             $('.open-popup-link').magnificPopup({
+             type:'inline',
+             midClick: true
+             });
+             </script>
+
+           </div>
+           <!--//join_terms-->
+
+
+
+           <!--join_terms-->
+           <div class="join_terms"><input type="checkbox"  id="agree3" name="agree3" />
+            <label for="agree3" class="sub"><span></span> [필수] 개인 정보의 수집 이용목적에 동의</label>
+             <div class="temrms_btn"><a href="#popup3" class="open-popup-link">약관보기</a></div>
+
+
+             <div id="popup3" class="layer-popup mfp-hide">
+                <div class="mpbox">
+                   <p class="potit">개인 정보의 수집 이용목적에 동의</p>
+                   <div class="txt">
+                      <iframe width="100%" height="350"  src="/renew/text/privacy2.html" frameborder="0"></iframe>
+                   </div>
+                </div>
+             </div>
+
+             <script>
+             // Example 1: From an element in DOM
+             $('.open-popup-link').magnificPopup({
+             type:'inline',
+             midClick: true
+             });
+             </script>
+
+           </div>
+           <!--//join_terms-->
+
+           <!--join_terms-->
+           <div class="join_terms"><input type="checkbox"  id="agree4" name="agree4" />
+            <label for="agree4" class="sub"><span></span> [필수] 개인정보의 보유 및 이용기간에 동의</label>
+             <div class="temrms_btn"><a href="#popup4" class="open-popup-link">약관보기</a></div>
+
+             <div id="popup4" class="layer-popup mfp-hide">
+                <div class="mpbox">
+                   <p class="potit">개인정보의 보유 및 이용기간에 동의</p>
+                   <div class="txt">
+                      <iframe width="100%" height="350"  src="/renew/text/privacy3.html" frameborder="0"></iframe>
+                   </div>
+                </div>
+             </div>
+
+             <script>
+             // Example 1: From an element in DOM
+             $('.open-popup-link').magnificPopup({
+             type:'inline',
+             midClick: true
+             });
+             </script>
+
+           </div>
+           <!--//join_terms-->
+
+           <div class="btn_join03" onclick="frm_check(this)"><a href="javascript:void(0)">회원가입하기</a></div>
+
+
+
+        </div>
+        <!--//cts_info-->
+
+      </div>
+      <!--//item_group-->
+
+    </div>
+    <!--//sub_wrap-->
+
+
+
+
+  </div>
+  <!--contents-->
+
+</article>
+<!--//article-->
+
+
+<!--footer-->
+<?include("footer.html")?>
+<!--//footer-->
+
+
+
+</body>
+</html>

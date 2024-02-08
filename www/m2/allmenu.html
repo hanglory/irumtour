@@ -1,0 +1,172 @@
+<!--[s] 모바일 menuArea -->
+<div id="menuArea">
+  
+  <!-- MenuList -->
+  <div class="menuList">
+    
+    <!--All_cts-->
+    <div class="all_cts">
+
+      <!--닫기-->
+      <div class="btnMenu_mClose"><a href="#"><img src="images/common/all_close.png"   /></a></div>
+      <!--//닫기-->
+    
+      
+    
+    
+      <!--all_membtn-->
+      <div class="all_membtn">
+      
+        <div class="mem_txt">
+          <?if($_SESSION[sessMember][id]){?>
+            <?if($CP_COMPANY){?>
+                맞춤형골프여행사 <?=$CP_COMPANY?>
+            <?}else{?>
+                맞춤형골프여행사 <br />이룸투어와 함께 하세요.
+            <?}?>
+          <?}else{?>
+          더 많은 혜택을 받으시려면<br /><span>로그인</span>을 해 주세요.
+          <?}?>
+          
+          <?if($_SESSION[sessMember][id]){?>
+          <p><a href="mypage03.html">마이페이지</a></p>
+          <?}else{?>
+          <p><a href="join.html">회원가입</a></p>
+          <?}?>
+        </div>
+      
+        <div class="mem_btn">
+          <?if($_SESSION[sessMember][id]){?>
+            <div class="bt_login "><a href="/renew/script/login.php?mobile=1&mode=logout">로그아웃</a></div>
+          <?}else{?>
+            <div class="bt_login"><a href="login.html">로그인</a></div>
+          <?}?>
+        </div>
+    
+      </div>
+      <!--//all_membtn-->
+      
+    </div>
+    <!--//All_cts-->
+    
+    <!--All_cts-->
+    <div class="all_cts">
+      
+      <!--all_quick-->
+      <div class="all_quick">
+        <ul>
+          <li><a href="comty01.html"><img src="images/common/ico_notice.png" /><br />공지사항</a></li>
+          <?if(!$CID){?>
+          <li><a href="request_main.html"><img src="images/common/ico_req.png" /><br />맞춤여행문의</a></li>
+          <?}?>
+          <li><a href="mypage01.html"><img src="images/common/ico_bklist.png" /><br />예약현황</a></li>
+          <li><a href="mypage02.html"><img src="images/common/ico_qna.png" /><br />견적서현황</a></li>
+        </ul>
+      </div>
+      <!--//all_quick-->
+      
+    </div>
+    <!--//All_cts-->
+
+
+
+    <!--All_cts-->
+    <div class="all_cts">
+      
+      <!--All_menu-->
+      <div class="all_menu">
+        
+
+        <?
+        $j=1;
+        $ctg_theme = array();
+
+        $CTGFILTER= " and (cp_id='$CID' or cp_id='')";
+        $tfilter=($CP_BIT_CLOSE_DOMESTIC)? " and id_no<>30 ":"";
+
+        $sql9 = "select * from ez_tour_category1 where bit_hide=0 $tfilter $CTGFILTER order by seq asc";
+        $dbo9->query($sql9);
+        while($rs9=$dbo9->next_record()){
+        ?>        
+        <!--Allmenu_gr-->
+        <div class="allmenu_gr">
+          
+          <div class="alltit_menu"><a href="sub_list.html?code1=<?=$rs9[id_no]?>"><?=$rs9[subject]?></a></div>
+          <div class="allsub_menu">
+            <ul>
+                <?
+                $sql_="select * from ez_tour_category2 where code1=$rs9[id_no] and bit_hide=0 $CTGFILTER order by seq asc";
+                $dbo_->query($sql_);
+                while($rs_=$dbo_->next_record()){
+
+                    if($rs9[id_no]==14){
+                        $ctg_theme[$rs_[id_no]]=$rs_[subject];
+                    }
+                ?>                 
+                <li><a href="sub_list.html?code1=<?=$rs9[id_no]?>&code2=<?=$rs_[id_no]?>"><?=$rs_[subject]?></a></li>
+                <?}?>
+            </ul>
+          </div>
+          
+        </div>
+        <!--//Allmenu_gr-->
+        <?}?>
+        
+        <!--Allmenu_gr-->
+        <div class="allmenu_gr">
+          
+          <div class="alltit_menu"><a href="request_main.html">맞춤여행문의</a></div>
+          <div class="allsub_menu">
+            <ul>
+              <li><a href="request_main.html">맞춤여행문의</a></li>
+            </ul>
+          </div>
+          
+        </div>
+        <!--//Allmenu_gr-->
+        
+
+
+        <!--Allmenu_gr-->
+        <?if(!$CID){?>
+        <div class="allmenu_gr">
+          
+          <div class="alltit_menu"><a href="request_main.html">회사소개</a></div>
+          <div class="allsub_menu">
+            <ul>
+              <li><a href="greeting.html">CEO인사말</a></li>
+              <li><a href="history.html">회사연혁</a></li>
+              <li><a href="overview.html">일반현황</a></li>
+              <li><a href="business.html">사업영역</a></li>
+              <li><a href="location.html">오시는 길</a></li>
+            </ul>
+          </div>
+          
+        </div>
+        <?}?>
+        <!--//Allmenu_gr-->
+        
+        
+       
+        
+        
+        
+
+
+
+        
+      </div>
+      <!--//All_menu-->
+      
+    </div>
+    <!--//All_cts-->
+
+
+
+   
+
+  </div>
+  <!-- //MenuList -->
+  
+</div>
+<!--[e] 모바일 menuArea -->

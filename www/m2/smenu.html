@@ -1,0 +1,82 @@
+
+<?if($code1==26){?>
+<div class="sub_menu">
+  <ul>
+    <li><a href="sub_list.html?code1=26&code2=75&sbt=<?=base64_encode('일본')?>"><img src="images/country/sm01.png" height="26"></a></li>
+    <li><a href="sub_list.html?code1=26&code2=77&sbt=<?=base64_encode('태국')?>"><img src="images/country/sm03.png" height="26"></a></li>
+    <li><a href="sub_list.html?code1=26&code2=78&sbt=<?=base64_encode('베트남')?>"><img src="images/country/sm04.png" height="26"></a></li>
+    <li><a href="sub_list.html?code1=26&code2=80&sbt=<?=base64_encode('대만')?>"><img src="images/country/sm15.png" height="26"></a></li>
+    <li><a href="sub_list.html?code1=26&code2=128&sbt=<?=base64_encode('라오스')?>"><img src="images/country/sm16.png" height="26"></a></li>
+    <li><a href="sub_list.html?code1=26&code2=79&sbt=<?=base64_encode('아세안')?>"><img src="images/country/sm14.png" height="26"></a></li>
+    <li><a href="sub_list.html?code1=26&code2=83&sbt=<?=base64_encode('미국')?>"><img src="images/country/sm09.png" height="26"></a></li>
+    <li><a href="sub_list.html?code1=26&code2=85&sbt=<?=base64_encode('호주')?>"><img src="images/country/sm13.png" height="26"></a></li>
+    <li><a href="sub_list.html?code1=26&code2=84&sbt=<?=base64_encode('유럽')?>"><img src="images/country/sm12.png" height="26"></a></li>
+    <li><a href="sub_list.html?code1=26&code2=76&sbt=<?=base64_encode('중국')?>"><img src="images/country/sm02.png" height="26"></a></li>
+    
+    <!--
+    <li><a href="sub_list.html?code1=26&code2=80&sbt=<?=base64_encode('필리핀')?>"><img src="images/country/sm06.png" height="26"></a></li>
+    
+    <li><a href="sub_list.html?code1=26&code2=81&sbt=<?=base64_encode('인도네시아')?>"><img src="images/country/sm07.png" height="26"></a></li>
+    <li><a href="sub_list.html?code1=26&code2=79&sbt=<?=base64_encode('브루나이')?>"><img src="images/country/sm05.png" height="26"></a></li>
+    <li><a href="sub_list.html?code1=26&code2=85&sbt=<?=base64_encode('터키')?>"><img src="images/country/sm11.png" height="26"></a></li>-->
+    <li><img src="images/country/blank.gif" height="26"></li>
+  </ul>
+</div>
+<?}else{?>
+
+
+<div class="menu_group">
+     <table class="smenu_list" cellpadding="0" cellspacing="0" summary="서브메뉴">
+       <caption>서브메뉴</caption>
+
+          <tbody>
+          <tr>
+
+              <?
+              $m=0;  
+              $sql9 = "select * from ez_tour_category2 where code1=$code1 and bit_hide<>1 $CTGFILTER order by seq asc";
+              $dbo9->query($sql9);
+              while($rs9=$dbo9->next_record()){
+                echo (($m%3))? "":"</tr><tr>";
+                $m++;
+
+              ?>
+               <td style="width:33%" class="tab_m <?=($rs9[id_no] && $code2==$rs9[id_no])?'on':''?>"><a href="sub_list.html?code1=<?=$code1?>&code2=<?=$rs9[id_no]?>" class="<?=($rs9[id_no] && $code2==$rs9[id_no])?'black':''?>" ><?=$rs9[subject]?></a></td>
+              <?
+              }
+              ?>
+
+
+
+          </tr>
+          </tbody>
+     </table>
+</div>
+
+<!--    <div class="sub_menu02">
+      <table class="tbl_smenu02" cellpadding="0" cellspacing="0" summary="서브메뉴">
+	   <caption>서브메뉴</caption>
+          <tbody>
+          <tr>
+
+			  <?
+              $m=0;  
+			  $sql9 = "select * from ez_tour_category2 where code1=$code1 and bit_hide<>1 order by seq asc";
+			  $dbo9->query($sql9);
+			  while($rs9=$dbo9->next_record()){
+                $m++;
+                echo (!($m%2))? "":"</tr><tr>";
+			  ?>
+			   <td class="tab_m <?=($rs9[id_no] && $code2==$rs9[id_no])?'on':''?>" style="width:50%;letter-spacing:-1px; "><a href="sub_list.html?code1=<?=$code1?>&code2=<?=$rs9[id_no]?>" class="<?=($rs9[id_no] && $code2==$rs9[id_no])?'black':''?>" ><?=$rs9[subject]?></a></td>
+			  <?}?>
+
+
+          </tr>
+          </tbody>
+     </table>
+    </div>
+
+ -->
+
+
+<?}?>

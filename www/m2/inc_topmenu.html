@@ -1,0 +1,48 @@
+<div id="sticker" class="gnb">
+  <div class="menu_wrap">
+    <div class="menu_in swiper-container">
+      <ul class="menu swiper-wrapper">
+        <?
+		  $j=1;
+          $tfilter=($CP_BIT_CLOSE_DOMESTIC)? " and id_no<>30 ":"";
+		  $sql_ = "select * from ez_tour_category1 where bit_hide=0 $tfilter order by seq asc limit 6";
+		  $dbo_->query($sql_);
+		  for($i=0; $i<=5;$i++){
+			  $rs_=$dbo_->next_record();
+		  ?>
+		  <li class="swiper-slide left_linktop"><a href="sub_list.html?code1=<?=$rs_[id_no]?>" target="<?=$target?>" <?if($rs_[color]){echo "style='color:$rs_[color] !important'";}?>><?=$rs_[subject]?></a></li>
+
+		  <?
+		  $j++;
+		  }?>
+         <li class="swiper-slide on"><a href="request_main.html">맞춤여행문의</a></li>
+        
+      </ul>
+    </div>
+    <!-- Add Arrows -->
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+  </div>
+</div>
+
+<!-- 상단메뉴 스와이프 슬라이드 --> 
+<script async>
+(function ($) {
+	 var currentItemIndex = $('.menu_in .swiper-slide.left_linktop').index(),
+	initialSlideIndex = currentItemIndex - 1 < 0 ? 0 : currentItemIndex - 1;
+
+	var swiper = new Swiper('.menu_in', {
+		slidesPerView: 'auto',
+		initialSlide: initialSlideIndex, //시작되는 위치 제일처음이 0임
+		paginationClickable: true,
+		spaceBetween: 0,
+		loop: false,
+		  navigation: {
+			nextEl: '.swiper-button-next',
+			prevEl: '.swiper-button-prev',
+		  },
+	});
+
+})(jQuery);
+</script>
+<!-- //상단메뉴 스와이프 슬라이드 --> 

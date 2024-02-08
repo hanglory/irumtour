@@ -1,0 +1,217 @@
+<?
+include_once("./script/include_common_mobile.php");
+
+
+
+// 네이버 로그인 접근토큰 요청
+if($Client_ID){
+    $client_id = $Client_ID;
+    $CALLBACK_URL = $DOMAIN."/renew/script/naver_login.php";
+    $redirectURI = urlencode($CALLBACK_URL);
+    $state = "RAMDOM_STATE";
+    $apiURL_naver = "https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=".$client_id."&redirect_uri=".$redirectURI."&state=".$state;
+}
+
+// 카카오 로그인 접근토큰 요청
+if($API_KAKAO_ID){
+    $client_id = $API_KAKAO_ID;
+    $CALLBACK_URL = $DOMAIN."/renew/script/kakao_login.php";
+    $redirectURI = urlencode($CALLBACK_URL);
+    $apiURL_kakao = "https://kauth.kakao.com/oauth/authorize?client_id=${client_id}&redirect_uri=${redirectURI}&response_type=code";
+}
+
+// 페이스북 로그인 접근토큰 요청
+if($API_FACEBOOK_ID){
+    $client_id = $API_FACEBOOK_ID;
+    $apiURL_facebook = "javascript:facebookLogin()";
+}
+
+?>
+<!doctype html>
+<html lang="ko">
+<head>
+<?include("header.php")?>
+<script type="text/javascript">
+function tab(i){
+    $(".tab").hide();
+    $("#tab"+i).show();
+}
+
+function check_form1(){
+  var fm = document.fmData1;
+  if(check_blank(fm.id,'아이디를',0)=='wrong'){return}
+  if(check_blank(fm.pwd,'비밀번호를',0)=='wrong'){return}
+  fm.submit();
+}
+
+function check_form2(){
+  var fm = document.fmData;
+  var step=$("#step").val();
+
+  if(step==1){
+    if(check_blank(fm.name,'한글성함을',0)=='wrong'){return false}
+    if(check_blank(fm.cell,'핸드폰번호를',11)=='wrong'){return false}
+  }else{
+    if(check_blank(fm.code,'인증번호를',5)=='wrong'){return false}
+  }
+  fm.submit();
+}
+
+$(function(){
+    $('.cell').mask('00000000000');
+});
+</script>
+
+
+</head>
+<body>
+<!--header-->
+<?include("header_new.html")?>
+
+<!--//header-->
+
+<!--article-->
+<article>
+
+  <!--contents-->
+  <div id="contents">
+
+    <!--sub_wrap-->
+    <div class="sub_wrap">
+
+      <!--<div class="sm_title">
+        <ul>
+          <li>견적 및 예약정보</li>
+          <li class="ctg_comment">테마형 골프전문 여행사 이룸투어와 함께하시면 여행의 품격이 달라집니다.</li>
+        </ul>
+      </div>-->
+
+       <div class="sm_title">
+        <ul>
+          <li>로그인</li>
+          <li class="ctg_comment">로그인을 하시면 다양한 고객전용 서비스를 받으실 수 있습니다.</li>
+        </ul>
+      </div>
+
+
+      <!--탭메뉴별 상세정보-->
+      <div class="item_group">
+
+        <!--cts_info-->
+        <div class="cts_info">
+
+
+           <!--1. 회원로그인-->
+       <div id="tab1" class="tab">
+         <ul class="login_tab">
+           <li class="on"><a href="javascript:tab(1)">회원 로그인</a></li>
+           <li><a href="javascript:tab(2)" >비회원 예약조회</a></li>
+         </ul>
+
+        <form name="fmData1" method="post" action="/renew/script/login.php">
+          <input type="hidden" name="mode" value="login">
+
+
+         <dl class="login_input">
+           <dd class="input_id" ><label for="uid"><input name="id" id="id" type="text" class="input_login02 input_m" value="" placeholder="아이디" maxlength="20" tabindex="1"  autocomplete="off" /></label></dd>
+           <dd class="input_pwd"><label for="pwd"><input name="pwd" id="pwd" type="password" class="input_login02 input_m" value="" placeholder="비밀번호" maxlength="20" tabindex="2"  autocomplete="off" /></label></dd>
+         </dl>
+         <div class="btn_mem" onClick="check_form1()">로그인</div>
+         </form>
+
+         <!--memetc-->
+         <div class="memetc">
+           <div class="memetc_btn mgr2"><a href="join.html">회원가입하기</a></div>
+           <div class="memetc_btn"><a href="idpw.html?tab=1">아이디/비밀번호 찾기</a></div>
+         </div>
+         <!--//memetc-->
+
+       </div>
+       <!--//1. 회원로그인-->
+
+
+       <!--2. 비회원예약조회-->
+       <div id="tab2" class="tab hide">
+
+         <ul class="login_tab">
+           <li><a href="javascript:tab(1)">회원 로그인</a></li>
+           <li class="on"><a href="javascript:tab(2)" >비회원 예약조회</a></li>
+         </ul>
+
+       <form name="fmData" method="post" action="/renew/mem_login.html" target="actarea">
+       <input type="hidden" name="mode" value="login">
+       <input type="hidden" id="step" name="step" value="1">
+       <input type="hidden" id="time" name="time" value="">
+
+         <div class="id" id="box1">
+         <dl class="login_input">
+           <dd class="input_id"><label for="uid"><input type="text" name="name" id="name" size="28" maxlength="10" class="input_login02 input_m" value="" tabindex="1" placeholder="한글 성함(예:홍길동)"  autocomplete="off"  /></label></dd>
+           <dd class="input_phone"><label for="pwd"><input type="tel" name="cell" id="cell" size="28" maxlength="11" class="input_login02 input_m numberic cell" value="" tabindex="2" placeholder="핸드폰번호(숫자만)" autocomplete="off"  /></label></dd>
+         </dl>
+         </div>
+         <div class="chk hide" id="box2">
+           <dd class="input_num"><input name="code" id="code" type="text" class="input_login02 input_m numberic" value="" placeholder="인증번호를 입력해 주세요."  maxlength="5" autocomplete="off" /></dd>
+         </div>
+
+         <div class="btn_nonemem" id="btn1" onClick="check_form2()"  id="btn1">비회원예약조회</div>
+         <div class="btn_mem hide" id="btn2" onClick="check_form2()"  id="btn2">인증하기</div>
+
+
+
+         <div class="nonmem_txt">
+           ※문자로 받은 인증번호만 입력하시면 예약 관련 모든 정보(출발안내문,확정서,이켓 등)를 언제든지 확인하실 수 있습니다.<br />
+           ※예약정보가 기억나지 않으실경우 고객센터로 문의해 주세요.
+         </div>
+
+         </form>
+
+       </div>
+       <!--//2. 비회원예약조회-->
+
+
+       <!--sns_login-->
+       <?if($apiURL_naver || $apiURL_kakao){?>
+       <div class="sns_login">
+
+         <div class="sns_title">
+           <h3>SNS 간편로그인</h3>
+           <p>별도 가입절차없이 SNS계정으로 쉽고 빠르게 로그인해 주세요.</p>
+         </div>
+
+         <ul>
+           <?if($apiURL_naver){?><li onClick="location.href='<?=$apiURL_naver?>'"><a href="javascript:void(0)">네이버계정 간편로그인</a></li><?}?>
+           <?if($apiURL_kakao){?><li onClick="location.href='<?=$apiURL_kakao?>'"><a href="javascript:void(0)">카카오톡계정 간편로그인</a></li><?}?>
+         </ul>
+
+       </div>
+       <?}?>
+       <!--//sns_login-->
+
+
+        </div>
+        <!--//cts_info-->
+
+      </div>
+      <!--탭메뉴별 상세정보-->
+
+    </div>
+    <!--//sub_wrap-->
+
+
+
+
+  </div>
+  <!--contents-->
+
+</article>
+<!--//article-->
+
+
+<!--footer-->
+<?include("footer.html")?>
+<!--//footer-->
+
+
+
+</body>
+</html>

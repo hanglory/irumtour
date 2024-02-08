@@ -1,0 +1,33 @@
+<?
+$sql_="select * from ez_tour_category3 where code2=$code2 and bit_hide<>1 $CTGFILTER order by seq asc";
+list($rows) = $dbo_->query($sql_);
+if($rows){
+?>
+<div class="menu_group">
+     <table class="smenu_list" cellpadding="0" cellspacing="0" summary="서브메뉴">
+	   <caption>서브메뉴</caption>
+		 <colgroup>
+		   <col width="33%" />
+		   <col width="33%" />
+           <col width="*" />
+		  </colgroup>
+          <tbody>
+          <tr>
+
+			<?
+				$i=1;
+				while($rs_=$dbo_->next_record()){
+			?>
+				<td class="<?if($code3==$rs_[id_no]){?>on<?}?>"><a href="sub_list.html?code1=<?=$code1?>&code2=<?=$code2?>&code3=<?=$rs_[id_no]?>#ptop"><?=$rs_[subject]?></a></td>
+			<?
+					if(!($i%3)) echo "</tr><tr>";
+					$i++;
+				}
+			?>
+
+
+          </tr>
+          </tbody>
+     </table>
+</div>
+<?}?>

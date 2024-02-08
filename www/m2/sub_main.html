@@ -1,0 +1,97 @@
+<?
+include_once("./script/include_common_mobile.php");
+
+$code1_name= get_category_name_path($code1,1);
+if($sbt){
+	$code1_name=base64_decode($sbt);
+}
+?>
+<!doctype html>
+<html lang="ko">
+<head>
+
+<?include("header.php")?>
+<script language="JavaScript">
+<!--
+function load_submain(total_rows){
+
+	var divname =(total_rows!=undefined)? total_rows : "";
+
+	$(".list_more02").hide();
+
+	$("#submain_wrap"+divname).load('inc_submain.php', {
+	  'total_rows': total_rows,
+	  'stype': '<?=$stype?>',
+	  'code1': '<?=$code1?>',
+	  'code2': '<?=$code2?>',
+	  'code3': '<?=$code3?>',
+	  'keyword': '<?=$keyword?>'
+	});
+}
+
+$(function(){
+
+	load_submain();
+
+});
+
+//-->
+</script>
+</head>
+<body>
+<!--header-->
+<?include("header_new.html")?>
+<!--//header-->
+
+<!--article-->
+<article>
+
+  <!--contents-->
+  <div id="contents">
+
+
+    <!--국가별메뉴-->
+    <?include("smenu.html")?>
+    <!--//국가별메뉴-->
+
+    <!--비주얼롤링-->
+    <?include("sub_visual.html");?>
+    <!--//비주얼롤링-->
+
+
+    <!--sub_wrap-->
+    <div class="sub_wrap">
+
+      <div class="sm_title">
+        <ul>
+          <li><?=$code1_name?></span> <?if($code1!=27 && $code1!=28){?>인기상품<?}?></li>
+          <li class="ctg_comment"><?=$SITE_NAME2?>에서 <?=$code1_name?> 여행을 추천해 드립니다.</li>
+        </ul>
+      </div>
+
+
+	  <div class="detail_gr" id="submain_wrap"></div>
+
+
+
+    </div>
+    <!--//sub_wrap-->
+
+
+
+
+  </div>
+  <!--contents-->
+
+</article>
+<!--//article-->
+
+
+<!--footer-->
+<?include("footer.html")?>
+<!--//footer-->
+
+
+
+</body>
+</new>

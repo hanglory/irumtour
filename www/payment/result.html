@@ -1,0 +1,187 @@
+<?
+session_start();
+header("Content-Type: text/html; charset=UTF-8");
+
+$arr = explode("/www",$_SERVER['DOCUMENT_ROOT']);
+$path_root =$arr[0];
+
+#### include
+include_once($path_root."/www/new/include/config.php");
+include_once($path_root."/www/new/include/cmp_config.php");
+include_once($path_root."/www/new/include/fun_basic.php");
+include_once($path_root."/www/new/include/vars.php");
+include_once($path_root."/www/new/public/inc/site.inc");
+
+#### DB Connent
+include_once($path_root . "/info/info_dbconn.php");
+include_once($path_root."/www/new/lib/class.$database.php");
+
+$dbo = new MiniDB($info);
+
+$oid=rnf($oid);
+
+if($oid){
+    $sql = "
+            select 
+                *
+            from cmp_card
+            where oid=$oid
+        ";
+    $dbo->query($sql);
+    $rs=$dbo->next_record();
+    //if(strstr("@112.172.15.90@221.154.110.119@","@".$_SERVER["REMOTE_ADDR"]."@")){checkVar($rs[id_no].mysql_error(),$sql);}        
+    $rs[price] = nf($rs[price]);
+}
+
+?>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<title>신용카드결제</title>
+<meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3, minimum-scale=1.0, target-densitydpi=medium-dpi, user-scalable=yes">
+<!-- viewport 설정항목 확인 -->
+<meta name="robots" content="noindex,nofollow" />
+<!-- iPhone app prefs -->
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<link rel="stylesheet" type="text/css" href="css/main.css" />
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script type="text/javascript" src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+<script type='text/javascript' src="js/jquery-1.8.2.min.js" ></script>
+<script type="text/javascript" src="js/scroll_top.js"></script><!-- top버튼 스크립트 -->
+
+
+<script>
+
+function base64_encode(str) {
+    return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
+        return String.fromCharCode('0x' + p1);
+    }));
+}
+
+function receipt(tid) {
+    var tid = base64_encode(tid);
+    window.open(
+        "https://www.cookiepayments.com/api/receipt?tid="+tid,
+        "cookiepayments Receipt",
+        "width=468,height=750"
+    );
+}
+</script>
+
+</head>
+
+<body>
+<!-- wrapper -->
+<div id="wrapper" class="main"> 
+  
+  <!--Header -->
+  <?include("header.html")?>
+  <!--//Header --> 
+  
+  <!-- Visual -->
+  <div id="s_visual">
+    <div class="sub_imgbox">
+      <section class="section02 sub_m01">
+        <div class="vtxt02">
+          <h3><span class="bold">신용카드결제</span></h3>
+          <p>아래 내용을 정확히 입력해 주세요</p>
+        </div>
+      </section>
+    </div>
+  </div>
+  <!--//Visual --> 
+  
+  <!-- Contents -->
+  <div id="contents"> 
+    
+    <!--cts_sub-->
+    <div class="cts_sub">
+      
+      <div class="stitle">신용카드 결제 결과</div>
+      
+      
+      <table class="tbl_req" cellpadding="0" cellspacing="0" summary="신용카드 결제 결과">
+            <caption>신용카드결제결과</caption>
+              <colgroup>
+                <col width="*" />
+              </colgroup>
+            <tbody>
+
+            <tr>
+              <th scope="row">이름</th>
+            </tr>
+            <tr>
+              <td><?=$rs[name]?></td>
+            </tr>
+            <tr>
+              <th scope="row">휴대폰번호</th>
+            </tr>
+            <tr>
+              <td>
+                  <?=$rs[cell]?>
+              </td>
+            </tr>
+
+            <?if($rs[email]){?>
+            <tr>
+              <th scope="row">E-Mail</th>
+            </tr>
+            <tr>
+              <td><?=$rs[email]?></td>
+            </tr>            
+            <?}?>
+            <tr>
+              <th scope="row">결제금액</th>
+            </tr>
+            <tr>
+              <td><span  style="font-weight: bold;color:red;font-size:1.2em"><?=nf(rnf($rs[price]))?></span>원</td>
+            </tr>
+            <tr>
+              <th scope="row">결제결과</th>
+            </tr>
+            <tr>
+              <td>
+
+                <span><?=(strstr($rs[pg_info],"성공"))?"<span style='color:green'>결제 되었습니다.</span>":"<span style='color:green'>결제가 처리되지 않았습니다.</span>"?></span>
+
+              </td>
+            </tr>
+            </tbody>
+          </table>
+
+
+          <?if($rs[pg_tid]){?>
+            &nbsp;  
+            <div class="subBtn" onclick="receipt('<?=$rs[pg_tid]?>')">
+            <a href="javascript:void(0)" class="inquiry">영수증보기</a>
+            </div>
+          <?}else{?>
+            &nbsp;  
+            <div class="subBtn">
+            <a href="index.html?oid=<?=$oid?>" class="inquiry">다시 결제하기</a>
+            </div>          
+          <?}?>
+
+
+
+
+        
+    
+    </div>
+    <!--//cts_sub-->
+    
+  </div>
+  <!-- //Contents --> 
+  
+  <!--Footer / Quick_Menu -->
+  <?include("footer.html")?>
+  <!--//Footer / Quick_Menu--> 
+  
+</div>
+<!-- //wrapper -->
+
+</body>
+</html>

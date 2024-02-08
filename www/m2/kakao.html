@@ -1,0 +1,9 @@
+<?
+$CP_KAKAO = str_replace("http://","https://",$CP_KAKAO);
+$KAKAO_LINK = str_replace("http://","https://",$KAKAO_LINK);
+if($CID) $KAKAO_LINK="";
+?>
+<div class="topBtn">
+  <?if($CP_KAKAO || $KAKAO_LINK){?><a href="<?=($CP_KAKAO)?$CP_KAKAO : $KAKAO_LINK?>" target="_blank" id="kakao"><span>상담톡</span></a><?}?>
+  <a href="#top" id="scroll"><span>&nbsp;</span></a>
+</div>

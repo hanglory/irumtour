@@ -1,0 +1,21 @@
+# Created by https://www.toptal.com/developers/gitignore/api/visualstudiocode
+# Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode
+
+# Local History for Visual Studio Code
+.history/
+
+### VisualStudioCode Patch ###
+# Ignore all local history of files
+.history
+.ionide
+
+www/new/public/*
+www/renew/public/*
+*.zip
+*.exe
+*.dump
+*.jpg
+*.jpeg
+*.png
+*.gif
+.DS_Store

@@ -1,0 +1,127 @@
+<?
+include_once("./script/include_common_mobile.php");
+
+//if($REMOTE_ADDR=="106.246.54.27") checkVar("",$keyword);
+?>
+<!doctype html>
+<html lang="ko">
+<head>
+<?include("header.php")?>
+<script language="JavaScript">
+<!--
+function load_sublist(total_rows,sort){
+
+	var divname =(total_rows!=undefined)? total_rows : "";
+
+	if(sort!=""){
+		$(".sort_gr li").removeClass('on_sort');
+		$("#sort0" + sort).addClass('on_sort');
+	}
+
+	$(".list_more02").hide();
+
+	$("#sublist_wrap"+divname).load('inc_sublist.php', {
+	  'total_rows': total_rows,
+	  'sort': sort,
+	  'stype': '<?=$stype?>',
+	  'code1': '<?=$code1?>',
+	  'code2': '<?=$code2?>',
+	  'code3': '<?=$code3?>',
+	  'keyword': '<?=$keyword?>'
+	});
+}
+
+$(function(){
+
+	<?if($keyword){?>
+	load_sublist('','');
+	<?}?>
+
+});
+
+//-->
+</script>
+</head>
+<body>
+<!--header-->
+<?include("header_new.html")?>
+<!--//header-->
+
+<!--article-->
+<article>
+
+  <!--contents-->
+  <div id="contents">
+
+
+    <!--sub_wrap-->
+    <div class="sub_wrap">
+
+      <!--탭메뉴별 상세정보-->
+      <div class="item_group">
+
+
+        <!--cts_info-->
+        <div class="cts_info">
+
+          <!--검색-->
+          <?if($keyword!="cweek"){?>
+		  <div class="sm_title">
+		  <ul>
+            <li>골프여행검색</li>
+            <li class="ctg_comment">원하시는 골프여행을 검색해보세요.</li>
+		  </ul>
+		  </div>
+
+
+
+
+          <div class="g_search">
+
+          <form name="fmFind" method="get" action="search.html">
+		  <table class="tbl_search" cellpadding="0" cellspacing="0">
+		    <caption>검색하기</caption>
+		    <colgroup>
+			  <col width="95%" />
+              <col width="5%" />
+			</colgroup>
+		      <tr>
+    	        <td><input type="text" class="input_login" id="keyword" name="keyword" value="<?=($keyword!="cweek")? $keyword:""?>" maxlength="30"  tabindex="1"/></td>
+                <td> <a href="javascript:document.fmFind.submit()"><img src="images/common/btn_search.png"  height="24" alt="검색"></a></td>
+		      </tr>
+              <tr>
+
+		      </tr>
+          </table>
+		  </form>
+          </div>
+		  <?}?>
+          <!--//검색-->
+		  <br/>
+
+		<!--sub_wrap-->
+		<div class="sub_wrap">
+
+		<div class="cts_group" id="sublist_wrap"></div>
+
+		</div>
+		<!--//sub_wrap-->
+
+
+
+
+  </div>
+  <!--contents-->
+
+</article>
+<!--//article-->
+
+
+<!--footer-->
+<?include("footer.html")?>
+<!--//footer-->
+
+
+
+</body>
+</html>

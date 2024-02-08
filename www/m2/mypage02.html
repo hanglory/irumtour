@@ -1,0 +1,152 @@
+<?
+include_once("./script/include_common_mobile.php");
+include_once("../new/include/cmp_config.php");
+
+if(!$user_id){redirect2("login.html");exit;}
+
+
+$user_phone = rnf($user_phone);
+$sql = "
+    select 
+        * 
+    from cmp_estimate 
+    where 
+        name='$user_id' 
+        and replace(phone,'-','') = '$user_phone' 
+        and golf_id_no<>'' 
+        and send_date<>'' 
+        and cp_id='$CID'
+    order by id_no desc 
+    limit 30
+  ";
+$dbo->query($sql);
+//if(strstr("@211.226.255.74@221.154.110.119@","@".$_SERVER["REMOTE_ADDR"]."@")){checkVar(mysql_error(),$sql);}
+
+?>
+<!doctype html>
+<html lang="ko">
+<head>
+<?include("header.php")?>
+<link rel="stylesheet" type="text/css" href="css/import.css"/>
+
+</head>
+<body>
+<!--header-->
+<?include("header_new.html")?>
+
+<!--//header-->
+
+<!--article-->
+<article>
+
+  <!--contents-->
+  <div id="contents">
+
+    <!--sub_wrap-->
+    <div class="sub_wrap">
+
+      <div class="sm_title">
+        <ul>
+          <li>마이페이지</li>
+          <li class="ctg_comment">나의 예약현황 및 견적현황을 확인하실 수 있습니다.</li>
+        </ul>
+      </div>
+
+
+      <!--탭메뉴별 상세정보-->
+      <div class="item_group">
+
+
+        <!--tab_menu02-->
+        <div class="tab_menu02">
+          <ul>
+            <li><a href="mypage03.html">회원정보</a></li>
+            <li><a href="mypage01.html">예약현황</a></li>
+            <li class="on"><a href="mypage02.html">견적서현황</a></li>
+            <li><a href="mypage04.html">회원탈퇴</a></li>
+          </ul>
+        </div>
+        <!--//tab_menu02-->
+
+        <!--cts_info-->
+        <div class="cts_info">
+
+          <div class="mypage_box"><span class="blue">· <?=$user_id?></span> 고객님의 견적서 정보</div>
+
+         <table class="tbl_mypage01" cellpadding="0" cellspacing="0" summary="견적현황">
+                <thead>
+                  <tr>
+                    <th style="text-align: center" scope="col">상품명</th>
+                    <!-- <th width="12%" scope="col">총인원</th> -->
+                    <!-- <th width="12%" scope="col">발송일</th> -->
+                    <!-- <th width="12%" scope="col">출발일</th> -->
+                    <!-- <th width="12%" scope="col">귀국일</th> -->
+                    <th style="text-align: center" scope="col">담당자</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <?
+                  while($rs=$dbo->next_record()){
+                    $arr  = explode(">",$rs[golf_name]);
+                    $golf_name  = $arr[count($arr)-1];
+
+                    $long_url1 =  "http://irumtour.net/new/bkoff/cmp/form06.html?code=". str_replace("+","{p}",encrypt($rs[id_no],$SALT));
+
+                    $arr = explode("(",substr($rs[main_staff],0,-1));
+                    $staff_name = $arr[0];
+                    $staff_id = $arr[1];
+
+                    $sql2 = "select * from cmp_staff where id='$staff_id'";
+                    $dbo2->query($sql2);
+                    $rs2=$dbo2->next_record();
+                  ?>
+                  <tr>
+                    <td style="text-align: center" class="left"><a href="javascript:newWin('<?=$long_url1?>',870,650,1,1,'','esimatge')"><span class="bold"><?=$golf_name?></span></a></td>
+                    <!-- <td><span class="black"><?=nf($rs[people])?>명</span></td>
+                    <td><span class="black"><?=$rs[send_date]?></span></td>
+                    <td><span class="black"><?=$rs[d_date]?></span></td>
+                    <td><span class="black"><?=$rs[r_date]?></span></td> -->
+                    <td style="text-align: center">
+                      <span class="black">
+                      <?=$staff_name?> <?=$rs2[mposition]?><br/>
+                      <?=$rs2[cell1]?>-<?=$rs2[cell2]?>-<?=$rs2[cell3]?>
+                      <?if($rs2[kakao_link]){?><br/><a href="<?=$rs2[kakao_link]?>" target="_blank">KAKAO LINK</a><?}?>
+                      </span>
+                    </td>
+                  </tr>
+                  <?}?>
+                </tbody>
+            </table>
+
+          <!--   <div class="button_center"><a href="mypage02_detail.html"><img src="images/member/btn_reqlist.gif" alt="나의견적서보기" height="40" /></a></div>
+ -->
+
+
+        </div>
+        <!--//cts_info-->
+
+      </div>
+      <!--탭메뉴별 상세정보-->
+
+    </div>
+    <!--//sub_wrap-->
+
+
+
+
+  </div>
+  <!--contents-->
+
+</article>
+<!--//article-->
+
+
+<!--footer-->
+<?include("footer.html")?>
+<!--//footer-->
+
+
+
+</body>
+</html>

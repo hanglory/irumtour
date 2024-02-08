@@ -1,0 +1,103 @@
+<script type="text/javascript">
+jQuery(function($){
+
+	// Side Menu
+	var menu_a = $('div.menu_a');
+	var sItem = menu_a.find('>ul>li');
+	var ssItem = menu_a.find('>ul>li>ul>li');
+	var lastEvent = null;
+
+	sItem.find('>ul').css('display','none');
+	menu_a.find('>ul>li>ul>li[class=active]').parents('li').attr('class','active');
+	menu_a.find('>ul>li[class=active]').find('>ul').css('display','block');
+
+	function menu_aToggle(event){
+		var t = $(this);
+
+		if (this == lastEvent) return false;
+		lastEvent = this;
+		setTimeout(function(){ lastEvent=null }, 200);
+
+		if (t.next('ul').is(':hidden')) {
+			sItem.find('>ul').slideUp(100);
+			t.next('ul').slideDown(100);
+		} else if(!t.next('ul').length) {
+			sItem.find('>ul').slideUp(100);
+		} else {
+			t.next('ul').slideUp(100);
+		}
+
+		if (t.parent('li').hasClass('active')){
+			t.parent('li').removeClass('active');
+		} else {
+			sItem.removeClass('active');
+			t.parent('li').addClass('active');
+		}
+	}
+	sItem.find('>a').click(menu_aToggle).focus(menu_aToggle);
+
+	function subMenuActive(){
+		ssItem.removeClass('active');
+		$(this).parent(ssItem).addClass('active');
+	};
+	ssItem.find('>a').click(subMenuActive).focus(subMenuActive);
+
+	//icon
+	menu_a.find('>ul>li>ul').prev('a').append('<span class="i"></span>');
+});
+
+function menu_hide(){
+	$("#left_menu").hide();
+}
+</script>
+
+
+    <!--Allmenu_Group-->
+    <div class="allmenu_group">
+
+      <div class="menu_title">
+        <div class="m_title">전체여행상품
+          <div class="m_close"><a href="javascript:menu_hide()"><img src="images/common/btn_close.png"  alt="close" /></a></div>
+        </div>
+      </div>
+
+
+      <div class="menu_a" id="menu_a">
+	    <ul>
+          <?
+		  $j=1;
+		  $sql_ = "select * from ez_tour_category1 where id_no in (30,26,13,14,15,16,29) order by seq asc";
+		  $dbo_->query($sql_);
+		  for($i=0; $i<=6;$i++){
+		  $rs_=$dbo_->next_record();
+		  if($rs_[subject]){
+		  ?>
+
+	      <li><a href="#" class="tab_m <?=($code1==$rs_[id_no])?'on':''?>"><span><?=$rs_[subject]?></span>
+          <span class="i"></span></a>
+		    <ul style="display:block;">
+			  <?
+			  $sql9 = "select * from ez_tour_category2 where code1=$rs_[id_no] $NOTCTG order by seq asc";
+			  list($rows_)=$dbo9->query($sql9);
+			  while($rs9=$dbo9->next_record()){
+			  ?>
+			   <li><a href="sub_list.html?code1=<?=$rs_[id_no]?>&code2=<?=$rs9[id_no]?>"><span>- <?=$rs9[subject]?></span></a></li>
+			  <?}?>
+
+			  <?if(!$rows_){?>
+			  	<li><a href="sub_list.html?code1=<?=$rs_[id_no]?>"><span>- <?=$rs_[subject]?></span></a></li>
+			  <?}?>
+
+		    </ul>
+	      </li>
+		  <?
+		  }
+		  $j++;
+		  }?>
+
+	    </ul>
+      </div>
+
+    </div>
+    <!--Allmenu_Group-->
+

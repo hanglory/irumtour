@@ -1,0 +1,121 @@
+<?
+include_once("./script/include_common_mobile.php");
+
+if($code1 && !$code2){
+	$sql = "select * from ez_tour_category2 where code1=$code1 and bit_hide<>1 $CTGFILTER order by seq asc limit 1";
+	$dbo->query($sql);
+	$rs=$dbo->next_record();
+	$code2=$rs[id_no];
+}
+
+if($code1=="26") $code1_name= get_category_name_path($code2,2);
+else $code1_name= get_category_name_path($code1,1);
+
+
+if($code1==26 && !$code3){
+	$sql = "select * from ez_tour_category3 where code2=$code2 and bit_hide<>1 $CTGFILTER order by seq asc limit 1";
+	$dbo->query($sql);
+	$rs=$dbo->next_record();
+
+	$code3=$rs[id_no];
+}
+
+$DESCRIPTION =  "${SITE_NAME}에서 전개하는 ". str_replace("여행","",$code1_name) ." 여행상품을 소개합니다.";
+$SITE_NAME = $code1_name ." - " .$SITE_NAME;
+?>
+<!doctype html>
+<html lang="ko">
+<head>
+
+<?include("header.php")?>
+<script language="JavaScript">
+<!--
+function load_sublist(total_rows,sort){
+
+	var divname =(total_rows!=undefined)? total_rows : "";
+
+	if(sort!=""){
+		$(".sort_gr li").removeClass('on_sort');
+		$("#sort0" + sort).addClass('on_sort');
+	}
+
+	$(".list_more02").hide();
+
+	$("#sublist_wrap"+divname).load('inc_sublist.php', {
+	  'total_rows': total_rows,
+	  'sort': sort,
+	  'stype': '<?=$stype?>',
+	  'code1': '<?=$code1?>',
+	  'code2': '<?=$code2?>',
+	  'code3': '<?=$code3?>',
+	  'keyword': '<?=$keyword?>'
+	});
+}
+
+$(function(){
+
+	load_sublist('','');
+
+});
+
+//-->
+</script>
+</head>
+<body>
+<!--header-->
+<?include("header_new.html")?>
+<!--//header-->
+
+<!--article-->
+<article>
+
+  <!--contents-->
+  <div id="contents">
+
+    <!--국가별메뉴-->
+    <?include("smenu.html")?>
+    <!--//국가별메뉴-->
+
+    <!--비주얼롤링-->
+    <//?include("sub_visual.html");?>
+    <!--//비주얼롤링-->
+
+
+    <!--sub_wrap-->
+    <div class="sub_wrap02">
+
+    <!--menu_group-->
+    <?include("list_smenu.html");?>
+    <!--menu_group-->
+
+	<div class="cts_group" id="sublist_wrap"></div>
+
+    </div>
+    <!--//sub_wrap-->
+
+
+
+
+  </div>
+  <!--contents-->
+
+</article>
+<!--//article-->
+
+<!-- 전환페이지 설정 -->
+<script type="text/javascript" src="//wcs.naver.net/wcslog.js"></script>
+<script type="text/javascript">
+if(document.URL.indexOf("?code1=26&code2=75")>=0){
+var _nasa={};
+_nasa["cnv"] = wcs.cnv("5","1");
+}
+</script>
+
+<!--footer-->
+<?include("footer.html")?>
+<!--//footer-->
+
+
+
+</body>
+</html>

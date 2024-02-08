@@ -1,0 +1,9 @@
+<files info_dbconn.php>
+order allow,deny
+deny from all
+</files>
+
+<files dbcon.php>
+order allow,deny
+deny from all
+</files>

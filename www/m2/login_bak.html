@@ -1,0 +1,153 @@
+<?
+include_once("./script/include_common_mobile.php");
+
+$mobile=0;
+$arr_browser = array ("iPhone","iPod","IEMobile","Mobile","lgtelecom","PPC");
+for($indexi = 0 ; $indexi < count($arr_browser) ; $indexi++) {
+  if(strpos($_SERVER['HTTP_USER_AGENT'],$arr_browser[$indexi]) == true){
+     $mobile=1;
+  }
+}
+
+if(!$mobile){
+  Header( "HTTP/1.1 301 Moved Permanently" );
+  Header( "Location: ../renew/login.html" );
+}
+
+?>
+<!doctype html>
+<html lang="ko">
+<head>
+<?include("header.php")?>
+<script type="text/javascript">
+<!--
+function cForm1(fm){
+  var step=$("#step").val();
+
+  if(step==1){
+    if(check_blank(fm.id,'한글성함을',0)=='wrong'){return false}
+    if(check_blank(fm.pwd,'핸드폰번호를',0)=='wrong'){return false}
+  }else{
+    if(check_blank(fm.code,'인증번호를',0)=='wrong'){return false}
+
+  }
+}
+//-->
+</script>
+<link rel="stylesheet" type="text/css" href="css/import.css"/>
+
+</head>
+<body>
+<!--header-->
+<?include("header.html")?>
+<!--//header-->
+
+<!--article-->
+<article>
+
+  <!--contents-->
+  <div id="contents">
+
+    <!--topmenu-->
+    <?include("topmenu.html")?>
+    <!--//topmenu-->
+
+
+
+
+    <!--sub_wrap-->
+    <div class="sub_wrap">
+
+      <div class="sm_title">
+        <ul>
+          <li>견적 및 예약정보</li>
+          <li class="ctg_comment">테마형 골프전문 여행사와 함께하시면 여행의 품격이 달라집니다.</li>
+        </ul>
+      </div>
+
+      <!-- <div class="sm_title">
+        <ul>
+          <li>로그인</li>
+          <li class="ctg_comment">로그인을 하시면 다양한 고객전용 서비스를 받으실 수 있습니다.</li>
+        </ul>
+      </div>-->
+
+
+      <!--탭메뉴별 상세정보-->
+      <div class="item_group">
+
+        <!--cts_info-->
+        <div class="cts_info">
+
+
+
+           <!--Login_Box-->
+           <div class="login_box">
+
+           <form name="fmData" method="post" action="../renew/login.html" onSubmit="return cForm1(this)" target="actarea">
+            <input type="hidden" name="mode" value="login">
+            <input type="hidden" id="step" name="step" value="1">
+            <input type="hidden" id="time" name="time" value="">
+
+           <ul>
+             <div class="id" id="box1">
+             <li><input type="text" class="input_login" id="id" name="id" maxlength="30"  tabindex="1" placeholder="한글성함"  /></li>
+             <li><input type="text" class="input_login" id="pwd" name="pwd" maxlength="30" tabindex="2" placeholder="핸드폰번호" /></li>
+             </div>
+             <div class="chk hide" id="box2">
+             <li><input type="text" class="input_login" id="code" name="code" maxlength="30"  tabindex="1" placeholder="인증번호"  /></li>
+             </div>
+             <li class="none_mrg" id="btn1"><input type="image"  src="images/member/btn_login.png" alt="로그인" width="100%" ></li>
+             <li class="none_mrg hide" id="btn2"><input type="image"  src="images/member/btn_no.png" alt="인증하기" width="100%" ></li>
+            <!-- <li><div class="btn_join mgr2"><a href="join.html">회원가입</a></div> <div class="btn_join"><a href="join.html">아이디/비번찾기</a></div></li>-->
+           </ul>
+
+           </form>
+
+             <p>문자로 받은 인증번호만 입력하시면 예약 관련 모든 정보(출발안내문,확정서,이켓 등)를 언제든지 확인하실 수 있습니다.</p>
+
+           </div>
+           <!--//Login_Box-->
+
+           <!--kakao_gr
+         <div class="login_box">
+
+             <div class="kakao_tit">
+               <h3><span class="point">간편</span>로그인</h3>
+             </div>
+             <div class="kakao_login"><a href="#">카카오톡 로그인하기</a></div>
+
+           </div>
+           kakao_gr-->
+
+
+
+
+
+        </div>
+        <!--//cts_info-->
+
+      </div>
+      <!--탭메뉴별 상세정보-->
+
+    </div>
+    <!--//sub_wrap-->
+
+
+
+
+  </div>
+  <!--contents-->
+
+</article>
+<!--//article-->
+
+
+<!--footer-->
+<?include("footer.html")?>
+<!--//footer-->
+
+
+
+</body>
+</html>

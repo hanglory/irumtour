@@ -1,0 +1,95 @@
+<?
+include_once("./script/include_common_mobile.php");
+
+$code = secu($code);
+$inc = secu($inc);
+
+$sql_ = "select * from cmp_${inc} where id_no=$code";
+$dbo_->query($sql_);
+$rs_=$dbo_->next_record();
+
+$filename = $PUBLIC_PATH ."public/cmp/".$rs_[filename1];
+$thumb = $PUBLIC_PATH . "public/thumb/tb_".$rs_[filename1];
+$pic1 =($rs_[filename1])? thumbnail($filename, 180, 0, 0, 1, 100, 0, '','', $thumb) : "images/detail/img_thumb02.gif";
+$bpic1 = thumbnail($filename, 916, 0, 0, 1, 100, 0, '','', $thumb);
+
+$filename = $PUBLIC_PATH ."public/cmp/".$rs_[filename2];
+$thumb = $PUBLIC_PATH . "public/thumb/tb_".$rs_[filename2];
+$pic2=($rs_[filename2])? thumbnail($filename, 180, 0, 0, 1, 100, 0, '','', $thumb) : "images/detail/img_thumb02.gif";
+$bpic2 = thumbnail($filename, 916, 0, 0, 1, 100, 0, '','', $thumb);
+
+$filename = $PUBLIC_PATH ."public/cmp/".$rs_[filename3];
+$thumb = $PUBLIC_PATH . "public/thumb/tb_".$rs_[filename3];
+$pic3 = thumbnail($filename, 180, 0, 0, 1, 100, 0, '','', $thumb);
+$pic3 =($rs_[filename3])? thumbnail($filename, 180, 0, 0, 1, 100, 0, '','', $thumb) : "images/detail/img_thumb02.gif";
+$bpic3 = thumbnail($filename, 916, 0, 0, 1, 100, 0, '','', $thumb);
+
+$filename = $PUBLIC_PATH ."public/cmp/".$rs_[filename4];
+$thumb = $PUBLIC_PATH . "public/thumb/tb_".$rs_[filename4];
+$pic4 = thumbnail($filename, 180, 0, 0, 1, 100, 0, '','', $thumb);
+$pic4 =($rs_[filename3])? thumbnail($filename, 180, 0, 0, 1, 100, 0, '','', $thumb) : "images/detail/img_thumb02.gif";
+$bpic4 = thumbnail($filename, 916, 0, 0, 1, 100, 0, '','', $thumb);
+
+$filename5 = $PUBLIC_PATH ."public/cmp/".$rs_[filename5];
+
+?>
+<!doctype html>
+<html lang="ko">
+<head>
+<?include("header.php")?>
+
+
+</head>
+<body>
+
+<!--article-->
+<article>
+
+  <!--contents-->
+  <div id="pop_wrap">
+
+    <div id="pop_header"><img src="images/detail/ic_cc.png"  height="18"> <?=$rs_[name]?></div>
+    <div id="pop_contents">
+
+			<?if($rs_[filename5]){?>
+			<center>
+			<img src="<?=$filename5?>">
+			</center>
+			<?}?>
+
+		   <?=nl2br($rs_[content])?>
+		   </div>
+
+		   <div class="pop_img">
+
+			   <center>
+
+				<div class="cc_imggr">
+				  <?if($rs_[filename1]){?><div class="mgb10"><img src="<?=$bpic1?>" onerror="this.src='/renew/images/detail/img_thumb02.gif'" width="100%" /></div><?}?>
+				  <?if($rs_[filename2]){?><div class="mgb10"><img src="<?=$bpic2?>" onerror="this.src='/renew/images/detail/img_thumb02.gif'" width="100%" /></div><?}?>
+				  <?if($rs_[filename3]){?><div class="mgb10"><img src="<?=$bpic3?>" onerror="this.src='/renew/images/detail/img_thumb02.gif'" width="100%" /></div><?}?>
+				  <?if($rs_[filename4]){?><div class="mgb10"><img src="<?=$bpic4?>" onerror="this.src='/renew/images/detail/img_thumb02.gif'" width="100%" /></div><?}?>
+				</div>
+
+			   </center>
+
+		   </div>
+
+		   <div class="pop_cts">
+		   <?=nl2br($rs_[content2])?>
+		   </div>
+
+
+	</div>
+
+  </div>
+  <!--contents-->
+
+</article>
+<!--//article-->
+
+
+
+
+</body>
+</html>

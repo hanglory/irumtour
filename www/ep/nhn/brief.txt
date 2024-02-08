@@ -1,0 +1,8 @@
+id	title	price_pc	link	image_link	category_name1	category_name2	shipping	point	class	update_time
+53802	[3박 4일 골프 3회] 연태 품격 3색(단령 취원·취곡, 국제) + 용구 시내 천홍호텔 4일	599000	https://irumtour.net/renew/detailview.html?tid=53802		국가별	중국	0		I	2024-01-26 13:40:58
+63118	[4월 3일]히로시마 다케하라 그린스카이호텔& 3색 벚꽃골프 3박 4일	1050000	https://irumtour.net/renew/detailview.html?tid=63118		국가별	일본	0		I	2024-01-26 14:41:49
+63198	[4월 3일]히로시마 다케하라 그린스카이호텔& 3색 벚꽃골프 3박 4일	1050000	https://irumtour.net/renew/detailview.html?tid=63198		테마별	2인골프	0		I	2024-01-26 14:41:28
+63541	[5/25 비즈니스 특가] 지상 낙원 하와이 섬 일주 & 명문 코스(5회)+ 크루즈(Pride of America) 9일	12990000	https://irumtour.net/renew/detailview.html?tid=63541		국가별	미국	0		I	2024-01-26 11:04:15
+63507	[오픈기념 특식포함]중국 최고의 청정지역 위해 품격 3색(스톤베이&천익&호당가) 3박 4일	499000	https://irumtour.net/renew/detailview.html?tid=63507		국가별	중국	0		I	2024-01-26 13:54:37
+54502	[와이너리 리조트] 군정 골프&리조트 가성비 3일 54홀	449000	https://irumtour.net/renew/detailview.html?tid=54502		국가별	중국	0		I	2024-01-26 13:44:28
+63506	[위해 명문 포인트CC 포함]중국 최고의 청정지역 위해 고품격 3색(스톤베이&천익&포인트) 3박 4일	549000	https://irumtour.net/renew/detailview.html?tid=63506		국가별	중국	0		I	2024-01-26 13:51:03

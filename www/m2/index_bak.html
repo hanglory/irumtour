@@ -1,0 +1,199 @@
+<?
+include_once("./script/include_common_mobile.php");
+?>
+<!doctype html>
+<html lang="ko">
+<head>
+<?include("header.php")?>
+<script type="text/javascript" src="./include/zebra_datepicker.js"></script>
+<link rel="stylesheet" href="./include/zebra_datepicker.css" type="text/css">
+
+<script type="text/javascript">
+<!--
+$(function(){
+
+    $('.bxslider').bxSlider({
+        auto:true,
+        pager:false,
+        controls:false
+    });
+
+    $('#thema').load('inc_theme.php');
+
+});
+
+//-->
+</script>
+
+
+</head>
+<body>
+<!--header-->
+<?include("header_new.html")?>
+<!--//header-->
+
+
+<!--article-->
+<article>
+
+  <!--main_contents01-->
+  <div id="main_contents01">
+
+
+    <!--메인롤링-->
+    <?include("visual.html");?>
+    <!--//메인롤링-->
+
+  </div>
+  <!--main_contents01-->
+
+
+  <!--main_contents02 :카테고리베스트-->
+  <div id="main_contents02">
+
+
+    <!--main_info-->
+    <div class="main_info">
+
+      <?
+      $sql = "select * from ez_tour where top_c1=1 $PROOF_FILTER order by hit desc limit 4";
+      list($rows) = $dbo->query($sql);
+      ?>
+      <h2><img src="images/main/title_season.png" height="38" alt="시즌별추천" /></h2>
+
+      <!--Season_best01-->
+      <?
+      $rs=$dbo->next_record();
+      $filename = $PUBLIC_PATH . "public/goods/".$rs[filename1];
+      $thumb = $PUBLIC_PATH . "public/thumb/tb_".$rs[filename1];
+      $pic =($rs[filename1])? thumbnail($filename, 398, 196, 0, 1, 100, 0, "", "", $thumb) : "images/main/img_thumb01.jpg";
+
+      $rs[pr] = titleCut2($rs[pr],130);
+      $url = "./itemview.html?tid=$rs[tid]";
+      ?>
+      <div class="season_best01">
+        <a href="<?=$url?>" target="<?=$rs[target]?>">
+
+        <img src="<?=$pic?>" width="100%" />
+
+        <div class="season_b01_titgr">
+          <div class="best01_t01"><?=$rs[subject]?></div>
+          <div class="best01_t02"><?=$rs[pr]?></div>
+          <div class="best01_t03"><?=nf($rs[price_adult])?><span class="best_won01">원<?=($rs[bit_price_wave])?'':'~'?></span></div>
+        </div>
+        </a>
+      </div>
+      <!--//Season_best01-->
+
+      <!--Season_best02-->
+      <div class="season_best02">
+        <?
+        while($rs=$dbo->next_record()){
+          $filename = $PUBLIC_PATH . "public/goods/".$rs[filename1];
+          $thumb = $PUBLIC_PATH . "public/thumb/tb_".$rs[filename1];
+          $pic =($rs[filename1])? thumbnail($filename, 171, 115, 0, 1, 100, 0, "", "", $thumb) : "images/main/img_thumb02.jpg";
+          $url = "./itemview.html?tid=$rs[tid]";
+        ?>
+        <!--best02_gr-->
+        <div class="best02_gr">
+          <a href="<?=$url?>" target="<?=$rs[target]?>">
+          <div class="best02_thumb"><img src="<?=$pic?>" width="100%" /></div>
+          <div class="best02_info">
+            <div class="best02_t01"><?=$rs[subject]?></div>
+            <div class="best02_t02"><?=$rs[pr]?></div>
+            <div class="best02_t03"><?=nf($rs[price_adult])?><span class="best_won02">원<?=($rs[bit_price_wave])?'':'~'?></span></div>
+          </div>
+          </a>
+        </div>
+        <!--//best02_gr-->
+        <?}?>
+
+
+      </div>
+      <!--//Season_best02-->
+
+
+
+    </div>
+    <!--//main_info-->
+
+  </div>
+  <!--//main_contents02 :카테고리베스트-->
+
+
+  <!--main_contents03 :추천골프여행-->
+  <div id="main_contents03">
+
+    <!--main_info-->
+    <div class="main_info">
+
+      <h2><img src="images/main/title_theme.png" height="38" alt="테마별추천" /></h2>
+
+      <div id="thema"></div>
+
+
+
+    </div>
+    <!--//main_info-->
+
+  </div>
+  <!--//main_contents03 :추천골프여행-->
+
+
+  <!--main_contents04 :고객센터-->
+  <div id="main_contents04">
+
+    <!--cs_gr-->
+    <div class="cs_gr">
+      <ul>
+        <li><img src="images/main/img_cs.png" width="70%" /></li>
+        <li class="tel_no">
+          <?if($CP_PHONE){?>
+          <a href="tel:<?=$CID_PHONE?>"><?=$CP_PHONE?></a>
+          <?}else{?>
+          <a href="tel:02-512-7705">02.512.7705</a>
+          <?}?>
+        </li>
+        <li>업무시간 : (평일) 09:00~18:00<br /><span class="tel_red">(토,일,공휴일전화상담가능)</span></li>
+
+      </ul>
+    </div>
+    <!--//cs_gr-->
+
+    <!--cs_gr-->
+    <div class="cs_gr">
+      <?if($CP_BANK_ACCOUNT){?>
+      <ul>
+        <li><img src="images/main/title_bank.png" width="70%" /></li>
+        <li><img src="images/main/bank_<?=get_bank_ico($CP_BANK)?>.png" width="70%" alt="국민" /></li>
+        <li class="bank_no"><?=$CP_BANK_ACCOUNT?></li>
+        <li><?=$CP_BANK_OWNER?></li>
+      </ul>
+      <?}else{?>
+      <ul>
+        <li><img src="images/main/title_bank.png" width="70%" /></li>
+        <li><img src="images/main/img_bank.png" width="70%" /></li>
+        <li class="bank_no">813037-04-005009</li>
+        <li>예금주 : (주)이룸플레이스</li>
+      </ul>
+      <?}?>
+    </div>
+    <!--//cs_gr-->
+
+  </div>
+  <!--//main_contents04 :고객센터-->
+
+
+
+</article>
+<!--//article-->
+
+
+<!--footer-->
+<?include("footer.html")?>
+<!--//footer-->
+
+
+
+</body>
+</html>

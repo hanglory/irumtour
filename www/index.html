@@ -1,0 +1,61 @@
+<?
+$qs=$_SERVER["QUERY_STRING"];
+
+$domain = str_replace("www.","",strtolower($_SERVER["SERVER_NAME"]));
+if(strstr($_SERVER["HTTP_HOST"],"irumplace.com")) $domain = "irumplace.com";
+elseif(strstr($_SERVER["HTTP_HOST"],"irumtour.net")) $domain = "irumtour.net";
+elseif(strstr($_SERVER["HTTP_HOST"],"zeustour.kr")) $domain = "zeustour.kr";
+
+
+$chk_cp=str_replace($domain,"",$_SERVER["HTTP_HOST"]);
+$chk_cp=str_replace(".","",$chk_cp);
+
+
+/*zeus*/
+$https = ($_SERVER['HTTPS']=='on')? "https":"http";
+$DOMAIN = $https . "://" . strtolower($_SERVER['HTTP_HOST']);
+if(strstr($DOMAIN,"zeustour.kr")){
+    $url = $DOMAIN."/renew/index.html?$qs";
+    Header( "HTTP/1.1 301 Moved Permanently" );
+    Header( "Location: $url" );
+    exit;
+}
+elseif(strstr($DOMAIN,"golfwithpenguin.com")){
+    $url = $DOMAIN."/renew/index.html?$qs";
+    Header( "HTTP/1.1 301 Moved Permanently" );
+    Header( "Location: $url" );
+    exit;
+}
+elseif(strstr($DOMAIN,"kdctour.co.kr")){
+    $url = "https://kdctour.co.kr/renew/index.html?$qs";
+    Header( "HTTP/1.1 301 Moved Permanently" );
+    Header( "Location: $url" );
+    exit;
+}
+
+
+if($chk_cp && strtolower($chk_cp)!="www"){
+
+	$_SESSION[CID]=$chk_cp;
+	//echo("CID:".$_SESSION[CID]);
+
+	$url = "http://".$_SESSION[CID].".".$domain."/renew/index.html?$qs";
+
+	Header( "HTTP/1.1 301 Moved Permanently" );
+	Header( "Location: $url" );
+	exit;
+}
+
+$arr_browser = array ("iPhone","iPod","IEMobile","Mobile","lgtelecom","PPC");
+for($indexi = 0 ; $indexi < count($arr_browser) ; $indexi++) {
+	if(strpos($_SERVER['HTTP_USER_AGENT'],$arr_browser[$indexi]) == true){
+		Header( "HTTP/1.1 301 Moved Permanently" );
+		Header( "Location: /m2/index.html?$qs" );
+	}else{
+		Header( "HTTP/1.1 301 Moved Permanently" );
+		Header( "Location: https://${domain}/renew/index.html?$qs" );
+	}
+}
+
+exit;
+?>

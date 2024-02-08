@@ -1,0 +1,53 @@
+<script type="text/javascript">
+<!--
+$(function(){
+	$('.main_slider').bxSlider({
+		minSlides: 1,
+		maxSlides: 1,
+		pager:false,
+		controls:false,
+		auto: true,
+		autoControls: false
+	});
+
+});
+//-->
+</script>
+
+<div class="main_rolling">
+
+	 <ul class="main_slider">
+		<?
+		$sql = "select * from ez_nbanner1 where bit_hide<>1 order by seq asc";
+		list($rows) = $dbo->query($sql);
+		while($rs=$dbo->next_record()){
+			$url = ($rs[url])? $rs[url] : "#";
+
+			$url = str_replace("renew/detailview.html","m2/itemview.html",$url);
+			
+			
+		  $filename = $PUBLIC_PATH . "public/banner/".$rs[filename2];
+		  $thumb = $PUBLIC_PATH . "public/thumb/tb_".$rs[filename2];
+		  $pic =thumbnail($filename, 375, 250, 0, 1, 100, 0, "", "", $thumb);
+
+		?>
+		<li>
+		  <a href="<?=$url?>" target="<?=$rs[target]?>">
+		  <div style="width:100%;height:30px; padding:220px 0 0 0; background:url(<?=$pic?>) top center; float:left">
+
+			<div class="visual_textgr">
+			  <ul>
+				<li class="v_text01"><?=$rs[text1]?></li>
+				<li class="v_text02"><?=$rs[text2]?></li>
+				<li class="v_text03"><?=$rs[text3]?></li>
+			  </ul>
+			 </div>
+
+		  </div>
+		  </a>
+		</li>
+		<?}?>
+	</ul>
+
+
+</div>
