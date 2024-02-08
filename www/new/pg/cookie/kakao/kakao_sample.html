@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<title>COOKIEPAYMENTS SAMPLE</title>
+<meta charset="euc-kr">
+<meta http-equiv="X-UA-Compatible">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
+<meta http-equiv="cache-control" content="no-cache"/>
+<meta http-equiv="Expires" content="0"/>
+<meta http-equiv="Pragma" content="no-cache"/>
+</head>
+
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<body>
+<div class="row" style="margin-top:50px;">
+	<div class="container" style="max-width:500px;">
+        <button type="button" onclick="cert_Send();"> 카카오 청구서 요청 ajax </button>
+    </div>
+    <div id='smsurl' style="height:50px;width:100%;"></div>
+</div>
+<script>
+    function cert_Send(){
+        let json_data = {
+			API_ID: 'COOKIEPAY에서 발급받은 가맹점연동 ID',
+			PRODUCTNAME: '상품명',
+			AMOUNT: '금액',
+			BUYERNAME:'카카오 청구서 받는 사람',
+			BUYEREMAIL: '이메일',
+			BUYERHP: '휴대폰번호',
+            MEMO: '테스트요청입니다.',
+        };
+
+        $.ajax({
+            type: "POST",
+            url: "https://cookiepayments.com/urlpay/kakao",
+            dataType: 'json',
+            
+            data : JSON.stringify(json_data),
+            cache: false,
+            beforeSend : function(xhr) {
+                xhr.setRequestHeader("ApiKey", 'COOKIEPAY에서 발급받은 연동키');
+                xhr.setRequestHeader("Content-type","application/json");
+            },
+            success: function(result){	
+                console.log(result);
+                if(result.RESULTCODE==='0000') {
+                    alert('결제 url 생성 되었습니다.');
+                    $("#smsurl").html(result.PAYURL);
+                }else{
+                    alert(result.RESULTMSG);
+                }	                  
+            },error: function(e){
+                alert('데이터 형식 에러');
+            }
+        });
+    }
+</script>

@@ -1,0 +1,21 @@
+				<p>&nbsp;</p>
+				<p>&nbsp;</p>
+
+
+	 <?if(strstr("@14.37.242.84@221.154.110.119@","@".$_SERVER["REMOTE_ADDR"]."@")){?>
+	 <iframe name="actarea" id="actarea" style="width:100%;height:400px"></iframe>
+	 <?}else{?>
+	 <iframe name="actarea" id="actarea" style="display:none;"></iframe>
+	 <?}?>
+
+	 </body>
+</html>
+
+
+
+<?
+$st_sec2 = substr(microtime(),11) - $st_sec;
+$st_usec2 = substr(microtime(),0,10) - $st_usec;
+$st_to_sec2 = $st_sec2 + $st_usec2;
+if($sec) print("종료까지 걸린 시간 : 동작시간 : $st_to_sec2 sec");
+?>

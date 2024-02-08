@@ -1,0 +1,1153 @@
+<?
+include_once("../include/common_file_report.php");
+include_once("../../public/inc/site.inc"); /*2016-04-06*/
+if($CP_ID) @include_once("../../public/cp/cmp_config_".$CP_ID.".inc");
+
+
+
+/*2016-04-06*/
+if($_GET[code]){
+  $id_no = decrypt($code,$SALT);
+
+  $doc_mode=1;
+}
+if(!$code && !$id_no){exit;}
+if($_GET["id_no"]){
+  if(!$sessLogin[id]){exit;}
+}
+
+$page_width="700";
+
+
+if($mode=="save"){
+
+    $plan_text1 = trim($plan_text1);
+    $plan_text2 = trim($plan_text2);
+    $plan_text3 = trim($plan_text3);
+    $plan_text4 = trim($plan_text4);
+    $plan_text5 = trim($plan_text5);
+    $plan_text6 = trim($plan_text6);
+    $plan_text7 = trim($plan_text7);
+    $plan_text8 = trim($plan_text8);
+    $plan_text9 = trim($plan_text9);
+    $plan_text10 = trim($plan_text10);
+    $plan_text11 = trim($plan_text11);
+    $plan_text12 = trim($plan_text12);
+    $plan_text13 = trim($plan_text13);
+    $plan_text14 = trim($plan_text14);
+    $plan_text15 = trim($plan_text15);
+    $plan_text16 = trim($plan_text16);
+    $plan_text17 = trim($plan_text17);
+    $plan_text18 = trim($plan_text18);
+    $plan_text19 = trim($plan_text19);
+    $plan_text20 = trim($plan_text20);
+
+    $plan_time1 = trim($plan_time1);
+    $plan_time2 = trim($plan_time2);
+    $plan_time3 = trim($plan_time3);
+    $plan_time4 = trim($plan_time4);
+    $plan_time5 = trim($plan_time5);
+    $plan_time6 = trim($plan_time6);
+    $plan_time7 = trim($plan_time7);
+    $plan_time8 = trim($plan_time8);
+    $plan_time9 = trim($plan_time9);
+    $plan_time10 = trim($plan_time10);
+    $plan_time11 = trim($plan_time11);
+    $plan_time12 = trim($plan_time12);
+    $plan_time13 = trim($plan_time13);
+    $plan_time14 = trim($plan_time14);
+    $plan_time15 = trim($plan_time15);
+    $plan_time16 = trim($plan_time16);
+    $plan_time17 = trim($plan_time17);
+    $plan_time18 = trim($plan_time18);
+    $plan_time19 = trim($plan_time19);
+    $plan_time20 = trim($plan_time20);
+
+    $plan_meal1 = trim($plan_meal1);
+    $plan_meal2 = trim($plan_meal2);
+    $plan_meal3 = trim($plan_meal3);
+    $plan_meal4 = trim($plan_meal4);
+    $plan_meal5 = trim($plan_meal5);
+    $plan_meal6 = trim($plan_meal6);
+    $plan_meal7 = trim($plan_meal7);
+    $plan_meal8 = trim($plan_meal8);
+    $plan_meal9 = trim($plan_meal9);
+    $plan_meal10 = trim($plan_meal10);
+    $plan_meal11 = trim($plan_meal11);
+    $plan_meal12 = trim($plan_meal12);
+    $plan_meal13 = trim($plan_meal13);
+    $plan_meal14 = trim($plan_meal14);
+    $plan_meal15 = trim($plan_meal15);
+    $plan_meal16 = trim($plan_meal16);
+    $plan_meal17 = trim($plan_meal17);
+    $plan_meal18 = trim($plan_meal18);
+    $plan_meal19 = trim($plan_meal19);
+    $plan_meal20 = trim($plan_meal20);
+
+    $plan_hotel1 = trim($plan_hotel1);
+    $plan_hotel2 = trim($plan_hotel2);
+    $plan_hotel3 = trim($plan_hotel3);
+    $plan_hotel4 = trim($plan_hotel4);
+    $plan_hotel5 = trim($plan_hotel5);
+    $plan_hotel6 = trim($plan_hotel6);
+    $plan_hotel7 = trim($plan_hotel7);
+    $plan_hotel8 = trim($plan_hotel8);
+    $plan_hotel9 = trim($plan_hotel9);
+    $plan_hotel10 = trim($plan_hotel10);
+    $plan_hotel11 = trim($plan_hotel11);
+    $plan_hotel12 = trim($plan_hotel12);
+    $plan_hotel13 = trim($plan_hotel13);
+    $plan_hotel14 = trim($plan_hotel14);
+    $plan_hotel15 = trim($plan_hotel15);
+    $plan_hotel16 = trim($plan_hotel16);
+    $plan_hotel17 = trim($plan_hotel17);
+    $plan_hotel18 = trim($plan_hotel18);
+    $plan_hotel19 = trim($plan_hotel19);
+    $plan_hotel20 = trim($plan_hotel20);  
+
+    $plan_bus1 = trim($plan_bus1);
+    $plan_bus2 = trim($plan_bus2);
+    $plan_bus3 = trim($plan_bus3);
+    $plan_bus4 = trim($plan_bus4);
+    $plan_bus5 = trim($plan_bus5);
+    $plan_bus6 = trim($plan_bus6);
+    $plan_bus7 = trim($plan_bus7);
+    $plan_bus8 = trim($plan_bus8);
+    $plan_bus9 = trim($plan_bus9);
+    $plan_bus10 = trim($plan_bus10);
+    $plan_bus11 = trim($plan_bus11);
+    $plan_bus12 = trim($plan_bus12);
+    $plan_bus13 = trim($plan_bus13);
+    $plan_bus14 = trim($plan_bus14);
+    $plan_bus15 = trim($plan_bus15);
+    $plan_bus16 = trim($plan_bus16);
+    $plan_bus17 = trim($plan_bus17);
+    $plan_bus18 = trim($plan_bus18);
+    $plan_bus19 = trim($plan_bus19);
+    $plan_bus20 = trim($plan_bus20);    
+
+    $form3_text = trim($form3_text);
+    $form3_text2 = trim($form3_text2);
+    $form3_text3 = trim($form3_text3);
+    $form3_text4 = trim($form3_text4);
+
+	$sql="
+	   update cmp_reservation set
+        plan_text1 = '$plan_text1',
+        plan_text2 = '$plan_text2',
+        plan_text3 = '$plan_text3',
+        plan_text4 = '$plan_text4',
+        plan_text5 = '$plan_text5',
+        plan_text6 = '$plan_text6',
+        plan_text7 = '$plan_text7',
+        plan_text8 = '$plan_text8',
+        plan_text9 = '$plan_text9',
+        plan_text10 = '$plan_text10',
+        plan_text11 = '$plan_text11',
+        plan_text12 = '$plan_text12',
+        plan_text13 = '$plan_text13',
+        plan_text14 = '$plan_text14',
+        plan_text15 = '$plan_text15',
+        plan_text16 = '$plan_text16',
+        plan_text17 = '$plan_text17',
+        plan_text18 = '$plan_text18',
+        plan_text19 = '$plan_text19',
+        plan_text20 = '$plan_text20',
+        plan_time1 = '$plan_time1',
+        plan_time2 = '$plan_time2',
+        plan_time3 = '$plan_time3',
+        plan_time4 = '$plan_time4',
+        plan_time5 = '$plan_time5',
+        plan_time6 = '$plan_time6',
+        plan_time7 = '$plan_time7',
+        plan_time8 = '$plan_time8',
+        plan_time9 = '$plan_time9',
+        plan_time10 = '$plan_time10',
+        plan_time11 = '$plan_time11',
+        plan_time12 = '$plan_time12',
+        plan_time13 = '$plan_time13',
+        plan_time14 = '$plan_time14',
+        plan_time15 = '$plan_time15',
+        plan_time16 = '$plan_time16',
+        plan_time17 = '$plan_time17',
+        plan_time18 = '$plan_time18',
+        plan_time19 = '$plan_time19',
+        plan_time20 = '$plan_time20',
+        plan_meal1 = '$plan_meal1',
+        plan_meal2 = '$plan_meal2',
+        plan_meal3 = '$plan_meal3',
+        plan_meal4 = '$plan_meal4',
+        plan_meal5 = '$plan_meal5',
+        plan_meal6 = '$plan_meal6',
+        plan_meal7 = '$plan_meal7',
+        plan_meal8 = '$plan_meal8',
+        plan_meal9 = '$plan_meal9',
+        plan_meal10 = '$plan_meal10',
+        plan_meal11 = '$plan_meal11',
+        plan_meal12 = '$plan_meal12',
+        plan_meal13 = '$plan_meal13',
+        plan_meal14 = '$plan_meal14',
+        plan_meal15 = '$plan_meal15',
+        plan_meal16 = '$plan_meal16',
+        plan_meal17 = '$plan_meal17',
+        plan_meal18 = '$plan_meal18',
+        plan_meal19 = '$plan_meal19',
+        plan_meal20 = '$plan_meal20',
+
+        plan_hotel1 = '$plan_hotel1',
+        plan_hotel2 = '$plan_hotel2',
+        plan_hotel3 = '$plan_hotel3',
+        plan_hotel4 = '$plan_hotel4',
+        plan_hotel5 = '$plan_hotel5',
+        plan_hotel6 = '$plan_hotel6',
+        plan_hotel7 = '$plan_hotel7',
+        plan_hotel8 = '$plan_hotel8',
+        plan_hotel9 = '$plan_hotel9',
+        plan_hotel10 = '$plan_hotel10',
+        plan_hotel11 = '$plan_hotel11',
+        plan_hotel12 = '$plan_hotel12',
+        plan_hotel13 = '$plan_hotel13',
+        plan_hotel14 = '$plan_hotel14',
+        plan_hotel15 = '$plan_hotel15',
+        plan_hotel16 = '$plan_hotel16',
+        plan_hotel17 = '$plan_hotel17',
+        plan_hotel18 = '$plan_hotel18',
+        plan_hotel19 = '$plan_hotel19',
+        plan_hotel20 = '$plan_hotel20',
+
+        plan_bus1 = '$plan_bus1',
+        plan_bus2 = '$plan_bus2',
+        plan_bus3 = '$plan_bus3',
+        plan_bus4 = '$plan_bus4',
+        plan_bus5 = '$plan_bus5',
+        plan_bus6 = '$plan_bus6',
+        plan_bus7 = '$plan_bus7',
+        plan_bus8 = '$plan_bus8',
+        plan_bus9 = '$plan_bus9',
+        plan_bus10 = '$plan_bus10',
+        plan_bus11 = '$plan_bus11',
+        plan_bus12 = '$plan_bus12',
+        plan_bus13 = '$plan_bus13',
+        plan_bus14 = '$plan_bus14',
+        plan_bus15 = '$plan_bus15',
+        plan_bus16 = '$plan_bus16',
+        plan_bus17 = '$plan_bus17',
+        plan_bus18 = '$plan_bus18',
+        plan_bus19 = '$plan_bus19',
+        plan_bus20 = '$plan_bus20',
+
+        add_text10='$add_text10',
+        prepare='$prepare',
+        add_text3='$add_text3',
+
+        form3_text = '$form3_text',
+        form3_text2 = '$form3_text2',
+        form3_text3 = '$form3_text3',
+	    form3_text4 = '$form3_text4'
+	   where id_no=$id_no
+	";
+	$dbo->query($sql);
+
+	error("저장하였습니다.");
+	exit;
+}
+
+
+/*2016-04-06 교체*/
+$sql = "select * from cmp_reservation where id_no=$id_no";
+$dbo->query($sql);
+$rs= $dbo->next_record();
+$rev_subject= $rs[subject];
+$arr =explode("(",$rs[main_staff]);
+$staff=$arr[0];
+$staff_id=substr($arr[1],0,-1);
+$night = ((strtotime($rs[r_date]) -  strtotime($rs[d_date]))/86400)+1;//박수
+$d_date = $rs[d_date];
+$r_date = $rs[r_date];
+$d_arr = explode("/",$rs[d_date]);
+$month = ceil($d_arr[1]);
+if($rs[origin_id_no]){
+    $sql2 = "select * from cmp_estimate where id_no=$rs[origin_id_no]";
+    $dbo2->query($sql2);
+    $rs2= $dbo2->next_record();
+    //if(strstr("@112.172.15.90@221.154.110.119@","@".$_SERVER["REMOTE_ADDR"]."@")){checkVar($rs2[subject].mysql_error(),$sql2);}
+
+    if($rs2[subject]) $golf_name= $rs2[subject];
+
+    if(!$rs[room]){
+        $rs[room]=$rs2[room_type];
+    }
+    if(!$rs[add_text3]){
+        $rs[add_text3]=$rs2[add_text3];
+    }
+    
+}
+
+/*호텔정보 reserv에서 호출*/
+if($rs[hotel_id_no]){
+    $HOTEL_ID_NO=$rs[hotel_id_no];
+    $sql2 = "select * from cmp_hotel where id_no=$rs[hotel_id_no]";
+    $dbo2->query($sql2);
+    $rs2= $dbo2->next_record();
+    if(strstr("@14.37.242.84@221.154.216.133@","@".$_SERVER["REMOTE_ADDR"]."@")) checkVar($rs2[name].mysql_error(),$sql);
+    if($rs2[id_no]){
+        $hotel_name = $rs2[name];
+        $hotel_url = $rs2[url];
+        $hotel_phone = $rs2[phone];
+        $ah1 = $rs2[ah];
+        $hotel_cnt++;
+
+        $HOTELINFO_01[1] = $rs2[name];
+        $HOTELINFO_02[1] = $rs2[url];
+        $HOTELINFO_03[1] = $rs2[phone];
+        $HOTELINFO_04[1] = $rs2[ah];
+
+        $HOTELINFOS[] = "$rs2[name]{@}$rs2[url]{@}$rs2[phone]{@}$rs2[ah]";
+    }
+}
+if($rs[hotel2_id_no]){
+    $HOTEL2_ID_NO=$rs[hotel2_id_no];
+    $sql2 = "select * from cmp_hotel where id_no=$rs[hotel2_id_no]";
+    $dbo2->query($sql2);
+    $rs2= $dbo2->next_record();
+    if($rs2[id_no]){
+        $hotel2_name = $rs2[name];
+        $hotel2_url = $rs2[url];
+        $hotel2_phone = $rs2[phone];
+        $ah2 = $rs2[ah];
+        $hotel_cnt++;
+
+        $HOTELINFO_01[2] = $rs2[name];
+        $HOTELINFO_02[2] = $rs2[url];
+        $HOTELINFO_03[2] = $rs2[phone];
+        $HOTELINFO_04[2] = $rs2[ah];
+
+        $HOTELINFOS[] = "$rs2[name]{@}$rs2[url]{@}$rs2[phone]{@}$rs2[ah]";
+    }
+}
+
+
+/*2016-04-06*/
+$plan_type=$rs[plan_type];
+
+$plan_text[1] = $rs[plan_text1];
+$plan_text[2] = $rs[plan_text2];
+$plan_text[3] = $rs[plan_text3];
+$plan_text[4] = $rs[plan_text4];
+$plan_text[5] = $rs[plan_text5];
+$plan_text[6] = $rs[plan_text6];
+$plan_text[7] = $rs[plan_text7];
+$plan_text[8] = $rs[plan_text8];
+$plan_text[9] = $rs[plan_text9];
+$plan_text[10] = $rs[plan_text10];
+$plan_text[11] = $rs[plan_text11];
+$plan_text[12] = $rs[plan_text12];
+$plan_text[13] = $rs[plan_text13];
+$plan_text[14] = $rs[plan_text14];
+$plan_text[15] = $rs[plan_text15];
+$plan_text[16] = $rs[plan_text16];
+$plan_text[17] = $rs[plan_text17];
+$plan_text[18] = $rs[plan_text18];
+$plan_text[19] = $rs[plan_text19];
+$plan_text[20] = $rs[plan_text20];
+
+$plan_time[1] = plan_time($rs[plan_time1]);
+$plan_time[2] = plan_time($rs[plan_time2]);
+$plan_time[3] = plan_time($rs[plan_time3]);
+$plan_time[4] = plan_time($rs[plan_time4]);
+$plan_time[5] = plan_time($rs[plan_time5]);
+$plan_time[6] = plan_time($rs[plan_time6]);
+$plan_time[7] = plan_time($rs[plan_time7]);
+$plan_time[8] = plan_time($rs[plan_time8]);
+$plan_time[9] = plan_time($rs[plan_time9]);
+$plan_time[10] = plan_time($rs[plan_time10]);
+$plan_time[11] = plan_time($rs[plan_time11]);
+$plan_time[12] = plan_time($rs[plan_time12]);
+$plan_time[13] = plan_time($rs[plan_time13]);
+$plan_time[14] = plan_time($rs[plan_time14]);
+$plan_time[15] = plan_time($rs[plan_time15]);
+$plan_time[16] = plan_time($rs[plan_time16]);
+$plan_time[17] = plan_time($rs[plan_time17]);
+$plan_time[18] = plan_time($rs[plan_time18]);
+$plan_time[19] = plan_time($rs[plan_time19]);
+$plan_time[20] = plan_time($rs[plan_time20]);
+
+
+$plan_meal[1] = $rs[plan_meal1];
+$plan_meal[2] = $rs[plan_meal2];
+$plan_meal[3] = $rs[plan_meal3];
+$plan_meal[4] = $rs[plan_meal4];
+$plan_meal[5] = $rs[plan_meal5];
+$plan_meal[6] = $rs[plan_meal6];
+$plan_meal[7] = $rs[plan_meal7];
+$plan_meal[8] = $rs[plan_meal8];
+$plan_meal[9] = $rs[plan_meal9];
+$plan_meal[10] = $rs[plan_meal10];
+$plan_meal[11] = $rs[plan_meal11];
+$plan_meal[12] = $rs[plan_meal12];
+$plan_meal[13] = $rs[plan_meal13];
+$plan_meal[14] = $rs[plan_meal14];
+$plan_meal[15] = $rs[plan_meal15];
+$plan_meal[16] = $rs[plan_meal16];
+$plan_meal[17] = $rs[plan_meal17];
+$plan_meal[18] = $rs[plan_meal18];
+$plan_meal[19] = $rs[plan_meal19];
+$plan_meal[20] = $rs[plan_meal20];
+
+
+$plan_hotel[1] = $rs[plan_hotel1];
+$plan_hotel[2] = $rs[plan_hotel2];
+$plan_hotel[3] = $rs[plan_hotel3];
+$plan_hotel[4] = $rs[plan_hotel4];
+$plan_hotel[5] = $rs[plan_hotel5];
+$plan_hotel[6] = $rs[plan_hotel6];
+$plan_hotel[7] = $rs[plan_hotel7];
+$plan_hotel[8] = $rs[plan_hotel8];
+$plan_hotel[9] = $rs[plan_hotel9];
+$plan_hotel[10] = $rs[plan_hotel10];
+$plan_hotel[11] = $rs[plan_hotel11];
+$plan_hotel[12] = $rs[plan_hotel12];
+$plan_hotel[13] = $rs[plan_hotel13];
+$plan_hotel[14] = $rs[plan_hotel14];
+$plan_hotel[15] = $rs[plan_hotel15];
+$plan_hotel[16] = $rs[plan_hotel16];
+$plan_hotel[17] = $rs[plan_hotel17];
+$plan_hotel[18] = $rs[plan_hotel18];
+$plan_hotel[19] = $rs[plan_hotel19];
+$plan_hotel[20] = $rs[plan_hotel20];
+
+
+$plan_bus[1] = $rs[plan_bus1];
+$plan_bus[2] = $rs[plan_bus2];
+$plan_bus[3] = $rs[plan_bus3];
+$plan_bus[4] = $rs[plan_bus4];
+$plan_bus[5] = $rs[plan_bus5];
+$plan_bus[6] = $rs[plan_bus6];
+$plan_bus[7] = $rs[plan_bus7];
+$plan_bus[8] = $rs[plan_bus8];
+$plan_bus[9] = $rs[plan_bus9];
+$plan_bus[10] = $rs[plan_bus10];
+$plan_bus[11] = $rs[plan_bus11];
+$plan_bus[12] = $rs[plan_bus12];
+$plan_bus[13] = $rs[plan_bus13];
+$plan_bus[14] = $rs[plan_bus14];
+$plan_bus[15] = $rs[plan_bus15];
+$plan_bus[16] = $rs[plan_bus16];
+$plan_bus[17] = $rs[plan_bus17];
+$plan_bus[18] = $rs[plan_bus18];
+$plan_bus[19] = $rs[plan_bus19];
+$plan_bus[20] = $rs[plan_bus20];
+
+$form3_text = $rs[form3_text];
+$form3_text2 = $rs[form3_text2];
+$form3_text3 = $rs[form3_text3];
+$form3_text4 = $rs[form3_text4];
+
+
+//추가라인 19-1-31
+$plan_add1_a=$rs[plan_add1_a];
+$plan_add1_b=$rs[plan_add1_b];
+$plan_add1_c=$rs[plan_add1_c];
+$plan_add1_d=$rs[plan_add1_d];
+$plan_add2_a=$rs[plan_add2_a];
+$plan_add2_b=$rs[plan_add2_b];
+$plan_add2_c=$rs[plan_add2_c];
+$plan_add2_d=$rs[plan_add2_d];
+$plan_add8_a=$rs[plan_add8_a];
+$plan_add8_b=$rs[plan_add8_b];
+$plan_add8_c=$rs[plan_add8_c];
+$plan_add8_d=$rs[plan_add8_d];
+$plan_add9_a=$rs[plan_add9_a];
+$plan_add9_b=$rs[plan_add9_b];
+$plan_add9_c=$rs[plan_add9_c];
+$plan_add9_d=$rs[plan_add9_d];
+
+
+$sql2 = "select * from cmp_air where id_no=$rs[d_air_id_no]";
+$dbo2->query($sql2);
+$rs2= $dbo2->next_record();
+$d_air = $rs2[d_air];
+$d_air_no = $rs2[d_air_no];
+$d_time_s = $rs2[d_time_s];
+$d_time_e = $rs2[d_time_e];
+$airport_in = str_replace("공항","공항",$rs2[airport_in]);
+$airport_out = $rs2[airport_out];
+$airport_city = $rs2[city];
+$airport_place = $rs2[airport_place];
+
+$sql2 = "select * from cmp_air where id_no=$rs[r_air_id_no]";
+$dbo2->query($sql2);
+$rs2= $dbo2->next_record();
+$r_air = $rs2[r_air_no];
+$r_air_no = $rs2[r_air_no];
+$r_time_s = $rs2[r_time_s];
+$r_time_e = $rs2[r_time_e];
+$r_airport_in = str_replace("공항","공항",$rs2[airport_in]);
+$r_airport_out = $rs2[airport_out];
+$r_airport_city = $rs2[city];
+$r_airport_place = $rs2[airport_place];
+
+
+$sql2 = "select * from cmp_golf where id_no=$rs[golf_id_no]";
+$dbo2->query($sql2);
+$rs2= $dbo2->next_record();
+$nation = $rs2[nation];
+$city = $rs2[city];
+$golf_name = $rs2[name];
+$local_staff = $rs2[local_staff];
+$golf_staff = $rs2[main_staff];
+$meeting_place = $rs2[meeting_place];
+$meeting_board = $rs2[meeting_board];
+$golf_phone = $rs2[phone2];
+
+/*2016-04-06*/
+$point_include =($rs[add_text1])? $rs[add_text1] :  $rs2[point_include];
+$point_not_include =($rs[add_text2])? $rs[add_text2] :  $rs2[point_not_include];
+$phone2 = $rs2[phone2];
+$golf_ground=$rs2[golf_name];
+$car = $rs2[car];
+$car2 = $rs2[car2];
+$etc = $rs2[etc];
+$meal = nl2br($rs2[meal]);
+
+/*2016-04-06*/
+$air_city = $rs2[air_city];
+$car2 = $rs2[car2];
+$etc2 = $rs2[etc2];
+//$cancel_text = ($rs2[cancel_text])? $rs2[cancel_text] : $CANCEL_TXT;
+
+if($nation=="한국"){
+    $ESTIMATE_PRICE_TXT = $ESTIMATE_PRICE_TXT_KO;
+    $CANCEL_TXT = $CANCEL_TXT_KO;
+}
+$cancel_text = $CANCEL_TXT;
+$hotel2_name = $rs2[hotel2_name];
+$hotel2_id_no = $rs2[hotel2_id_no];
+
+$arr = explode(">",$rs2[golf2_1_name]);$rs2[golf2_1_name] = $arr[count($arr)-1];
+$arr = explode(">",$rs2[golf2_2_name]);$rs2[golf2_2_name] = $arr[count($arr)-1];
+$arr = explode(">",$rs2[golf2_3_name]);$rs2[golf2_3_name] = $arr[count($arr)-1];
+$arr = explode(">",$rs2[golf2_4_name]);$rs2[golf2_4_name] = $arr[count($arr)-1];
+
+$golf_name1 = $rs2[golf2_1_name];
+$golf_name2 = $rs2[golf2_2_name];
+$golf_name3 = $rs2[golf2_3_name];
+$golf_name4 = $rs2[golf2_4_name];
+$golf_name4_ = $rs2[golf2_4_name];
+
+if($rs2[golf2_1_id_no]) $golfs[] = $rs2[golf2_1_id_no];
+if($rs2[golf2_2_id_no]) $golfs[] = $rs2[golf2_2_id_no];
+if($rs2[golf2_3_id_no]) $golfs[] = $rs2[golf2_3_id_no];
+if($rs2[golf2_4_id_no]) $golfs[] = $rs2[golf2_4_id_no];
+
+/*2016-04-06*/
+if($golf_name1) $gname[] = trim($golf_name1);
+if($golf_name2) $gname[] = trim($golf_name2);
+if($golf_name3) $gname[] = trim($golf_name3);
+if($golf_name4) $gname[] = trim($golf_name4);
+
+if($golf_name3 && !$golf_name4) $golf_name4_ = $golf_name3;
+if($golf_name2 && !$golf_name3 && !$golf_name4) $golf_name4_ = $golf_name2;
+if($golf_name1 && !$golf_name2 && !$golf_name3 && !$golf_name4){ $golf_name2 = $golf_name1; $golf_name4_ = $golf_name1;}
+
+/*2016-04-06*/
+if($HOTEL_ID_NO) $rs2[hotel_id_no]=$HOTEL_ID_NO;
+$sql2 = "select * from cmp_hotel where id_no=$rs2[hotel_id_no]";
+$dbo2->query($sql2);
+$rs2= $dbo2->next_record();
+$hotel_name=$rs2[name];
+$hotel_address=$rs2[address];
+$hotel_phone=$rs2[phone];
+$hotel_url=$rs2[url];
+$form_mode = ($nation=="일본" || $nation=="중국" || $nation=="대만")?2:1;
+if(strstr("@14.37.242.84@221.154.216.133@","@".$_SERVER["REMOTE_ADDR"]."@")){
+    checkVar("HOTEL_ID_NO",$HOTEL_ID_NO);
+    checkVar("HOTEL_ID_NO",$sql2);
+}
+
+
+if($HOTEL2_ID_NO) $hotel2_id_no=$HOTEL2_ID_NO;
+if($hotel2_id_no){
+  $sql2 = "select * from cmp_hotel where id_no=$hotel2_id_no";
+  $dbo2->query($sql2);
+  $rs2= $dbo2->next_record();
+
+  $hotel2_address=$rs2[address];
+}
+
+$sql2 = "select * from cmp_img where nation='$nation' and filename1<>'' order by id_no desc limit 1";
+$dbo2->query($sql2);
+$rs2= $dbo2->next_record();
+$photo = $rs2[filename1];
+
+$sql2 = "select * from cmp_prepare where nation='$nation' order by id_no desc limit 1";
+$dbo2->query($sql2);
+$rs2= $dbo2->next_record();
+$prepare=($rs[prepare])?$rs[prepare] : $rs2[content];
+
+$sql2 = "select month${month} as temp from cmp_temperature where nation='$nation' and city='$city' order by id_no desc limit 1";
+$dbo2->query($sql2);
+$rs2= $dbo2->next_record();
+$temperature = $rs2[temp];
+
+$sql2 = "select * from cmp_cargo where air='$d_air' order by id_no desc limit 1";
+$dbo2->query($sql2);
+$rs2= $dbo2->next_record();
+$cargo1 = $rs2[content1];
+$cargo2 = $rs2[content2];
+$airport_counter = $rs2[cargo_counter];
+
+
+$edit_mode = (!$doc_mode && !$print_mode)?1:0;
+
+/*2016-04-06*/
+if($doc_mode && !$code){
+	$xls_name = "report1.doc";
+	header("Content-type: application/vnd.ms-word");
+	header("Content-Type: application/vnd.ms-word; charset=euc-kr");
+	header("Content-Disposition: attachment;filename=$xls_name;");
+	header( "Content-Description: PHP4 Generated Data" );
+}
+
+$bg_color = ($cp_color)? $cp_color : "#948A54";
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+
+<?
+/*og metatag*/
+$og_title = ($rev_subject)? $rev_subject : $golf_name;
+$OG_TITLE = "출발안내문 - $og_title";
+include("inc_form_og.php");
+?>
+
+
+
+<link rel="stylesheet" href="https://<?=$_SERVER["HTTP_HOST"]?>/new/bkoff/include/default.css">
+<link rel="stylesheet" href="https://<?=$_SERVER["HTTP_HOST"]?>/new/bkoff/include/basic.css" type="text/css">
+
+<?if($edit_mode){?>
+	<script language="JavaScript" src="../../include/form_check.js"></script>
+	<script language="JavaScript" src="../../include/function.js"></script>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+
+	<!-- Include Core Datepicker Stylesheet -->
+	<link rel="stylesheet" href="../../include/ui.datepicker.css" type="text/css" media="screen" title="core css file" charset="utf-8" />
+	<!-- Include jQuery -->
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+	<!-- Include Core Datepicker JavaScript -->
+	<script src="../../include/ui.datepicker.js" type="text/javascript" charset="utf-8"></script>
+	<!-- Attach the datepicker to dateinput after document is ready -->
+	<script type="text/javascript" charset="utf-8">
+		jQuery(function($){$(".dateinput").datepicker();});
+	</script>
+	<script type="text/javascript" src="../../qtip/jquery.qtip-1.0.0-rc3.min.js"></script>
+	<script type="text/javascript" src="../../include/jquery.maskedinput.min.js"></script>
+
+    <script type="text/javascript">
+    function save(){
+        var fm=document.fmData2;
+        $(".plan_time").each(function() {
+            this.value="{S}"+this.value;
+        });
+        fm.submit();
+    }        
+    </script>
+<?}else{?>
+<style type="text/css">
+.golf{
+    font-weight:bold;
+    background-color:yellow;
+    line-height:130%;
+}
+
+.color1{
+    font-weight:bold;
+    background-color:#A9F5A9;//green
+    line-height:130%;
+}
+
+.color2{
+    font-weight:bold;
+    background-color:#CEE3F6; //blue
+    line-height:130%;
+}
+
+.golf_img img{
+    padding-top: 5px;
+}
+.golf_img .r_1,.golf_img .r_3{
+    padding-left: 5px;
+}
+</style>
+<?}?>
+</head>
+
+<body leftmargin="0" topmargin="0">
+
+<div style="width:700px;padding:30px;text-align:center;margin-left:auto;margin-right:auto;">
+
+<table width="<?=$page_width?>" border="0" cellspacing="0" cellpadding="0" >
+
+      <?if($edit_mode){?>
+      <form name="fmData2" method="post">
+      <input type="hidden" name="mode" value="save">
+      <?}?>
+
+
+      <tr>
+        <td align="center">
+          <?include("./inc_form_heder_image.php");?>
+        </td>        
+      </tr>
+      <tr>
+        <td height="100" align="center"><h1 style="font-size:20px;font-weight:bold"><img src="<?=$caurl?>/images/cmp/tourinfo.gif" width="480" ></h1></td>
+      </tr>
+
+
+	  <tr>
+        <td><table width="<?=$page_width?>" border="0" cellspacing="1" cellpadding="0" style="border-collapse:collapse;border:1px solid #ccc ">
+          <tr>
+            <td width="20%" height="30" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'Malgun Gothic','돋움';font-weight:bold;color:#fff">수신</span></td>
+            <td height="30" bgcolor="#ffffff" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding-left:10px;font-size:10pt"><?=$rs[name]?> 고객님</td>
+            <td width="20%" height="30" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'Malgun Gothic','돋움';font-weight:bold;color:#fff">발신일</span></td>
+            <td height="30" bgcolor="#ffffff" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding-left:10px;font-size:10pt"><?=date("Y/m/d")?></td>
+          </tr>
+          <tr>
+            <td width="20%" height="30" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'Malgun Gothic','돋움';font-weight:bold;color:#fff">수신인 연락처</span></td>
+            <td height="30" bgcolor="#ffffff" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding-left:10px;font-size:10pt"><?=$rs[phone]?></td>
+            <td width="20%" height="30" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'Malgun Gothic','돋움';font-weight:bold;color:#fff">발신인</span></td>
+            <td height="30" bgcolor="#ffffff" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding-left:10px;font-size:10pt"><?//=$FRANCHISECORPNAME?> <?=staff_full_name($staff_id)?></td>
+          </tr>
+
+		</table>
+		</td>
+      </tr>
+
+
+      <tr>
+        <td align="left" height="40" style="font-size:14px;"><span style="font-size:10pt;font-family:'Malgun Gothic','돋움';font-weight:bold">1. 일정</span></td>
+      </tr>
+	  <tr>
+        <td><table width="<?=$page_width?>" border="0" cellspacing="1" cellpadding="0" style="border-collapse:collapse;border:1px solid #ccc ">
+          <tr>
+            <td width="25%" height="30" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'Malgun Gothic','돋움';font-weight:bold;color:#fff">출국</span></td>
+            <td width="25%" height="30" align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><?=$d_date?></td>
+            <td width="25%" height="30" align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><?=$d_air_no?></td>
+            <td width="25%" height="30" align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><?=$d_time_s?>~<?=$d_time_e?></td>
+          </tr>
+          <tr>
+            <td width="25%" height="30" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'Malgun Gothic','돋움';font-weight:bold;color:#fff">귀국</span></td>
+            <td width="25%" height="30" align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><?=$r_date?></td>
+            <td width="25%" height="30" align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><?=$r_air_no?></td>
+            <td width="25%" height="30" align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><?=$r_time_s?>~<?=$r_time_e?></td>
+          </tr>
+</table></td>
+      </tr>
+      <tr>
+        <td height="20"></td>
+      </tr>
+      <tr>
+        <td align="left" height="40" style="font-size:14px;"><span style="font-size:10pt;font-family:'Malgun Gothic','돋움';font-weight:bold">2. 출국공항 및 현지 정보</span></td>
+      </tr>
+<tr>
+        <td><table width="<?=$page_width?>" border="0" cellspacing="1" cellpadding="0" style="border-collapse:collapse;border:1px solid #ccc ">
+          <tr>
+            <td width="20%" height="30" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'Malgun Gothic','돋움';font-weight:bold;color:#fff">국내공항</span></td>
+            <td height="30" colspan="2" align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><?=$airport_in?> <?//=$airport_counter?></td>
+          </tr>
+          <tr>
+            <td width="20%" height="30" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'Malgun Gothic','돋움';font-weight:bold;color:#fff">체크인카운터</span></td>
+            <td height="30" colspan="2" align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><?=$airport_counter?></td>
+          </tr>
+
+          <tr>
+            <td width="20%" height="30" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'Malgun Gothic','돋움';font-weight:bold;color:#fff">체크인 시간</span></td>
+            <td height="30" colspan="2" align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc">
+
+                <?
+                  $arr = explode(":",$d_time_s);
+                  $chk = @mktime($arr[0],$arr[1],0,1,1,2023);
+                  $chk_time1 = @date("H:i",mktime($arr[0],$arr[1],0,1,1,2023)-(3600*3));//3시간전
+                  //$chk_time2 = @date("H:i",mktime($arr[0],$arr[1],0,1,1,2023)-(60*40));//40분전
+                  $chk_time2 = @date("H:i",mktime($arr[0],$arr[1],0,1,1,2023)-(3600*1));//1시간전
+
+                  /*
+                  checkVar("출발시",$d_time_s);
+                  checkVar("체크인 시간1",$chk_time1);
+                  checkVar("체크인 시간2",$chk_time2);
+                  */
+
+                  echo "$chk_time1 ~ $chk_time2";
+                ?>
+
+            </td>
+          </tr>
+
+          <tr>
+            <td width="20%" rowspan="6" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'Malgun Gothic','돋움';font-weight:bold;color:#fff">현지 정보</span></td>
+            <td width="20%" height="30" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;color:#fff">현지공항</td>
+            <td bgcolor="#ffffff" style="padding-left:10px;font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><?=$airport_out?></td>
+          </tr>
+          <tr>
+            <td width="20%" height="30" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;color:#fff">공항미팅위치</td>
+            <td bgcolor="#ffffff" style="padding-left:10px;font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><?=$meeting_place?></td>
+          </tr>
+
+          <tr>
+            <td width="20%" height="30" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;color:#fff">미팅보드</td>
+            <td bgcolor="#ffffff" style="padding-left:10px;font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><?=$meeting_board?></td>
+          </tr>
+
+          <tr>
+            <td width="20%" height="30" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;color:#fff">현지담당</td>
+            <td bgcolor="#ffffff" style="padding-left:10px;font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><?=$local_staff?></td>
+          </tr>
+          <tr>
+            <td width="20%" height="30" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;color:#fff">비상연락처</td>
+            <td bgcolor="#ffffff" style="padding-left:10px;font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><?=$golf_phone?></td>
+          </tr>
+          <tr>
+            <td width="20%" height="30" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;color:#fff">호텔 주소</td>
+            <td bgcolor="#ffffff" style="padding-left:10px;font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;text-align:left" algin="left">
+              <p><?=$hotel_address?> <strong><?=$hotel_name?></strong></p>
+              <p><?=$hotel_address2?> <strong><?=$hotel_name2?></strong></p>
+            </td>
+          </tr>
+        </table>
+        </td>
+      </tr>
+      <tr>
+        <td height="20"></td>
+      </tr>
+      <tr>
+        <td align="left" height="40" style="font-size:14px;"><span style="font-size:10pt;font-family:'Malgun Gothic','돋움';font-weight:bold">3.수화물 무게안내</span></td>
+      </tr>
+      <tr>
+        <td><table width="<?=$page_width?>" border="0" cellspacing="1" cellpadding="0" style="border-collapse:collapse;border:1px solid #ccc ">
+          <tr>
+            <td width="20%" height="50" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;color:#fff"><span style="font-size:10pt;font-family:'Malgun Gothic','돋움';font-weight:bold">위탁수화물</span></td>
+            <td align="left" height="50" colspan="5" align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc">
+                    
+                <?$rs[add_text10]=($rs[add_text10])?$rs[add_text10] : $cargo1?>
+
+                <?if($edit_mode){?>
+                <textarea name="add_text10" class="add_text10 editor3" style="height:150px"><?=$rs[add_text10]?></textarea>
+                <?}else{?>
+                    <?
+                    $txt2=$rs[add_text10];
+                    include("inc_plan_color.php");
+                    $rs[add_text10]=$txt2;
+                    ?>
+                    <?=nl2br($rs[add_text10])?>
+                <?}?>
+
+            </td>
+          </tr>
+          <tr>
+            <td  width="20%" height="50" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;color:#fff"><span style="font-size:10pt;font-family:'Malgun Gothic','돋움';font-weight:bold">기내수화물</span></td>
+            <td align="left" height="50" colspan="5" align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'Malgun Gothic','돋움';padding-left:10px;border-left:1px solid #ccc;border-bottom:1px solid #ccc"><?=nl2br($cargo2)?></td>
+          </tr>
+</table></td>
+      </tr>
+      <tr>
+        <td height="20"></td>
+      </tr>
+      <tr>
+        <td align="left" height="40" style="font-size:14px;"><span style="font-size:10pt;font-family:'Malgun Gothic','돋움';font-weight:bold">4.준비물</span></td>
+      </tr>
+<tr>
+        <td><table width="<?=$page_width?>" border="0" cellspacing="1" cellpadding="0" style="border-collapse:collapse;border:1px solid #ccc ">
+          <tr>
+            <td align="left" width="65%" bgcolor="#ffffff" style="padding:10px;font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc">
+                
+                <?if($edit_mode){?>
+                <textarea name="prepare" class="editor2"><?=$prepare?></textarea>
+                <?}else{?>
+                    <?
+                    $txt2=$prepare;
+                    include("inc_plan_color.php");
+                    $prepare=$txt2;
+                    ?>
+                    <?=nl2br($prepare)?>                    
+                <?}?>
+
+
+            </td>
+          </tr>
+</table></td>
+      </tr>
+	  <tr>
+        <td height="20"></td>
+      </tr>
+
+	  <tr>
+        <td align="left" height="40" style="font-size:14px;"><span style="font-size:10pt;font-family:'Malgun Gothic','돋움';font-weight:bold">5.날씨</span></td>
+      </tr>
+	  <tr>
+        <td><table width="<?=$page_width?>" border="0" cellspacing="1" cellpadding="0" style="border-collapse:collapse;border:1px solid #ccc ">
+          <tr>
+            <td align="left" width="65%"  bgcolor="#ffffff" style="padding:10px;font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc">
+
+      			<?
+      			if(!$form3_text){
+      				$form3_text= "$nation $city $temperature";
+      			}
+      			?>
+      			<?if($edit_mode){?>
+      			<textarea name="form3_text" class="editor2"><?=$form3_text?></textarea>
+      			<?}else{?>
+                    <?
+                    $txt2=$form3_text;
+                    include("inc_plan_color.php");
+                    $form3_text=$txt2;
+                    ?>
+                    <?=nl2br($form3_text)?>                                        
+      			<?}?>
+
+      			</td>
+          </tr>
+		</table>
+		</td>
+      </tr>
+
+	  <tr>
+        <td height="20"></td>
+      </tr>
+      <tr>
+        <td align="left" height="40" style="font-size:14px;"><span style="font-size:10pt;font-family:'Malgun Gothic','돋움';font-weight:bold">6.기타 참고사항</span></td>
+      </tr>
+	  <tr>
+        <td><table width="<?=$page_width?>" border="0" cellspacing="1" cellpadding="0" style="border-collapse:collapse;border:1px solid #ccc ">
+          <tr>
+            <td align="left" width="65%"  bgcolor="#ffffff" style="padding:10px;font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc">
+
+        			<?
+        			if(!$form3_text2){
+        				//$form3_text2= "$nation $city $temperature";
+        			}
+        			?>
+        			<?if($edit_mode){?>
+        			<textarea name="form3_text2" class="editor2" style="height:170px"><?=$form3_text2?></textarea>
+        			<?}else{?>
+                        <?
+                        $txt2=$form3_text2;
+                        include("inc_plan_color.php");
+                        $form3_text2=$txt2;
+                        ?>
+                        <?=nl2br($form3_text2)?>
+        			<?}?>
+
+		      	</td>
+          </tr>
+		  </table>
+		  </td>
+    </tr>
+	  <tr>
+      <td height="20"></td>
+    </tr>
+      <tr>
+        <td align="left" height="40" style="font-size:14px;"><span style="font-size:10pt;font-family:'Malgun Gothic','돋움';font-weight:bold">7.일정표</span></td>
+      </tr>
+
+      <tr>
+        <td><table width="<?=$page_width?>" border="0" cellspacing="1" cellpadding="0" style="border-collapse:collapse;border:1px solid #ccc ">
+          <tr>
+            <td width="20%" height="50" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'Malgun Gothic','돋움';font-weight:bold;color:#fff">포함</span></td>
+            <td align="left" height="50" bgcolor="#ffffff" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding-left:10px;font-size:10pt">
+              
+              <?
+              if(!$form3_text3){
+                $form3_text3= $point_include;
+              }else{
+                $form3_text3 = str_replace("<br>","",$form3_text3);
+                $form3_text3 = str_replace("<br/>","",$form3_text3);
+                $form3_text3 = str_replace("<br />","",$form3_text3);
+                $form3_text3 = strip_tags($form3_text3);
+              }
+              ?>
+              <?if($edit_mode){?>
+              <textarea name="form3_text3" class="editor2"><?=$form3_text3?></textarea>
+              <?}else{?>
+                <?=nl2br($form3_text3)?>
+              <?}?>
+
+            </td>
+          </tr>
+          <tr>
+            <td height="50" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'Malgun Gothic','돋움';font-weight:bold;color:#fff">불포함</span></td>
+            <td align="left" height="50" bgcolor="#ffffff" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding-left:10px;font-size:10pt">
+              
+              <?
+              if(!$form3_text4){
+                $form3_text4= $point_not_include;
+              }
+              ?>
+              <?
+              if($edit_mode){
+                $form3_text4 = strip_tags($form3_text4);
+              ?>
+              <textarea name="form3_text4" class="editor2"><?=$form3_text4?></textarea>
+              <?
+              }else{
+                $form3_text4 = strip_tags($form3_text4);
+                $form3_text4 = nl2br($form3_text4);              
+              ?>
+                <?=$form3_text4?>
+              <?}?>              
+
+            </td>
+          </tr>
+		</table>
+		</td>
+      </tr>
+
+
+      <tr>
+        <td>
+          <table width="<?=$page_width?>" border="0" cellspacing="1" cellpadding="0" style="border-collapse:collapse;border:1px solid #ccc ">
+            <tr>
+              <td width="20%" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'Malgun Gothic','돋움';font-weight:bold;color:#fff">참고사항</span></td>
+              <td align="left" bgcolor="#ffffff" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:10px;font-size:10pt">
+                <?
+                //$txt2=$rs[add_text3];
+                //include("inc_plan_color.php");
+                //$rs[add_text3]=$txt2;
+                ?>
+
+                <?if($edit_mode){?>
+                <textarea name="add_text3" style="height:200px" class="editor2"><?=$rs[add_text3]?></textarea>
+                <?}else{?>
+                    <?=nl2br($rs[add_text3])?>
+                <?}?>
+
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td height="10"></td>
+      </tr>
+
+
+	  <tr>
+        <td>
+
+		<!--일정표 2016-04-06-->
+		<?
+
+		/*2016-04-06*/
+		if(!$plan_type){
+			$plan_type = ($form_mode==2)?"A":"E";
+		}
+
+		/*
+		$plan_type = "F";
+		$night = 5;
+		$car = "car1";
+		$car2 = "car2";
+		checkVar($nation,$plan_type);
+		checkVar("박",$night);
+		*/
+
+		if($REMOTE_ADDR=="106.246.54.27"){
+			//$plan_type = "F";
+			checkVar($night,$plan_type);
+		}
+
+
+		$edit_mode_origin = $edit_mode;
+	    //$edit_mode=1;
+        $color_time = "blue;font-weight:bold";
+		include("plan_type_${plan_type}.php");
+		?>
+
+		<!--일정표-->
+
+		</td>
+      </tr>
+	  <tr>
+        <td height="20"></td>
+      </tr>
+
+
+      <!-- <tr>
+        <td>
+		<table width="<?=$page_width?>" border="0" cellspacing="1" cellpadding="0" style="border-collapse:collapse;border:1px solid #ccc ">
+          <tr>
+            <td width="20%" height="25" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;font-family:'Malgun Gothic','돋움';font-weight:bold;color:#FFF">취소수수료</span></td>
+            <td height="25" bgcolor="#ffffff" colspan="3" style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding-left:5px;font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%text-align:left;padding:8px;" align="left"><?=nl2br($cancel_text)?></td>
+          </tr>
+		</table>
+		</td>
+      </tr>
+	  <tr>
+        <td height="20"></td>
+      </tr> -->
+
+
+      <tr>
+        <td><table width="<?=$page_width?>" border="0" cellspacing="1" cellpadding="0" style="border-collapse:collapse;border:1px solid #ccc ">
+          <tr>
+            <td width="20%" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'Malgun Gothic','돋움';font-weight:bold;color:#fff">호텔주소</span></td>
+            <td align="left" bgcolor="#ffffff" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:10px;font-size:10pt">
+              <p><?=$hotel_address?> <strong><?=$hotel_name?></strong></p>
+              <p><?=$hotel_address2?> <strong><?=$hotel_name2?></strong></p>
+
+            </td>
+          </tr>
+	    </table>
+		</td>
+      </tr>
+      <tr>
+        <td height="30">&nbsp;</td>
+      </tr>
+	  </table>
+	  <?
+	  $edit_mode = $edit_mode_origin;
+	  ?>
+
+
+	  <?if($edit_mode){?>
+	  <div style="padding:20px 0 30px 0">
+	  <!-- Button Begin---------------------------------------------->
+	  <table border="0" width="200" cellspacing="0" cellpadding="0" align="right">
+		<tr align="right">
+			<td><span class="btn_pack medium bold"><a href="#" onClick="save()"> 저장 </a></span></td>
+			<td><span class="btn_pack medium bold"><a href="<?=SELF?>?id_no=<?=$rs[id_no]?>&doc_mode=1"> Word 저장 </a></span></td>
+			<td><span class="btn_pack medium bold"><a href="javascript:self.close()"> 창닫기 </a></span></td>
+		</tr>
+	  </table>
+	  <!-- Button End------------------------------------------------>
+	  </div>
+    <?}else{?>
+
+      <?if(!$MOBILE){?>
+        <div style="padding:20px 0 30px 0">
+        <!-- Button Begin---------------------------------------------->
+        <table border="0" width="200" cellspacing="0" cellpadding="0" align="right">
+        <tr align="right">
+          <td><span class="btn_pack medium bold"><a href="<?=SELF?>?id_no=<?=$rs[id_no]?>&doc_mode=1"> Word 저장 </a></span></td>
+        </tr>
+        </table>
+        <!-- Button End------------------------------------------------>
+        </div>
+      <?}?>
+
+    <?}?>
+
+
+    <?if($edit_mode){?>
+    </form>
+    <?}?>
+
+
+</div>
+
+
+</body>
+</html>

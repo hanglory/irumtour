@@ -1,0 +1,39 @@
+<table width="165" border="0" cellspacing="0" cellpadding="0">
+
+  <tr>
+	 <td height="26"><img src="../images/common/ic_arrow.gif" width="5" height="8" hspace="6"> 상품관리</td>
+  </tr>
+  <tr><td height="1" background="../images/common/bg_dot.gif"></td></tr>
+
+<?
+$dbo9 = new MiniDB($info);
+$sql9 = "select * from ez_tour_category1 order by seq asc";
+$dbo9->query($sql9);
+while($rs9 = $dbo9->next_record()){
+?>
+  <tr>
+	 <td height="26" style="padding-left:12px"> - <a href="../tour/list_tour.php?ctg1=<?=$rs9[id_no]?>&sale_group=<?=($sale_group)?$sale_group:'T'?>" class="leftmenu"><?=$rs9[subject]?></a></td>
+  </tr>
+  <tr><td height="1" background="../images/common/bg_dot.gif"></td></tr>
+
+<?
+}
+?>
+  <tr>
+     <td height="26" style="padding-left:12px"> - <a href="../tour/list_tour.php?sale_group=T" class="leftmenu">모든상품</a></td>
+  </tr>
+  <tr><td height="1" background="../images/common/bg_dot.gif"></td></tr>
+
+
+  <tr>
+	 <td height="26"><img src="../images/common/ic_arrow.gif" width="5" height="8" hspace="6"> <a href="../tour/list_review.php" class="leftmenu">답사후기 관리</a></td>
+  </tr>
+  <tr><td height="1" background="../images/common/bg_dot.gif"></td></tr>
+
+
+  <tr>
+	 <td height="26"><img src="../images/common/ic_arrow.gif" width="5" height="8" hspace="6"> <a href="../tour/category.php" class="leftmenu">분류 관리</a></td>
+  </tr>
+  <tr><td height="1" background="../images/common/bg_dot.gif"></td></tr>
+
+</table>

@@ -1,0 +1,2 @@
+121.128.79.27 - [19/Sep/2023:10:58:07 +0900] /new/bkoff/cmp/view_hotel.php: file1 = si-kojsi-exterior-12377_Classic-Hor.jfif: 차단된 이름 파일 업로드
+121.128.79.27 - [19/Sep/2023:11:00:47 +0900] /new/bkoff/cmp/view_hotel.php: file1 = si-kojsi-exterior-12377_Classic-Hor.jfif: 차단된 이름 파일 업로드

@@ -1,0 +1,46 @@
+<table width="165" border="0" cellspacing="0" cellpadding="0">
+
+<?if($_SESSION["sessLogin"]["power"]==9 && !$CP_ID){?> 
+  <tr>
+	 <td height="26"><img src="../images/common/ic_arrow.gif" width="5" height="8" hspace="6"> <a href="../basic/admin.php" class="leftmenu">관리자 계정 변경</a></td>
+  </tr>
+  <tr><td height="1" background="../images/common/bg_dot.gif"></td></tr>
+
+  <tr>
+	 <td height="26"><img src="../images/common/ic_arrow.gif" width="5" height="8" hspace="6"> <a href="../basic/site.php" class="leftmenu">사이트정보</a></td>
+  </tr>
+  <tr><td height="1" background="../images/common/bg_dot.gif"></td></tr>
+<?}?>
+
+
+  <tr>
+	 <td height="26"><img src="../images/common/ic_arrow.gif" width="5" height="8" hspace="6"> <a href="../basic/list_nbanner.php" class="leftmenu">메인 배너 관리</a></td>
+  </tr>
+  <tr><td height="1" background="../images/common/bg_dot.gif"></td></tr>
+
+
+  <tr>
+	 <td height="26"><img src="../images/common/ic_arrow.gif" width="5" height="8" hspace="6"> <a href="../basic/list_nbanner2.php" class="leftmenu">서브 배너 관리</a></td>
+  </tr>
+  <tr><td height="1" background="../images/common/bg_dot.gif"></td></tr>
+
+
+  <tr>
+	 <td height="26"><img src="../images/common/ic_arrow.gif" width="5" height="8" hspace="6"> <a href="../basic/list_popup.php" class="leftmenu">팝업관리</a></td>
+  </tr>
+  <tr><td height="1" background="../images/common/bg_dot.gif"></td></tr>
+
+
+  <tr>
+   <td height="26"><img src="../images/common/ic_arrow.gif" width="5" height="8" hspace="6"> <a href="../basic/list_secu.php" class="leftmenu">차단 IP 해제</a></td>
+  </tr>
+  <tr><td height="1" background="../images/common/bg_dot.gif"></td></tr>
+
+  <?if(strstr("@14.37.242.84@221.154.110.119@","@".$_SERVER["REMOTE_ADDR"]."@")){?>
+  <tr>
+   <td height="26"><img src="../images/common/ic_arrow.gif" width="5" height="8" hspace="6"> <a href="../basic/list_login.php" class="leftmenu">로그인 기록(H)</a></td>
+  </tr>
+  <tr><td height="1" background="../images/common/bg_dot.gif"></td></tr>
+  <?}?>
+
+</table>

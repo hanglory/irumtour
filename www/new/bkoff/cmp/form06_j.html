@@ -1,0 +1,2139 @@
+<?
+include_once("../include/common_file_report.php");
+include_once("../../public/inc/site.inc"); /*2016-04-06*/
+
+$HTTPS=($_SERVER["HTTPS"]=="on")? "https://":"http://";
+$DOMAIN = $HTTPS.$_SERVER["HTTP_HOST"];
+
+
+/*2016-04-06*/
+if($_GET[code]){
+	$code=str_replace("{p}","+",$code);
+	$id_no = decrypt($code,$SALT);
+	//if($_SERVER["REMOTE_ADDR"]=="106.246.54.27"){echo $id_no;}
+	$doc_mode=1;
+}
+if(!$code && !$id_no){exit;}
+if($_GET["id_no"]){
+	if(!$sessLogin[id]){exit;}
+}
+
+$BIT_GOLF_PHOTO_ALL = 1; //1- 골프장 사진 모두 표시 / 0- 첫번째만 표시
+
+
+$page_width="700";
+$bold_color = "#000";
+
+
+if($_SERVER["REMOTE_ADDR"]=="106.246.54.27"){checkVar("id_no",$id_no);}
+
+$BASIC_ACCOUNT = str_replace("(주)","<br/>(주)",$BASIC_ACCOUNT);
+
+if($_SERVER["REMOTE_ADDR"]=="1106.246.54.27"){
+	$sql = "alter table cmp_estimate add plan_hotel1 text";
+	$dbo->query($sql);
+	checkVar(mysql_error(),$sql);
+}
+
+if($REMOTE_ADDR=="1106.246.54.27"){
+	for($i=1;$i<=20;$i++){
+		//$sql = "alter table cmp_estimate add plan_bus${i} text";
+		$sql = "alter table cmp_estimate add plan_place${i} text";
+		$dbo->query($sql);
+		//checkVar(mysql_error(),$sql);
+	}
+}
+
+function chk_plan_text($str){
+	global $code;
+	if($code && $_SERVER["REMOTE_ADDR"]=="1106.246.54.27"){
+		$str = str_replace("{골프장이미지}","┡",strip_tags($str));
+	}
+
+	return $str;		
+}
+
+/*호텔 강제지정의 경우 데이터 불러오기*/
+function get_abs_hotel($day){
+	global $hotel_days1;
+	global $hotel_days2;
+	global $hotel_days3;
+	global $hotel_days4;
+	global $hotel_days5;
+	global $HOTELINFO_01;
+	global $HOTELINFO_02;
+	global $HOTELINFO_03;
+	global $_SERVER;
+
+	$days = "hotel_days".$day;
+
+	if(strstr($hotel_days1,",${day},")) $no=1;				
+	elseif(strstr($hotel_days2,",${day},")) $no=2;				
+	elseif(strstr($hotel_days3,",${day},")) $no=3;				
+	elseif(strstr($hotel_days4,",${day},")) $no=4;				
+	elseif(strstr($hotel_days5,",${day},")) $no=5;				
+
+	// if($_SERVER["REMOTE_ADDR"]=="106.246.54.27"){
+	// 	checkVar("no",$no);
+	// 	checkVar($days,$$days);
+
+	// }
+
+	$result['hotel_name'] = $HOTELINFO_01[$no];
+	$result['hotel_url'] = $HOTELINFO_02[$no];
+	$result['hotel_phone'] = $HOTELINFO_03[$no];
+
+	return $result;
+}
+
+
+/*2016-04-06*/
+if($mode=="save"){
+
+	$plan_bus1 = trim($plan_bus1);
+	$plan_bus2 = trim($plan_bus2);
+	$plan_bus3 = trim($plan_bus3);
+	$plan_bus4 = trim($plan_bus4);
+	$plan_bus5 = trim($plan_bus5);
+	$plan_bus6 = trim($plan_bus6);
+	$plan_bus7 = trim($plan_bus7);
+	$plan_bus8 = trim($plan_bus8);
+	$plan_bus9 = trim($plan_bus9);
+	$plan_bus10 = trim($plan_bus10);
+	$plan_bus11 = trim($plan_bus11);
+	$plan_bus12 = trim($plan_bus12);
+	$plan_bus13 = trim($plan_bus13);
+	$plan_bus14 = trim($plan_bus14);
+	$plan_bus15 = trim($plan_bus15);
+	$plan_bus16 = trim($plan_bus16);
+	$plan_bus17 = trim($plan_bus17);
+	$plan_bus18 = trim($plan_bus18);
+	$plan_bus19 = trim($plan_bus19);
+	$plan_bus20 = trim($plan_bus20);
+
+	$plan_bus21 = trim($plan_bus21);
+	$plan_bus22 = trim($plan_bus22);
+	$plan_bus23 = trim($plan_bus23);
+	$plan_bus24 = trim($plan_bus24);
+	$plan_bus25 = trim($plan_bus25);
+	$plan_bus26 = trim($plan_bus26);
+	$plan_bus27 = trim($plan_bus27);
+	$plan_bus28 = trim($plan_bus28);
+	$plan_bus29 = trim($plan_bus29);
+	$plan_bus30 = trim($plan_bus30);
+	$plan_bus31 = trim($plan_bus31);
+	$plan_bus32 = trim($plan_bus32);
+	$plan_bus33 = trim($plan_bus33);
+	$plan_bus34 = trim($plan_bus34);
+	$plan_bus35 = trim($plan_bus35);
+	$plan_bus36 = trim($plan_bus36);
+	$plan_bus37 = trim($plan_bus37);
+	$plan_bus38 = trim($plan_bus38);
+	$plan_bus39 = trim($plan_bus39);
+	$plan_bus40 = trim($plan_bus40);	
+
+	$plan_place1 = trim($plan_place1);
+	$plan_place2 = trim($plan_place2);
+	$plan_place3 = trim($plan_place3);
+	$plan_place4 = trim($plan_place4);
+	$plan_place5 = trim($plan_place5);
+	$plan_place6 = trim($plan_place6);
+	$plan_place7 = trim($plan_place7);
+	$plan_place8 = trim($plan_place8);
+	$plan_place9 = trim($plan_place9);
+	$plan_place10 = trim($plan_place10);
+	$plan_place11 = trim($plan_place11);
+	$plan_place12 = trim($plan_place12);
+	$plan_place13 = trim($plan_place13);
+	$plan_place14 = trim($plan_place14);
+	$plan_place15 = trim($plan_place15);
+	$plan_place16 = trim($plan_place16);
+	$plan_place17 = trim($plan_place17);
+	$plan_place18 = trim($plan_place18);
+	$plan_place19 = trim($plan_place19);
+	$plan_place20 = trim($plan_place20);
+
+	$plan_place21 = trim($plan_place21);
+	$plan_place22 = trim($plan_place22);
+	$plan_place23 = trim($plan_place23);
+	$plan_place24 = trim($plan_place24);
+	$plan_place25 = trim($plan_place25);
+	$plan_place26 = trim($plan_place26);
+	$plan_place27 = trim($plan_place27);
+	$plan_place28 = trim($plan_place28);
+	$plan_place29 = trim($plan_place29);
+	$plan_place30 = trim($plan_place30);
+	$plan_place31 = trim($plan_place31);
+	$plan_place32 = trim($plan_place32);
+	$plan_place33 = trim($plan_place33);
+	$plan_place34 = trim($plan_place34);
+	$plan_place35 = trim($plan_place35);
+	$plan_place36 = trim($plan_place36);
+	$plan_place37 = trim($plan_place37);
+	$plan_place38 = trim($plan_place38);
+	$plan_place39 = trim($plan_place39);
+	$plan_place40 = trim($plan_place40);	
+
+	$plan_text1 = trim($plan_text1);
+	$plan_text2 = trim($plan_text2);
+	$plan_text3 = trim($plan_text3);
+	$plan_text4 = trim($plan_text4);
+	$plan_text5 = trim($plan_text5);
+	$plan_text6 = trim($plan_text6);
+	$plan_text7 = trim($plan_text7);
+	$plan_text8 = trim($plan_text8);
+	$plan_text9 = trim($plan_text9);
+	$plan_text10 = trim($plan_text10);
+	$plan_text11 = trim($plan_text11);
+	$plan_text12 = trim($plan_text12);
+	$plan_text13 = trim($plan_text13);
+	$plan_text14 = trim($plan_text14);
+	$plan_text15 = trim($plan_text15);
+	$plan_text16 = trim($plan_text16);
+	$plan_text17 = trim($plan_text17);
+	$plan_text18 = trim($plan_text18);
+	$plan_text19 = trim($plan_text19);
+	$plan_text20 = trim($plan_text20);
+
+	$plan_text21 = trim($plan_text21);
+	$plan_text22 = trim($plan_text22);
+	$plan_text23 = trim($plan_text23);
+	$plan_text24 = trim($plan_text24);
+	$plan_text25 = trim($plan_text25);
+	$plan_text26 = trim($plan_text26);
+	$plan_text27 = trim($plan_text27);
+	$plan_text28 = trim($plan_text28);
+	$plan_text29 = trim($plan_text29);
+	$plan_text30 = trim($plan_text30);
+	$plan_text31 = trim($plan_text31);
+	$plan_text32 = trim($plan_text32);
+	$plan_text33 = trim($plan_text33);
+	$plan_text34 = trim($plan_text34);
+	$plan_text35 = trim($plan_text35);
+	$plan_text36 = trim($plan_text36);
+	$plan_text37 = trim($plan_text37);
+	$plan_text38 = trim($plan_text38);
+	$plan_text39 = trim($plan_text39);
+	$plan_text40 = trim($plan_text40);	
+
+	$plan_time1 = trim($plan_time1);
+	$plan_time2 = trim($plan_time2);
+	$plan_time3 = trim($plan_time3);
+	$plan_time4 = trim($plan_time4);
+	$plan_time5 = trim($plan_time5);
+	$plan_time6 = trim($plan_time6);
+	$plan_time7 = trim($plan_time7);
+	$plan_time8 = trim($plan_time8);
+	$plan_time9 = trim($plan_time9);
+	$plan_time10 = trim($plan_time10);
+	$plan_time11 = trim($plan_time11);
+	$plan_time12 = trim($plan_time12);
+	$plan_time13 = trim($plan_time13);
+	$plan_time14 = trim($plan_time14);
+	$plan_time15 = trim($plan_time15);
+	$plan_time16 = trim($plan_time16);
+	$plan_time17 = trim($plan_time17);
+	$plan_time18 = trim($plan_time18);
+	$plan_time19 = trim($plan_time19);
+	$plan_time20 = trim($plan_time20);
+
+	$plan_time21 = trim($plan_time21);
+	$plan_time22 = trim($plan_time22);
+	$plan_time23 = trim($plan_time23);
+	$plan_time24 = trim($plan_time24);
+	$plan_time25 = trim($plan_time25);
+	$plan_time26 = trim($plan_time26);
+	$plan_time27 = trim($plan_time27);
+	$plan_time28 = trim($plan_time28);
+	$plan_time29 = trim($plan_time29);
+	$plan_time30 = trim($plan_time30);
+	$plan_time31 = trim($plan_time31);
+	$plan_time32 = trim($plan_time32);
+	$plan_time33 = trim($plan_time33);
+	$plan_time34 = trim($plan_time34);
+	$plan_time35 = trim($plan_time35);
+	$plan_time36 = trim($plan_time36);
+	$plan_time37 = trim($plan_time37);
+	$plan_time38 = trim($plan_time38);
+	$plan_time39 = trim($plan_time39);
+	$plan_time40 = trim($plan_time40);	
+
+	$plan_meal1 = trim($plan_meal1);
+	$plan_meal2 = trim($plan_meal2);
+	$plan_meal3 = trim($plan_meal3);
+	$plan_meal4 = trim($plan_meal4);
+	$plan_meal5 = trim($plan_meal5);
+	$plan_meal6 = trim($plan_meal6);
+	$plan_meal7 = trim($plan_meal7);
+	$plan_meal8 = trim($plan_meal8);
+	$plan_meal9 = trim($plan_meal9);
+	$plan_meal10 = trim($plan_meal10);
+	$plan_meal11 = trim($plan_meal11);
+	$plan_meal12 = trim($plan_meal12);
+	$plan_meal13 = trim($plan_meal13);
+	$plan_meal14 = trim($plan_meal14);
+	$plan_meal15 = trim($plan_meal15);
+	$plan_meal16 = trim($plan_meal16);
+	$plan_meal17 = trim($plan_meal17);
+	$plan_meal18 = trim($plan_meal18);
+	$plan_meal19 = trim($plan_meal19);
+	$plan_meal20 = trim($plan_meal20);
+
+	$plan_meal21 = trim($plan_meal21);
+	$plan_meal22 = trim($plan_meal22);
+	$plan_meal23 = trim($plan_meal23);
+	$plan_meal24 = trim($plan_meal24);
+	$plan_meal25 = trim($plan_meal25);
+	$plan_meal26 = trim($plan_meal26);
+	$plan_meal27 = trim($plan_meal27);
+	$plan_meal28 = trim($plan_meal28);
+	$plan_meal29 = trim($plan_meal29);
+	$plan_meal30 = trim($plan_meal30);
+	$plan_meal31 = trim($plan_meal31);
+	$plan_meal32 = trim($plan_meal32);
+	$plan_meal33 = trim($plan_meal33);
+	$plan_meal34 = trim($plan_meal34);
+	$plan_meal35 = trim($plan_meal35);
+	$plan_meal36 = trim($plan_meal36);
+	$plan_meal37 = trim($plan_meal37);
+	$plan_meal38 = trim($plan_meal38);
+	$plan_meal39 = trim($plan_meal39);
+	$plan_meal40 = trim($plan_meal40);	
+
+	$plan_hotel1 = trim($plan_hotel1);
+	$plan_hotel2 = trim($plan_hotel2);
+	$plan_hotel3 = trim($plan_hotel3);
+	$plan_hotel4 = trim($plan_hotel4);
+	$plan_hotel5 = trim($plan_hotel5);
+	$plan_hotel6 = trim($plan_hotel6);
+	$plan_hotel7 = trim($plan_hotel7);
+	$plan_hotel8 = trim($plan_hotel8);
+	$plan_hotel9 = trim($plan_hotel9);
+	$plan_hotel10 = trim($plan_hotel10);
+	$plan_hotel11 = trim($plan_hotel11);
+	$plan_hotel12 = trim($plan_hotel12);
+	$plan_hotel13 = trim($plan_hotel13);
+	$plan_hotel14 = trim($plan_hotel14);
+	$plan_hotel15 = trim($plan_hotel15);
+	$plan_hotel16 = trim($plan_hotel16);
+	$plan_hotel17 = trim($plan_hotel17);
+	$plan_hotel18 = trim($plan_hotel18);
+	$plan_hotel19 = trim($plan_hotel19);
+	$plan_hotel20 = trim($plan_hotel20);	
+
+	$plan_hotel21 = trim($plan_hotel21);
+	$plan_hotel22 = trim($plan_hotel22);
+	$plan_hotel23 = trim($plan_hotel23);
+	$plan_hotel24 = trim($plan_hotel24);
+	$plan_hotel25 = trim($plan_hotel25);
+	$plan_hotel26 = trim($plan_hotel26);
+	$plan_hotel27 = trim($plan_hotel27);
+	$plan_hotel28 = trim($plan_hotel28);
+	$plan_hotel29 = trim($plan_hotel29);
+	$plan_hotel30 = trim($plan_hotel30);
+	$plan_hotel31 = trim($plan_hotel31);
+	$plan_hotel32 = trim($plan_hotel32);
+	$plan_hotel33 = trim($plan_hotel33);
+	$plan_hotel34 = trim($plan_hotel34);
+	$plan_hotel35 = trim($plan_hotel35);
+	$plan_hotel36 = trim($plan_hotel36);
+	$plan_hotel37 = trim($plan_hotel37);
+	$plan_hotel38 = trim($plan_hotel38);
+	$plan_hotel39 = trim($plan_hotel39);
+	$plan_hotel40 = trim($plan_hotel40);	
+
+    $add_text7=rnf($add_text7);
+    $add_text8=rnf($add_text8);
+    $add_text9=rnf($add_text9);
+    if(!$add_text9) $add_text9= $add_text7 * $add_text8;
+
+	$sql="
+	   update cmp_estimate set
+
+	      plan_bus1 = '$plan_bus1',
+	      plan_bus2 = '$plan_bus2',
+	      plan_bus3 = '$plan_bus3',
+	      plan_bus4 = '$plan_bus4',
+	      plan_bus5 = '$plan_bus5',
+	      plan_bus6 = '$plan_bus6',
+	      plan_bus7 = '$plan_bus7',
+	      plan_bus8 = '$plan_bus8',
+	      plan_bus9 = '$plan_bus9',
+	      plan_bus10 = '$plan_bus10',
+	      plan_bus11 = '$plan_bus11',
+	      plan_bus12 = '$plan_bus12',
+	      plan_bus13 = '$plan_bus13',
+	      plan_bus14 = '$plan_bus14',
+	      plan_bus15 = '$plan_bus15',
+	      plan_bus16 = '$plan_bus16',
+	      plan_bus17 = '$plan_bus17',
+	      plan_bus18 = '$plan_bus18',
+	      plan_bus19 = '$plan_bus19',
+	      plan_bus20 = '$plan_bus20',
+
+	      plan_bus21 = '$plan_bus21',
+	      plan_bus22 = '$plan_bus22',
+	      plan_bus23 = '$plan_bus23',
+	      plan_bus24 = '$plan_bus24',
+	      plan_bus25 = '$plan_bus25',
+	      plan_bus26 = '$plan_bus26',
+	      plan_bus27 = '$plan_bus27',
+	      plan_bus28 = '$plan_bus28',
+	      plan_bus29 = '$plan_bus29',
+	      plan_bus30 = '$plan_bus30',
+	      plan_bus31 = '$plan_bus31',
+	      plan_bus32 = '$plan_bus32',
+	      plan_bus33 = '$plan_bus33',
+	      plan_bus34 = '$plan_bus34',
+	      plan_bus35 = '$plan_bus35',
+	      plan_bus36 = '$plan_bus36',
+	      plan_bus37 = '$plan_bus37',
+	      plan_bus38 = '$plan_bus38',
+	      plan_bus39 = '$plan_bus39',
+	      plan_bus40 = '$plan_bus40',	      
+
+	      plan_place1 = '$plan_place1',
+	      plan_place2 = '$plan_place2',
+	      plan_place3 = '$plan_place3',
+	      plan_place4 = '$plan_place4',
+	      plan_place5 = '$plan_place5',
+	      plan_place6 = '$plan_place6',
+	      plan_place7 = '$plan_place7',
+	      plan_place8 = '$plan_place8',
+	      plan_place9 = '$plan_place9',
+	      plan_place10 = '$plan_place10',
+	      plan_place11 = '$plan_place11',
+	      plan_place12 = '$plan_place12',
+	      plan_place13 = '$plan_place13',
+	      plan_place14 = '$plan_place14',
+	      plan_place15 = '$plan_place15',
+	      plan_place16 = '$plan_place16',
+	      plan_place17 = '$plan_place17',
+	      plan_place18 = '$plan_place18',
+	      plan_place19 = '$plan_place19',
+	      plan_place20 = '$plan_place20',
+
+	      plan_place21 = '$plan_place21',
+	      plan_place22 = '$plan_place22',
+	      plan_place23 = '$plan_place23',
+	      plan_place24 = '$plan_place24',
+	      plan_place25 = '$plan_place25',
+	      plan_place26 = '$plan_place26',
+	      plan_place27 = '$plan_place27',
+	      plan_place28 = '$plan_place28',
+	      plan_place29 = '$plan_place29',
+	      plan_place30 = '$plan_place30',
+	      plan_place31 = '$plan_place31',
+	      plan_place32 = '$plan_place32',
+	      plan_place33 = '$plan_place33',
+	      plan_place34 = '$plan_place34',
+	      plan_place35 = '$plan_place35',
+	      plan_place36 = '$plan_place36',
+	      plan_place37 = '$plan_place37',
+	      plan_place38 = '$plan_place38',
+	      plan_place39 = '$plan_place39',
+	      plan_place40 = '$plan_place40',	      
+
+	      plan_text1 = '$plan_text1',
+	      plan_text2 = '$plan_text2',
+	      plan_text3 = '$plan_text3',
+	      plan_text4 = '$plan_text4',
+	      plan_text5 = '$plan_text5',
+	      plan_text6 = '$plan_text6',
+	      plan_text7 = '$plan_text7',
+	      plan_text8 = '$plan_text8',
+	      plan_text9 = '$plan_text9',
+	      plan_text10 = '$plan_text10',
+	      plan_text11 = '$plan_text11',
+	      plan_text12 = '$plan_text12',
+	      plan_text13 = '$plan_text13',
+	      plan_text14 = '$plan_text14',
+	      plan_text15 = '$plan_text15',
+	      plan_text16 = '$plan_text16',
+	      plan_text17 = '$plan_text17',
+	      plan_text18 = '$plan_text18',
+	      plan_text19 = '$plan_text19',
+	      plan_text20 = '$plan_text20',
+
+	      plan_text21 = '$plan_text21',
+	      plan_text22 = '$plan_text22',
+	      plan_text23 = '$plan_text23',
+	      plan_text24 = '$plan_text24',
+	      plan_text25 = '$plan_text25',
+	      plan_text26 = '$plan_text26',
+	      plan_text27 = '$plan_text27',
+	      plan_text28 = '$plan_text28',
+	      plan_text29 = '$plan_text29',
+	      plan_text30 = '$plan_text30',
+	      plan_text31 = '$plan_text31',
+	      plan_text32 = '$plan_text32',
+	      plan_text33 = '$plan_text33',
+	      plan_text34 = '$plan_text34',
+	      plan_text35 = '$plan_text35',
+	      plan_text36 = '$plan_text36',
+	      plan_text37 = '$plan_text37',
+	      plan_text38 = '$plan_text38',
+	      plan_text39 = '$plan_text39',
+	      plan_text40 = '$plan_text40',	      
+
+	      plan_time1 = '$plan_time1',
+	      plan_time2 = '$plan_time2',
+	      plan_time3 = '$plan_time3',
+	      plan_time4 = '$plan_time4',
+	      plan_time5 = '$plan_time5',
+	      plan_time6 = '$plan_time6',
+	      plan_time7 = '$plan_time7',
+	      plan_time8 = '$plan_time8',
+	      plan_time9 = '$plan_time9',
+	      plan_time10 = '$plan_time10',
+	      plan_time11 = '$plan_time11',
+	      plan_time12 = '$plan_time12',
+	      plan_time13 = '$plan_time13',
+	      plan_time14 = '$plan_time14',
+	      plan_time15 = '$plan_time15',
+	      plan_time16 = '$plan_time16',
+	      plan_time17 = '$plan_time17',
+	      plan_time18 = '$plan_time18',
+	      plan_time19 = '$plan_time19',
+	      plan_time20 = '$plan_time20',
+
+	      plan_time21 = '$plan_time21',
+	      plan_time22 = '$plan_time22',
+	      plan_time23 = '$plan_time23',
+	      plan_time24 = '$plan_time24',
+	      plan_time25 = '$plan_time25',
+	      plan_time26 = '$plan_time26',
+	      plan_time27 = '$plan_time27',
+	      plan_time28 = '$plan_time28',
+	      plan_time29 = '$plan_time29',
+	      plan_time30 = '$plan_time30',
+	      plan_time31 = '$plan_time31',
+	      plan_time32 = '$plan_time32',
+	      plan_time33 = '$plan_time33',
+	      plan_time34 = '$plan_time34',
+	      plan_time35 = '$plan_time35',
+	      plan_time36 = '$plan_time36',
+	      plan_time37 = '$plan_time37',
+	      plan_time38 = '$plan_time38',
+	      plan_time39 = '$plan_time39',
+	      plan_time40 = '$plan_time40',
+
+	      plan_meal1 = '$plan_meal1',
+	      plan_meal2 = '$plan_meal2',
+	      plan_meal3 = '$plan_meal3',
+	      plan_meal4 = '$plan_meal4',
+	      plan_meal5 = '$plan_meal5',
+	      plan_meal6 = '$plan_meal6',
+	      plan_meal7 = '$plan_meal7',
+	      plan_meal8 = '$plan_meal8',
+	      plan_meal9 = '$plan_meal9',
+	      plan_meal10 = '$plan_meal10',
+	      plan_meal11 = '$plan_meal11',
+	      plan_meal12 = '$plan_meal12',
+	      plan_meal13 = '$plan_meal13',
+	      plan_meal14 = '$plan_meal14',
+	      plan_meal15 = '$plan_meal15',
+	      plan_meal16 = '$plan_meal16',
+	      plan_meal17 = '$plan_meal17',
+	      plan_meal18 = '$plan_meal18',
+	      plan_meal19 = '$plan_meal19',
+	      plan_meal20 = '$plan_meal20',
+
+	      plan_meal21 = '$plan_meal21',
+	      plan_meal22 = '$plan_meal22',
+	      plan_meal23 = '$plan_meal23',
+	      plan_meal24 = '$plan_meal24',
+	      plan_meal25 = '$plan_meal25',
+	      plan_meal26 = '$plan_meal26',
+	      plan_meal27 = '$plan_meal27',
+	      plan_meal28 = '$plan_meal28',
+	      plan_meal29 = '$plan_meal29',
+	      plan_meal30 = '$plan_meal30',
+	      plan_meal31 = '$plan_meal31',
+	      plan_meal32 = '$plan_meal32',
+	      plan_meal33 = '$plan_meal33',
+	      plan_meal34 = '$plan_meal34',
+	      plan_meal35 = '$plan_meal35',
+	      plan_meal36 = '$plan_meal36',
+	      plan_meal37 = '$plan_meal37',
+	      plan_meal38 = '$plan_meal38',
+	      plan_meal39 = '$plan_meal39',
+	      plan_meal40 = '$plan_meal40',	      
+
+	      plan_hotel1 = '$plan_hotel1',
+	      plan_hotel2 = '$plan_hotel2',
+	      plan_hotel3 = '$plan_hotel3',
+	      plan_hotel4 = '$plan_hotel4',
+	      plan_hotel5 = '$plan_hotel5',
+	      plan_hotel6 = '$plan_hotel6',
+	      plan_hotel7 = '$plan_hotel7',
+	      plan_hotel8 = '$plan_hotel8',
+	      plan_hotel9 = '$plan_hotel9',
+	      plan_hotel10 = '$plan_hotel10',
+	      plan_hotel11 = '$plan_hotel11',
+	      plan_hotel12 = '$plan_hotel12',
+	      plan_hotel13 = '$plan_hotel13',
+	      plan_hotel14 = '$plan_hotel14',
+	      plan_hotel15 = '$plan_hotel15',
+	      plan_hotel16 = '$plan_hotel16',
+	      plan_hotel17 = '$plan_hotel17',
+	      plan_hotel18 = '$plan_hotel18',
+	      plan_hotel19 = '$plan_hotel19',
+	      plan_hotel20 = '$plan_hotel20',
+
+	      plan_hotel21 = '$plan_hotel21',
+	      plan_hotel22 = '$plan_hotel22',
+	      plan_hotel23 = '$plan_hotel23',
+	      plan_hotel24 = '$plan_hotel24',
+	      plan_hotel25 = '$plan_hotel25',
+	      plan_hotel26 = '$plan_hotel26',
+	      plan_hotel27 = '$plan_hotel27',
+	      plan_hotel28 = '$plan_hotel28',
+	      plan_hotel29 = '$plan_hotel29',
+	      plan_hotel30 = '$plan_hotel30',
+	      plan_hotel31 = '$plan_hotel31',
+	      plan_hotel32 = '$plan_hotel32',
+	      plan_hotel33 = '$plan_hotel33',
+	      plan_hotel34 = '$plan_hotel34',
+	      plan_hotel35 = '$plan_hotel35',
+	      plan_hotel36 = '$plan_hotel36',
+	      plan_hotel37 = '$plan_hotel37',
+	      plan_hotel38 = '$plan_hotel38',
+	      plan_hotel39 = '$plan_hotel39',
+	      plan_hotel40 = '$plan_hotel40',	      
+
+	      add_text1 = '$add_text1',
+	      add_text2 = '$add_text2',
+	      add_text3 = '$add_text3',
+	      add_text4 = '$add_text4',
+	      add_text5 = '$add_text5',
+	      add_text6 = '$add_text6',
+	      add_text7 = '$add_text7',
+	      add_text8 = '$add_text8',
+	      add_text9 = '$add_text9',
+	      moving_time = '$moving_time',
+	      moving_time2 = '$moving_time2',
+	      moving_time3 = '$moving_time3',
+	      moving_time4 = '$moving_time4'
+	   where id_no=$id_no
+	";
+	$dbo->query($sql);
+
+	//if(strstr("@112.172.15.90@221.154.110.119@","@".$_SERVER["REMOTE_ADDR"]."@")){checkVar(mysql_error(),$sql);exit;}
+
+	if($e2r_copy){
+		redirect2("estimate_to_reservation.php?id_no=$id_no");
+		exit;
+	}
+
+	error("저장하였습니다.");
+	exit;
+}
+
+$sql = "
+	select 
+		a.* 
+	from 
+	cmp_estimate as a
+	where id_no=$id_no";
+$dbo->query($sql);
+$rs= $dbo->next_record();
+
+
+$arr = explode("(",$rs[main_staff]);
+$staff=$arr[0];
+$staff_id=substr($arr[1],0,-1);
+
+
+//직원별 이미지
+if($staff_id){
+	$sql2 = "select * from cmp_staff where id='$staff_id'";
+	$dbo2->query($sql2);
+	$rs2=$dbo2->next_record();
+	if($rs2[filename1]) $staff_header = "${DOMAIN}/new/public/cmp_files/".$rs2[filename1];
+
+	$cp_color = $rs2[paper_color];
+	$cp_account = $rs2[bank_account];
+	$cp_company = $rs2[company];
+	$cp_logo = $rs2[filename2];
+}
+
+$staff_id=substr($arr[1],0,-1);
+$night = ((strtotime($rs[r_date]) -  strtotime($rs[d_date]))/86400)+1;//박수
+$d_date = $rs[d_date];
+$r_date = $rs[r_date];
+$bit_long_days = $rs[bit_long_days];
+$meal_type = $rs[meal_type];
+
+$hole1  = $rs[hole1];
+$hole2  = $rs[hole2];
+$hole3  = $rs[hole3];
+$hole4  = $rs[hole4];
+$hole5  = $rs[hole5];
+$hole6  = $rs[hole6];
+
+//2018-01-08
+$hotel_id_no1 = $rs[hotel_id_no];
+$hotel_id_no2 = $rs[hotel2_id_no];
+$hotel_id_no3 = $rs[hotel3_id_no];
+$hotel_id_no4 = $rs[hotel4_id_no];
+$hotel_id_no5 = $rs[hotel5_id_no];
+$hotel_days1 = ",".$rs[hotel_days].",";
+$hotel_days2 = ",".$rs[hotel_days2].",";
+$hotel_days3 = ",".$rs[hotel_days3].",";
+$hotel_days4 = ",".$rs[hotel_days4].",";
+$hotel_days5 = ",".$rs[hotel_days5].",";
+$HOTEL_ABS_MODE = ($rs[hotel_days] || $rs[hotel_days2] || $rs[hotel_days3] || $rs[hotel_days4] || $rs[hotel_days5])?1:0;
+
+
+//관광지 추가 19-1-10
+$tour_id_no1 = $rs[tour_id_no];
+$tour_id_no2 = $rs[tour2_id_no];
+$tour_id_no3 = $rs[tour3_id_no];
+$tour_id_no4 = $rs[tour4_id_no];
+$tour_id_no5 = $rs[tour5_id_no];
+$tour_id_no6 = $rs[tour6_id_no];
+$tour_days1 = ",".$rs[tour_days].",";
+$tour_days2 = ",".$rs[tour_days2].",";
+$tour_days3 = ",".$rs[tour_days3].",";
+$tour_days4 = ",".$rs[tour_days4].",";
+$tour_days5 = ",".$rs[tour_days5].",";
+$tour_days6 = ",".$rs[tour_days6].",";
+
+//추가라인 19-1-31
+$plan_add1_a=$rs[plan_add1_a];
+$plan_add1_b=$rs[plan_add1_b];
+$plan_add1_c=$rs[plan_add1_c];
+$plan_add1_d=$rs[plan_add1_d];
+$plan_add2_a=$rs[plan_add2_a];
+$plan_add2_b=$rs[plan_add2_b];
+$plan_add2_c=$rs[plan_add2_c];
+$plan_add2_d=$rs[plan_add2_d];
+$plan_add8_a=$rs[plan_add8_a];
+$plan_add8_b=$rs[plan_add8_b];
+$plan_add8_c=$rs[plan_add8_c];
+$plan_add8_d=$rs[plan_add8_d];
+$plan_add9_a=$rs[plan_add9_a];
+$plan_add9_b=$rs[plan_add9_b];
+$plan_add9_c=$rs[plan_add9_c];
+$plan_add9_d=$rs[plan_add9_d];
+
+
+if($_SERVER["REMOTE_ADDR"]=="1106.246.54.27"){
+$arr =explode(",",$rs[tour_days]);
+while(list($key,$val)=each($arr)){
+	if($rs[tour_id_no]) $TOUR_CHK_DAYS[$val] = $rs[tour];
+	//checkVar($key,$val);
+}
+}
+
+
+$arr = explode(">",$rs[golf_name]);
+$default_golf_name= $arr[count($arr)-1];
+
+if($rs[subject]) $default_golf_name = $rs[subject];
+
+$d_air_no = $rs[d_air_no];
+$d_air_no_m = $rs[d_air_no_m];
+$r_air_no = $rs[r_air_no];
+$d_air_time1 = $rs[d_air_time1];
+$d_air_time2 = $rs[d_air_time2];
+$d_air_time1_m = $rs[d_air_time1_m];
+$d_air_time2_m = $rs[d_air_time2_m];
+$r_air_time1 = $rs[r_air_time1];
+$r_air_time2 = $rs[r_air_time2];
+
+if($_SERVER["REMOTE_ADDR"]=="1106.246.54.27"){
+	checkVar("d_air_no",$d_air_no);
+	checkVar("d_air_no_m",$d_air_no_m);
+	checkVar("d_air_time1_m",$d_air_time1_m);
+	checkVar("d_air_time2_m",$d_air_time2_m);
+}
+
+
+/*2016-04-06*/
+$plan_type=$rs[plan_type];
+
+$plan_bus[1] = $rs[plan_bus1];
+$plan_bus[2] = $rs[plan_bus2];
+$plan_bus[3] = $rs[plan_bus3];
+$plan_bus[4] = $rs[plan_bus4];
+$plan_bus[5] = $rs[plan_bus5];
+$plan_bus[6] = $rs[plan_bus6];
+$plan_bus[7] = $rs[plan_bus7];
+$plan_bus[8] = $rs[plan_bus8];
+$plan_bus[9] = $rs[plan_bus9];
+$plan_bus[10] = $rs[plan_bus10];
+$plan_bus[11] = $rs[plan_bus11];
+$plan_bus[12] = $rs[plan_bus12];
+$plan_bus[13] = $rs[plan_bus13];
+$plan_bus[14] = $rs[plan_bus14];
+$plan_bus[15] = $rs[plan_bus15];
+$plan_bus[16] = $rs[plan_bus16];
+$plan_bus[17] = $rs[plan_bus17];
+$plan_bus[18] = $rs[plan_bus18];
+$plan_bus[19] = $rs[plan_bus19];
+$plan_bus[20] = $rs[plan_bus20];
+
+$plan_bus[21] = $rs[plan_bus21];
+$plan_bus[22] = $rs[plan_bus22];
+$plan_bus[23] = $rs[plan_bus23];
+$plan_bus[24] = $rs[plan_bus24];
+$plan_bus[25] = $rs[plan_bus25];
+$plan_bus[26] = $rs[plan_bus26];
+$plan_bus[27] = $rs[plan_bus27];
+$plan_bus[28] = $rs[plan_bus28];
+$plan_bus[29] = $rs[plan_bus29];
+$plan_bus[0] = $rs[plan_bus30];
+$plan_bus[31] = $rs[plan_bus31];
+$plan_bus[32] = $rs[plan_bus32];
+$plan_bus[33] = $rs[plan_bus33];
+$plan_bus[34] = $rs[plan_bus34];
+$plan_bus[35] = $rs[plan_bus35];
+$plan_bus[36] = $rs[plan_bus36];
+$plan_bus[37] = $rs[plan_bus37];
+$plan_bus[38] = $rs[plan_bus38];
+$plan_bus[39] = $rs[plan_bus39];
+$plan_bus[40] = $rs[plan_bus40];
+
+$plan_place[1] = $rs[plan_place1];
+$plan_place[2] = $rs[plan_place2];
+$plan_place[3] = $rs[plan_place3];
+$plan_place[4] = $rs[plan_place4];
+$plan_place[5] = $rs[plan_place5];
+$plan_place[6] = $rs[plan_place6];
+$plan_place[7] = $rs[plan_place7];
+$plan_place[8] = $rs[plan_place8];
+$plan_place[9] = $rs[plan_place9];
+$plan_place[10] = $rs[plan_place10];
+$plan_place[11] = $rs[plan_place11];
+$plan_place[12] = $rs[plan_place12];
+$plan_place[13] = $rs[plan_place13];
+$plan_place[14] = $rs[plan_place14];
+$plan_place[15] = $rs[plan_place15];
+$plan_place[16] = $rs[plan_place16];
+$plan_place[17] = $rs[plan_place17];
+$plan_place[18] = $rs[plan_place18];
+$plan_place[19] = $rs[plan_place19];
+$plan_place[20] = $rs[plan_place20];
+
+$plan_place[21] = $rs[plan_place21];
+$plan_place[22] = $rs[plan_place22];
+$plan_place[23] = $rs[plan_place23];
+$plan_place[24] = $rs[plan_place24];
+$plan_place[25] = $rs[plan_place25];
+$plan_place[26] = $rs[plan_place26];
+$plan_place[27] = $rs[plan_place27];
+$plan_place[28] = $rs[plan_place28];
+$plan_place[29] = $rs[plan_place29];
+$plan_place[30] = $rs[plan_place30];
+$plan_place[31] = $rs[plan_place31];
+$plan_place[32] = $rs[plan_place32];
+$plan_place[33] = $rs[plan_place33];
+$plan_place[34] = $rs[plan_place34];
+$plan_place[35] = $rs[plan_place35];
+$plan_place[36] = $rs[plan_place36];
+$plan_place[37] = $rs[plan_place37];
+$plan_place[38] = $rs[plan_place38];
+$plan_place[39] = $rs[plan_place39];
+$plan_place[40] = $rs[plan_place40];
+
+
+$plan_text[1] = chk_plan_text($rs[plan_text1]);
+$plan_text[2] = chk_plan_text($rs[plan_text2]);
+$plan_text[3] = chk_plan_text($rs[plan_text3]);
+$plan_text[4] = chk_plan_text($rs[plan_text4]);
+$plan_text[5] = chk_plan_text($rs[plan_text5]);
+$plan_text[6] = chk_plan_text($rs[plan_text6]);
+$plan_text[7] = chk_plan_text($rs[plan_text7]);
+$plan_text[8] = chk_plan_text($rs[plan_text8]);
+$plan_text[9] = chk_plan_text($rs[plan_text9]);
+$plan_text[10] = chk_plan_text($rs[plan_text10]);
+$plan_text[11] = chk_plan_text($rs[plan_text11]);
+$plan_text[12] = chk_plan_text($rs[plan_text12]);
+$plan_text[13] = chk_plan_text($rs[plan_text13]);
+$plan_text[14] = chk_plan_text($rs[plan_text14]);
+$plan_text[15] = chk_plan_text($rs[plan_text15]);
+$plan_text[16] = chk_plan_text($rs[plan_text16]);
+$plan_text[17] = chk_plan_text($rs[plan_text17]);
+$plan_text[18] = chk_plan_text($rs[plan_text18]);
+$plan_text[19] = chk_plan_text($rs[plan_text19]);
+$plan_text[20] = chk_plan_text($rs[plan_text20]);
+
+$plan_text[21] = chk_plan_text($rs[plan_text21]);
+$plan_text[22] = chk_plan_text($rs[plan_text22]);
+$plan_text[23] = chk_plan_text($rs[plan_text23]);
+$plan_text[24] = chk_plan_text($rs[plan_text24]);
+$plan_text[25] = chk_plan_text($rs[plan_text25]);
+$plan_text[26] = chk_plan_text($rs[plan_text26]);
+$plan_text[27] = chk_plan_text($rs[plan_text27]);
+$plan_text[28] = chk_plan_text($rs[plan_text28]);
+$plan_text[29] = chk_plan_text($rs[plan_text29]);
+$plan_text[30] = chk_plan_text($rs[plan_text30]);
+$plan_text[31] = chk_plan_text($rs[plan_text31]);
+$plan_text[32] = chk_plan_text($rs[plan_text32]);
+$plan_text[33] = chk_plan_text($rs[plan_text33]);
+$plan_text[34] = chk_plan_text($rs[plan_text34]);
+$plan_text[35] = chk_plan_text($rs[plan_text35]);
+$plan_text[36] = chk_plan_text($rs[plan_text36]);
+$plan_text[37] = chk_plan_text($rs[plan_text37]);
+$plan_text[38] = chk_plan_text($rs[plan_text38]);
+$plan_text[39] = chk_plan_text($rs[plan_text39]);
+$plan_text[40] = chk_plan_text($rs[plan_text40]);
+
+$plan_time[1] = plan_time($rs[plan_time1]);
+$plan_time[2] = plan_time($rs[plan_time2]);
+$plan_time[3] = plan_time($rs[plan_time3]);
+$plan_time[4] = plan_time($rs[plan_time4]);
+$plan_time[5] = plan_time($rs[plan_time5]);
+$plan_time[6] = plan_time($rs[plan_time6]);
+$plan_time[7] = plan_time($rs[plan_time7]);
+$plan_time[8] = plan_time($rs[plan_time8]);
+$plan_time[9] = plan_time($rs[plan_time9]);
+$plan_time[10] = plan_time($rs[plan_time10]);
+$plan_time[11] = plan_time($rs[plan_time11]);
+$plan_time[12] = plan_time($rs[plan_time12]);
+$plan_time[13] = plan_time($rs[plan_time13]);
+$plan_time[14] = plan_time($rs[plan_time14]);
+$plan_time[15] = plan_time($rs[plan_time15]);
+$plan_time[16] = plan_time($rs[plan_time16]);
+$plan_time[17] = plan_time($rs[plan_time17]);
+$plan_time[18] = plan_time($rs[plan_time18]);
+$plan_time[19] = plan_time($rs[plan_time19]);
+$plan_time[20] = plan_time($rs[plan_time20]);
+
+$plan_time[21] = plan_time($rs[plan_time21]);
+$plan_time[22] = plan_time($rs[plan_time22]);
+$plan_time[23] = plan_time($rs[plan_time23]);
+$plan_time[24] = plan_time($rs[plan_time24]);
+$plan_time[25] = plan_time($rs[plan_time25]);
+$plan_time[26] = plan_time($rs[plan_time26]);
+$plan_time[27] = plan_time($rs[plan_time27]);
+$plan_time[28] = plan_time($rs[plan_time28]);
+$plan_time[29] = plan_time($rs[plan_time29]);
+$plan_time[30] = plan_time($rs[plan_time30]);
+$plan_time[31] = plan_time($rs[plan_time31]);
+$plan_time[32] = plan_time($rs[plan_time32]);
+$plan_time[33] = plan_time($rs[plan_time33]);
+$plan_time[34] = plan_time($rs[plan_time34]);
+$plan_time[35] = plan_time($rs[plan_time35]);
+$plan_time[36] = plan_time($rs[plan_time36]);
+$plan_time[37] = plan_time($rs[plan_time37]);
+$plan_time[38] = plan_time($rs[plan_time38]);
+$plan_time[39] = plan_time($rs[plan_time39]);
+$plan_time[40] = plan_time($rs[plan_time40]);
+
+$plan_meal[1] = $rs[plan_meal1];
+$plan_meal[2] = $rs[plan_meal2];
+$plan_meal[3] = $rs[plan_meal3];
+$plan_meal[4] = $rs[plan_meal4];
+$plan_meal[5] = $rs[plan_meal5];
+$plan_meal[6] = $rs[plan_meal6];
+$plan_meal[7] = $rs[plan_meal7];
+$plan_meal[8] = $rs[plan_meal8];
+$plan_meal[9] = $rs[plan_meal9];
+$plan_meal[10] = $rs[plan_meal10];
+$plan_meal[11] = $rs[plan_meal11];
+$plan_meal[12] = $rs[plan_meal12];
+$plan_meal[13] = $rs[plan_meal13];
+$plan_meal[14] = $rs[plan_meal14];
+$plan_meal[15] = $rs[plan_meal15];
+$plan_meal[16] = $rs[plan_meal16];
+$plan_meal[17] = $rs[plan_meal17];
+$plan_meal[18] = $rs[plan_meal18];
+$plan_meal[19] = $rs[plan_meal19];
+$plan_meal[20] = $rs[plan_meal20];
+
+$plan_meal[21] = $rs[plan_meal21];
+$plan_meal[22] = $rs[plan_meal22];
+$plan_meal[23] = $rs[plan_meal23];
+$plan_meal[24] = $rs[plan_meal24];
+$plan_meal[25] = $rs[plan_meal25];
+$plan_meal[26] = $rs[plan_meal26];
+$plan_meal[27] = $rs[plan_meal27];
+$plan_meal[28] = $rs[plan_meal28];
+$plan_meal[29] = $rs[plan_meal29];
+$plan_meal[30] = $rs[plan_meal30];
+$plan_meal[31] = $rs[plan_meal31];
+$plan_meal[32] = $rs[plan_meal32];
+$plan_meal[33] = $rs[plan_meal33];
+$plan_meal[34] = $rs[plan_meal34];
+$plan_meal[35] = $rs[plan_meal35];
+$plan_meal[36] = $rs[plan_meal36];
+$plan_meal[37] = $rs[plan_meal37];
+$plan_meal[38] = $rs[plan_meal38];
+$plan_meal[39] = $rs[plan_meal39];
+$plan_meal[40] = $rs[plan_meal40];
+
+$plan_hotel[1] = $rs[plan_hotel1];
+$plan_hotel[2] = $rs[plan_hotel2];
+$plan_hotel[3] = $rs[plan_hotel3];
+$plan_hotel[4] = $rs[plan_hotel4];
+$plan_hotel[5] = $rs[plan_hotel5];
+$plan_hotel[6] = $rs[plan_hotel6];
+$plan_hotel[7] = $rs[plan_hotel7];
+$plan_hotel[8] = $rs[plan_hotel8];
+$plan_hotel[9] = $rs[plan_hotel9];
+$plan_hotel[10] = $rs[plan_hotel10];
+$plan_hotel[11] = $rs[plan_hotel11];
+$plan_hotel[12] = $rs[plan_hotel12];
+$plan_hotel[13] = $rs[plan_hotel13];
+$plan_hotel[14] = $rs[plan_hotel14];
+$plan_hotel[15] = $rs[plan_hotel15];
+$plan_hotel[16] = $rs[plan_hotel16];
+$plan_hotel[17] = $rs[plan_hotel17];
+$plan_hotel[18] = $rs[plan_hotel18];
+$plan_hotel[19] = $rs[plan_hotel19];
+$plan_hotel[20] = $rs[plan_hotel20];
+
+$plan_hotel[21] = $rs[plan_hotel21];
+$plan_hotel[22] = $rs[plan_hotel22];
+$plan_hotel[23] = $rs[plan_hotel23];
+$plan_hotel[24] = $rs[plan_hotel24];
+$plan_hotel[25] = $rs[plan_hotel25];
+$plan_hotel[26] = $rs[plan_hotel26];
+$plan_hotel[27] = $rs[plan_hotel27];
+$plan_hotel[28] = $rs[plan_hotel28];
+$plan_hotel[29] = $rs[plan_hotel29];
+$plan_hotel[30] = $rs[plan_hotel30];
+$plan_hotel[31] = $rs[plan_hotel31];
+$plan_hotel[32] = $rs[plan_hotel32];
+$plan_hotel[33] = $rs[plan_hotel33];
+$plan_hotel[34] = $rs[plan_hotel34];
+$plan_hotel[35] = $rs[plan_hotel35];
+$plan_hotel[36] = $rs[plan_hotel36];
+$plan_hotel[37] = $rs[plan_hotel37];
+$plan_hotel[38] = $rs[plan_hotel38];
+$plan_hotel[39] = $rs[plan_hotel39];
+$plan_hotel[40] = $rs[plan_hotel40];
+
+$arr = explode(">",$rs[golf2_1_name]);$rs[golf2_1_name] = $arr[count($arr)-1];
+$arr = explode(">",$rs[golf2_2_name]);$rs[golf2_2_name] = $arr[count($arr)-1];
+$arr = explode(">",$rs[golf2_3_name]);$rs[golf2_3_name] = $arr[count($arr)-1];
+$arr = explode(">",$rs[golf2_4_name]);$rs[golf2_4_name] = $arr[count($arr)-1];
+$arr = explode(">",$rs[golf2_5_name]);$rs[golf2_5_name] = $arr[count($arr)-1];
+$arr = explode(">",$rs[golf2_6_name]);$rs[golf2_6_name] = $arr[count($arr)-1];
+$arr = explode(">",$rs[golf2_7_name]);$rs[golf2_7_name] = $arr[count($arr)-1];
+$arr = explode(">",$rs[golf2_8_name]);$rs[golf2_8_name] = $arr[count($arr)-1];
+$arr = explode(">",$rs[golf2_9_name]);$rs[golf2_9_name] = $arr[count($arr)-1];
+$arr = explode(">",$rs[golf2_10_name]);$rs[golf2_10_name] = $arr[count($arr)-1];
+
+$golf_name1 = $rs[golf2_1_name];
+$golf_name2 = $rs[golf2_2_name];
+$golf_name3 = $rs[golf2_3_name];
+$golf_name4 = $rs[golf2_4_name];
+$golf_name5 = $rs[golf2_5_name];
+$golf_name6 = $rs[golf2_6_name];
+$golf_name7 = $rs[golf2_7_name];
+$golf_name8 = $rs[golf2_8_name];
+$golf_name9 = $rs[golf2_9_name];
+$golf_name10 = $rs[golf2_10_name];
+$golf_name4_ = $rs[golf2_4_name];
+
+/*2016-04-06*/
+if($golf_name1) $gname[] = trim($golf_name1. " " . $hole1);
+if($golf_name2) $gname[] = trim($golf_name2. " " . $hole2);
+if($golf_name3) $gname[] = trim($golf_name3. " " . $hole3);
+if($golf_name4) $gname[] = trim($golf_name4. " " . $hole4);
+if($golf_name5) $gname[] = trim($golf_name5. " " . $hole5);
+if($golf_name6) $gname[] = trim($golf_name6. " " . $hole6);
+if($golf_name7) $gname[] = trim($golf_name7. " " . $hole6);
+if($golf_name8) $gname[] = trim($golf_name8. " " . $hole6);
+if($golf_name9) $gname[] = trim($golf_name9. " " . $hole6);
+if($golf_name10) $gname[] = trim($golf_name10. " " . $hole6);
+
+
+if($rs[golf2_1_id_no]) $golfs[] = $rs[golf2_1_id_no];
+if($rs[golf2_2_id_no]) $golfs[] = $rs[golf2_2_id_no];
+if($rs[golf2_3_id_no]) $golfs[] = $rs[golf2_3_id_no];
+if($rs[golf2_4_id_no]) $golfs[] = $rs[golf2_4_id_no];
+if($rs[golf2_5_id_no]) $golfs[] = $rs[golf2_5_id_no];
+if($rs[golf2_6_id_no]) $golfs[] = $rs[golf2_6_id_no];
+if($rs[golf2_7_id_no]) $golfs[] = $rs[golf2_7_id_no];
+if($rs[golf2_8_id_no]) $golfs[] = $rs[golf2_8_id_no];
+if($rs[golf2_9_id_no]) $golfs[] = $rs[golf2_9_id_no];
+if($rs[golf2_10_id_no]) $golfs[] = $rs[golf2_10_id_no];
+
+
+if($golf_name3 && !$golf_name4) $golf_name4_ = $golf_name3;
+if($golf_name2 && !$golf_name3 && !$golf_name4) $golf_name4_ = $golf_name2;
+if($golf_name1 && !$golf_name2 && !$golf_name3 && !$golf_name4){ $golf_name2 = $golf_name1; $golf_name4_ = $golf_name1;}
+
+
+//골프장 이미지
+while(list($key,$val)=@each($golfs)){
+	$sql2 = "select * from cmp_golf2 where id_no=$val";
+	$dbo2->query($sql2);
+	$rs2=$dbo2->next_record();
+	$key2 = $key+1;
+
+	$GOLF_CITY[$val] = $rs2[city]; //190408
+
+	$GOLF_PIC[$key2][0] = $rs2[filename1];
+	$GOLF_PIC[$key2][1] = $rs2[filename2];
+	//$GOLF_PIC[$key2][2] = $rs2[filename3];
+	//$GOLF_PIC[$key2][3] = $rs2[filename4];
+
+	//if($_SERVER["REMOTE_ADDR"]=="106.246.54.27"){checkVar($rs2[name],$key);}
+}
+//골프장 이미지 종료
+
+
+/*관광지 정보 19-1-10*/
+if($rs[tour_id_no]) $tours[] = $rs[tour_id_no];
+if($rs[tour2_id_no]) $tours[] = $rs[tour2_id_no];
+if($rs[tour3_id_no]) $tours[] = $rs[tour3_id_no];
+if($rs[tour4_id_no]) $tours[] = $rs[tour4_id_no];
+if($rs[tour5_id_no]) $tours[] = $rs[tour5_id_no];
+if($rs[tour6_id_no]) $tours[] = $rs[tour6_id_no];
+
+
+//관광지 이미지
+while(list($key,$val)=@each($tours)){
+	$sql2 = "select * from cmp_tour where id_no=$val";
+	$dbo2->query($sql2);
+	$rs2=$dbo2->next_record();
+	$key2 = $key+1;
+	
+	$TOUR_CITY[$val] = $rs2[city]; //190408
+
+	$TOUR_INFO[$key2][0] = "<span style=\"display:inline-block;background-color:yellow;font-weight:bold\">" . $rs2[name] . "</span>";
+	//$TOUR_INFO[$key2][0] = $rs2[name];
+	$TOUR_INFO[$key2][1] = $rs2[content];
+	$TOUR_INFO[$key2][2] = $rs2[filename1];
+	$TOUR_INFO[$key2][3] = $rs2[filename2];
+}
+
+
+$sql2 = "select * from cmp_staff where id='$staff_id'";
+$dbo2->query($sql2);
+$rs2= $dbo2->next_record();
+$staff_phone = " ($rs2[cell1]-$rs2[cell2]-$rs2[cell3])";
+if($staff_phone==" (--)") $staff_phone="";
+$staff .= $rs2[mposition] . $staff_phone;
+
+
+$sql2 = "select * from cmp_air where id_no=$rs[d_air_id_no]";
+$dbo2->query($sql2);
+$rs2= $dbo2->next_record();
+$d_air = $rs2[d_air];
+//if(strstr("@112.172.15.90@221.154.110.119@","@".$_SERVER["REMOTE_ADDR"]."@")){checkVar($rs2[d_air],$sql2);}
+$d_air_no = $rs2[d_air_no];
+$d_time_s = $rs2[d_time_s];
+$d_time_e = $rs2[d_time_e];
+$airport_in = str_replace("공항","",$rs2[airport_in]);
+$airport_out = $rs2[airport_out];
+$airport_city = $rs2[city];
+$airport_place = $rs2[airport_place];
+
+
+$sql2 = "select * from cmp_air where id_no=$rs[r_air_id_no]";
+$dbo2->query($sql2);
+$rs2= $dbo2->next_record();
+$r_air = $rs2[r_air_no];
+$r_air_no = $rs2[r_air_no];
+$r_time_s = $rs2[r_time_s];
+$r_time_e = $rs2[r_time_e];
+$r_airport_in = str_replace("공항","",$rs2[airport_in]);
+$r_airport_out = $rs2[airport_out];
+$r_airport_city = $rs2[city];
+$r_airport_place = $rs2[airport_place];
+
+
+$hotel_cnt=0;
+$HOTEL_CNT1=0;
+$HOTEL_CNT2=0;
+$HOTEL_CNT3=0;
+$HOTEL_CNT4=0;
+$HOTEL_CNT5=0;
+$sql2 = "select * from cmp_hotel where id_no=$rs[hotel_id_no]";
+$dbo2->query($sql2);
+$rs2= $dbo2->next_record();
+if($rs2[id_no]){
+	$hotel_name = $rs2[name];
+	$hotel_url = $rs2[url];
+	$hotel_phone = $rs2[phone];
+	$ah1 = $rs2[ah];
+	$hotel_cnt++;
+
+	$HOTELINFO_01[1] = $rs2[name];
+	$HOTELINFO_02[1] = $rs2[url];
+	$HOTELINFO_03[1] = $rs2[phone];
+	$HOTELINFO_04[1] = $rs2[ah];
+
+	$HOTELINFOS[] = "$rs2[name]{@}$rs2[url]{@}$rs2[phone]{@}$rs2[ah]";
+}
+
+$sql2 = "select * from cmp_hotel where id_no=$rs[hotel2_id_no]";
+$dbo2->query($sql2);
+$rs2= $dbo2->next_record();
+if($rs2[id_no]){
+	$hotel2_name = $rs2[name];
+	$hotel2_url = $rs2[url];
+	$hotel2_phone = $rs2[phone];
+	$ah2 = $rs2[ah];
+	$hotel_cnt++;
+
+	$HOTELINFO_01[2] = $rs2[name];
+	$HOTELINFO_02[2] = $rs2[url];
+	$HOTELINFO_03[2] = $rs2[phone];
+	$HOTELINFO_04[2] = $rs2[ah];
+
+	$HOTELINFOS[] = "$rs2[name]{@}$rs2[url]{@}$rs2[phone]{@}$rs2[ah]";
+}
+
+$sql2 = "select * from cmp_hotel where id_no=$rs[hotel3_id_no]";
+$dbo2->query($sql2);
+$rs2= $dbo2->next_record();
+if($rs2[id_no]){
+	$hotel3_name = $rs2[name];
+	$hotel3_url = $rs2[url];
+	$hotel3_phone = $rs2[phone];
+	$ah3 = $rs2[ah];
+	$hotel_cnt++;
+
+	$HOTELINFO_01[3] = $rs2[name];
+	$HOTELINFO_02[3] = $rs2[url];
+	$HOTELINFO_03[3] = $rs2[phone];
+	$HOTELINFO_04[3] = $rs2[ah];
+
+	$HOTELINFOS[] = "$rs2[name]{@}$rs2[url]{@}$rs2[phone]{@}$rs2[ah]";
+}
+
+$sql2 = "select * from cmp_hotel where id_no=$rs[hotel4_id_no]";
+$dbo2->query($sql2);
+$rs2= $dbo2->next_record();
+if($rs2[id_no]){
+	$hotel4_name = $rs2[name];
+	$hotel4_url = $rs2[url];
+	$hotel4_phone = $rs2[phone];
+	$ah4 = $rs2[ah];
+	$hotel_cnt++;
+
+	$HOTELINFO_01[4] = $rs2[name];
+	$HOTELINFO_02[4] = $rs2[url];
+	$HOTELINFO_03[4] = $rs2[phone];
+	$HOTELINFO_04[4] = $rs2[ah];
+
+	$HOTELINFOS[] = "$rs2[name]{@}$rs2[url]{@}$rs2[phone]{@}$rs2[ah]";
+}
+
+$sql2 = "select * from cmp_hotel where id_no=$rs[hotel5_id_no]";
+$dbo2->query($sql2);
+$rs2= $dbo2->next_record();
+if($rs2[id_no]){
+	$hotel5_name = $rs2[name];
+	$hotel5_url = $rs2[url];
+	$hotel5_phone = $rs2[phone];
+	$ah5 = $rs2[ah];
+	$hotel_cnt++;
+
+	$HOTELINFO_01[5] = $rs2[name];
+	$HOTELINFO_02[5] = $rs2[url];
+	$HOTELINFO_03[5] = $rs2[phone];
+	$HOTELINFO_04[5] = $rs2[ah];
+
+	$HOTELINFOS[] = "$rs2[name]{@}$rs2[url]{@}$rs2[phone]{@}$rs2[ah]";
+}
+
+
+if($_SERVER["REMOTE_ADDR"]=="106.246.54.27"){
+	checkVar("count",count($HOTELINFOS));
+	while(list($key,$val)=@each($HOTELINFOS)){
+		checkVar($key,$val);
+	}
+}
+
+
+$sql2 = "select * from cmp_golf where id_no=$rs[golf_id_no]";
+$dbo2->query($sql2);
+$rs2= $dbo2->next_record();
+
+$nation = $rs2[nation];
+$car = $rs2[car];
+$car2 = $rs2[car2];
+$car3 =($rs2[car3])? $rs2[car3] : $rs2[car];
+$city = $rs2[city];
+
+$ag1=($rs2[ag1])?$rs2[ag1] : "00분";
+$ag2=($rs2[ag2])?$rs2[ag2] : "00분";
+$ag3=($rs2[ag3])?$rs2[ag3] : "00분";
+$ag4=($rs2[ag4])?$rs2[ag4] : "00분";
+$ag5=($rs2[ag5])?$rs2[ag5] : "00분";
+$ag6=($rs2[ag6])?$rs2[ag6] : "00분";
+$ag7=($rs2[ag7])?$rs2[ag7] : "00분";
+$ag8=($rs2[ag8])?$rs2[ag8] : "00분";
+$gh1=($rs2[gh1])?$rs2[gh1] : "00분";
+$gh2=($rs2[gh2])?$rs2[gh2] : "00분";
+$gh3=($rs2[gh3])?$rs2[gh3] : "00분";
+$gh4=($rs2[gh4])?$rs2[gh4] : "00분";
+$gh5=($rs2[gh5])?$rs2[gh5] : "00분";
+$gh6=($rs2[gh6])?$rs2[gh6] : "00분";
+$gh7=($rs2[gh7])?$rs2[gh7] : "00분";
+$gh8=($rs2[gh8])?$rs2[gh8] : "00분";
+$ah1=($rs2[ah1])?$rs2[ah1] : "00분";
+$ah2=($rs2[ah2])?$rs2[ah2] : "00분";
+$ah3=($rs2[ah3])?$rs2[ah3] : "00분";
+$ah4=($rs2[ah4])?$rs2[ah4] : "00분";
+$ah5=($rs2[ah5])?$rs2[ah5] : "00분";
+$ah6=($rs2[ah6])?$rs2[ah6] : "00분";
+$ah7=($rs2[ah7])?$rs2[ah7] : "00분";
+$ah8=($rs2[ah8])?$rs2[ah8] : "00분";
+
+$ag[] = $ag1;
+$ag[] = $ag2;
+$ag[] = $ag3;
+$ag[] = $ag4;
+
+$gh[]  =$gh1;
+$gh[]  =$gh2;
+$gh[]  =$gh3;
+$gh[]  =$gh4;
+
+
+/*2016-04-06*/
+$air_city = $rs2[air_city];
+$car2 = $rs2[car2];
+$etc2 = $rs2[etc2];
+$cancel_text = ($rs2[cancel_text])? $rs2[cancel_text] : $CANCEL_TXT;
+
+/*
+$hotel2_name = $rs2[hotel2_name];
+$hotel2_id_no = $rs2[hotel2_id_no];
+*/
+
+//checkVar("golf_id_no",$rs[golf_id_no]);
+//checkVar($car,$car2);
+
+
+$meal=nl2br($rs2[meal]);
+
+
+/*2016-04-06*/
+$form_mode = ($nation=="일본" || $nation=="중국" || $nation=="대만")?2:1;
+if(!$plan_type){
+	$plan_type = ($form_mode==2)?"A":"E";
+}
+
+
+$edit_mode = (!$doc_mode && !$print_mode)?1:0;
+
+
+/*2016-04-06*/
+if($doc_mode && !$code){
+	$xls_name = "report1.doc";
+	header("Content-type: application/vnd.ms-word");
+	header("Content-Type: application/vnd.ms-word; charset=euc-kr");
+	header("Content-Disposition: attachment;filename=$xls_name;");
+	header( "Content-Description: PHP4 Generated Data" );
+}
+
+/*
+if($form_mode==2){
+   $days1 = $night-1;
+   $days2 = $night;
+}else{
+   $days1 = $night-2;
+   $days2 = $night;
+}
+*/
+
+if($plan_type=="E" || $plan_type=="F" || $plan_type=="K" || $plan_type=="I" || $plan_type=="J"){
+   $days1 = $night-2;
+   $days2 = $night;
+}else{
+   $days1 = $night-1;
+   $days2 = $night;
+}
+
+
+$bg_color = ($cp_color)? $cp_color : "#948A54";
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+<?//php if (preg_match('/(facebook|kakaotalk)/',$_SERVER['HTTP_USER_AGENT']) == true) { ?>
+<meta property="og:type" content="website">
+<meta property="og:title" content="견적서 - <?=$default_golf_name?>">
+<meta property="og:url" content="http://<?=$_SERVER["HTTP_HOST"]?>/<?=$_SE2RVER["REQUEST_URI"]?>">
+<meta property="og:description" content="<?=($cp_company)? $cp_company : $SITE_NAME?>">
+<?if($cp_logo){?>
+<meta property="og:image" content="<?=$caurl?>/public/cmp_files/<?=$cp_logo?>">
+<?}else{?>
+<meta property="og:image" content="<?=$caurl?>/images/cmp/paper_logo.jpg">
+<?}?>
+<?//php } ?>
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>견적서 - <?=$default_golf_name?></title>
+<?if($edit_mode){?>
+	<link rel="stylesheet" href="../include/default.css">
+	<link rel="stylesheet" href="../include/basic.css" type="text/css">
+	<script language="JavaScript" src="../../include/form_check.js"></script>
+	<script language="JavaScript" src="../../include/function.js"></script>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+
+	<!-- Include Core Datepicker Stylesheet -->
+	<link rel="stylesheet" href="../../include/ui.datepicker.css" type="text/css" media="screen" title="core css file" charset="utf-8" />
+	<!-- Include jQuery -->
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+	<!-- Include Core Datepicker JavaScript -->
+	<script src="../../include/ui.datepicker.js" type="text/javascript" charset="utf-8"></script>
+	<!-- Attach the datepicker to dateinput after document is ready -->
+	<script type="text/javascript" charset="utf-8">
+		jQuery(function($){$(".dateinput").datepicker();});
+	</script>
+	<script type="text/javascript" src="../../qtip/jquery.qtip-1.0.0-rc3.min.js"></script>
+	<script type="text/javascript" src="../../include/jquery.maskedinput.min.js"></script>
+
+	<script type="text/javascript">
+    function save(){
+        var fm=document.fmData;
+        $(".plan_time").each(function() {
+            this.value="{S}"+this.value;
+        });
+        fm.submit();
+    }        
+	<?if($e2r_copy){//예약정보관리대장으로 복사?>
+	$(function(){
+		document.fmData.submit();
+	});
+	<?}?>
+	</script>
+
+<?}else{?>
+<style type="text/css">
+.golf{
+	font-weight:bold;
+	background-color:yellow;
+	line-height:130%;
+}
+
+.color1{
+	font-weight:bold;
+	background-color:#A9F5A9;//green
+	line-height:130%;
+}
+
+.color2{
+	font-weight:bold;
+	background-color:#CEE3F6; //blue
+	line-height:130%;
+}
+
+.golf_img img{
+	padding-top: 5px;
+}
+.golf_img .r_1,.golf_img .r_3{
+	padding-left: 5px;
+}
+</style>
+<?}?>
+<style type="text/css">
+textarea{
+	word-wrap: break-all;
+}	
+</style>
+	
+
+</head>
+
+<body leftmargin="0" topmargin="0">
+
+<center>
+
+
+	<table width="<?=$page_width?>" border="0" cellspacing="0" cellpadding="0" >
+
+	  <?if($edit_mode){?>
+		<form name="fmData" method="post" enctype="multipart/form-data" action="<?=SELF?>">
+		<input type="hidden" name="mode" value='save'>
+		<input type="hidden" name="id_no" value='<?=$rs[id_no]?>'>
+		<input type="hidden" name="e2r_copy" value='<?=$e2r_copy?>'>
+	  <?}?>
+
+
+      <tr>
+        <td align="left">
+        	<?if($staff_header){?>
+        		<img src="<?=$staff_header?>" />
+        	<?}else{?>
+        		<img src="<?=$caurl?>/bkoff/cmp/info02.gif" />
+        	<?}?>
+        </td>
+      </tr>
+      <tr>
+        <td><hr size="1"></td>
+      </tr>
+
+      <tr>
+        <td align="center" style="padding-bottom:20px;font-size:20pt;font-weight:bold;font-family:'Malgun Gothic','돋움';letter-spacing:-1px;color:#4A442A"><?=$default_golf_name?> 견적서</td>
+      </tr>
+
+	  <tr>
+        <td>
+
+		<table width="<?=$page_width?>" border="0" cellspacing="1" cellpadding="0" style="border-collapse:collapse;border:1px solid #ccc ">
+          <tr>
+            <td width="15%" height="25" align="center" bgcolor="<?=$bg_color?>" style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;font-family:'Malgun Gothic','돋움';font-weight:bold;color:#FFF">수신</span></td>
+            <td height="25" width="35%" bgcolor="#ffffff" style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px;font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;text-align:left"><?=str_replace('고객님',"",$rs[name])?> 고객님</td>
+            <td width="15%" height="25" align="center" bgcolor="<?=$bg_color?>" style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;font-family:'Malgun Gothic','돋움';font-weight:bold;color:#FFF">연락처</span></td>
+            <td height="25" bgcolor="#ffffff" style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px;font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;text-align:left"><?=$rs[phone]?></td>
+          </tr>
+          <tr>
+            <td width="15%" height="25" align="center" bgcolor="<?=$bg_color?>" style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;font-family:'Malgun Gothic','돋움';font-weight:bold;color:#FFF">담당</span></td>
+            <td height="25" bgcolor="#ffffff" style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px;font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;text-align:left"><?=$staff?></td>
+            <td width="15%" height="25" align="center" bgcolor="<?=$bg_color?>" style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;font-family:'Malgun Gothic','돋움';font-weight:bold;color:#FFF">상품명</span></td>
+            <td height="25" bgcolor="#ffffff" style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px;font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;text-align:left"><?=$default_golf_name?></td>
+          </tr>
+          <tr>
+            <td width="15%" height="25" align="center" bgcolor="<?=$bg_color?>" style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;font-family:'Malgun Gothic','돋움';font-weight:bold;color:#FFF">요금(1인)</span></td>
+            <td height="25" bgcolor="#ffffff" style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px;font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;text-align:left">
+
+			<?
+			$price_txt = nf($rs[price]) . "원 (인원 : " .  nf($rs[people]) . ")";
+
+			$rs[add_text4]=($rs[add_text4])?$rs[add_text4] : $price_txt;
+			?>
+			<?if($edit_mode){?>
+			<input type="text" name="add_text4" class="add_text4 editor_input" style="width:100%" value="<?=$rs[add_text4]?>">
+			<?}else{?>
+				<?
+				if(strstr($rs[add_text4],"원")){
+					echo "<b>".str_replace("원","원</b>",$rs[add_text4]);
+				}else{
+					echo $rs[add_text4];
+				}
+				?>
+			<?}?>
+
+			</td>
+            <td width="15%" height="25" align="center" bgcolor="<?=$bg_color?>" style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;font-family:'Malgun Gothic','돋움';font-weight:bold;color:#FFF">입금계좌</span></td>
+            <td height="25" bgcolor="#ffffff" style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px;font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;text-align:left"><b><?=($cp_account)? $cp_account : $BASIC_ACCOUNT?></b></td>
+          </tr>
+          <tr>
+            <td width="15%" height="25" align="center" bgcolor="<?=$bg_color?>" style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;font-family:'Malgun Gothic','돋움';font-weight:bold;color:#FFF">출발일</span></td>
+            <td height="25" bgcolor="#ffffff" style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px;font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;text-align:left">
+
+			<?
+			$price_txt = "$d_date ( ${days1}박${days2}일)";
+
+			$rs[add_text5]=($rs[add_text5])?$rs[add_text5] : $price_txt;
+			?>
+			<?if($edit_mode){?>
+			<input type="text" name="add_text5" class="add_text5 editor_input" style="width:100%" value="<?=$rs[add_text5]?>">
+			<?}else{?>
+				<?=$rs[add_text5];?>
+			<?}?>
+
+
+			</td>
+            <td width="15%" height="25" align="center" bgcolor="<?=$bg_color?>" style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;font-family:'Malgun Gothic','돋움';font-weight:bold;color:#FFF">도착일</span></td>
+            <td height="25" bgcolor="#ffffff" style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px;font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;text-align:left"><?=$r_date?></td>
+          </tr>
+          <tr>
+            <td width="15%" height="25" align="center" bgcolor="<?=$bg_color?>" style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;font-family:'Malgun Gothic','돋움';font-weight:bold;color:#FFF"><?=($plan_type=='L')?'이동차량':'이용항공'?></span></td>
+            <td height="25" bgcolor="#ffffff" style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px;font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;text-align:left"><strong><?=$d_air?></strong></td>
+            <td width="15%" height="25" align="center" bgcolor="<?=$bg_color?>" style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;font-family:'Malgun Gothic','돋움';font-weight:bold;color:#FFF">룸타입</span></td>
+            <td height="25" bgcolor="#ffffff" style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px;font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;text-align:left"><?=$rs[room_type]?></td>
+          </tr>
+
+          <tr>
+            <td width="15%" height="25" align="center" bgcolor="<?=$bg_color?>" style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;font-family:'Malgun Gothic','돋움';font-weight:bold;color:#FFF">포함사항</span></td>
+            <td height="25" bgcolor="#ffffff" colspan="3" style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px;font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;letter-spacing:-1px;text-align:left">
+
+
+			<?$rs[add_text1]=($rs[add_text1])?$rs[add_text1] : $rs2[point_include]?>
+
+			<?if($edit_mode){?>
+			<textarea name="add_text1" class="add_text1 editor3" style="height:150px"><?=$rs[add_text1]?></textarea>
+			<?}else{?>
+				<?
+				$txt2=$rs[add_text1];
+				include("inc_plan_color.php");
+				$rs[add_text1]=$txt2;
+				?>
+				<?=nl2br($rs[add_text1])?>
+			<?}?>
+
+
+			</td>
+          </tr>
+
+          <tr>
+            <td width="15%" height="25" align="center" bgcolor="<?=$bg_color?>" style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;font-family:'Malgun Gothic','돋움';font-weight:bold;color:#FFF">불포함</span></td>
+            <td height="25" bgcolor="#ffffff" colspan="3" style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px;font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;letter-spacing:-1px;text-align:left">
+
+			<?$rs[add_text2]=($rs[add_text2])?$rs[add_text2] : $rs2[point_not_include]?>
+			<?if($edit_mode){?>
+			<textarea name="add_text2" class="add_text2 editor3" style="height:90px"><?=$rs[add_text2]?></textarea>
+			<?}else{?>
+				<?
+				$txt2=$rs[add_text2];
+				include("inc_plan_color.php");
+				$rs[add_text2]=$txt2;
+				?>			
+				<?=nl2br($rs[add_text2])?>
+			<?}?>
+
+			</td>
+          </tr>
+
+          <tr>
+            <td width="15%" height="25" align="center" bgcolor="<?=$bg_color?>" style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;font-family:'Malgun Gothic','돋움';font-weight:bold;color:#FFF">예약시 주의사항</span></td>
+            <td height="25" bgcolor="#ffffff" colspan="3" style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px;font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;letter-spacing:-1px;text-align:left">
+
+			<?$rs[add_text6]=($rs[add_text6])?$rs[add_text6] : stripslashes($ESTIMATE_PRICE_TXT)?>
+			<?if($edit_mode){?>
+			<textarea name="add_text6" class="add_text6 editor3" style="height:90px"><?=$rs[add_text6]?></textarea>
+			<?}else{?>
+				<?
+				$txt2=$rs[add_text6];
+				include("inc_plan_color.php");
+				$rs[add_text6]=$txt2;
+				?>			
+				<strong><?=nl2br($rs[add_text6])?></strong>
+			<?}?>			
+
+			</td>
+          </tr>
+
+
+          <tr>
+            <td width="15%" height="25" align="center" bgcolor="<?=$bg_color?>" style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;font-family:'Malgun Gothic','돋움';font-weight:bold;color:#FFF">예약방법</span></td>
+            <td height="25" bgcolor="#ffffff" colspan="3" style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px;font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;letter-spacing:-1px;text-align:left">
+
+			<?
+			$rs[add_text4]=($rs[add_text4])?$rs[add_text4] : $price_txt;
+			?>
+			<?if($edit_mode){?>
+                [1인 예약금 
+                <input type="text" name="add_text7" class="add_text7 editor_input numberic" style="width:80px" value="<?=nf($rs[add_text7])?>">
+                만원씩 * 
+			    <input type="text" name="add_text8" class="add_text8 editor_input numberic" style="width:40px" value="<?=nf($rs[add_text8])?>">
+                인 = 
+			    <input type="text" name="add_text9" class="add_text9 editor_input numberic" style="width:80px" value="<?=nf($rs[add_text9])?>">
+                만원 입금 후 예약 확정됩니다.]
+			<?}else{?>
+                [1인 예약금 
+                <strong>
+                <?=$rs[add_text7]?>만원씩 * 
+                <?=$rs[add_text8]?>인 = 
+                <?=$rs[add_text9]?>만원
+                </strong>
+                입금 후 예약 확정됩니다.]
+			<?}?>            
+
+			</td>
+          </tr>
+
+
+          <tr>
+            <td width="15%" height="25" align="center" bgcolor="<?=$bg_color?>" style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;font-family:'Malgun Gothic','돋움';font-weight:bold;color:#FFF">참고사항</span></td>
+            <td height="25" bgcolor="#ffffff" colspan="3" style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px;font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%text-align:left;" align="left">
+
+
+			<?$rs[add_text3]=($rs[add_text3])?$rs[add_text3] : $rs2[etc]?>
+			<?//$rs[add_text3]=($rs[add_text3])?$rs[add_text3] : ""?>
+			<?if($edit_mode){?>
+			<textarea name="add_text3" class="add_text3 editor3" style="height:150px"><?=$rs[add_text3]?></textarea>
+			<?}else{?>
+				<?
+				$txt2=$rs[add_text3];
+				include("inc_plan_color.php");
+				$rs[add_text3]=$txt2;
+				?>			
+				<?=nl2br($rs[add_text3])?>
+			<?}?>
+
+
+			</td>
+          </tr>
+
+		</table>
+		</td>
+      </tr>
+
+      <tr>
+        <td height="3"></td>
+      </tr>
+
+      <tr>
+        <td>
+
+		<?
+		/*2016-04-06*/
+		/*
+		$plan_type = "H";
+		$night = 5;
+		$car = "car1";
+		$car2 = "car2";
+		checkVar($nation,$plan_type);
+		checkVar("박",$night);
+		*/
+
+		/*
+		if(strstr("@112.172.15.90@221.154.110.119@",$_SERVER["REMOTE_ADDR"])){
+			$plan_type = "L";
+			checkVar($night,$plan_type);
+		}
+		*/
+		
+
+
+		$chk_imgs="";
+		$color_time = "red";
+		include("plan_type_${plan_type}.php");
+		?>
+
+
+		</td>
+      </tr>
+      <tr>
+        <td height="40" style="color:red;" align="left"><span style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;font-family:'Malgun Gothic','돋움';font-weight:bold">**상기 일정은 현지사정으로 다소 변동 될 수 있습니다.</span></td>
+      </tr>
+
+      <tr>
+        <td height="3"></td>
+      </tr>
+
+	  <?if($edit_mode){?>
+	  </form>
+	  <?}?>
+</table>
+
+
+		<!--2016-04-06-->
+		<table width="<?=$page_width?>" border="0" cellspacing="1" cellpadding="0" style="border-collapse:collapse;border:1px solid #ccc ">
+          <tr>
+            <td width="15%" height="25" align="center" bgcolor="<?=$bg_color?>" style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;font-family:'Malgun Gothic','돋움';font-weight:bold;color:#FFF">취소수수료</span></td>
+            <td height="25" bgcolor="#ffffff" colspan="3" style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding-left:5px;font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%text-align:left;padding:8px;" align="left"><?=nl2br($cancel_text)?></td>
+          </tr>
+		</table>
+
+
+	<br/>
+
+
+	  <?if($edit_mode){?>
+
+	  <!-- Button Begin---------------------------------------------->
+	  <div style="display:block;width:100%;height:30px;z-index:99999 !important;">
+	  <table border="0" width="200" cellspacing="0" cellpadding="0" align="right">
+		<tr align="right">
+			<td><span class="btn_pack medium bold"><a href="#" onClick="save()"> 저장 </a></span></td>
+			<td><span class="btn_pack medium bold"><a href="<?=SELF?>?id_no=<?=$rs[id_no]?>&doc_mode=1"> Word 저장 </a></span></td>
+			<td><span class="btn_pack medium bold"><a href="javascript:self.close()"> 창닫기 </a></span></td>
+		</tr>
+	  </table>
+	  </div>
+	  <!-- Button End------------------------------------------------>
+
+	  <?}?>
+
+
+
+</center>
+
+
+<?
+@reset($golfs);
+
+$golfs = @array_unique($golfs);
+$golfs = @array_merge($golfs);
+
+
+for($y=0; $y < count($golfs);$y++){
+	$sql2 = "
+			select 
+				a.*,
+				b.country as api_country,
+				b.city as api_city,
+				b.number_of_holes as api_number_of_holes,
+				b.address as api_address,
+				b.website as api_website,
+				b.driving_range as api_driving_range,
+				b.motor_cart as api_motor_cart,
+				b.caddie_hire as api_caddie_hire
+			from cmp_golf2 as a left join cmp_golfclub as b
+			on a.club_id=b.club_id
+			where a.id_no=$golfs[$y]
+		";
+	$dbo2->query($sql2);
+	$rs2=$dbo2->next_record();
+
+	$golf_cnt=0;
+	if($rs2[filename1]) $golf_cnt++;
+	if($rs2[filename2]) $golf_cnt++;
+	if($rs2[filename3]) $golf_cnt++;
+	if($rs2[filename4]) $golf_cnt++;
+?>
+<center>
+
+<table>
+<tr>
+<td height="850" valign="top">
+
+	<table width="<?=$page_width?>" border="0" cellspacing="0" cellpadding="0" >
+      <tr>
+        <td align="left">
+        	<?if($staff_header){?>
+        		<img src="<?=$staff_header?>" />
+        	<?}else{?>
+        		<img src="<?=$caurl?>/bkoff/cmp/info.gif"  />
+        	<?}?>
+
+        </td>
+      </tr>
+      <tr>
+        <td><hr size="1"></td>
+      </tr>
+	</table>
+	<table width="<?=$page_width?>" border="0" cellspacing="0" cellpadding="0" >
+		<tr>
+			<td align="center" style="padding:0 0 0 0;font-size:18pt;font-weight:bold;font-family:Malgun Gothic,돋움;letter-spacing:-1px"><img src="<?=$caurl?>/images/cmp/golf2.jpg"  width="491" height="46"></td>
+		</tr>
+		<tr>
+			<td align="left" style="padding:10px 0 20px 0;font-size:14pt;font-weight:bold;font-family:Malgun Gothic,돋움;letter-spacing:-1px;color:#4A442A"><?=$rs2[name]?></td>
+		</tr>
+
+		<tr>
+			<td align="left" style="padding:10px 0 20px 0;font-size:14pt;font-weight:bold;font-family:Malgun Gothic,돋움;letter-spacing:-1px;color:#4A442A">
+
+			<table width="100%">
+				<?
+				if($golf_cnt>1){
+				?>
+				<tr>
+					<?
+					for($i=1; $i<=$golf_cnt ; $i++){
+						$fnm = "filename" . $i;
+						if($rs2[$fnm]){
+							$photo = "../../public/cmp/$rs2[$fnm]";
+							$pinfo = getimagesize($photo);
+							$width = "680";
+							$rate = $width / $pinfo[0];
+							$height = ceil($pinfo[1] * $rate);
+					?>
+					<td align="center">
+						<img src="<?=$caurl?>/public/cmp/<?=$rs2[$fnm]?>" width="340" height="226" />
+					</td>
+					<?
+						if(!($i%2)) echo  "</tr><tr><td colspan='2' height='2'></td></tr><tr>";
+
+						}
+					}
+					?>
+
+				</tr>
+				<?
+				}else{
+
+					if($rs2[filename1]){
+						$photo = "../../public/cmp/$rs2[filename1]";
+						$pinfo = getimagesize($photo);
+						$width = "604";
+						$rate = $width / $pinfo[0];
+						$height = ceil($pinfo[1] * $rate);
+				?>
+				<tr>
+					<td align="center">
+						<img src="<?=$caurl?>/public/cmp/<?=$rs2[filename1]?>" width="604" height="<?=$height?>" />
+					</td>
+				</tr>
+				<?
+					}
+				}
+				?>
+			</table>
+
+
+			</td>
+		</tr>
+
+		<tr>
+			<td align="left" style="font-size:10pt;font-family:돋움;line-height:150%">
+				<?=nl2br($rs2[content])?>
+
+				<div style="padding:10px 10px 10px 0;line-height:110%">
+					<style>
+					.api_subject{
+						display:inline-block;
+						width:60px;
+						font-weight:bold;
+					}
+					</style>
+					<?
+					$rs2[api_address] = str_replace("{comma}",",",$rs2[api_address]);
+					$rs2[api_driving_range] = ($rs2[api_driving_range]=="Yes")? "있음":"";
+					$rs2[api_motor_cart] = ($rs2[api_motor_cart]=="Yes")? "있음":"";
+					$rs2[api_caddie_hire] = ($rs2[api_caddie_hire]=="Yes")? "있음":"";
+
+					if($rs2[club_id]){
+						//if($rs2[natioin]) echo "<p> - <span class='api_subject'>국가</span> : $rs2[nation]</p>";
+						//if($rs2[city]) echo "<p> - <span class='api_subject'>도시</span> : $rs2[city]</p>";
+						if($rs2[api_number_of_holes]) echo "<p> - <span class='api_subject'>홀수</span> : $rs2[api_number_of_holes]</p>";
+						if($rs2[api_address]) echo "<p> - <span class='api_subject'>주소</span> : $rs2[api_address]</p>";
+						if($rs2[api_website]) echo "<p> - <span class='api_subject'>홈페이지</span> : <a href='http://$rs2[api_website]' target='_blank'>$rs2[api_website]</a></p>";
+						if($rs2[api_driving_range]) echo "<p> - <span class='api_subject'>연습장</span> : $rs2[api_driving_range]</p>";
+						if($rs2[api_motor_cart]) echo "<p> - <span class='api_subject'>전동카</span> : $rs2[api_motor_cart]</p>";
+						if($rs2[api_caddie_hire]) echo "<p> - <span class='api_subject'>캐디</span> : $rs2[api_caddie_hire]</p>";
+					}
+					?>
+				</div>
+			</td>
+		</tr>
+	</table>
+
+</td>
+</tr>
+</table>
+</div>
+<?}?>
+
+
+<?
+if($rs[hotel_id_no]) $HOTEL_ID[] = $rs[hotel_id_no];
+if($rs[hotel2_id_no]) $HOTEL_ID[] = $rs[hotel2_id_no];
+if($rs[hotel3_id_no]) $HOTEL_ID[] = $rs[hotel3_id_no];
+if($rs[hotel4_id_no]) $HOTEL_ID[] = $rs[hotel4_id_no];
+if($rs[hotel5_id_no]) $HOTEL_ID[] = $rs[hotel5_id_no];
+
+while(list($key,$val)=@each($HOTEL_ID)){
+
+	$sql2 = "select * from cmp_hotel where id_no=$val";
+	list($rows) = $dbo2->query($sql2);
+	//if($_SERVER["REMOTE_ADDR"]=="106.246.54.27"){checkVar(mysql_error(),$sql2);}
+	if($rows){
+	$rs2=$dbo2->next_record();
+
+
+	$hotel_cnt=0;
+	if($rs2[filename1]) $hotel_cnt++;
+	if($rs2[filename2]) $hotel_cnt++;
+	if($rs2[filename3]) $hotel_cnt++;
+	if($rs2[filename4]) $hotel_cnt++;
+?>
+<div style="width:700px;padding:0 30px 30px 30px;text-align:center;margin-left:auto;margin-right:auto;">
+
+<table>
+<tr>
+<td height="850" valign="top">
+
+	<table width="<?=$page_width?>" border="0" cellspacing="0" cellpadding="0" >
+      <tr>
+        <td align="left">
+        	<?if($staff_header){?>
+        		<img src="<?=$staff_header?>" />
+        	<?}else{?>
+        		<img src="<?=$caurl?>/bkoff/cmp/info.gif"  />
+        	<?}?>        	
+        </td>
+      </tr>
+      <tr>
+        <td><hr size="1"></td>
+      </tr>
+	</table>
+	<table width="<?=$page_width?>" border="0" cellspacing="0" cellpadding="0" >
+		<tr>
+			<td align="center" style="padding:20px 0 0 0;font-size:18pt;font-weight:bold;font-family:Malgun Gothic,돋움;letter-spacing:-1px"><img src="<?=$caurl?>/images/cmp/hotel2.jpg" width="310" height="46"></td>
+		</tr>
+		<tr>
+			<td align="left" style="padding:10px 0 20px 0;font-size:14pt;font-weight:bold;font-family:Malgun Gothic,돋움;letter-spacing:-1px;color:#4A442A"><?=$rs2[name]?></td>
+		</tr>
+
+
+		<tr>
+			<td align="left" style="padding:10px 0 20px 0;font-size:14pt;font-weight:bold;font-family:Malgun Gothic,돋움;letter-spacing:-1px;color:#4A442A">
+
+			<table width="100%">
+				<?
+				if($hotel_cnt>1){
+				?>
+				<tr>
+					<?
+					for($i=1; $i<=$hotel_cnt ; $i++){
+						$fnm = "filename" . $i;
+						if($rs2[$fnm]){
+							$photo = "../../public/cmp/$rs2[$fnm]";
+							$pinfo = getimagesize($photo);
+							$width = "680";
+							$rate = $width / $pinfo[0];
+							$height = ceil($pinfo[1] * $rate);
+					?>
+					<td align="center">
+						<img src="<?=$caurl?>/public/cmp/<?=$rs2[$fnm]?>" width="340" height="226" />
+					</td>
+					<?
+						if(!($i%2)) echo  "</tr><tr><td colspan='2' height='2'></td></tr><tr>";
+
+						}
+					}
+					?>
+
+				</tr>
+				<?
+				}else{
+
+					if($rs2[filename1]){
+						$photo = "../../public/cmp/$rs2[filename1]";
+						$pinfo = getimagesize($photo);
+						$width = "604";
+						$rate = $width / $pinfo[0];
+						$height = ceil($pinfo[1] * $rate);
+				?>
+				<tr>
+					<td align="center">
+						<img src="<?=$caurl?>/public/cmp/<?=$rs2[filename1]?>" width="604" height="<?=$height?>" />
+					</td>
+				</tr>
+				<?
+					}
+				}
+				?>
+			</table>
+
+
+			</td>
+		</tr>
+
+
+		<tr>
+			<td align="left" style="font-size:10pt;font-family:돋움;line-height:150%">
+				<?=nl2br($rs2[content])?>
+			</td>
+		</tr>
+	</table>
+
+</td>
+</tr>
+</table>
+</center>
+<?}}?>
+
+
+<!-- 관광지 정보 -->
+<?
+@reset($tours);
+while(@list($key,$val)=each($tours)){
+
+
+$sql2 = "select * from cmp_tour where id_no=$val";
+list($rows) = $dbo2->query($sql2);
+if($rows){
+$rs2=$dbo2->next_record();
+
+$hotel_cnt=0;
+if($rs2[filename1]) $hotel_cnt++;
+if($rs2[filename2]) $hotel_cnt++;
+if($rs2[filename3]) $hotel_cnt++;
+if($rs2[filename4]) $hotel_cnt++;
+?>
+<div style="width:700px;padding:0 30px 30px 30px;text-align:center;margin-left:auto;margin-right:auto;">
+
+<table>
+<tr>
+<td height="850" valign="top">
+
+	<table width="<?=$page_width?>" border="0" cellspacing="0" cellpadding="0" >
+      <tr>
+        <td align="left">
+        	<?if($staff_header){?>
+        		<img src="<?=$staff_header?>" />
+        	<?}else{?>
+        		<img src="<?=$caurl?>/bkoff/cmp/info.gif"   />
+        	<?}?>        	
+        </td>
+      </tr>
+      <tr>
+        <td><hr size="1"></td>
+      </tr>
+	</table>
+	<table width="<?=$page_width?>" border="0" cellspacing="0" cellpadding="0" >
+		<tr>
+			<td align="center" style="padding:20px 0 0 0;font-size:18pt;font-weight:bold;font-family:Malgun Gothic,돋움;letter-spacing:-1px"><img src="<?=$caurl?>/images/cmp/sightsee.jpg" width="310" height="46"></td>
+		</tr>
+		<tr>
+			<td align="left" style="padding:10px 0 20px 0;font-size:14pt;font-weight:bold;font-family:Malgun Gothic,돋움;letter-spacing:-1px;color:#4A442A"><?=$rs2[name]?></td>
+		</tr>
+
+		<tr>
+			<td align="left" style="padding:10px 0 20px 0;font-size:14pt;font-weight:bold;font-family:Malgun Gothic,돋움;letter-spacing:-1px;color:#4A442A">
+
+			<table width="100%">
+				<?
+				if($hotel_cnt>1){
+				?>
+				<tr>
+					<?
+					for($i=1; $i<=$hotel_cnt ; $i++){
+						$fnm = "filename" . $i;
+						if($rs2[$fnm]){
+							$photo = "../../public/cmp/$rs2[$fnm]";
+							$pinfo = getimagesize($photo);
+							$width = "680";
+							$rate = $width / $pinfo[0];
+							$height = ceil($pinfo[1] * $rate);
+					?>
+					<td align="center">
+						<img src="<?=$caurl?>/public/cmp/<?=$rs2[$fnm]?>" width="340" height="226" />
+					</td>
+					<?
+						if(!($i%2)) echo  "</tr><tr><td colspan='2' height='2'></td></tr><tr>";
+
+						}
+					}
+					?>
+
+				</tr>
+				<?
+				}else{
+
+					if($rs2[filename1]){
+						$photo = "../../public/cmp/$rs2[filename1]";
+						$pinfo = getimagesize($photo);
+						$width = "604";
+						$rate = $width / $pinfo[0];
+						$height = ceil($pinfo[1] * $rate);
+				?>
+				<tr>
+					<td align="center">
+						<img src="<?=$caurl?>/public/cmp/<?=$rs2[filename1]?>" width="604" height="<?=$height?>" />
+					</td>
+				</tr>
+				<?
+					}
+				}
+				?>
+			</table>
+
+
+			</td>
+		</tr>
+
+		<tr>
+			<td align="left" style="font-size:10pt;font-family:돋움;line-height:150%">
+				<?=nl2br($rs2[content])?>
+			</td>
+		</tr>
+
+		<tr>
+			<td align="left" style="font-size:10pt;font-family:돋움;line-height:150%">
+				<?=nl2br($rs2[content2])?>
+			</td>
+		</tr>		
+	</table>
+
+</td>
+</tr>
+</table>
+</center>
+<?}?>
+
+<?
+}
+?>
+</body>
+</html>

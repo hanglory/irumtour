@@ -1,0 +1,244 @@
+<?
+include_once("../include/common_file_report.php");
+
+$page_width="700";
+
+
+if($mode=="save"){
+
+	$sql="
+	   update cmp_reservation set
+			request_date='$request_date',
+			sending_yn1='$sending_yn1',
+			sending_yn2='$sending_yn2',
+			sending_yn3='$sending_yn3',
+			sending_yn4='$sending_yn4',
+			sending_yn5='$sending_yn5',
+			sending_meeting_time='$sending_meeting_time',
+			sending_meeting_place='$sending_meeting_place',
+			sending_memo='$sending_memo'
+	   where id_no=$id_no
+	";
+	$dbo->query($sql);
+	error("저장하였습니다.");
+	exit;
+}
+
+
+$sql = "select * from cmp_reservation where id_no=$id_no";
+$dbo->query($sql);
+$rs= $dbo->next_record();
+$arr =explode("(",$rs[main_staff]);
+$staff=$arr[0];
+
+$sql2 = "select * from cmp_air where id_no=$rs[air_id_no]";
+$dbo2->query($sql2);
+$rs2= $dbo2->next_record();
+
+$d_air = $rs2[d_air];
+$d_air_no = $rs2[d_air_no];
+$d_time_s = $rs2[d_time_s];
+$d_time_e = $rs2[d_time_e];
+$r_air_no = $rs2[r_air_no];
+$r_time_s = $rs2[r_time_s];
+$r_time_e = $rs2[r_time_e];
+
+$sql2 = "select * from cmp_golf where id_no=$rs[golf_id_no]";
+$dbo2->query($sql2);
+$rs2= $dbo2->next_record();
+
+$edit_mode = (!$doc_mode && !$print_mode)?1:0;
+
+if($doc_mode){
+	$xls_name = "report4.doc";
+	header("Content-type: application/vnd.ms-word");
+	header("Content-Type: application/vnd.ms-word; charset=euc-kr");
+	header("Content-Disposition: attachment;filename=$xls_name;");
+	header( "Content-Description: PHP4 Generated Data" );
+}
+
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>샌딩의뢰서</title>
+<?if($edit_mode){?>
+	<link rel="stylesheet" href="../include/default.css">
+	<link rel="stylesheet" href="../include/basic.css" type="text/css">
+	<script language="JavaScript" src="../../include/form_check.js"></script>
+	<script language="JavaScript" src="../../include/function.js"></script>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+
+
+	<!-- Include Core Datepicker Stylesheet -->
+	<link rel="stylesheet" href="../../include/ui.datepicker.css" type="text/css" media="screen" title="core css file" charset="utf-8" />
+	<!-- Include jQuery -->
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+	<!-- Include Core Datepicker JavaScript -->
+	<script src="../../include/ui.datepicker.js" type="text/javascript" charset="utf-8"></script>
+	<!-- Attach the datepicker to dateinput after document is ready -->
+	<script type="text/javascript" charset="utf-8">
+		jQuery(function($){$(".dateinput").datepicker();});
+	</script>
+	<script type="text/javascript" src="../../qtip/jquery.qtip-1.0.0-rc3.min.js"></script>
+	<script type="text/javascript" src="../../include/jquery.maskedinput.min.js"></script>
+
+	<script type="text/javascript">
+	<!--
+	$(function	(){
+		$("#sending_meeting_time").mask("99:99");
+	});
+	//-->
+	</script>
+<?}?>
+</head>
+
+<body leftmargin="0" topmargin="0">
+
+<div style="width:700px;padding:30px;text-align:center;margin-left:auto;margin-right:auto;">
+
+<table width="<?=$page_width?>" border="0" cellspacing="0" cellpadding="0" >
+
+	  <?if($edit_mode){?>
+		<form name="fmData" method="post" enctype="multipart/form-data" action="<?=SELF?>">
+		<input type="hidden" name="mode" value='save'>
+		<input type="hidden" name="id_no" value='<?=$rs[id_no]?>'>
+	  <?}?>
+
+      <tr>
+        <td align="center"><img src="http://irumtour.net/new/bkoff/cmp/info.gif"  width="<?=$page_width?>"/></td>
+      </tr>
+
+      <tr>
+        <td height="100" align="center"><h1 style="font-size:20px;font-weight:bold">샌딩의뢰서</h1></td>
+      </tr>
+	  <tr>
+        <td><table width="<?=$page_width?>" border="0" cellspacing="1" cellpadding="0"  style="border-collapse:collapse;border:1px solid #ccc ">
+          <tr>
+            <td width="25%" height="30" align="center" bgcolor="#f4f4f4" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'맑은고딕','돋움';font-weight:bold">의뢰일</span></td>
+            <td align="left" height="30" bgcolor="#ffffff" style="padding-left:10px;font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><?if($edit_mode){?><?=html_input("request_date",13,10)?><?}else{ echo $rs[request_date];}?></td>
+          </tr>
+          <tr>
+            <td height="30" align="center" bgcolor="#f4f4f4" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'맑은고딕','돋움';font-weight:bold">의뢰업체</span></td>
+            <td align="left" height="30" bgcolor="#ffffff" style="padding-left:10px;font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc">(주)이룸투어플레이스</td>
+          </tr>
+          <tr>
+            <td height="30" align="center" bgcolor="#f4f4f4" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'맑은고딕','돋움';font-weight:bold">고객명</span></td>
+            <td align="left" height="30" bgcolor="#ffffff" style="padding-left:10px;font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><?=$rs[name]?></td>
+          </tr>
+          <tr>
+            <td height="30" align="center" bgcolor="#f4f4f4" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'맑은고딕','돋움';font-weight:bold">연락처</span></td>
+            <td align="left" height="30" bgcolor="#ffffff" style="padding-left:10px;font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><?=$rs[phone]?></td>
+          </tr>
+          <tr>
+            <td height="30" align="center" bgcolor="#f4f4f4" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'맑은고딕','돋움';font-weight:bold">담당자</span></td>
+            <td align="left" height="30" bgcolor="#ffffff" style="padding-left:10px;font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><?=$staff?></td>
+          </tr>
+          <tr>
+            <td height="30" align="center" bgcolor="#f4f4f4" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'맑은고딕','돋움';font-weight:bold">출발일</span></td>
+            <td align="left" height="30" bgcolor="#ffffff" style="padding-left:10px;font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><?=$rs[d_date]?></td>
+          </tr>
+		</table>
+		</td>
+      </tr>
+      <tr>
+        <td height="3"></td>
+      </tr>
+      <tr>
+        <td><table width="<?=$page_width?>" border="0" cellspacing="1" cellpadding="0"  style="border-collapse:collapse;border:1px solid #ccc ">
+          <tr>
+            <td width="25%" height="30" align="center" bgcolor="#f4f4f4" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'맑은고딕','돋움';font-weight:bold">구분</span></td>
+            <td width="25%" height="30" align="center" bgcolor="#f4f4f4" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'맑은고딕','돋움';font-weight:bold">편명</span></td>
+            <td width="25%" height="30" align="center" bgcolor="#f4f4f4" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'맑은고딕','돋움';font-weight:bold">미팅시간</span></td>
+            <td width="12%" height="30" align="center" bgcolor="#f4f4f4" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'맑은고딕','돋움';font-weight:bold">출발시간</span></td>
+            <td width="13%" align="center" bgcolor="#f4f4f4" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'맑은고딕','돋움';font-weight:bold">미팅장소</span></td>
+          </tr>
+          <tr>
+            <td width="25%" height="30" align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'맑은고딕','돋움';font-weight:bold">출국</span></td>
+            <td width="25%" height="30" align="center" bgcolor="#ffffff" style="color:#F03;font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'맑은고딕','돋움';font-weight:bold"><?=$d_air_no?></span></td>
+            <td width="25%" height="30" align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><?if($edit_mode){?><?=html_input("sending_meeting_time",7,5)?><?}else{ echo $rs[sending_meeting_time];}?></td>
+            <td width="12%" height="30" align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><?=$d_time_s?></td>
+            <td width="13%" height="30" align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><?if($edit_mode){?><select name="sending_meeting_place"><?=option_str("선택,A카운터,M카운터","선택,A카운터,M카운터",$rs[sending_meeting_place])?></select><?}else{ echo $rs[sending_meeting_place];}?></td>
+          </tr>
+        </table></td>
+      </tr>
+      <tr>
+        <td height="3"></td>
+      </tr>
+      <tr>
+        <td><table width="<?=$page_width?>" border="0" cellspacing="1" cellpadding="0"  style="border-collapse:collapse;border:1px solid #ccc ">
+          <tr>
+            <td width="25%" rowspan="6" align="center" bgcolor="#f4f4f4" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'맑은고딕','돋움';font-weight:bold">전달물</span></td>
+            <td height="30" align="center" bgcolor="#f8f8f8"  style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc">구분</td>
+            <td height="30" align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc">전달여부</td>
+          </tr>
+          <tr>
+            <td align="center" bgcolor="#f8f8f8" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc">이티켓</td>
+            <td height="30" align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><?if($edit_mode){?><select name="sending_yn1"><?=option_str('선택,'.$YN,','.$YN,$rs[sending_yn1])?></select><?}else{ echo $rs[sending_yn1];}?></td>
+          </tr>
+          <tr>
+            <td align="center" bgcolor="#f8f8f8" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc">확정서</td>
+            <td height="30" align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><?if($edit_mode){?><select name="sending_yn2"><?=option_str('선택,'.$YN,','.$YN,$rs[sending_yn2])?></select><?}else{ echo $rs[sending_yn2];}?></td>
+          </tr>
+          <tr>
+            <td align="center" bgcolor="#f8f8f8" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc">커버</td>
+            <td height="30" align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><?if($edit_mode){?><select name="sending_yn3"><?=option_str('선택,'.$YN,','.$YN,$rs[sending_yn3])?></select><?}else{ echo $rs[sending_yn3];}?></td>
+          </tr>
+          <tr>
+            <td align="center" bgcolor="#f8f8f8" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc">골프공</td>
+            <td height="30" align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><?if($edit_mode){?><select name="sending_yn4"><?=option_str('선택,'.$YN,','.$YN,$rs[sending_yn4])?></select><?}else{ echo $rs[sending_yn4];}?></td>
+          </tr>
+          <tr>
+            <td align="center" bgcolor="#f8f8f8" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc">기타</td>
+            <td height="30" align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><?if($edit_mode){?><select name="sending_yn5"><?=option_str('선택,'.$YN,','.$YN,$rs[sending_yn5])?></select><?}else{ echo $rs[sending_yn5];}?></td>
+          </tr>
+        </table></td>
+      </tr>
+      <tr>
+        <td height="3"></td>
+      </tr>
+
+      <tr>
+        <td><table width="<?=$page_width?>" border="0" cellspacing="1" cellpadding="0"  style="border-collapse:collapse;border:1px solid #ccc ">
+          <tr>
+            <td width="25%" align="center" bgcolor="#f4f4f4" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'맑은고딕','돋움';font-weight:bold">요청사항</span></td>
+            <td bgcolor="#ffffff" style="padding:10px;font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc">
+
+			<?if(!$edit_mode){?>
+			<?=nl2br($rs[sending_memo])?>
+			<?}else{?>
+			<?=html_textarea("sending_memo",0,5)?>
+			<?}?>
+
+			</td>
+          </tr>
+  </table></td>
+      </tr>
+	  <?if($edit_mode){?>
+	  </form>
+	  <?}?>
+</table>
+
+
+	  <?if($edit_mode){?>
+	  <div style="padding:20px 0 30px 0">
+	  <!-- Button Begin---------------------------------------------->
+	  <table border="0" width="200" cellspacing="0" cellpadding="0" align="right">
+		<tr align="right">
+			<td><span class="btn_pack medium bold"><a href="#" onClick="document.fmData.submit()"> 저장 </a></span></td>
+			<td><span class="btn_pack medium bold"><a href="<?=SELF?>?id_no=<?=$rs[id_no]?>&doc_mode=1"> Word 저장 </a></span></td>
+			<td><span class="btn_pack medium bold"><a href="javascript:self.close()"> 창닫기 </a></span></td>
+		</tr>
+	  </table>
+	  <!-- Button End------------------------------------------------>
+	  </div>
+	  <?}?>
+
+
+</div>
+
+
+
+</body>
+</html>

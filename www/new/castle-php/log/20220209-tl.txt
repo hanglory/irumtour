@@ -1,0 +1,1 @@
+198.8.93.101 - [09/Feb/2022:10:40:15 +0900] /renew/detailview.html: amp;code3 = \"&gt;&lt;script &gt;alert(String.fromCharCode(88,83,83))&lt;/script&gt;: XSS 공격 패턴 탐지

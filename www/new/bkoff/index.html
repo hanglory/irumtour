@@ -1,0 +1,14 @@
+<?
+session_start();
+header("Content-Type: text/html; charset=UTF-8");
+
+$url = ($_SESSION["sessLogin"]["cmp"])? "cmp/list_daily.php":"member/list_member.php";
+
+if($_SESSION["sessLogin"]["ip"] == $_SERVER["REMOTE_ADDR"] && $_SESSION["sessLogin"]["domain"] == $_SERVER["HTTP_HOST"]){
+
+	//if(strstr($_SESSION["sessLogin"]["staff_type"],"partner") && !strstr($_SESSION["sessLogin"]["proof"],"일일현황")) $url = "cmp/list_reservation.php";
+	echo "<script>location.href='${url}'</script>";
+}else{
+	echo "<script>location.href='login.html'</script>";
+}
+?>

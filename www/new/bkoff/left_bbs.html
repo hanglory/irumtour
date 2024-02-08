@@ -1,0 +1,45 @@
+<table width="165" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+	 <td height="26"><img src="../images/common/ic_arrow.gif" width="5" height="8" hspace="6"> 게시물 관리</td>
+  </tr>
+  <tr><td height="1" background="../images/common/bg_dot.gif"></td></tr>
+<?
+$dbo9 = new MiniDB($info);
+
+$filter9 = ($CP_ID)? " and bid not in ('review','gallery','faq','qna') ":" and bid not in ('gallery','faq','qna') ";
+$sql9 = "select * from ez_bbs_info where bid<>'' $filter9 order by id_no asc";
+$dbo9->query($sql9);
+while($rs9 = $dbo9->next_record()){
+	$subject =explode(">",$rs9[subject]);
+?>
+  <tr>
+	 <td height="26" style="padding-left:12px"> - <a href="../bbs/list_bbs.php?bid=<?=$rs9[bid]?>" class="leftmenu"><?=($subject[1])?$subject[1]:$subject[0]?></a></td>
+  </tr>
+  <tr><td height="1" background="../images/common/bg_dot.gif"></td></tr>
+
+<?
+}
+?>
+
+  <?If($_SERVER["REMOTE_ADDR"]=="106.246.54.27"){?>
+  <tr>
+	 <td height="26"><img src="../images/common/ic_arrow.gif" width="5" height="8" hspace="6"> 게시판 관리</td>
+  </tr>
+  <tr><td height="1" background="../images/common/bg_dot.gif"></td></tr>
+
+  <tr>
+	 <td height="26" style="padding-left:12px">- <a href="../bbs/list_bbs_info.php" class="leftmenu">게시판 등록 관리</a></td>
+  </tr>
+  <tr><td height="1" background="../images/common/bg_dot.gif"></td></tr>
+
+  <tr>
+	 <td height="26" style="padding-left:12px">- <a href="../bbs/bbs_config.php" class="leftmenu">환경설정</a></td>
+  </tr>
+  <tr><td height="1" background="../images/common/bg_dot.gif"></td></tr>
+
+  <tr>
+	 <td height="26" style="padding-left:12px">- <a href="../bbs/button.php" class="leftmenu">버튼 등록</a></td>
+  </tr>
+  <tr><td height="1" background="../images/common/bg_dot.gif"></td></tr>
+  <?}?>
+</table>

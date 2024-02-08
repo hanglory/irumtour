@@ -1,0 +1,76 @@
+<html>
+<head>
+<title>관리자 로그인</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link rel="stylesheet" href="include/default.css">
+<link rel="stylesheet" href="include/basic.css" type="text/css">
+<script language="JavaScript" src="../include/function.js"></script>
+<script language="JavaScript" src="../include/form_check.js"></script>
+<script language="JavaScript">
+<!--
+function check(fm){
+	if(check_blank(fm.id,'아이디를',0)=='wrong'){return false}
+	if(check_blank(fm.pwd,'비밀번호를',4)=='wrong'){return false}
+}
+//-->
+</script>
+<style type="text/css">
+h1{
+	color:#2E9AFE;
+	font-weight:bold;
+	font-family: verdana;
+	font-size:25px;
+	letter-spacing: -1px;
+}	
+</style>
+</head>
+
+<body onload="document.fmLogin.id.focus()" style="margin: 10px; BORDER-STYLE: none" >
+<!--scroll=NO oncontextmenu="return false" onselectstart="return false" ondragstart="return false"-->
+
+
+<table width="100%" height="100%" border=0>
+<tr><td align=center>
+
+
+<form name="fmLogin" method=post action="https://irumtour.net/new/bkoff/login_check.php"  onSubmit="return check(document.fmLogin)">
+<table width="460" height=284 border="0" align="center" cellpadding="0" cellspacing="0">
+
+	<tr>
+		<td background="images/admin.jpg">
+			<table border="0" align="center" cellpadding="0" cellspacing="0" width=100% height=100%>
+				<tr><td width="252" align="center"><img src="images/logo.gif"></td><td>
+
+					<table border="0" align="center" cellpadding="0" cellspacing="0" width=100% height=100%>
+						<tr><td height="91">&nbsp;</td><td>&nbsp;</td></tr>
+						<tr><td height="46" width="120">
+
+						<div><input type="text" name="id" style="width:95%;height:18px" maxlength="30" class="box"></div>
+						<div style="padding-top:2px"><input type="password" name="pwd" style="width:95%;height:18px;" maxlength="30"  class="box"></div>
+
+						</td><td><input type="image" src="images/admin_bu.jpg"></td></tr>
+						<tr>
+							<td colspan="2" valign="top">
+								<div class="f8 fg" style="width:170px;padding-top:10px">
+								비밀번호를 분실하신 경우 <a href="mailto:support@easeplus.com">support@easeplus.com</a>으로 연락하여 주시기 바랍니다.
+								</div>
+							</td>
+						</tr>
+					</table>
+
+				</td></tr>
+				<tr><td colspan="2" height="50" class="fv c gray f7 bold" valign="top" class="copy">irumtour.net 02.512.7705 Copyright(C) Irumplace co,.LTD All rights reserved.</td></tr>
+			<table>
+		</td>
+	</td>
+
+</table>
+</form>
+
+
+
+</td></tr>
+</table>
+
+</body>
+</html>

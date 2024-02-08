@@ -1,0 +1,1 @@
+121.128.79.27 - [09/Jun/2023:17:56:19 +0900] /new/bkoff/tour/view_tour.php: pr = 나리타 공항에서 30분 이내의 거리인 스카이웨이: SQL_Injection 공격 패턴 탐지

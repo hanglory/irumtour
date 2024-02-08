@@ -1,0 +1,1 @@
+1.232.142.35 - [01/Apr/2022:12:11:25 +0900] /new/bkoff/order/view_group.php: memo = javascript:data_copy(): XSS 공격 패턴 탐지

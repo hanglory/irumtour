@@ -1,0 +1,14 @@
+34.98.143.195 - [20/Dec/2023:21:13:16 +0900] /m2/itemview.html: tid = 17987../renew/include/jquery.easing.compatibility.js: TAG 공격 패턴 탐지
+34.98.143.196 - [20/Dec/2023:21:13:16 +0900] /m2/itemview.html: tid = 17987../renew/include/jquery.easing.min.js: TAG 공격 패턴 탐지
+34.98.143.196 - [20/Dec/2023:21:13:16 +0900] /m2/itemview.html: tid = 17987../renew/jquery.bxSlider/jquery.bxslider.min.js: TAG 공격 패턴 탐지
+34.98.143.195 - [20/Dec/2023:21:13:16 +0900] /m2/itemview.html: tid = 17987../renew/include/function.js: TAG 공격 패턴 탐지
+34.98.143.196 - [20/Dec/2023:21:13:16 +0900] /m2/itemview.html: tid = 17987../renew/include/form_check.js: TAG 공격 패턴 탐지
+34.98.143.197 - [20/Dec/2023:21:13:16 +0900] /m2/itemview.html: tid = 17987../renew/include/jquery.min.js: TAG 공격 패턴 탐지
+34.98.143.197 - [20/Dec/2023:21:13:16 +0900] /m2/itemview.html: tid = 17987../renew/include/jquery-ui.js: TAG 공격 패턴 탐지
+34.98.143.197 - [20/Dec/2023:21:13:16 +0900] /m2/itemview.html: tid = 17987../renew/include/jquery.min.js: TAG 공격 패턴 탐지
+34.98.143.196 - [20/Dec/2023:21:13:16 +0900] /m2/itemview.html: tid = 17987../renew/include/jquery.easing.min.js: TAG 공격 패턴 탐지
+34.98.143.197 - [20/Dec/2023:21:13:17 +0900] /m2/itemview.html: tid = 17987../renew/include/form_check.js: TAG 공격 패턴 탐지
+34.98.143.196 - [20/Dec/2023:21:13:17 +0900] /m2/itemview.html: tid = 17987../renew/include/jquery.easing.compatibility.js: TAG 공격 패턴 탐지
+34.98.143.196 - [20/Dec/2023:21:13:17 +0900] /m2/itemview.html: tid = 17987../renew/include/function.js: TAG 공격 패턴 탐지
+34.98.143.197 - [20/Dec/2023:21:13:17 +0900] /m2/itemview.html: tid = 17987../renew/jquery.bxSlider/jquery.bxslider.min.js: TAG 공격 패턴 탐지
+34.98.143.197 - [20/Dec/2023:21:13:17 +0900] /m2/itemview.html: tid = 17987../renew/include/jquery-ui.js: TAG 공격 패턴 탐지

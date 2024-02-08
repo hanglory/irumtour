@@ -1,0 +1,1 @@
+211.192.36.37 - [01/Aug/2019:17:47:51 +0900] /new/bkoff/cmp/view_tour.php: file1 = 2cc94a_98f437dd6c834fd8be03a4042f3ebe7e_mv2.webp: 허용되지 않은 확장자 파일 업로드

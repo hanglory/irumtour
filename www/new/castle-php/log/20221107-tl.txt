@@ -1,0 +1,6 @@
+210.56.61.11 - [07/Nov/2022:02:59:20 +0900] /renew/detailview.html: tid = 33000 or 1=utl_inaddr.get_host_address((chr(126)||chr(65)||chr(5: SQL_Injection 공격 패턴 탐지
+210.56.61.11 - [07/Nov/2022:02:59:22 +0900] /renew/detailview.html: tid = 33000 or 1=utl_inaddr.get_host_address((chr(126)||chr(65)||chr(5: SQL_Injection 공격 패턴 탐지
+210.56.61.11 - [07/Nov/2022:02:59:23 +0900] /renew/detailview.html: tid = 33000 or 1=utl_inaddr.get_host_address((chr(126)||chr(65)||chr(5: SQL_Injection 공격 패턴 탐지
+210.56.61.11 - [07/Nov/2022:02:59:29 +0900] /renew/detailview.html: tid = 33000\' or 1=utl_inaddr.get_host_address((chr(126)||chr(65)||chr: SQL_Injection 공격 패턴 탐지
+210.56.61.11 - [07/Nov/2022:02:59:30 +0900] /renew/detailview.html: tid = 33000\' or 1=utl_inaddr.get_host_address((chr(126)||chr(65)||chr: SQL_Injection 공격 패턴 탐지
+210.56.61.11 - [07/Nov/2022:02:59:32 +0900] /renew/detailview.html: tid = 33000\' or 1=utl_inaddr.get_host_address((chr(126)||chr(65)||chr: SQL_Injection 공격 패턴 탐지

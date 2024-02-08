@@ -1,0 +1,2 @@
+114.38.136.100 - [27/Oct/2021:14:20:25 +0900] /m2/sub_main.html: sbt = \"&gt;&lt;script &gt;alert(String.fromCharCode(88,83,83))&lt;/script&gt;: XSS 공격 패턴 탐지
+114.38.136.100 - [27/Oct/2021:22:26:30 +0900] /m2/itemview.html: code3 = \"&gt;&lt;script &gt;alert(String.fromCharCode(88,83,83))&lt;/script&gt;: XSS 공격 패턴 탐지

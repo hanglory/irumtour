@@ -1,0 +1,1 @@
+201.17.127.63 - [26/Nov/2021:21:01:45 +0900] /new/bkoff/cmp/list_reservation.php: ctg1 = \"&gt;&lt;script &gt;alert(String.fromCharCode(88,83,83))&lt;/script&gt;: XSS 공격 패턴 탐지

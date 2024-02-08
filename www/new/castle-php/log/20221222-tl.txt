@@ -1,0 +1,14 @@
+175.126.123.198 - [22/Dec/2022:03:13:11 +0900] /renew/index.html: search = &lt;script&gt;alert(1)&lt;/script&gt;: XSS 공격 패턴 탐지
+175.126.123.198 - [22/Dec/2022:03:13:11 +0900] /renew/index.html: search = &lt;script&gt;alert(1)&lt;/script&gt;: XSS 공격 패턴 탐지
+175.126.123.198 - [22/Dec/2022:03:13:39 +0900] /renew/detailview.html: code1 = ../../../../../../../../../../../../../../windows/win.ini: TAG 공격 패턴 탐지
+175.126.123.198 - [22/Dec/2022:03:13:40 +0900] /renew/detailview.html: code1 = ../26: TAG 공격 패턴 탐지
+175.126.123.198 - [22/Dec/2022:03:13:45 +0900] /renew/detailview.html: code1 = ../../../../../../../../../../../../../../../proc/version: TAG 공격 패턴 탐지
+175.126.123.198 - [22/Dec/2022:03:13:45 +0900] /renew/detailview.html: code1 = ..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2Fetc%2Fpasswd: TAG 공격 패턴 탐지
+175.126.123.198 - [22/Dec/2022:03:13:45 +0900] /renew/detailview.html: code1 = ..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2F..%2Fetc%2Fpasswd%0: TAG 공격 패턴 탐지
+175.126.123.198 - [22/Dec/2022:03:13:49 +0900] /renew/detailview.html: code1 = ../../../../../../../../../../windows/win.ini\0.jpg: TAG 공격 패턴 탐지
+175.126.123.198 - [22/Dec/2022:03:13:49 +0900] /renew/detailview.html: code1 = /../../../../../../../../../../boot.ini: TAG 공격 패턴 탐지
+175.126.123.198 - [22/Dec/2022:03:13:52 +0900] /renew/detailview.html: code1 = ..\\..\\..\\..\\..\\..\\..\\..\\windows\\win.ini: TAG 공격 패턴 탐지
+175.126.123.198 - [22/Dec/2022:03:13:53 +0900] /renew/detailview.html: code1 = ..\\..\\..\\..\\..\\..\\..\\..\\windows\\win.ini: TAG 공격 패턴 탐지
+175.126.123.198 - [22/Dec/2022:03:13:55 +0900] /renew/detailview.html: code1 = ../..//../..//../..//../..//../..//../..//../..//../..//windows/: TAG 공격 패턴 탐지
+175.126.123.198 - [22/Dec/2022:03:13:58 +0900] /renew/detailview.html: code1 = ../.../.././../.../.././../.../.././../.../.././../.../.././../.: TAG 공격 패턴 탐지
+175.126.123.198 - [22/Dec/2022:03:13:59 +0900] /renew/detailview.html: code1 = unexisting/../../../../../../../../../../windows/win.ini.\\.\\.\: TAG 공격 패턴 탐지

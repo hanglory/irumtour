@@ -1,0 +1,1 @@
+112.172.15.90 - [20/Aug/2021:14:55:31 +0900] /new/api/Fax/SendFAX.php: __/__/public/fax/fax_cmpadmin_html = ../../public/fax/fax_cmpadmin.html: TAG 공격 패턴 탐지

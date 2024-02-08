@@ -1,0 +1,185 @@
+<?
+include_once("../include/common_file_report.php");
+
+$page_width="700";
+
+
+if($mode=="save"){
+
+	$sql="
+	   update cmp_reservation set
+	      memo2 = '$memo2'
+	   where id_no=$id_no
+	";
+	$dbo->query($sql);
+	error("저장하였습니다.");
+	exit;
+}
+
+
+$sql = "select * from cmp_reservation where id_no=$id_no";
+$dbo->query($sql);
+$rs= $dbo->next_record();
+$arr =explode("(",$rs[main_staff]);
+$staff=$arr[0];
+
+$sql2 = "select * from cmp_air where id_no=$rs[air_id_no]";
+$dbo2->query($sql2);
+$rs2= $dbo2->next_record();
+
+$d_air = $rs2[d_air];
+$d_air_no = $rs2[d_air_no];
+$d_time_s = $rs2[d_time_s];
+$d_time_e = $rs2[d_time_e];
+$r_air_no = $rs2[r_air_no];
+$r_time_s = $rs2[r_time_s];
+$r_time_e = $rs2[r_time_e];
+
+$sql2 = "select * from cmp_golf where id_no=$rs[golf_id_no]";
+$dbo2->query($sql2);
+$rs2= $dbo2->next_record();
+
+$edit_mode = (!$doc_mode && !$print_mode)?1:0;
+
+if($doc_mode){
+	$xls_name = "report1.doc";
+	header("Content-type: application/vnd.ms-word");
+	header("Content-Type: application/vnd.ms-word; charset=euc-kr");
+	header("Content-Disposition: attachment;filename=$xls_name;");
+	header( "Content-Description: PHP4 Generated Data" );
+}
+
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>INVOICE - <?=$rs2[name]?></title>
+
+<?php if (preg_match('/(facebook|kakaotalk)/',$_SERVER['HTTP_USER_AGENT']) == true) { ?>
+<meta property="og:type" content="website">
+<meta property="og:title" content="INVOICE -<?=$rs2[name]?>">
+<meta property="og:url" content="http://<?=$_SERVER["HTTP_HOST"]?>/<?=$_SE2RVER["REQUEST_URI"]?>">
+<meta property="og:description" content="<?=$SITE_NAME?>">
+<meta property="og:image" content="http://irumtour.net/new/images/cmp/paper_logo.jpg">
+<?php } ?>
+
+<?if($edit_mode){?>
+	<link rel="stylesheet" href="../include/default.css">
+	<link rel="stylesheet" href="../include/basic.css" type="text/css">
+	<script language="JavaScript" src="../../include/form_check.js"></script>
+	<script language="JavaScript" src="../../include/function.js"></script>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+
+
+	<!-- Include Core Datepicker Stylesheet -->
+	<link rel="stylesheet" href="../../include/ui.datepicker.css" type="text/css" media="screen" title="core css file" charset="utf-8" />
+	<!-- Include jQuery -->
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+	<!-- Include Core Datepicker JavaScript -->
+	<script src="../../include/ui.datepicker.js" type="text/javascript" charset="utf-8"></script>
+	<!-- Attach the datepicker to dateinput after document is ready -->
+	<script type="text/javascript" charset="utf-8">
+		jQuery(function($){$(".dateinput").datepicker();});
+	</script>
+	<script type="text/javascript" src="../../qtip/jquery.qtip-1.0.0-rc3.min.js"></script>
+	<script type="text/javascript" src="../../include/jquery.maskedinput.min.js"></script>
+<?}?>
+
+<style type="text/css">
+#tbl_p th,#tbl_p{border-collapse:collapse;border:1px solid #ccc }
+#tbl_p th{background-color:#948A54;color:#fff;}
+#tbl_p th,#tbl_p td{
+	font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;
+	padding:5px;
+}
+h1{font-family:'verdana';margin:30px;font-size:30px;font-weight:bold}
+</style>
+</head>
+
+<body leftmargin="0" topmargin="0">
+
+<div style="width:700px;padding:30px;text-align:center;margin-left:auto;margin-right:auto;">
+
+	<div><img src="http://irumtour.net/new/bkoff/cmp/info.gif"  width="<?=$page_width?>"/></div>
+
+	<h1>INVOICE</h1>
+
+	<table id="tbl_p" width="<?=$page_width?>">
+	<tr>
+		<th>고객명</th>
+		<td>고객명</td>
+		<th>인원</th>
+		<td>인원</td>
+		<th>CODE:</th>
+		<td>지역명</td>
+	</tr>
+	<tr>
+		<th>담당자명</th>
+		<td>담당자명</td>
+		<th>휴대폰</th>
+		<td>휴대폰</td>
+		<th>DATE:</th>
+		<td>DATE:</td>
+	</tr>
+	<tr>
+		<th>TEL</th>
+		<td>TEL</td>
+		<th>FAX</th>
+		<td>FAX</td>
+		<th>PERIOD</th>
+		<td>PERIOD</td>
+	</tr>
+	</table>
+
+	<br>
+
+	<table id="tbl_p" width="<?=$page_width?>">
+	<tr>
+		<th>Paticulars</th>
+		<th>Qty.</th>
+		<th>Rate</th>
+		<th>Amount</th>
+	</tr>
+	<tr>
+		<th>담당자명</th>
+		<td>담당자명</td>
+		<th>휴대폰</th>
+		<td>휴대폰</td>
+		<th>DATE:</th>
+		<td>DATE:</td>
+	</tr>
+	<tr>
+		<th>TEL</th>
+		<td>TEL</td>
+		<th>FAX</th>
+		<td>FAX</td>
+		<th>PERIOD</th>
+		<td>PERIOD</td>
+	</tr>
+	</table>
+
+
+
+	<table width="<?=$page_width?>" border="0" cellspacing="0" cellpadding="0" align="center">
+
+
+	  <?if($edit_mode){?>
+	  <div style="padding:20px 0 30px 0">
+	  <!-- Button Begin---------------------------------------------->
+	  <table border="0" width="200" cellspacing="0" cellpadding="0" align="right">
+		<tr align="right">
+			<td><span class="btn_pack medium bold"><a href="#" onClick="document.fmData.submit()"> 저장 </a></span></td>
+			<td><span class="btn_pack medium bold"><a href="<?=SELF?>?id_no=<?=$rs[id_no]?>&doc_mode=1"> Word 저장 </a></span></td>
+			<td><span class="btn_pack medium bold"><a href="javascript:self.close()"> 창닫기 </a></span></td>
+		</tr>
+	  </table>
+	  <!-- Button End------------------------------------------------>
+	  </div>
+	  <?}?>
+
+
+</div>
+
+</body>
+</html>

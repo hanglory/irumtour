@@ -1,0 +1,3 @@
+211.192.36.37 - [16/Jul/2019:09:02:25 +0900] /new/bkoff/cmp/set_files.php: file1 = 20190911 원용순 인보이스.html: 차단된 이름 파일 업로드
+211.192.36.37 - [16/Jul/2019:09:59:17 +0900] /new/bkoff/cmp/view_reservation.php: memo_payment = 2019.07.05 15:50:50	(주)제이홀리데이	835,000\r\njavascrip: XSS 공격 패턴 탐지
+211.192.36.37 - [16/Jul/2019:11:11:51 +0900] /new/bkoff/cmp/view_golf2.php: file1 = 1- Black Stone #15.tif: 허용되지 않은 확장자 파일 업로드

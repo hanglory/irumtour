@@ -1,0 +1,44 @@
+                    <!-- <select name="select_menu" id="select_menu" onchange="set_tmenu(this.value)"><?=option_str("예약관리,고객관리","tour,cmp",$_SESSION["sessMenu"])?></select>
+                    &nbsp;&nbsp;&nbsp;
+                    -->
+                    <?if($_SESSION["sessLogin"]["id"]!="share"){?>
+                    <?if($_SESSION[sessLogin][cmp]){?>
+                    <form name=fmSearch method="get" action="../cmp/list_history.php">
+                    <input type=hidden name='position' value="">
+                    <input type=hidden name='ctg1' value="<?=$ctg1?>">
+                    <input class=box type="text" name="keyword" size="20" maxlength="40" value='<?=$keyword?>'>
+                    <input class=button type="submit" name="Submit" value=" 검 색 " onFocus='blur(this)'>
+                    </form>
+                    <?}?>
+                    <?}?>
+
+
+                    <span style="color:#669999;font-size:8pt;font-family:돋움;letter-spacing:-1px"><b><?=$sessLogin[id]?> (<?=$_SESSION["sessLogin"]["name"]?>)</b> 님 방문을 환영합니다.</span>
+                    &nbsp;&nbsp;&nbsp;
+
+
+                    <?if($_SESSION["sessLogin"]["id"]!="share"){?>
+
+                        <a href="../cmp/calendar.php" target="_blank">일정관리</a> |
+
+                        <a href="../cmp/naverband.php" target="_blank">상품정보크롤링</a> |
+                        <!-- <a href="../cmp/kakaocafe.php" target="_blank">다음카페검색</a> | -->
+
+                        <?if(!strstr($_SESSION["sessLogin"]["staff_type"],"partner")){?>
+                        <a href="../member/list_member.php?cmp_mode=tour" target="_blank">홈페이지관리</a> |
+                        <a href="../cmp/list_daily.php?cmp_mode=cmp" target="_blank">고객관리</a> |
+                        <?}?>
+
+                    <?}?>
+
+
+
+                    <?if($_SESSION["sessLogin"]["staff_type"]!="ceo"){?>
+                    <a href="../cmp/edit_user.php">개인정보수정</a> |
+                    <?}?>
+
+                    <!-- <a href="../index.html">관리자 메인</a> | -->
+                    <?if($_SESSION["sessLogin"]["power"]==9){?> 
+                    <a href="../basic/admin.php">패스워드변경</a> |
+                    <?}?>
+                    <a href="../logout.php">로그아웃</a>

@@ -1,0 +1,63 @@
+39.115.246.81 - [20/Dec/2022:11:51:04 +0900] /m2/pop_hotel.html: code = 290 and (select 1 from (select(sleep(3-(if((1=1), 0, 3)))))test): SQL_Injection 공격 패턴 탐지
+39.115.246.81 - [20/Dec/2022:11:51:04 +0900] /m2/pop_hotel.html: code = 290) and (select 1 from (select(sleep(3-(if((1=1), 0, 3)))))test: SQL_Injection 공격 패턴 탐지
+39.115.246.81 - [20/Dec/2022:11:51:05 +0900] /m2/pop_hotel.html: code = 290\' and (select 1 from (select(sleep(3-(if((1=1), 0, 3)))))tes: SQL_Injection 공격 패턴 탐지
+39.115.246.81 - [20/Dec/2022:11:51:05 +0900] /m2/pop_hotel.html: code = 290\') and (select 1 from (select(sleep(3-(if((1=1), 0, 3)))))te: SQL_Injection 공격 패턴 탐지
+39.115.246.81 - [20/Dec/2022:11:51:05 +0900] /m2/pop_hotel.html: code = 290 (select 1 from (select(sleep(3-(if((1=1), 0, 3)))))test)#: SQL_Injection 공격 패턴 탐지
+39.115.246.81 - [20/Dec/2022:11:51:05 +0900] /m2/pop_hotel.html: code = 290,(select 1 from (select(sleep(3-(if((1=1), 0, 3)))))test)#: SQL_Injection 공격 패턴 탐지
+39.115.246.81 - [20/Dec/2022:11:51:11 +0900] /m2/pop_cc.html: code = 172 and (select 1 from (select(sleep(2-(if((1=1), 0, 2)))))test): SQL_Injection 공격 패턴 탐지
+39.115.246.81 - [20/Dec/2022:11:51:12 +0900] /m2/pop_cc.html: code = 172) and (select 1 from (select(sleep(2-(if((1=1), 0, 2)))))test: SQL_Injection 공격 패턴 탐지
+39.115.246.81 - [20/Dec/2022:11:51:12 +0900] /m2/pop_cc.html: code = 172\' and (select 1 from (select(sleep(2-(if((1=1), 0, 2)))))tes: SQL_Injection 공격 패턴 탐지
+39.115.246.81 - [20/Dec/2022:11:51:12 +0900] /m2/pop_cc.html: code = 172\') and (select 1 from (select(sleep(2-(if((1=1), 0, 2)))))te: SQL_Injection 공격 패턴 탐지
+39.115.246.81 - [20/Dec/2022:11:51:14 +0900] /m2/pop_cc.html: code = 172 (select 1 from (select(sleep(2-(if((1=1), 0, 2)))))test)#: SQL_Injection 공격 패턴 탐지
+39.115.246.81 - [20/Dec/2022:11:51:14 +0900] /m2/pop_cc.html: code = 172,(select 1 from (select(sleep(2-(if((1=1), 0, 2)))))test)#: SQL_Injection 공격 패턴 탐지
+39.115.246.81 - [20/Dec/2022:11:51:28 +0900] /m2/pop_hotel.html: code = 290\' or (select @@version)=1 or \'a\'=\'a: SQL_Injection 공격 패턴 탐지
+39.115.246.81 - [20/Dec/2022:11:51:37 +0900] /m2/pop_cc.html: code = 172\' or (select @@version)=1 or \'a\'=\'a: SQL_Injection 공격 패턴 탐지
+39.115.246.81 - [20/Dec/2022:11:51:40 +0900] /m2/pop_hotel.html: code = 290 or 1=(select upper(xmltype(chr(60)||chr(58)||chr(45)||chr(45: SQL_Injection 공격 패턴 탐지
+39.115.246.81 - [20/Dec/2022:11:51:40 +0900] /m2/pop_hotel.html: code = 290 and 1=(select upper(xmltype(chr(60)||chr(58)||chr(45)||chr(4: SQL_Injection 공격 패턴 탐지
+39.115.246.81 - [20/Dec/2022:11:51:41 +0900] /m2/pop_hotel.html: code = 290) or 1=(select upper(xmltype(chr(60)||chr(58)||chr(45)||chr(4: SQL_Injection 공격 패턴 탐지
+39.115.246.81 - [20/Dec/2022:11:51:41 +0900] /m2/pop_hotel.html: code = 290) and 1=(select upper(xmltype(chr(60)||chr(58)||chr(45)||chr(: SQL_Injection 공격 패턴 탐지
+39.115.246.81 - [20/Dec/2022:11:51:41 +0900] /m2/pop_hotel.html: code = 290\' or 1=(select upper(xmltype(chr(60)||chr(58)||chr(45)||chr(: SQL_Injection 공격 패턴 탐지
+39.115.246.81 - [20/Dec/2022:11:51:42 +0900] /m2/pop_hotel.html: code = 290\' and 1=(select upper(xmltype(chr(60)||chr(58)||chr(45)||chr: SQL_Injection 공격 패턴 탐지
+39.115.246.81 - [20/Dec/2022:11:51:42 +0900] /m2/pop_hotel.html: code = 290\' or 1=(select upper(xmltype(chr(60)||chr(58)||chr(45)||chr(: SQL_Injection 공격 패턴 탐지
+39.115.246.81 - [20/Dec/2022:11:51:42 +0900] /m2/pop_hotel.html: code = 290\' and 1=(select upper(xmltype(chr(60)||chr(58)||chr(45)||chr: SQL_Injection 공격 패턴 탐지
+39.115.246.81 - [20/Dec/2022:11:51:42 +0900] /m2/pop_hotel.html: code = 290\') or 1=(select upper(xmltype(chr(60)||chr(58)||chr(45)||chr: SQL_Injection 공격 패턴 탐지
+39.115.246.81 - [20/Dec/2022:11:51:43 +0900] /m2/pop_hotel.html: code = 290\') and 1=(select upper(xmltype(chr(60)||chr(58)||chr(45)||ch: SQL_Injection 공격 패턴 탐지
+39.115.246.81 - [20/Dec/2022:11:51:45 +0900] /m2/pop_hotel.html: code = 290%\' or 1=(select upper(xmltype(chr(60)||chr(58)||chr(45)||chr: SQL_Injection 공격 패턴 탐지
+39.115.246.81 - [20/Dec/2022:11:51:45 +0900] /m2/pop_cc.html: code = 172 or 1=(select upper(xmltype(chr(60)||chr(58)||chr(45)||chr(45: SQL_Injection 공격 패턴 탐지
+39.115.246.81 - [20/Dec/2022:11:51:45 +0900] /m2/pop_hotel.html: code = 290%\') or 1=(select upper(xmltype(chr(60)||chr(58)||chr(45)||ch: SQL_Injection 공격 패턴 탐지
+39.115.246.81 - [20/Dec/2022:11:51:46 +0900] /m2/pop_cc.html: code = 172 and 1=(select upper(xmltype(chr(60)||chr(58)||chr(45)||chr(4: SQL_Injection 공격 패턴 탐지
+39.115.246.81 - [20/Dec/2022:11:51:46 +0900] /m2/pop_cc.html: code = 172) or 1=(select upper(xmltype(chr(60)||chr(58)||chr(45)||chr(4: SQL_Injection 공격 패턴 탐지
+39.115.246.81 - [20/Dec/2022:11:51:46 +0900] /m2/pop_hotel.html: code = 290%\') and 1=(select upper(xmltype(chr(60)||chr(58)||chr(45)||c: SQL_Injection 공격 패턴 탐지
+39.115.246.81 - [20/Dec/2022:11:51:47 +0900] /m2/pop_cc.html: code = 172) and 1=(select upper(xmltype(chr(60)||chr(58)||chr(45)||chr(: SQL_Injection 공격 패턴 탐지
+39.115.246.81 - [20/Dec/2022:11:51:47 +0900] /m2/pop_cc.html: code = 172\' or 1=(select upper(xmltype(chr(60)||chr(58)||chr(45)||chr(: SQL_Injection 공격 패턴 탐지
+39.115.246.81 - [20/Dec/2022:11:51:48 +0900] /m2/pop_cc.html: code = 172\' and 1=(select upper(xmltype(chr(60)||chr(58)||chr(45)||chr: SQL_Injection 공격 패턴 탐지
+39.115.246.81 - [20/Dec/2022:11:51:48 +0900] /m2/pop_cc.html: code = 172\' or 1=(select upper(xmltype(chr(60)||chr(58)||chr(45)||chr(: SQL_Injection 공격 패턴 탐지
+39.115.246.81 - [20/Dec/2022:11:51:49 +0900] /m2/pop_hotel.html: code = 290 or 1=cast((chr(105)||chr(110)||chr(106)||chr(101)||chr(99)||: SQL_Injection 공격 패턴 탐지
+39.115.246.81 - [20/Dec/2022:11:51:49 +0900] /m2/pop_cc.html: code = 172\' and 1=(select upper(xmltype(chr(60)||chr(58)||chr(45)||chr: SQL_Injection 공격 패턴 탐지
+39.115.246.81 - [20/Dec/2022:11:51:49 +0900] /m2/pop_cc.html: code = 172\') or 1=(select upper(xmltype(chr(60)||chr(58)||chr(45)||chr: SQL_Injection 공격 패턴 탐지
+39.115.246.81 - [20/Dec/2022:11:51:50 +0900] /m2/pop_cc.html: code = 172\') and 1=(select upper(xmltype(chr(60)||chr(58)||chr(45)||ch: SQL_Injection 공격 패턴 탐지
+39.115.246.81 - [20/Dec/2022:11:51:50 +0900] /m2/pop_cc.html: code = 172%\' or 1=(select upper(xmltype(chr(60)||chr(58)||chr(45)||chr: SQL_Injection 공격 패턴 탐지
+39.115.246.81 - [20/Dec/2022:11:51:50 +0900] /m2/pop_hotel.html: code = 290 or 1=cast((chr(105)||chr(110)||chr(106)||chr(101)||chr(99)||: SQL_Injection 공격 패턴 탐지
+39.115.246.81 - [20/Dec/2022:11:51:51 +0900] /m2/pop_cc.html: code = 172%\') or 1=(select upper(xmltype(chr(60)||chr(58)||chr(45)||ch: SQL_Injection 공격 패턴 탐지
+39.115.246.81 - [20/Dec/2022:11:51:51 +0900] /m2/pop_cc.html: code = 172%\') and 1=(select upper(xmltype(chr(60)||chr(58)||chr(45)||c: SQL_Injection 공격 패턴 탐지
+39.115.246.81 - [20/Dec/2022:11:51:51 +0900] /m2/pop_hotel.html: code = 290) or 1=cast((chr(105)||chr(110)||chr(106)||chr(101)||chr(99)|: SQL_Injection 공격 패턴 탐지
+39.115.246.81 - [20/Dec/2022:11:51:52 +0900] /m2/pop_cc.html: code = 172 or 1=cast((chr(105)||chr(110)||chr(106)||chr(101)||chr(99)||: SQL_Injection 공격 패턴 탐지
+39.115.246.81 - [20/Dec/2022:11:51:52 +0900] /m2/pop_hotel.html: code = 290\' or 1=cast((chr(105)||chr(110)||chr(106)||chr(101)||chr(99): SQL_Injection 공격 패턴 탐지
+39.115.246.81 - [20/Dec/2022:11:51:52 +0900] /m2/pop_cc.html: code = 172 or 1=cast((chr(105)||chr(110)||chr(106)||chr(101)||chr(99)||: SQL_Injection 공격 패턴 탐지
+39.115.246.81 - [20/Dec/2022:11:51:53 +0900] /m2/pop_hotel.html: code = 290%\' or 1=cast((chr(105)||chr(110)||chr(106)||chr(101)||chr(99: SQL_Injection 공격 패턴 탐지
+39.115.246.81 - [20/Dec/2022:11:51:53 +0900] /m2/pop_cc.html: code = 172) or 1=cast((chr(105)||chr(110)||chr(106)||chr(101)||chr(99)|: SQL_Injection 공격 패턴 탐지
+39.115.246.81 - [20/Dec/2022:11:51:53 +0900] /m2/pop_hotel.html: code = 290\') or 1=cast((chr(105)||chr(110)||chr(106)||chr(101)||chr(99: SQL_Injection 공격 패턴 탐지
+39.115.246.81 - [20/Dec/2022:11:51:53 +0900] /m2/pop_cc.html: code = 172\' or 1=cast((chr(105)||chr(110)||chr(106)||chr(101)||chr(99): SQL_Injection 공격 패턴 탐지
+39.115.246.81 - [20/Dec/2022:11:51:53 +0900] /m2/pop_hotel.html: code = 290%\' or 1=cast((chr(105)||chr(110)||chr(106)||chr(101)||chr(99: SQL_Injection 공격 패턴 탐지
+39.115.246.81 - [20/Dec/2022:11:51:54 +0900] /m2/pop_cc.html: code = 172%\' or 1=cast((chr(105)||chr(110)||chr(106)||chr(101)||chr(99: SQL_Injection 공격 패턴 탐지
+39.115.246.81 - [20/Dec/2022:11:51:55 +0900] /m2/pop_cc.html: code = 172\') or 1=cast((chr(105)||chr(110)||chr(106)||chr(101)||chr(99: SQL_Injection 공격 패턴 탐지
+39.115.246.81 - [20/Dec/2022:11:51:56 +0900] /m2/pop_cc.html: code = 172%\' or 1=cast((chr(105)||chr(110)||chr(106)||chr(101)||chr(99: SQL_Injection 공격 패턴 탐지
+39.115.246.81 - [20/Dec/2022:11:51:59 +0900] /m2/pop_hotel.html: inc = hotel and (select 1 from (select(sleep(3-(if((1=1), 0, 3)))))tes: SQL_Injection 공격 패턴 탐지
+39.115.246.81 - [20/Dec/2022:11:51:59 +0900] /m2/pop_hotel.html: inc = hotel) and (select 1 from (select(sleep(3-(if((1=1), 0, 3)))))te: SQL_Injection 공격 패턴 탐지
+39.115.246.81 - [20/Dec/2022:11:51:59 +0900] /m2/pop_hotel.html: inc = hotel\' and (select 1 from (select(sleep(3-(if((1=1), 0, 3)))))t: SQL_Injection 공격 패턴 탐지
+39.115.246.81 - [20/Dec/2022:11:52:00 +0900] /m2/pop_hotel.html: inc = hotel\') and (select 1 from (select(sleep(3-(if((1=1), 0, 3))))): SQL_Injection 공격 패턴 탐지
+39.115.246.81 - [20/Dec/2022:11:52:00 +0900] /m2/pop_hotel.html: inc = hotel (select 1 from (select(sleep(3-(if((1=1), 0, 3)))))test)#: SQL_Injection 공격 패턴 탐지
+39.115.246.81 - [20/Dec/2022:11:52:00 +0900] /m2/pop_hotel.html: inc = hotel,(select 1 from (select(sleep(3-(if((1=1), 0, 3)))))test)#: SQL_Injection 공격 패턴 탐지
+39.115.246.81 - [20/Dec/2022:11:52:01 +0900] /m2/pop_cc.html: inc = golf2 and (select 1 from (select(sleep(3-(if((1=1), 0, 3)))))tes: SQL_Injection 공격 패턴 탐지
+39.115.246.81 - [20/Dec/2022:11:52:02 +0900] /m2/pop_cc.html: inc = golf2) and (select 1 from (select(sleep(3-(if((1=1), 0, 3)))))te: SQL_Injection 공격 패턴 탐지
+39.115.246.81 - [20/Dec/2022:11:52:02 +0900] /m2/pop_cc.html: inc = golf2\' and (select 1 from (select(sleep(3-(if((1=1), 0, 3)))))t: SQL_Injection 공격 패턴 탐지

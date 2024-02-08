@@ -1,0 +1,1 @@
+95.142.120.33 - [14/Nov/2021:20:14:56 +0900] /new/bkoff/cmp/view_estimate.php: ctg1 = \"&gt;&lt;script &gt;alert(String.fromCharCode(88,83,83))&lt;/script&gt;: XSS 공격 패턴 탐지

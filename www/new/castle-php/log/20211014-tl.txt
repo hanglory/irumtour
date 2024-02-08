@@ -1,0 +1,2 @@
+219.252.41.121 - [14/Oct/2021:09:02:35 +0900] /renew/index.html: id_no = \" id_no;\n	\n}\n\nfunction drop(){\n	if(confirm(\"삭제하시�: XSS 공격 패턴 탐지
+54.227.231.169 - [14/Oct/2021:09:07:57 +0900] /renew/index.html: id_no = \" id_no;\n	\n}\n\nfunction drop(){\n	if(confirm(\"삭제하시�: XSS 공격 패턴 탐지

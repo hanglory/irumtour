@@ -1,0 +1,708 @@
+<?
+include_once("../include/common_file_report.php");
+include_once("../../public/inc/site.inc"); /*2016-04-06*/
+if($CP_ID) @include_once("../../public/cp/cmp_config_".$CP_ID.".inc");
+
+
+$edit_mode=1;
+/*2016-04-06*/
+if($_GET[code]){
+	$id_no = decrypt($code,$SALT);
+
+	$doc_mode=1;
+}
+
+
+if(!$code && !$id_no){exit;}
+if($_GET["id_no"]){
+	if(!$sessLogin[id]){exit;}
+}
+	
+
+if($doc_mode)	 $edit_mode=0;
+
+$page_width="700";
+$bold_color = "#000";
+
+
+if($mode=="save" || $mode=="modify"){
+
+	$reg_date = date('Y/m/d');
+	$reg_date2 = date('H:i:s');
+
+	$people1 = rnf($people1);
+	$people2 = rnf($people2);
+	$people3 = rnf($people3);
+	$people4 = rnf($people4);
+	$rate1 = rnf($rate1_);
+	$rate2 = rnf($rate2_);
+	$rate3 = rnf($rate3_);
+	$rate4 = rnf($rate4_);
+	$price1 = rnf($price1);
+	$price2 = rnf($price2);
+
+	$sqlInsert="
+		insert into cmp_invoice (
+           cp_id,  
+		   id_no,
+		   goods_subject,
+		   people1,
+		   people2,
+		   people3,
+		   people4,
+		   rate1,
+		   rate2,
+		   rate3,
+		   rate4,
+		   text1,
+		   text2,
+		   text3,
+		   text4,
+		   price1,
+		   price2,
+		   date1,
+		   date2,
+		   date3,
+		   reg_date,
+		   reg_date2
+	   ) values (
+		   '$CP_ID',
+           '$id_no',
+		   '$goods_subject',
+		   '$people1',
+		   '$people2',
+		   '$people3',
+		   '$people4',
+		   '$rate1',
+		   '$rate2',
+		   '$rate3',
+		   '$rate4',
+		   '$text1',
+		   '$text2',
+		   '$text3',
+		   '$text4',
+		   '$price1',
+		   '$price2',
+		   '$date1',
+		   '$date2',
+		   '$date3',
+		   '$reg_date',
+		   '$reg_date2'
+	 )";
+
+	 $sqlModify="
+		update cmp_invoice set
+		   goods_subject = '$goods_subject',
+		   people1 = '$people1',
+		   people2 = '$people2',
+		   people3 = '$people3',
+		   people4 = '$people4',
+		   rate1 = '$rate1',
+		   rate2 = '$rate2',
+		   rate3 = '$rate3',
+		   rate4 = '$rate4',
+		   text1 = '$text1',
+		   text2 = '$text2',
+		   text3 = '$text3',
+		   text4 = '$text4',
+		   price1 = '$price1',
+		   price2 = '$price2',
+		   date1 = '$date1',
+		   date2 = '$date2',
+		   date3 = '$date3'
+		where 
+            id_no='$id_no'
+            and cp_id='$CP_ID'
+        limit 1
+	 ";
+
+	 $sql = ($mode=="modify")? $sqlModify :	$sqlInsert;
+	 $dbo->query($sql);
+	 //checkVar(mysql_error(),$sql);exit;
+
+	 error("저장하였습니다.");
+	 exit;
+}
+elseif($mode=="sum"){
+
+	$people1 = rnf($people1);
+	$people2 = rnf($people2);
+	$people3 = rnf($people3);
+	$people4 = rnf($people4);
+	$rate1 = rnf($rate1);
+	$rate2 = rnf($rate2);
+	$rate3 = rnf($rate3);
+	$rate4 = rnf($rate4);
+	$price1 = rnf($price1);
+	$price2 = rnf($price2);
+
+	$amount1 = $rate1 * $people1;
+	$amount2 = $rate2 * $people2;
+	$amount3 = $rate3 * $people3;
+	$amount4 = $rate4 * $people4;
+
+	$sum_price = $amount1+$amount2+$amount3+$amount4;
+	$pay_price = $sum_price- ($price1+$price2);
+
+	$rate1_ = nf($rate1);
+	$rate2_ = nf($rate2);
+	$rate3_ = nf($rate3);
+	$rate4_ = nf($rate4);
+	$price1_ = nf($price1);
+	$price2_ = nf($price2);
+	$amount1_ = nf($amount1);
+	$amount2_ = nf($amount2);
+	$amount3_ = nf($amount3);
+	$amount4_ = nf($amount4);
+	$sum_price_ = nf($sum_price);
+	$pay_price_ = nf($pay_price);
+
+	echo"
+		 <script>
+			parent.document.getElementById('rate1_').value = '$rate1_';
+			parent.document.getElementById('rate2_').value = '$rate2_';
+			parent.document.getElementById('rate3_').value = '$rate3_';
+			parent.document.getElementById('rate4_').value = '$rate4_';
+			parent.document.getElementById('price1').value = '$price1_';
+			parent.document.getElementById('price2').value = '$price2_';
+			parent.document.getElementById('amount1').innerHTML = '$amount1_';
+			parent.document.getElementById('amount2').innerHTML = '$amount2_';
+			parent.document.getElementById('amount3').innerHTML = '$amount3_';
+			parent.document.getElementById('amount4').innerHTML = '$amount4_';
+			parent.document.getElementById('sum_price').innerHTML = '$sum_price_';
+			parent.document.getElementById('pay_price').innerHTML = '$pay_price_';
+		 </script>
+	";
+	exit;
+
+}
+
+
+$sql3 = "select * from cmp_reservation where id_no=$id_no and cp_id='$CP_ID'";
+$dbo3->query($sql3);
+$rs3= $dbo3->next_record();
+$arr =explode("(",$rs3[main_staff]);
+$rs3[staff] = $arr[0];
+$default_pay_date = $rs3[pay_date];
+
+$arr = explode("(",$rs3[main_staff]);
+$staff=$arr[0];
+$staff_id=substr($arr[1],0,-1);
+
+
+
+$sql2 = "select * from cmp_staff where id='" . substr($arr[1],0,-1) ."' and cp_id='$CP_ID'";
+$dbo2->query($sql2);
+$rs2= $dbo2->next_record();
+$staff_cell ="${rs2[cell1]}-${rs2[cell2]}-${rs2[cell3]}";
+$mposition = $rs2[mposition];
+
+
+$sql2 = "select * from cmp_golf where id_no=$rs3[golf_id_no]";
+$dbo2->query($sql2);
+$rs2= $dbo2->next_record();
+$golf_name = $rs2[name];
+$city = $rs2[city];
+$nation = $rs2[nation];
+
+
+
+$sql = "select * from cmp_invoice where id_no=$id_no and cp_id='$CP_ID'";
+$dbo->query($sql);
+$rs= $dbo->next_record();
+$mode2 = ($rs[id_no])? "modify":"save";
+
+$rs[people1] = ($rs[people1])? $rs[people1] : $rs3[people];
+$rs[rate1] = ($rs[rate1])? $rs[rate1] : $rs3[price] / $rs[people1];
+
+$rs[price1] = ($rs[price1])? $rs[price1] : $rs3[price_prev];
+
+$rs[rate1_] = nf($rs[rate1]);
+$rs[rate2_] = nf($rs[rate2]);
+$rs[rate3_] = nf($rs[rate3]);
+$rs[rate4_] = nf($rs[rate4]);
+$rs[price1] = nf($rs[price1]);
+$rs[price2] = nf($rs[price2]);
+
+$carr = explode(" ",trim($ACCOUNT));
+
+
+
+/*2016-04-06*/
+if($doc_mode && !$code){
+	$xls_name = "report1.doc";
+	header("Content-type: application/vnd.ms-word");
+	header("Content-Type: application/vnd.ms-word; charset=euc-kr");
+	header("Content-Disposition: attachment;filename=$xls_name;");
+	header( "Content-Description: PHP4 Generated Data" );
+}
+
+
+
+?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>INVOICE - <?=$golf_name?></title>
+
+<?
+/*og metatag*/
+$OG_TITLE = "INVOICE - $golf_name";
+include("inc_form_og.php");
+?>
+
+
+<?if($edit_mode){?>
+	<link rel="stylesheet" href="../include/default.css">
+	<link rel="stylesheet" href="../include/basic.css" type="text/css">
+	<script language="JavaScript" src="../../include/form_check.js"></script>
+	<script language="JavaScript" src="../../include/function.js"></script>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+	<!-- Include Core Datepicker Stylesheet -->
+	<link rel="stylesheet" href="../../include/ui.datepicker.css" type="text/css" media="screen" title="core css file" charset="utf-8" />
+	<!-- Include jQuery -->
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+	<!-- Include Core Datepicker JavaScript -->
+	<script src="../../include/ui.datepicker.js" type="text/javascript" charset="utf-8"></script>
+	<!-- Attach the datepicker to dateinput after document is ready -->
+	<script type="text/javascript" charset="utf-8">
+		jQuery(function($){$(".dateinput").datepicker();});
+	</script>
+
+
+	<script type="text/javascript">
+	<!--
+	function price_sum(){
+		var url ="<?=SELF?>?mode=sum&id_no=<?=$id_no?>";
+		url +="&people1=" + $("#people1").val();
+		url +="&people2=" + $("#people2").val();
+		url +="&people3=" + $("#people3").val();
+		url +="&people4=" + $("#people4").val();
+		url +="&rate1=" + $("#rate1_").val();
+		url +="&rate2=" + $("#rate2_").val();
+		url +="&rate3=" + $("#rate3_").val();
+		url +="&rate4=" + $("#rate4_").val();
+		url +="&price1=" + $("#price1").val();
+		url +="&price2=" + $("#price2").val();
+		frm_actarea.location.href=url;
+	}
+
+
+	$(function(){
+		$(".sum").on("keyup",function(){
+			price_sum();
+		});
+	});
+	//-->
+	</script>
+
+<?}?>
+
+<style type="text/css">
+*{padding:0;margin:0}
+
+body,div, p, ul, ol, li, dl, dt, dd, h1, h2, h3, h4, h5, h6, table, td, th, input{margin:0; padding:0; font-family:'Malgun Gothic','돋움'; font-size:13px; line-height:160%; color:#000;}
+input{font-family:'Malgun Gothic','돋움' !important; font-size:13px !important;}
+img {border:0; vertical-align:middle;}
+ul,ol,dl{ list-style:none;}
+a:link , a:visited, a:active {color:#666; text-decoration:none;}
+a:hover {color:#3a61c9; text-decoration:none; font-weight:bold;}
+caption,legend {display:none;}
+
+
+#wrap {width:100%;}
+#container {width:800px; margin:0 auto;}
+#contents {width:100%; float:left; padding:10px 0;}
+.com_logo { text-align:center; float:left;}
+
+.com_name01 { font-weight:600; color:#d33025; font-size:15px; }
+.com_name02 { font-weight:600; color:#1b6b18; font-size:15px;}
+.pdt10 {padding-top:6px; color:#444; font-size:12px;}
+
+h1 {font-weight:700; font-size:28px; color:#000; text-align:center; margin:20px 0; font-family:Verdana; }
+
+.tbl_form {border-collapse:collapse;width:100%; border-top:1px solid #000; border-right:1px solid #000; margin-bottom:30px; }
+.tbl_form tr th {background:#fafafa;  border-left:1px solid #000; border-right:1px solid #000;  border-bottom:1px solid #000; vertical-align:middle; text-align:center; font-weight:bold; color:#444; }
+.tbl_form tr th.title {border-right:0; }
+.tbl_form tr td {padding:6px 0; border-bottom:1px solid #000; text-align:center}
+
+.tbl_list{border-collapse:collapse;width:100%; border-top:1px solid #000; border-left:1px solid #000; margin-bottom:30px;}
+.tbl_list thead tr th {padding:6px 0; background:#fafafa;  border-right:1px solid #000;  border-bottom:1px solid #000; vertical-align:middle; text-align:center; font-weight:bold; color:#444; }
+.tbl_list tbody  tr th {padding:6px 0; border-bottom:1px solid #000; text-align:center; border-right:1px solid #000;  color:#444; }
+.tbl_list tbody  tr td {padding:6px 0; border-bottom:1px solid #000; border-right:1px solid #000; text-align:center; }
+
+.total { font-weight:600; color:#000; font-size:20px; font-family:Verdana;}
+#sum_price {font-weight:600; color:#F00; font-size:20px; font-family:Verdana;}
+
+.red {color:#F00;}
+.black {color:#000;}
+
+.bt_info {width:100%; padding-top:15px; float:left;}
+.bt_info ul {list-style:none; padding:0; margin:0;}
+.bt_info li { padding:1px 0; font-size:14px;line-height:180%}
+.bt_sign {width:35%; text-align:right; float:left}
+
+.c{text-align:center !important;}
+.r{text-align:right !important;padding-right:5px}
+
+.box{
+	border: 1px #c0c0c0 solid;
+	font-size:9pt;
+	font-family:font-family:'Malgun Gothic','돋움'; font-size:13px;
+}
+
+input{padding:1px;font-family:'Malgun Gothic','돋움'; font-size:13px;}
+</style>
+</head>
+
+<body>
+  <!--wrap-->
+  <div id="wrap">
+
+    <!--container-->
+    <div id="container">
+
+      <!--contents-->
+      <div id="contents">
+
+
+        <!--com_info-->
+		<div class="com_logo">
+            <?include("./inc_form_heder_image.php");?>	
+		</div>
+
+        <!--//com_info-->
+        <div style="clear:both">
+            <h1>INVOICE</h1>
+        </div>
+
+
+	  <?if($edit_mode){?>
+		<form name="fmData" method="post" enctype="multipart/form-data" action="<?=SELF?>">
+		<input type="hidden" name="mode" value='<?=$mode2?>'>
+		<input type="hidden" name="id_no" value='<?=$rs3[id_no]?>'>
+	  <?}?>
+
+
+			<table class="tbl_form" cellpadding="0" cellspacing="0" >
+              <tbody>
+                <tr>
+                  <th width="13%" scope="row">고객명</th>
+                  <td width="20%"><?=$rs3[name]?></td>
+                  <th width="13%" scope="row">인원</th>
+                  <td width="20%"><?=$rs3[people]?></td>
+                  <th width="13%" scope="row">국가</th>
+                  <td width="20%"><?=$rs2[nation]?></td>
+                </tr>
+                <tr>
+                  <th width="13%" scope="row">담당자명</th>
+                  <td width="20%"><?=staff_full_name($staff_id)?></td>
+                  <th width="13%" scope="row">휴대폰</th>
+                  <td width="20%"><?=$staff_cell?></td>
+                  <th width="13%" scope="row">DATE</th>
+                  <td width="20%"><?=date("Y/m/d")?></td>
+                </tr>
+                <tr>
+                  <th width="13%" scope="row">TEL</th>
+                  <td width="20%">02-512-7705</td>
+                  <th width="13%" scope="row">FAX</th>
+                  <td width="20%">02-6442-4577</td>
+                  <th width="13%" scope="row">PERIOD</th>
+                  <td width="20%"><?=$rs3[d_date]?>~<?=$rs3[r_date]?></td>
+                </tr>
+
+              </tbody>
+        </table>
+
+		<br/>
+
+		<table class="tbl_list" cellpadding="0" cellspacing="0" >
+              <thead>
+                <tr>
+                  <th scope="col">
+                  	Particulars
+
+                  </th>
+                  <th scope="col">Qty.</th>
+                  <th scope="col">Rate</th>
+                  <th scope="col">Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">
+                  	
+					<?
+					$rs[goods_subject] = ($rs[goods_subject])?$rs[goods_subject] : $golf_name;
+					if($edit_mode){?>
+						<?=html_input("goods_subject",40,45,'box c sum')?>
+					<?}else{?>
+						<?=$rs[goods_subject]?>
+					<?}?>
+
+                  </th>
+                  <td>
+					<?if($edit_mode){?>
+						<?=html_input("people1",3,3,'box c sum')?>
+					<?}else{?>
+						<?=nf($rs[people1])?>
+					<?}?>
+				  인
+				  </td>
+                  <td>
+				    <?if($edit_mode){?>
+					  <?=html_input("rate1_",10,10,'box r sum')?>
+					<?}else{?>
+						<?=nf($rs[rate1])?>
+					<?}?>
+				  </td>
+                  <td><span id="amount1"><?=nf($rs[rate1]*$rs[people1])?></span><?$total+=$rs[rate1]*$rs[people1]?></td>
+                </tr>
+                <tr>
+                  <th scope="row">
+					<?if($edit_mode){?>
+						<?=html_input("text1",40,50)?>
+					<?}else{?>
+						<?=$rs[text1]?>
+					<?}?>
+				   </th>
+                  <td>
+					<?if($edit_mode){?>
+						<?=html_input("people2",3,3,'box c sum')?>
+					<?}else{?>
+						<?=nf($rs[people2])?>
+					<?}?>
+					인
+				  </td>
+                  <td>
+				    <?if($edit_mode){?>
+					  <?=html_input("rate2_",10,10,'box r sum')?>
+					<?}else{?>
+						<?=nf($rs[rate2])?>
+					<?}?>
+				  </td>
+                  <td><span id="amount2"><?=nf($rs[rate2]*$rs[people2])?></span><?$total+=$rs[rate2]*$rs[people2]?></td>
+                </tr>
+                <tr>
+                  <th scope="row">
+					<?if($edit_mode){?>
+						<?=html_input("text2",40,50)?>
+					<?}else{?>
+						<?=$rs[text2]?>
+					<?}?>
+				  </th>
+                  <td>
+					<?if($edit_mode){?>
+						<?=html_input("people3",3,3,'box c sum')?>
+					<?}else{?>
+						<?=nf($rs[people3])?>
+					<?}?>
+					인
+				  </td>
+                  <td>
+				    <?if($edit_mode){?>
+					  <?=html_input("rate3_",10,10,'box r sum')?>
+					<?}else{?>
+						<?=nf($rs[rate3])?>
+					<?}?>
+				  </td>
+                  <td><span id="amount3"><?=nf($rs[rate3]*$rs[people3])?></span><?$total+=$rs[rate3]*$rs[people3]?></td>
+                </tr>
+                <tr>
+                  <th scope="row">
+					<?if($edit_mode){?>
+						<?=html_input("text3",40,50)?>
+					<?}else{?>
+						<?=$rs[text3]?>
+					<?}?>
+				  </th>
+                  <td>
+					<?if($edit_mode){?>
+						<?=html_input("people4",3,3,'box c sum')?>
+					<?}else{?>
+						<?=nf($rs[people4])?>
+					<?}?>
+					인
+				  </td>
+                  <td>
+				    <?if($edit_mode){?>
+					  <?=html_input("rate4_",10,10,'box r sum')?>
+					<?}else{?>
+						<?=nf($rs[rate4])?>
+					<?}?>
+				  </td>
+                  <td><span id="amount4"><?=nf($rs[rate4]*$rs[people4])?></span><?$total+=$rs[rate4]*$rs[people4]?></td>
+                </tr>
+                <tr>
+                  <td colspan="2" scope="row">
+					<?if($edit_mode){?>
+						<?=html_input("text4",51,50)?>
+					<?}else{?>
+						<?=$rs[text4]?>&nbsp;
+					<?}?>
+				  </td>
+                  <td colspan="2" rowspan="2"><span class="total">Total :</span> <span id="sum_price"><?=nf($total)?></span> </td>
+                </tr>
+                <tr>
+                  <td colspan="2" scope="row">확정 후 아래 계좌를 통해 송금해 주시기 바랍니다.</td>
+                </tr>
+              </tbody>
+          </table>
+
+		  <br/>
+
+          <table class="tbl_form" cellpadding="0" cellspacing="0" >
+              <tbody>
+                <tr>
+                  <th width="20%" rowspan="6" scope="row" class="title">송금안내</th>
+                  <th width="12%" scope="row">은행명</th>
+                  <td width="*" colspan="3"><?=trim($carr[0])?></td>
+                </tr>
+                <tr>
+                  <th scope="row">계좌번호</th>
+                  <td colspan="3"><?=trim($carr[1])?></td>
+                </tr>
+                <tr>
+                  <th scope="row">예금주</th>
+                  <td colspan="3"><?=trim($carr[2])?></td>
+                </tr>
+                <tr>
+                  <th scope="row" width="15%">계약금</th>
+                  <td width="20%">
+				    <?if($edit_mode){?>
+					  <?=html_input("price1",10,10,'box r sum')?>
+					<?}else{?>
+						<?=nf(rnf($rs[price1]))?>
+					<?}?>
+				  </td>
+                  <th width="12%">입금일</th>
+                  <td width="20%">
+					<?if($edit_mode){?>
+						<?=html_input("date1",13,10,'box c dateinput')?>
+					<?}else{?>
+						<?=$rs[date1]?>
+					<?}?>
+				  </td>
+                </tr>
+                <tr>
+                  <th scope="row">중도금</th>
+                  <td>
+				    <?if($edit_mode){?>
+					  <?=html_input("price2",10,10,'box r sum')?>
+					<?}else{?>
+						<?=nf(rnf($rs[price2]))?>
+					<?}?>
+				  </td>
+                  <th>입금일</th>
+                  <td>
+					<?if($edit_mode){?>
+						<?=html_input("date2",13,10,'box c dateinput')?>
+					<?}else{?>
+						<?=$rs[date2]?>
+					<?}?>
+				  </td>
+                </tr>
+                <tr>
+                  <th scope="row">잔&nbsp;&nbsp;&nbsp;금</th>
+                  <td><span id="pay_price"><?=nf(rnf($total)-(rnf($rs[price1])+rnf($rs[price2])))?></span></td>
+                  <th>입금일</th>
+                  <td>
+					<?$rs[date3] = ($rs[date3])? $rs[date3] : $default_pay_date?>
+					<?if($edit_mode){?>
+						<?=html_input("date3",13,10,'box c dateinput')?>
+					<?}else{?>
+						<?=$rs[date3]?>
+					<?}?>
+				  </td>
+                </tr>
+              </tbody>
+          </table>
+	  <?if($edit_mode){?>
+	  </form>
+	  <?}?>
+
+
+ 	 <br/>
+
+
+      <?if($CP_INFO[company]){?>
+	  <table width="100%" border="0">
+	  <tr>
+		<td width="50%" valign="top">
+
+        <div class="bt_info">
+          <ul>
+            <li><strong>·상 호 :</strong> <?=$CP_INFO[company]?> </li>
+            <li><strong>·주 소 : </strong> <?=$CP_INFO[address]?> </li>
+            <li><strong>·사업자등록번호 : </strong> <?=$CP_INFO[biz_no]?> </li>
+            <li><strong>·업 태 : </strong> <?=$CP_INFO[biz_type1]?> </li>
+            <li><strong>·업 종 : </strong> <?=$CP_INFO[biz_type2]?> </li>
+          </ul>
+        </div>
+
+		</td>
+		<td align="right">
+            <?
+            if($CP_INFO[big_sign]){
+            ?>
+                <img src="<?=$DOMAIN?>/new/public/partner/<?=$CP_INFO[big_sign]?>" width="350" height="150"/>
+            <?}?>
+        </td>
+	  </tr>
+	  </table>
+      <?}else{?>
+      <table width="100%" border="0">
+      <tr>
+        <td width="50%" valign="top">
+
+        <div class="bt_info">
+          <ul>
+            <li><strong>·상 호 :</strong> ㈜이룸플레이스 </li>
+            <li><strong>·주 소 : </strong> <?=$FRANCHISEADDR?></li>
+            <li><strong>·사업자등록번호 : </strong> 220-87-31753 </li>
+            <li><strong>·업 태 : </strong> 서비스 </li>
+            <li><strong>·업 종 : </strong> 일반여행업,국외여행업 </li>
+          </ul>
+        </div>
+
+        </td>
+        <td align="right">
+            <img src="<?=$caurl?>/images/cmp/mark.jpg" width="350" height="150" />
+        </td>
+      </tr>
+      </table>      
+      <?}?>
+
+
+
+
+	  <?if($edit_mode){?>
+	  <div style="padding:20px 0 30px 0">
+	  <!-- Button Begin---------------------------------------------->
+	  <table border="0" width="200" cellspacing="0" cellpadding="0" align="right">
+		<tr align="right">
+			<td><span class="btn_pack medium bold"><a href="#" onClick="document.fmData.submit()"> 저장 </a></span></td>
+			<td><span class="btn_pack medium bold"><a href="<?=SELF?>?id_no=<?=$rs3[id_no]?>&doc_mode=1"> Word 저장 </a></span></td>
+			<td><span class="btn_pack medium bold"><a href="javascript:self.close()"> 창닫기 </a></span></td>
+		</tr>
+	  </table>
+	  <!-- Button End------------------------------------------------>
+	  </div>
+	  <iframe name="frm_actarea" id="frm_actarea" style="display:none;" title="내용 없음"></iframe>
+	  <?}?>
+
+
+
+
+      </div>
+      <!--//contents-->
+
+    </div>
+    <!--//container-->
+
+  </div>
+  <!--wrap-->
+
+</body>
+</html>

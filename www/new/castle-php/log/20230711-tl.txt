@@ -1,0 +1,1 @@
+121.128.79.27 - [11/Jul/2023:16:07:13 +0900] /new/bkoff/cmp/list_transfer.php: str = javascript:save_fix(\'refund\',\'53958\',1): XSS 공격 패턴 탐지

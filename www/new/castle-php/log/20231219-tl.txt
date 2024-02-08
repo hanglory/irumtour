@@ -1,0 +1,5 @@
+210.123.29.229 - [19/Dec/2023:15:38:23 +0900] /new/bkoff/tour/view_tour.php: content3 = *4인 내장 필수입니다.\r\n\r\n하이원 KLPGA골프대회: TAG 공격 패턴 탐지
+210.123.29.229 - [19/Dec/2023:15:38:47 +0900] /new/bkoff/tour/view_tour.php: content3 = *4인 내장 필수입니다.\r\n\r\n하이원 KLPGA골프대회: TAG 공격 패턴 탐지
+210.123.29.229 - [19/Dec/2023:15:38:50 +0900] /new/bkoff/tour/view_tour.php: content3 = *4인 내장 필수입니다.\r\n\r\n하이원 KLPGA골프대회: TAG 공격 패턴 탐지
+210.123.29.229 - [19/Dec/2023:15:40:39 +0900] /new/bkoff/tour/view_tour.php: content3 = &lt;iframe width=\"560\" height=\"315\" src=\"https://www.youtube.c: TAG 공격 패턴 탐지
+210.123.29.229 - [19/Dec/2023:15:40:42 +0900] /new/bkoff/tour/view_tour.php: content3 = &lt;iframe width=\"560\" height=\"315\" src=\"https://www.youtube.c: TAG 공격 패턴 탐지

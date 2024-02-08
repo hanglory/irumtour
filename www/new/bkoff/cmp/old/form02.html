@@ -1,0 +1,578 @@
+<?
+include_once("../include/common_file_report.php");
+
+$page_width="700";
+$bold_color = "#000";
+
+//$sql = "alter table cmp_reservation add 	hole5 smallint";$dbo->query($sql);checkVar(mysql_error(),$sql);
+
+
+if($mode=="save"){
+
+	$sql="
+	   update cmp_reservation set
+	      hole = '$hole',
+	      hole1 = '$hole1',
+	      hole2 = '$hole2',
+	      hole3 = '$hole3',
+	      hole4 = '$hole4',
+	      hole5 = '$hole5',
+	      room = '$room',
+	      moving_time = '$moving_time',
+	      moving_time2 = '$moving_time2',
+	      moving_time3 = '$moving_time3',
+	      memo_confirm = '$memo_confirm'
+	   where id_no=$id_no
+	";
+	$dbo->query($sql);
+	error("저장하였습니다.");
+	exit;
+}
+
+
+$sql = "select * from cmp_reservation where id_no=$id_no";
+$dbo->query($sql);
+$rs= $dbo->next_record();
+$arr =explode("(",$rs[main_staff]);
+$staff=$arr[0];
+$staff_id=substr($arr[1],0,-1);
+$night = ((strtotime($rs[r_date]) -  strtotime($rs[d_date]))/86400)+1;//박수
+$d_date = $rs[d_date];
+$r_date = $rs[r_date];
+
+$sql2 = "select * from cmp_staff where id='$staff_id'";
+$dbo2->query($sql2);
+$rs2= $dbo2->next_record();
+$mposition = $rs2[mposition];
+
+$sql2 = "select * from cmp_air where id_no=$rs[air_id_no]";
+$dbo2->query($sql2);
+$rs2= $dbo2->next_record();
+
+$d_air = $rs2[d_air];
+$d_air = $rs2[d_air_no];
+$r_air = $rs2[r_air_no];
+$d_time_s = $rs2[d_time_s];
+$d_time_e = $rs2[d_time_e];
+$r_air_no = $rs2[r_air_no];
+$r_time_s = $rs2[r_time_s];
+$r_time_e = $rs2[r_time_e];
+$airport_in = $rs2[airport_in];
+$airport_out = $rs2[airport_out];
+$airport_place = $rs2[airport_place];
+
+$sql2 = "select * from cmp_golf where id_no=$rs[golf_id_no]";
+$dbo2->query($sql2);
+$rs2= $dbo2->next_record();
+$golf_name = $rs2[name];
+$point_include = $rs2[point_include];
+$point_not_include = $rs2[point_not_include];
+$local_staff = $rs2[local_staff];
+$phone2 = $rs2[phone2];
+$meeting_place = $rs2[meeting_place];
+$meeting_board = $rs2[meeting_board];
+$city = $rs2[city];
+$nation = $rs2[nation];
+$golf_ground=$rs2[golf_name];
+$car = $rs2[car];
+$etc = $rs2[etc];
+$meal = nl2br($rs2[meal]);
+
+$arr = explode(">",$rs2[golf2_1_name]);$rs2[golf2_1_name] = $arr[count($arr)-1];
+$arr = explode(">",$rs2[golf2_2_name]);$rs2[golf2_2_name] = $arr[count($arr)-1];
+$arr = explode(">",$rs2[golf2_3_name]);$rs2[golf2_3_name] = $arr[count($arr)-1];
+$arr = explode(">",$rs2[golf2_4_name]);$rs2[golf2_4_name] = $arr[count($arr)-1];
+
+$golf_name1 = $rs2[golf2_1_name];
+$golf_name2 = $rs2[golf2_2_name];
+$golf_name3 = $rs2[golf2_3_name];
+$golf_name4 = $rs2[golf2_4_name];
+$golf_name4_ = $rs2[golf2_4_name];
+
+if($rs2[golf2_1_id_no]) $golfs[] = $rs2[golf2_1_id_no];
+if($rs2[golf2_2_id_no]) $golfs[] = $rs2[golf2_2_id_no];
+if($rs2[golf2_3_id_no]) $golfs[] = $rs2[golf2_3_id_no];
+if($rs2[golf2_4_id_no]) $golfs[] = $rs2[golf2_4_id_no];
+
+if($golf_name3 && !$golf_name4) $golf_name4_ = $golf_name3;
+if($golf_name2 && !$golf_name3 && !$golf_name4) $golf_name4_ = $golf_name2;
+if($golf_name1 && !$golf_name2 && !$golf_name3 && !$golf_name4){ $golf_name2 = $golf_name1; $golf_name4_ = $golf_name1;}
+
+
+$sql2 = "select * from cmp_hotel where id_no=$rs2[hotel_id_no]";
+$dbo2->query($sql2);
+$rs2= $dbo2->next_record();
+
+$hotel_name=$rs2[name];
+$hotel_phone=$rs2[phone];
+$hotel_url=$rs2[url];
+
+
+$form_mode = ($nation=="일본" || $nation=="중국")?2:1;
+
+$edit_mode = (!$doc_mode && !$print_mode)?1:0;
+
+if($doc_mode){
+	$xls_name = "report1.doc";
+	header("Content-type: application/vnd.ms-word");
+	header("Content-Type: application/vnd.ms-word; charset=euc-kr");
+	header("Content-Disposition: attachment;filename=$xls_name;");
+	header( "Content-Description: PHP4 Generated Data" );
+}
+
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>예약요청서</title>
+<?if($edit_mode){?>
+	<link rel="stylesheet" href="../include/default.css">
+	<link rel="stylesheet" href="../include/basic.css" type="text/css">
+	<script language="JavaScript" src="../../include/form_check.js"></script>
+	<script language="JavaScript" src="../../include/function.js"></script>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+
+	<!-- Include Core Datepicker Stylesheet -->
+	<link rel="stylesheet" href="../../include/ui.datepicker.css" type="text/css" media="screen" title="core css file" charset="utf-8" />
+	<!-- Include jQuery -->
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+	<!-- Include Core Datepicker JavaScript -->
+	<script src="../../include/ui.datepicker.js" type="text/javascript" charset="utf-8"></script>
+	<!-- Attach the datepicker to dateinput after document is ready -->
+	<script type="text/javascript" charset="utf-8">
+		jQuery(function($){$(".dateinput").datepicker();});
+	</script>
+	<script type="text/javascript" src="../../qtip/jquery.qtip-1.0.0-rc3.min.js"></script>
+	<script type="text/javascript" src="../../include/jquery.maskedinput.min.js"></script>
+<?}?>
+</head>
+
+<body leftmargin="0" topmargin="0">
+
+<div style="width:700px;padding:30px;text-align:center;margin-left:auto;margin-right:auto;">
+
+	<table width="<?=$page_width?>" border="0" cellspacing="0" cellpadding="0" >
+
+	  <?if($edit_mode){?>
+		<form name="fmData" method="post" enctype="multipart/form-data" action="<?=SELF?>">
+		<input type="hidden" name="mode" value='save'>
+		<input type="hidden" name="id_no" value='<?=$rs[id_no]?>'>
+	  <?}?>
+
+
+      <tr>
+        <td align="center"><img src="http://irumtour.net/new/bkoff/cmp/info.gif"  width="<?=$page_width?>"/></td>
+      </tr>
+
+	  <tr>
+        <td><table width="<?=$page_width?>" border="0" cellspacing="1" cellpadding="0" style="border-collapse:collapse;border:1px solid #ccc ">
+          <tr>
+            <td width="20%" height="30" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'맑은고딕','돋움';font-weight:bold;color:#fff">수신</span></td>
+            <td height="30" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding-left:10px;font-size:10pt"><?=$rs[name]?> 고객님</td>
+            <td width="20%" height="30" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'맑은고딕','돋움';font-weight:bold;color:#fff">발신일</span></td>
+            <td height="30" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding-left:10px;font-size:10pt"><?=date("Y/m/d")?></td>
+          </tr>
+          <tr>
+            <td width="20%" height="30" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'맑은고딕','돋움';font-weight:bold;color:#fff">수신인 연락처</span></td>
+            <td height="30" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding-left:10px;font-size:10pt"><?=$rs[phone]?></td>
+            <td width="20%" height="30" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'맑은고딕','돋움';font-weight:bold;color:#fff">발신인</span></td>
+            <td height="30" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding-left:10px;font-size:10pt">이룸투어 <?=$staff?> <?=$mposition?></td>
+          </tr>
+
+		</table>
+		</td>
+      </tr>
+
+      <tr>
+        <td height="100" align="center"><h1 style="font-size:20px;font-weight:bold"><img src="http://irumtour.net/new/images/cmp/confirm.jpg"   width="310" height="33"/></h1></td>
+      </tr>
+	  <tr>
+        <td><table width="<?=$page_width?>" border="0" cellspacing="1" cellpadding="0" style="border-collapse:collapse;border:1px solid #ccc ">
+          <tr>
+            <td width="20%" height="30" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'맑은고딕','돋움';font-weight:bold;color:#fff">상품명</span></td>
+            <td width="30%" height="30" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding-left:10px;font-size:10pt"><?=$golf_name?></td>
+            <td width="20%" height="30" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'맑은고딕','돋움';font-weight:bold;color:#fff">여행일정</span></td>
+            <td width="30%" height="30" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding-left:10px;font-size:10pt"><?=$d_date?> ~ <?=$r_date?> (<?=$night?>일)</td>
+          </tr>
+          <tr>
+            <td width="20%" height="30" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'맑은고딕','돋움';font-weight:bold;color:#fff">인 원</span></td>
+            <td height="30" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding-left:10px;font-size:10pt"><?=$rs[people]?>인</td>
+            <td width="20%" height="30" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'맑은고딕','돋움';font-weight:bold;color:#fff">객실종류</span></td>
+            <td height="30" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding-left:10px;font-size:10pt"><?if($edit_mode){?><?=html_input("room",25,28,'box c')?><?}else{?><?=$rs[room]?><?}?></td>
+          </tr>
+          <tr>
+            <td width="20%" height="30" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'맑은고딕','돋움';font-weight:bold;color:#fff">잔 금</span></td>
+            <td height="30" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding-left:10px;font-size:10pt"><?=nf($rs[price_last])?></td>
+            <td width="20%" height="30" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'맑은고딕','돋움';font-weight:bold;color:#fff">입금요청일</span></td>
+            <td height="30" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding-left:10px;font-size:10pt"><?=$rs[pay_date]?> <p><?=nl2br($ACCOUNT)?></p></td>
+          </tr>
+</table></td>
+      </tr>
+      <tr>
+        <td height="1"></td>
+      </tr>
+      <tr>
+        <td><table width="<?=$page_width?>" border="0" cellspacing="1" cellpadding="0" style="border-collapse:collapse;border:1px solid #ccc ">
+          <tr>
+            <td width="20%" height="50" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'맑은고딕','돋움';font-weight:bold;color:#fff">포함</span></td>
+            <td align="left" height="50" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding-left:10px;font-size:10pt"><?=nl2br($point_include)?></td>
+          </tr>
+          <tr>
+            <td height="50" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'맑은고딕','돋움';font-weight:bold;color:#fff">불포함</span></td>
+            <td align="left" height="50" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding-left:10px;font-size:10pt"><?=nl2br($point_not_include)?></td>
+          </tr>
+  </table></td>
+      </tr>
+      <tr>
+        <td height="1"></td>
+      </tr>
+      <tr>
+        <td><table width="<?=$page_width?>" border="0" cellspacing="1" cellpadding="0" style="border-collapse:collapse;border:1px solid #ccc ">
+          <tr>
+            <td width="20%" rowspan="2" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'맑은고딕','돋움';font-weight:bold;color:#fff">여행경비</span></td>
+            <td height="30" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'맑은고딕','돋움';font-weight:bold;color:#fff">1인 여행경비</span></td>
+            <td height="30" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'맑은고딕','돋움';font-weight:bold;color:#fff">체류일</span></td>
+            <td height="30" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'맑은고딕','돋움';font-weight:bold;color:#fff">인 원</span></td>
+            <td height="30" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'맑은고딕','돋움';font-weight:bold;color:#fff">총합계</span></td>
+          </tr>
+          <tr>
+            <td height="30" align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><?=@nf($rs[price]/$rs[people])?></td>
+            <td height="30" align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><?=$night?></td>
+            <td height="30" align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><?=$rs[people]?></td>
+            <td height="30" align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;color:red"><span style="font-size:10pt;font-family:'맑은고딕','돋움';font-weight:bold"><?=nf($rs[price])?></span></td>
+          </tr>
+        </table></td>
+      </tr>
+      <tr>
+        <td height="30">&nbsp;</td>
+      </tr>
+      <tr>
+        <td>
+
+		<table width="<?=$page_width?>" border="0" cellspacing="1" cellpadding="0" style="border-collapse:collapse;border:1px solid #ccc ">
+          <tr>
+            <td height="30" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px"><span style="font-size:10pt;font-family:'맑은고딕','돋움';font-weight:bold;color:#fff">일자</span></td>
+            <td align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px"><span style="font-size:10pt;font-family:'맑은고딕','돋움';font-weight:bold;color:#fff">지역</span></td>
+            <td align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px"><span style="font-size:10pt;font-family:'맑은고딕','돋움';font-weight:bold;color:#fff">교통편</span></td>
+            <td align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px"><span style="font-size:10pt;font-family:'맑은고딕','돋움';font-weight:bold;color:#fff">시간</span></td>
+            <td align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px"><span style="font-size:10pt;font-family:'맑은고딕','돋움';font-weight:bold;color:#fff">여행일정</span></td>
+            <td align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px"><span style="font-size:10pt;font-family:'맑은고딕','돋움';font-weight:bold;color:#fff">비고</span></td>
+          </tr>
+
+		  <tr>
+            <td height="30" align="center" bgcolor="#948A54" rowspan="4" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px;color:#fff;font-weight:bold">제1일</td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px"><?=$airport_place?></td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px"><?=$d_air?></td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px"><?=$d_time_s?></td>
+            <td align="left"  bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding-left:10px;font-size:10pt;font-family:'맑은고딕','돋움';"><?=$airport_in?>공항 출발</td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc" rowspan="4">
+
+			<?if($form_mode==2){?>
+			중:불포함<br/>석:호텔식
+			<?}else{?>
+			석:기내식
+			<?}?>
+
+			</td>
+          </tr>
+		  <tr>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px"><?=str_replace("공항","",$airport_out)?></td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px"><?//=$d_air?></td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px"><?=$d_time_e?></td>
+            <td align="left"  bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding-left:10px;font-size:10pt;font-family:'맑은고딕','돋움';">
+			<?=$airport_out?> 도착
+			</td>
+          </tr>
+		  <tr>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px"></td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px"><?=$car?></td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px"></td>
+            <td align="left"  bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding-left:10px;font-size:10pt;font-family:'맑은고딕','돋움';">
+			<?=$airport_out?> 도착 / 수화물 찾으신 후 <br>
+			<?=$meeting_place?>	 환영객 장소에서<br/>
+			(미팅피켓 : 이룸투어 + <?=$rs[name]?>님)<br>
+			안내원 미팅 후 <?=$car?> 이용하여  <?if($form_mode==1){?>호텔로<?}else{?>골프장으로<?}?> 이동
+				(
+				<?if($edit_mode){?>
+					<?=html_input("moving_time",3,3,'box num numberic c')?>
+				<?}else{?>
+					<?=$rs[moving_time]?>
+				<?}?>
+				)
+				분
+
+				<?if($form_mode==2){?>
+				<br>
+				<b>
+				<?=$golf_name1?>
+				<?if($edit_mode){?>
+					<?=html_input("hole1",3,3,'box num numberic c')?>
+				<?}else{?>
+					<?=$rs[hole1]?>
+				<?}?>
+				홀 라운드
+				</b>
+				<?}?>
+				<br>
+				호텔 체크인 및 휴식
+
+
+			</td>
+          </tr>
+		  <tr>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px"><?=$city?></td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px"></td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px"></td>
+            <td align="left"  bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding-left:10px;font-size:10pt;font-family:'맑은고딕','돋움';"><?=$hotel_name?> <?=$hotel_phone?> <div><?=$hotel_url?><div></td>
+          </tr>
+
+		  <?if($night>=3){?>
+		  <tr>
+            <td height="30" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;color:#fff;font-weight:bold" rowspan="2">제2일<?if($night>=4){?><br/>~<br/>제<?=($form_mode==2)?$night-1:$night-2?>일<?}?></td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px"><?=$city?></td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px">&nbsp;</td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px">&nbsp;</td>
+            <td align="left"  bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding-left:10px;font-size:10pt;font-family:'맑은고딕','돋움';">
+
+				조식 후 골프장 이동(
+				<?if($edit_mode){?>
+					<?=html_input("moving_time2",3,3,'box num numberic c')?>
+				<?}else{?>
+					<?=$rs[moving_time2]?>
+				<?}?>
+				) 분 소요
+
+
+				<?if($form_mode=="1"){?>
+				<span style="font-weight:bold;color:<?=$bold_color?>">
+				<br/>
+				<?=$golf_name1?>
+				<?if($edit_mode){?>
+					<?=html_input("hole1",3,3,'box num numberic c')?>
+				<?}else{?>
+					<?=$rs[hole1]?>
+				<?}?>
+				홀 라운드
+				</span>
+				<?}?>
+
+
+				<span style="font-weight:bold;color:<?=$bold_color?>">
+				<?if($golf_name2){?>
+				<br/>
+				<?=$golf_name2?>
+				<?if($edit_mode){?>
+					<?=html_input("hole2",3,3,'box num numberic c')?>
+				<?}else{?>
+					<?=$rs[hole2]?>
+				<?}?>
+				홀 라운드
+				<?}?>
+
+				<?if($golf_name3){?>
+				<br/>
+				<?=$golf_name3?>
+				<?if($edit_mode){?>
+					<?=html_input("hole3",3,3,'box num numberic c')?>
+				<?}else{?>
+					<?=$rs[hole3]?>
+				<?}?>
+				홀 라운드
+				<?}?>
+				</span>
+
+
+				<br>
+				석식 후 휴식
+
+
+			</td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc" rowspan="2"><?=$meal?></td>
+          </tr>
+		  <tr>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px">&nbsp;</td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px">&nbsp;</td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px">&nbsp;</td>
+            <td align="left"  bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding-left:10px;font-size:10pt;font-family:'맑은고딕','돋움';"><?=$hotel_name?> <?=$hotel_phone?><div>  <?=$hotel_url?> </div></td>
+          </tr>
+		  <?}?>
+
+
+
+		  <?if($form_mode==1){?>
+
+		  <tr>
+            <td height="30" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;color:#fff;font-weight:bold" rowspan="3">제<?=$night-1?>일</td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px"><?=$city?></td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px">&nbsp;</td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px">&nbsp;</td>
+            <td align="left"  bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding-left:10px;font-size:10pt;font-family:'맑은고딕','돋움';">
+
+				조식 후 골프장 이동(
+				<?if($edit_mode){?>
+					<?=html_input("moving_time3",3,3,'box num numberic c')?>
+				<?}else{?>
+					<?=$rs[moving_time3]?>
+				<?}?>
+				) 분 소요
+
+
+				<span style="font-weight:bold;color:<?=$bold_color?>">
+				<?if($golf_name4_){?>
+				<br/>
+				<?=$golf_name4_?>
+				<?if($edit_mode){?>
+					<?=html_input("hole4",3,3,'box num numberic c')?>
+				<?}else{?>
+					<?=$rs[hole4]?>
+				<?}?>
+				홀 라운드
+				<?}?>
+				</span>
+
+
+			</td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc" rowspan="3"><?=$meal?></td>
+          </tr>
+		  <tr>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px">&nbsp;</td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px"><?=$car?></td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px">&nbsp;</td>
+            <td align="left"  bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding-left:10px;font-size:10pt;font-family:'맑은고딕','돋움';">석식 후 공항으로 이동</td>
+          </tr>
+		  <tr>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px"><?=$airport_out?></td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px"><?=$r_air?></td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px"><?=$r_time_s?></td>
+            <td align="left"  bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding-left:10px;font-size:10pt;font-family:'맑은고딕','돋움';"><?=$airport_out?> 출발</td>
+          </tr>
+
+		  <tr>
+            <td height="30" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px;color:#fff;font-weight:bold">제<?=$night?>일</td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px"><?=$airport_place?></td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px">&nbsp;</td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px"><?=$r_time_e?></td>
+            <td align="left"  bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding-left:10px;font-size:10pt;font-family:'맑은고딕','돋움';"><?=$airport_in?>도착</td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px">조:기내식</td>
+          </tr>
+
+          <?}else{?>
+
+
+
+		  <tr>
+            <td height="30" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;color:#fff;font-weight:bold" rowspan="4">제<?=$night?>일</td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px"><?=$city?></td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px">&nbsp;</td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px">&nbsp;</td>
+            <td align="left"  bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding-left:10px;font-size:10pt;font-family:'맑은고딕','돋움';">
+
+				조식 후 골프장 이동(
+				<?if($edit_mode){?>
+					<?=html_input("moving_time3",3,3,'box num numberic c')?>
+				<?}else{?>
+					<?=$rs[moving_time3]?>
+				<?}?>
+				) 분 소요
+
+				<span style="font-weight:bold;color:<?=$bold_color?>">
+				<?if($golf_name4_){?>
+				<br/>
+				<?=$golf_name4_?>
+				<?if($edit_mode){?>
+					<?=html_input("hole5",3,3,'box num numberic c')?>
+				<?}else{?>
+					<?=$rs[hole5]?>
+				<?}?>
+				홀 라운드
+				<?}?>
+				</span>
+
+			</td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc" rowspan="3"> 조:호텔식</td>
+          </tr>
+		  <tr>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px">&nbsp;</td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px"><?=$car?></td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px">&nbsp;</td>
+            <td align="left"  bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding-left:10px;font-size:10pt;font-family:'맑은고딕','돋움';"><?=$airport_out?> 공항으로 이동</td>
+          </tr>
+		  <tr>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px"><?=$airport_out?></td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px"><?=$r_air?></td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px"><?=$r_time_s?></td>
+            <td align="left"  bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding-left:10px;font-size:10pt;font-family:'맑은고딕','돋움';"><?=$airport_out?> 출발</td>
+          </tr>
+
+		  <tr>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px"><?=$airport_place?></td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px">&nbsp;</td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px"><?=$r_time_e?></td>
+            <td align="left"  bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding-left:10px;font-size:10pt;font-family:'맑은고딕','돋움';"><?=$airport_in?>도착</td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px"></td>
+          </tr>
+
+
+          <?}?>
+
+
+        </table></td>
+      </tr>
+      <tr>
+        <td height="40" style="color:red;"><span style="font-size:10pt;font-family:'맑은고딕','돋움';font-weight:bold">**상기 일정은 항공기 및 현지사정으로 다소 변동 될 수 있습니다.</span></td>
+      </tr>
+      <tr>
+        <td height="10"></td>
+      </tr>
+      <tr>
+        <td><table width="<?=$page_width?>" border="0" cellspacing="1" cellpadding="0" style="border-collapse:collapse;border:1px solid #ccc ">
+          <tr>
+            <td width="20%" height="50" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'맑은고딕','돋움';font-weight:bold;color:#fff">현지연락처</span></td>
+            <td align="left" height="50" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding-left:10px;font-size:10pt"><?=$local_staff?> <?=$phone2?></td>
+          </tr>
+  </table></td>
+      </tr>
+      <tr>
+        <td height="10"></td>
+      </tr>
+      <tr>
+        <td><table width="<?=$page_width?>" border="0" cellspacing="1" cellpadding="0" style="border-collapse:collapse;border:1px solid #ccc ">
+          <tr>
+            <td width="20%" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'맑은고딕','돋움';font-weight:bold;color:#fff">참고사항</span></td>
+            <td align="left" bgcolor="#ffffff" style="font-size:10pt;font-family:'맑은고딕','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:10px;font-size:10pt">
+			<?=nl2br($etc)?>
+            </td>
+          </tr>
+  </table></td>
+      </tr>
+      <tr>
+        <td height="30">&nbsp;</td>
+      </tr>
+
+	  <?if($edit_mode){?>
+	  </form>
+	  <?}?>
+</table>
+
+
+	  <?if($edit_mode){?>
+	  <div style="padding:20px 0 30px 0">
+	  <!-- Button Begin---------------------------------------------->
+	  <table border="0" width="200" cellspacing="0" cellpadding="0" align="right">
+		<tr align="right">
+			<td><span class="btn_pack medium bold"><a href="#" onClick="document.fmData.submit()"> 저장 </a></span></td>
+			<td><span class="btn_pack medium bold"><a href="<?=SELF?>?id_no=<?=$rs[id_no]?>&doc_mode=1"> Word 저장 </a></span></td>
+			<td><span class="btn_pack medium bold"><a href="javascript:self.close()"> 창닫기 </a></span></td>
+		</tr>
+	  </table>
+	  <!-- Button End------------------------------------------------>
+	  </div>
+	  <?}?>
+
+
+</div>
+
+
+</body>
+</html>

@@ -1,0 +1,192 @@
+<?    
+$total_menu_mode=0;//0인 경우 개별 메뉴 사용
+
+if(rnf($_GET[tms])) $_SESSION[SESS_TOP_MENU_SELECTED]=$tms;
+
+//상품관리    
+if(strstr("
+    @cmp_config.php@
+    @list_golf.php@view_golf.php@
+    @list_golf2.php@view_golf2.php@
+    @list_hotel.php@view_hotel.php@
+    @list_tour.php@view_tour.php@
+    @list_partner.php@view_partner.php@
+    @list_account.php@view_account.php@
+    @list_air.php@view_air.php@
+    @list_prepare.php@view_prepare.php@
+    @list_temperature.php@view_temperature.php@
+    @list_sample.php@view_sample.php@
+    @list_cargo.php@view_cargo.php@
+    ",SELF)){
+
+    $left_memus = array(
+        "cmp_config.php"=>"기본설정",
+        "list_golf.php"=>"상품DB",
+        "list_golf2.php"=>"골프장정보",
+        "list_hotel.php"=>"호텔정보",
+        "list_tour.php"=>"관광지정보",
+        "list_partner.php"=>"거래처정보",
+        "list_account.php"=>"송금계좌 정보",
+        "list_air.php"=>"항공사별 타임스케쥴",
+        "list_prepare.php"=>"국가별 준비물",
+        "list_temperature.php"=>"국가별 평균 기온",
+        "list_sample.php"=>"입국 신고서 샘플",
+        "list_cargo.php"=>"항공사별 수화물 무게",  
+    );
+    $total_menu_mode=1;
+}
+
+
+
+//일정표등록
+elseif(strstr("
+    @list_estimate.php@view_estimate.php@
+    @list_group.php@view_group.php@
+    ",SELF)){
+
+    $left_memus = array(
+        "list_estimate.php"=>"일정표등록",
+        "list_group.php"=>"골프투어문의",
+    );
+    $total_menu_mode=1;
+}
+
+
+
+//예약관리
+elseif(strstr("
+    @list_reservation.php@
+    @list_report1.php@
+    @list_report2.php@
+    @list_sms.php@
+    @list_transfer2.php@
+    ",SELF)){
+
+    $left_memus = array(
+        "list_reservation.php"=>"예약정보",
+        "list_report1.php"=>"기간별매출",
+        "list_report2.php"=>"송출현황",
+        "javascript:newWin('form05.html?id_no=${rs[id_no]}',870,650,1,1,'','reservation')"=>"여행자보험",
+        "list_sms.php"=>"문자발송",
+        "list_transfer2.php"=>"송금요청",
+    );
+    $total_menu_mode=1;
+}
+
+
+
+//입출금관리
+elseif(strstr("
+    @list_transfer.php@
+    @list_bank.php@
+    @list_cashbill.php@
+    @list_pay.php@
+    ",SELF)){
+
+    $left_memus = array(
+        "list_transfer.php"=>"송금요청",
+        "list_bank.php"=>"입금내역",
+        "list_cashbill.php"=>"현금영수증발행",
+        "list_pay.php"=>"신용카드결제",
+    );
+    $total_menu_mode=1;
+}
+
+
+
+//매출현황
+elseif(strstr("
+    @list_paper2.php@
+    @list_paper9.php@
+    @list_partner_cal.php@
+    @list_paper_n1.php@
+    @list_paper3.php@
+    @list_paper5.php@
+    @list_paper17.php@
+    @list_paper5.php@
+    @list_paper5.php@    
+    @list_download.php@    
+    ",SELF)){
+
+    if($_SESSION[SESS_TOP_MENU_SELECTED]==6){
+
+        $left_memus = array(
+            "list_paper2.php?dtype=tour_date&partner=1"=>"파트너 현황",
+            "list_paper9.php?dtype=tour_date&partner=1"=>"파트너 실적",
+            "list_partner_cal.php"=>"정산내역",
+
+            "list_paper_n1.php?partner=2"=>"목표 및 달성율",
+            "list_paper3.php?dtype=tour_date"=>"국가별 현황",
+            "list_paper5.php?ctype=일본&dtype=tour_date"=>"기간별 현황(일본)",
+            "list_paper5.php?ctype=태국&dtype=tour_date"=>"기간별 현황(태국)",
+            "list_paper5.php?ctype=중국&dtype=tour_date"=>"기간별 현황(중국)",
+            "list_paper5.php?ctype=한국&dtype=tour_date"=>"기간별 현황(한국)",
+            "list_download.php"=>"고객정보 프로파일링",
+        );
+        $total_menu_mode=1;
+
+    }
+}
+
+
+
+//휴가및출장
+elseif(strstr("
+    @list_hrm.php@
+    @list_paper_n3.php@
+    @list_hrmcal.php@
+    ",SELF)){
+
+    $left_memus = array(
+        "list_hrm.php"=>"휴가 및 출장신청",
+        "list_paper_n3.php"=>"출장 및 휴가 현황",
+        "list_hrmcal.php"=>"출장휴가달력",
+    );
+    $total_menu_mode=1;
+
+}
+
+
+
+//bkoff인 경우
+if(!strstr($_SERVER['SCRIPT_NAME'],"/cmp")){
+    $total_menu_mode=0;
+}
+
+
+
+//checkVar("SESS_TOP_MENU_SELECTED",$_SESSION[SESS_TOP_MENU_SELECTED]);
+
+
+?>
+
+
+
+<?if($total_menu_mode){?>
+<table width="165" border="0" cellspacing="0" cellpadding="0">
+    <?
+    foreach ($left_memus as $key => $value) {
+        if(!$bit_close){
+
+            $url = (strstr($key,"javascript:"))? $key : "../cmp/".$key;
+
+            $key2_arr = explode(".php",$key);
+            $key2 = $key2_arr[0].".php";
+
+            //if(strstr("@14.37.242.84@221.154.110.119@","@".$_SERVER["REMOTE_ADDR"]."@")){checkVar($key2,$value);}
+            if(!strstr($hide_memu_tmp,$key2)){
+    ?>
+        <tr>
+            <?if($value){?>
+            <td height="26" style="padding-left:0">
+                <img src="../images/common/ic_arrow.gif">
+                <a href="<?=$url?>" class="leftmenu"><?=$value?></a>
+            </td>
+            <?}else{?>
+            <td height="16"></td>            
+            <?}?>
+        </tr>
+        <tr><td height="1" background="../images/common/bg_dot.gif"></td></tr>
+    <?}}}?>
+</table>
+<?}?>

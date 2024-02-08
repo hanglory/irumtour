@@ -1,0 +1,1 @@
+210.123.29.229 - [08/Nov/2023:14:44:51 +0900] /new/bkoff/cmp/view_hotel.php: file1 = HOTEL TRAD HAKATA _ 한국어.mhtml: 차단된 이름 파일 업로드

@@ -1,0 +1,127 @@
+<table width="165" border="0" cellspacing="0" cellpadding="0" class="tbl_leftmenu">
+
+  <?if(!$BIT_MANAGEMENT_HIDE){?>
+  <tr>
+     <td height="26">
+        <img src="../images/common/ic_arrow.gif" width="5" height="8" hspace="6"> 매출관리
+
+        <div class="left_submenu">- <a href="../cmp/list_paper1.php?dtype=tour_date" class="leftmenu">기간별 매출현황</a></div>
+
+        <div class="left_submenu">- <a href="../cmp/list_paper9.php?dtype=tour_date&partner=0" class="leftmenu">실적(인원 및 매출)</a></div>
+        <?if($user_id!="tester"){?>
+        <div class="left_submenu">- <a href="../cmp/list_paper11.php?dtype=tour_date" class="leftmenu">경로별 실적(월별)</a></div>
+        <div class="left_submenu">- <a href="../cmp/list_paper2.php?dtype=tour_date&partner=0" class="leftmenu">경로별 실적(담당자별)</a></div>
+        <?}?>
+        <div class="left_submenu">- <a href="../cmp/list_paper_n1_.php" class="leftmenu">목표 및 달성율</a></div>
+        <div class="left_submenu">- <a href="../cmp/list_paper18.php" class="leftmenu">기간별매출(국내/해외)</a></div>
+        <span class="gap"></span>
+     </td>
+  </tr>
+  <tr><td height="1" background="../images/common/bg_dot.gif"></td></tr>
+
+  <tr>
+     <td height="26">
+        <span class="gap"></span>
+        <img src="../images/common/ic_arrow.gif" width="5" height="8" hspace="6"> 회계&재무관리
+
+        <div class="left_submenu">- <a href="../cmp/list_expense.php" class="leftmenu">월별비용</a></div>
+        <div class="left_submenu">- <a href="../cmp/list_payment.php" class="leftmenu">입출금상세내역</a></div>
+        <?if(!$BIT_PARTNER_HIDE){?>
+        <div class="left_submenu">- <a href="../cmp/list_paper10.php" class="leftmenu">입출금 현황</a></div>
+
+        <div class="left_submenu">- <a href="../cmp/list_expense2.php?dtype=d_date" class="leftmenu">경영실적</a></div>
+        <div class="left_submenu">- <a href="../cmp/list_paper13.php" class="leftmenu">손익계산서</a></div>
+        <div class="left_submenu">- <a href="../cmp/list_paper14.php" class="leftmenu">재무상태표</a></div>
+        <span class="gap"></span>
+        <?}?>
+
+        <div class="left_submenu">- <a href="../cmp/category1.php" class="leftmenu">비용분류관리(대분류)</a></div>
+        <div class="left_submenu">- <a href="../cmp/category2.php" class="leftmenu">비용분류관리(소분류)</a></div>        
+
+        <!-- <div class="left_submenu">- <a href="../cmp/list_bank.php" class="leftmenu">계좌내역</a></div> -->
+     </td>
+  </tr>
+  <tr><td height="1" background="../images/common/bg_dot.gif"></td></tr>
+  <?}?>
+
+
+  <?if(!$BIT_INSA_HIDE){?>
+  <tr>
+     <td height="26">
+        <span class="gap"></span>
+        <img src="../images/common/ic_arrow.gif" width="5" height="8" hspace="6"> 인사관리
+
+        <?if(!$BIT_PARTNER_HIDE){?>
+        <div class="left_submenu">- <a href="../cmp/list_saleshook2.php" class="leftmenu">판촉물 현황</a></div>
+        <?}?>
+
+        <?if(!$BIT_STAFF_HIDE){?>
+        <div class="left_submenu">- <a href="../cmp/list_staff.php" class="leftmenu">권한관리</a></div>
+        <?}?>
+
+        <?if(!$CP_ID){//독립형 파트너 제외?>
+        <div class="left_submenu">- <a href="../cmp/list_cp.php" class="leftmenu">파트너 등록</a></div>
+        <?}?>
+
+        <?if(!$BIT_PARTNER_HIDE){?>
+        <div class="left_submenu">- <a href="../cmp/list_paper_n2.php" class="leftmenu">파트너 정산</a></div>
+        <?}?>
+        <div class="left_submenu">- <a href="../cmp/list_paper_n2_m.php" class="leftmenu">담당자별 정산현황</a></div>
+        <span class="gap"></span>
+
+        <!-- <div class="left_submenu">- <a href="../cmp/list_hrm.php" class="leftmenu">휴가 및 출장신청</a></div>
+        <div class="left_submenu">- <a href="../cmp/list_paper_n3.php" class="leftmenu">출장 및 휴가 현황</a></div>
+        <div class="left_submenu">- <a href="../cmp/list_hrmcal.php" class="leftmenu">출장휴가달력</a></div>
+        -->
+     </td>
+  </tr>
+  <tr><td height="1" background="../images/common/bg_dot.gif"></td></tr>
+  <?}?>
+  <?if($BIT_INSA_HIDE && !$BIT_STAFF_HIDE){//인사관리 권한은 없지만 권한관리 권한은 있는 경우?>
+    <tr>
+     <td height="26">
+        <span class="gap"></span>
+        <img src="../images/common/ic_arrow.gif" width="5" height="8" hspace="6"> 권한관리
+        <div class="left_submenu">- <a href="../cmp/list_staff.php" class="leftmenu">권한관리</a></div>
+     </td>
+  </tr>
+  <tr><td height="1" background="../images/common/bg_dot.gif"></td></tr>
+  <?}?>
+
+
+  <?if(!$BIT_MANAGEMENT_HIDE){?>  
+  <tr>
+     <td height="26">
+        <span class="gap"></span>
+        <img src="../images/common/ic_arrow.gif" width="5" height="8" hspace="6"> 기타
+
+        <div class="left_submenu">- <a href="../cmp/list_customer.php" class="leftmenu">고객정보(APIS)</a></div>
+        <?if(!$BIT_PARTNER_HIDE){?>
+        <div class="left_submenu">- <a href="../cmp/list_paper8.php" class="leftmenu">비즈니스석 고객</a></div>
+        <div class="left_submenu">- <a href="../cmp/list_paper4.php?dtype=tour_date" class="leftmenu">거래처 현황</a></div>
+        <div class="left_submenu">- <a href="../cmp/list_paper12.php?dtype=tour_date" class="leftmenu">항공사 이용 현황</a></div>
+        <?}?>
+
+
+
+        <?if(!$BIT_CELLDOWN_HIDE){?>
+        <div class="left_submenu">- <a href="../cmp/download_cell.php" class="leftmenu">핸드폰번호 다운로드</a></div>
+        <?}?>
+        <span class="gap"></span>
+
+
+     </td>
+  </tr>
+
+
+
+  <?}?>
+
+
+
+
+
+
+
+
+</table>

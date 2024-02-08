@@ -1,0 +1,88 @@
+<?if(strstr($rs_[staff_type],"partner")){?>
+<style type="text/css">
+.topmenu2{margin:0 15px 0 15px !important;} 
+</style>
+<?}else{?>
+<style type="text/css">
+.topmenu2{margin:0 15px 0 15px !important;} 
+</style>    
+<?}?>
+
+<table border="0" cellspacing="0" cellpadding="0" width="98%">
+ <tr>
+    <td align="center">
+        <span id="tour_menu" class="<?=($sessLogin[cmp])?"hide":""?>">
+        <a href="../basic/admin.php"  class="topmenu">기본설정</a>
+        <a href="../tour/list_tour.php?ctg1=26&sale_group=T"  class="topmenu">상품관리</a>
+        <a href="../order/list_group.php"  class="topmenu">예약관리</a>
+        <a href="../member/list_member.php"  class="topmenu">회원관리</a>
+        <a href="../bbs/list_bbs.php?bid=notice"  class="topmenu">게시판</a>
+        </span>
+
+        <span id="cmp_menu" class="<?=($sessLogin[cmp])?"":"hide"?>">
+        <?if($_SESSION["sessMenu"]=="cmp"){?>
+
+
+            <?if($_SESSION["sessLogin"]["id"]=="share"){?>
+                <a href="../cmp/sharevalue.php?type=reg" class="topmenu2" target="_blank">항공예약</a>
+            <?}else{?>
+
+                <?if(strstr($_SESSION["sessLogin"]["proof"],"기본설정")){?><a href="../cmp/list_golf.php"  class="topmenu2">기본설정</a><?}?> 
+
+
+                <?if(!$tmenuh2){?><a href="../cmp/list_estimate.php"  class="topmenu2">일정표 등록</a><?}?>
+                <?if(!$tmenuh2){?><a href="../cmp/list_reservation.php"  class="topmenu2">고객예약정보</a><?}?>
+                <?if(!$tmenuh2){?><a href="../cmp/list_report1.php"  class="topmenu2">기간별매출</a><?}?>
+                <?if(!$tmenuh2){?><a href="../cmp/list_bank.php"  class="topmenu2">입금내역</a><?}?>
+                <?if(!$tmenuh2){?><a href="../cmp/list_transfer.php"  class="topmenu2">송금요청</a><?}?>
+                
+                <?if(!$tmenuh2){?><a href="../cmp/list_report2.php"  class="topmenu2">고객송출현황</a><?}?>
+                <a href="javascript:newWin('form05.html?id_no=<?=$rs[id_no]?>',870,650,1,1,'','reservation')"  class="topmenu2">여행자보험</a>
+                <?if(!$tmenuh2){?><a href="../cmp/list_sms.php"  class="topmenu2">문자발송</a><?}?>
+                <?if(!$tmenuh1){?><a href="../cmp/list_paper1.php?dtype=tour_date"  class="topmenu2">경영관리</a><?}?>
+
+                <?if(strstr($_SESSION["sessLogin"]["staff_type"],"partner")){?>
+                    <a href="../cmp/list_paper2.php?dtype=tour_date&partner=1"  class="topmenu2">현황및실적</a>
+                    <?if(!$tmenuh2){?><a href="../cmp/list_partner_cal.php"  class="topmenu2">정산내역</a><?}?>
+                <?}?>           
+
+                <?if(!strstr($_SESSION["sessLogin"]["staff_type"],"partner_")){?>
+                    <?if(!$tmenuh2){?><a href="../cmp/list_paper_n1.php?partner=2"  class="topmenu2">통계</a><?}?>
+                    <?if(!$tmenuh2){?><a href="../cmp/list_paper_n1.php?dtype=tour_date&partner=1"  class="topmenu2">파트너</a><?}?>
+                <?}?>
+                <a href="../cmp/list_group.php"  class="topmenu2">골프투어문의</a>
+                <a href="../cmp/list_pay.php"  class="topmenu2">신용카드결제</a>
+                <a href="../cmp/list_hrmcal.php"  class="topmenu2">휴가 및 출장</a>
+
+                <?if(!strstr($_SESSION["sessLogin"]["staff_type"],"partner_")){?>
+                    <a href="/new/bkoff/cmp/sharevalue.php?type=reg" class="topmenu2" target="_blank">항공예약</a>
+                <?}?>
+
+            <?}?>
+
+
+
+
+
+
+            <?if(strstr("@14.37.242.84@221.154.110.119@","@".$_SERVER["REMOTE_ADDR"]."@")){//감춘 메뉴들?>
+            <!-- <?if(!$tmenuh1){?><a href="../cmp/list_qna.php"  class="topmenu2">문의 고객 관리 대장</a><?}?> -->
+            <!-- 
+            <?if(strstr($_SESSION["sessLogin"]["proof"],"간략견적요청")){?>
+            <?if(!$tmenuh2){?><a href="javascript:newWin('./partner_estimate.php',800,830,0,0,'pest')"  class="topmenu2">간략견적요청</a><?}?>
+            <?}?> 
+            -->            
+            <!-- <?if(!$tmenuh1){?><a href="../cmp/list_history.php"  class="topmenu2">고객 히스토리</a><?}?> -->
+            <!-- <?if(!$tmenuh1){?><a href="../cmp/list_daily.php"  class="topmenu2">일일현황</a><?}?> -->
+            <!-- <?if(!$tmenuh1){?><a href="javascript:newWin('../cmp/cal.php',500,370,0,0)"  class="topmenu2">판매가계산기</a><?}?> -->
+            <!-- <?if(!$tmenuh1){?><a href="../cmp/list_paper7.php"  class="topmenu2">취소자리스트</a><?}?> -->
+            <!-- <?if(!$tmenuh1){?><a href="../cmp/list_paper10.php"  class="topmenu2">입출금현황리포트</a><?}?> -->
+            <?}?>
+
+
+        <?}?>
+        </span>
+    </td>
+ </tr>
+</table>
+

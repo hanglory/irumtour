@@ -1,0 +1,371 @@
+<?
+session_start();
+include "./dbcon.php";
+include "./rankuplog_admincert.php";
+
+$yesterday1 = date("Y-m-d",mktime(0,0,0,date("m"),date("d")-1,date(Y)));
+$yesterday2 = date("Y-m-d",mktime(0,0,0,date("m"),date("d")-2,date(Y)));
+$yesterday3 = date("Y-m-d",mktime(0,0,0,date("m"),date("d")-3,date(Y)));
+$yesterday4 = date("Y-m-d",mktime(0,0,0,date("m"),date("d")-4,date(Y)));
+$yesterday5 = date("Y-m-d",mktime(0,0,0,date("m"),date("d")-5,date(Y)));
+$yesterday6 = date("Y-m-d",mktime(0,0,0,date("m"),date("d")-6,date(Y)));
+$yearmon = date("Y-m");
+$today = date("Y-m-d");
+
+$totalquery = "select sum(num) from rankuplog_total"; //총접속자
+$totalselect = mysql_query($totalquery);
+$totalfatch = mysql_fetch_array($totalselect);
+
+$totalquery1 = "select sum(num) from rankuplog_total where wdate='$yesterday1'"; //일일전
+$totalselect1 = mysql_query($totalquery1);
+$totalfatch1 = mysql_fetch_array($totalselect1);
+
+$totalquery2 = "select sum(num) from rankuplog_total where wdate='$yesterday2'"; //이일전
+$totalselect2 = mysql_query($totalquery2);
+$totalfatch2 = mysql_fetch_array($totalselect2);
+
+$totalquery3 = "select sum(num) from rankuplog_total where wdate='$yesterday3'"; //삼일전
+$totalselect3 = mysql_query($totalquery3);
+$totalfatch3 = mysql_fetch_array($totalselect3);
+
+$totalquery4 = "select sum(num) from rankuplog_total where wdate='$yesterday4'"; //사일전
+$totalselect4 = mysql_query($totalquery4);
+$totalfatch4 = mysql_fetch_array($totalselect4);
+
+$totalquery5 = "select sum(num) from rankuplog_total where wdate='$yesterday5'"; //오일전
+$totalselect5 = mysql_query($totalquery5);
+$totalfatch5 = mysql_fetch_array($totalselect5);
+
+$totalquery6 = "select sum(num) from rankuplog_total where wdate='$yesterday6'"; //육일전
+$totalselect6 = mysql_query($totalquery6);
+$totalfatch6 = mysql_fetch_array($totalselect6);
+
+$totaltodayquery = "select sum(num) from rankuplog_total where wdate='$today'"; //오늘
+$totaltodayselect = mysql_query($totaltodayquery);
+$totaltodayfatch = mysql_fetch_array($totaltodayselect);
+
+$domainquery = "select content,sum(num) as num from rankuplog_shortdomain where wdate like '%$yearmon%' group by content order by num desc limit 10";	//이번달도메인
+$domainselect = mysql_query($domainquery);
+
+$ipquery = "select content,sum(num) as num from rankuplog_ip where wdate like '%$yearmon%' group by content order by num desc limit 10";//이번달아이피
+$ipselect = mysql_query($ipquery);
+
+
+
+$datequery = "select sum(date1),sum(date2),sum(date3),sum(date4),sum(date5),sum(date6),sum(date7),sum(date8),sum(date9),sum(date10),sum(date11),sum(date12),sum(date13),sum(date14),sum(date15),sum(date16),sum(date17),sum(date18),sum(date19),sum(date20),sum(date21),sum(date22),sum(date23),sum(date24),sum(date25),sum(date26),sum(date27),sum(date28),sum(date29),sum(date30),sum(date31) from rankuplog_date where wdate like '%$yearmon%'";
+$dateselect = mysql_query($datequery);
+$datefatch = mysql_fetch_array($dateselect);
+$dateque = mysql_query("select no from  rankuplog_date where wdate like '%$yearmon%'");
+$datenum = mysql_num_rows($dateque);
+if($datenum){
+$date1 = $datefatch[0]."@date1";
+$date2 = $datefatch[1]."@date2";
+$date3 = $datefatch[2]."@date3";
+$date4 = $datefatch[3]."@date4";
+$date5 = $datefatch[4]."@date5";
+$date6 = $datefatch[5]."@date6";
+$date7 = $datefatch[6]."@date7";
+$date8 = $datefatch[7]."@date8";
+$date9 = $datefatch[8]."@date9";
+$date10 = $datefatch[9]."@date10";
+$date11 = $datefatch[10]."@date11";
+$date12 = $datefatch[11]."@date12";
+$date13 = $datefatch[12]."@date13";
+$date14 = $datefatch[13]."@date14";
+$date15 = $datefatch[14]."@date15";
+$date16 = $datefatch[15]."@date16";
+$date17 = $datefatch[16]."@date17";
+$date18 = $datefatch[17]."@date18";
+$date19 = $datefatch[18]."@date19";
+$date20 = $datefatch[19]."@date20";
+$date21 = $datefatch[20]."@date21";
+$date22 = $datefatch[21]."@date22";
+$date23 = $datefatch[22]."@date23";
+$date24 = $datefatch[23]."@date24";
+$date25 = $datefatch[24]."@date25";
+$date26 = $datefatch[25]."@date26";
+$date27 = $datefatch[26]."@date27";
+$date28 = $datefatch[27]."@date28";
+$date29 = $datefatch[28]."@date29";
+$date30 = $datefatch[29]."@date30";
+$date31 = $datefatch[30]."@date31";
+$datearray = array($date1,$date2,$date3,$date4,$date5,$date6,$date7,$date8,$date9,$date10,$date11,$date12,$date13,$date14,$date15,$date16,$date17,
+$date18,$date19,$date20,$date21,$date22,$date23,$date24,$date25,$date26,$date27,$date28,$date29,$date30,$date31);
+rsort($datearray,SORT_NUMERIC);
+$fildname = explode("@",$datearray[0]);
+$todaymanydate = ($fildname[1] == 'date1')?"1일":"";
+$todaymanydate .= ($fildname[1] == 'date2')?"2일":"";
+$todaymanydate .= ($fildname[1] == 'date3')?"3일":"";
+$todaymanydate .= ($fildname[1] == 'date4')?"4일":"";
+$todaymanydate .= ($fildname[1] == 'date5')?"5일":"";
+$todaymanydate .= ($fildname[1] == 'date6')?"6일":"";
+$todaymanydate .= ($fildname[1] == 'date7')?"7일":"";
+$todaymanydate .= ($fildname[1] == 'date8')?"8일":"";
+$todaymanydate .= ($fildname[1] == 'date9')?"9일":"";
+$todaymanydate .= ($fildname[1] == 'date10')?"10일":"";
+$todaymanydate .= ($fildname[1] == 'date11')?"11일":"";
+$todaymanydate .= ($fildname[1] == 'date12')?"12일":"";
+$todaymanydate .= ($fildname[1] == 'date13')?"13일":"";
+$todaymanydate .= ($fildname[1] == 'date14')?"14일":"";
+$todaymanydate .= ($fildname[1] == 'date15')?"15일":"";
+$todaymanydate .= ($fildname[1] == 'date16')?"16일":"";
+$todaymanydate .= ($fildname[1] == 'date17')?"17일":"";
+$todaymanydate .= ($fildname[1] == 'date18')?"18일":"";
+$todaymanydate .= ($fildname[1] == 'date19')?"19일":"";
+$todaymanydate .= ($fildname[1] == 'date20')?"20일":"";
+$todaymanydate .= ($fildname[1] == 'date21')?"21일":"";
+$todaymanydate .= ($fildname[1] == 'date22')?"22일":"";
+$todaymanydate .= ($fildname[1] == 'date23')?"23일":"";
+$todaymanydate .= ($fildname[1] == 'date24')?"24일":"";
+$todaymanydate .= ($fildname[1] == 'date25')?"25일":"";
+$todaymanydate .= ($fildname[1] == 'date26')?"26일":"";
+$todaymanydate .= ($fildname[1] == 'date27')?"27일":"";
+$todaymanydate .= ($fildname[1] == 'date28')?"28일":"";
+$todaymanydate .= ($fildname[1] == 'date29')?"29일":"";
+$todaymanydate .= ($fildname[1] == 'date30')?"30일":"";
+$todaymanydate .= ($fildname[1] == 'date31')?"31일":"";
+}
+
+
+
+$weekquery = "select sum(date0),sum(date1),sum(date2),sum(date3),sum(date4),sum(date5),sum(date6) from rankuplog_week where wdate like '%$yearmon%'";
+$weekselect = mysql_query($weekquery);
+$weekfatch = mysql_fetch_array($weekselect);
+$weekque = mysql_query("select no from  rankuplog_week where wdate like '%$yearmon%'");
+$weeknum = mysql_num_rows($dateque);
+if($weeknum){
+$week1 = $weekfatch[0]."@date0";
+$week2 = $weekfatch[1]."@date1";
+$week3 = $weekfatch[2]."@date2";
+$week4 = $weekfatch[3]."@date3";
+$week5 = $weekfatch[4]."@date4";
+$week6 = $weekfatch[5]."@date5";
+$week7 = $weekfatch[6]."@date6";
+$weekarray = array($week1,$week2,$week3,$week4,$week5,$week6,$week7);
+rsort($weekarray,SORT_NUMERIC);
+$weekfildname = explode("@",$weekarray[0]);
+$todaymanyweek = ($weekfildname[1] == 'date0')?"일요일":"";
+$todaymanyweek .= ($weekfildname[1] == 'date1')?"월요일":"";
+$todaymanyweek .= ($weekfildname[1] == 'date2')?"화요일":"";
+$todaymanyweek .= ($weekfildname[1] == 'date3')?"수요일":"";
+$todaymanyweek .= ($weekfildname[1] == 'date4')?"목요일":"";
+$todaymanyweek .= ($weekfildname[1] == 'date5')?"금요일":"";
+$todaymanyweek .= ($weekfildname[1] == 'date6')?"토요일":"";
+}
+
+
+$domain1que = "select content,sum(num) as num from rankuplog_shortdomain where wdate = '$today' group by content order by num desc limit 10";//오늘접속한도메인
+$domain1sel = mysql_query($domain1que);
+$domain2que = "select content,sum(num) as num from rankuplog_shortdomain where wdate = '$yesterday1' group by content order by num desc limit 10";//어제접속한도메인
+$domain2sel = mysql_query($domain2que);
+
+
+
+$ip1que = "select content,sum(num) as num from rankuplog_ip where wdate = '$today' group by content order by num desc limit 10";//오늘접속한아이피
+$ip1sel = mysql_query($ip1que);
+$ip2que = "select content,sum(num) as num from rankuplog_ip where wdate = '$yesterday1' group by content order by num desc limit 10";//어제접속한아이피
+$ip2sel = mysql_query($ip2que);
+
+?>
+
+<table width="500" border="0" cellpadding="0" cellspacing="0" align='center'>
+<tr><td><img src='images/log_bg01.gif'></td></tr>
+<tr><td background='images/log_bg02.jpg' align=center>
+<?include "./rankup_toplink.html"; ?>
+<table border=0 cellpadding=0 cellspacing=0 width='685' align='center'>
+<tr><td align=center height=15></td></tr>
+<tr><td>
+<table border=0 cellpadding=0 cellspacing=0  width='682' align='center' >
+	<tr>
+	<td height=32 width=99><img src=images/main_bg01.gif height=32 ></td>
+	<td background=images/main_bg03.gif width=242><font color=EF6A11><B><?=number_format($totalfatch[0])?></B> 명</font></td>
+	<td  height=32 width=98><img src=images/main_bg02.gif height=32></td>
+	<td background=images/main_bg03.gif width=243><font color=EF6A11><B><?=number_format($totaltodayfatch[0])?></B> 명</font></td>
+	</tr>
+	<tr>
+	<td background=images/main_bg05.gif align=center colspan=4 height=45>
+
+
+			<table  cellpadding=0 cellspacing=0 border=0>
+			<tr>
+			<td>&nbsp;
+			이달에 가장 많이 접속된 날은 <B><?=$todaymanydate?>[<?=$todaymanyweek?>]</B> 이고 모두
+			<B><?=number_format($fildname[0])?>명 </B>이 접속하셨습니다.&nbsp;</td>
+			</tr>
+			</table></td>
+	</tr>
+	<tr><td colspan=4><img src=images/main_bg04.gif></td></tr>
+</table>
+</td></tr>
+<tr><td height=5></td></tr>
+<tr><td align=center>
+<table border=0 cellpadding=0 cellspacing=0 >
+	<tr><td><img src=images/search_bg1.gif></td></tr>
+	<tr><td background=images/search_bg2.gif align=center height=60>
+			<table cellpadding=0 cellspacing=0 width=95% border=0 bgcolor=ffffff>
+				<tr align=center >
+				<td width=17%>1일전 접속자수</font></td>
+				<td><img src=images/dot01.gif ><td>
+				<td width=16%>2일전 접속자수</font></td>
+				<td><img src=images/dot01.gif ><td>
+				<td width=16%>3일전 접속자수</font></td>
+				<td><img src=images/dot01.gif ><td>
+				<td width=17%>4일전 접속자수</font></td>
+				<td><img src=images/dot01.gif ><td>
+				<td width=17%>5일전 접속자수</font></td>
+				<td><img src=images/dot01.gif ><td>
+				<td width=17%>6일전 접속자수</font></td>
+				</tr>
+				<tr align=center bgcolor=ffffff>
+				<td><font color=2279A2><?=number_format($totalfatch1[0])?> 명</font></td>
+				<td><img src=images/dot01.gif ><td>
+				<td><font color=2279A2><?=number_format($totalfatch2[0])?> 명</font></td>
+				<td><img src=images/dot01.gif ><td>
+				<td><font color=2279A2><?=number_format($totalfatch3[0])?> 명</font></td>
+				<td><img src=images/dot01.gif ><td>
+				<td><font color=2279A2><?=number_format($totalfatch4[0])?> 명</font></td>
+				<td><img src=images/dot01.gif ><td>
+				<td><font color=2279A2><?=number_format($totalfatch5[0])?> 명</font></td>
+				<td><img src=images/dot01.gif ><td>
+				<td><font color=2279A2><?=number_format($totalfatch6[0])?> 명</font></td>
+				</tr>
+				</table>
+	</td></tr>
+	<tr><td><img src=images/search_bg3.gif></td></tr>
+	</table>
+
+</td></tr>
+<tr><td align=center height=15></td></tr>
+<tr><td><img src=images/domain_bar.gif></td></tr>
+<tr><td align=center>
+
+<table border=0 cellpadding=0 cellspacing=0 width=691>
+<tr><td colspan=3><img src=images/main_bar_bg01.gif></td></tr>
+<tr>
+<td valign=top align=center background=images/main_bar_bg02.gif>
+				<table border=0 cellpadding=0 cellspacing=0 width=660 align=center>
+				<tr>
+				<td align=center><img src=images/domain_title01.gif></td>
+				<td align=center><img src=images/domain_title02.gif></td>
+				<td align=center><img src=images/domain_title03.gif></td>
+				</tr>
+				<tr>
+				<td align=center bgcolor=ffffff width=216>
+							<table border=0 cellpadding=1 cellspacing=0 width=210>
+							<tr><td colspan=2 height=8></td></tr>
+							<? while($domain1fatch = mysql_fetch_array($domain1sel)){ ?>
+							<tr bgcolor=#ffffff onMouseOver=this.style.backgroundColor='#E7F0F1' onMouseOut=this.style.backgroundColor='#ffffff'>
+							<td width=170 height=22><a href=<?=$domain1fatch[0]?> target=_blank><?=$domain1fatch[0]?></a></tD>
+							<td width=40><?=$domain1fatch[1]?></td>
+							</tr>
+							<tr><td colspan=2 height=1 background=./images/line01.gif></td></tr>
+							<? } ?>
+							<tr><td colspan=2 height=8></td></tr>
+							</table>
+
+				</td>
+				<td align=center  background=images/domain_bg01.gif width=221>
+							<table border=0 cellpadding=1 cellspacing=0 width=210>
+							<tr><td colspan=2 height=8></td></tr>
+							<? while($domain2fatch = mysql_fetch_array($domain2sel)){ ?>
+							<tr bgcolor=#ffffff onMouseOver=this.style.backgroundColor='#E7F0F1' onMouseOut=this.style.backgroundColor='#ffffff'>
+							<td width=170 height=22><a href=<?=$domain2fatch[0]?> target=_blank><?=$domain2fatch[0]?></a></tD>
+							<td width=40><?=$domain2fatch[1]?></td>
+							</tr>
+							<tr><td colspan=2 height=1 background=./images/line01.gif></td></tr>
+							<? } ?>
+							<tr><td colspan=2 height=8></td></tr>
+							</table>
+				</td>
+				<td align=center  background=images/domain_bg02.gif width=223>
+							<table border=0 cellpadding=1 cellspacing=0 width=210>
+							<tr><td colspan=2 height=8></td></tr>
+							<? while($domainfatch = mysql_fetch_array($domainselect)){ ?>
+							<tr bgcolor=#ffffff onMouseOver=this.style.backgroundColor='#E7F0F1' onMouseOut=this.style.backgroundColor='#ffffff'>
+							<td width=170 height=22><a href=<?=$domainfatch[0]?> target=_blank><?=$domainfatch[0]?></a></tD>
+							<td width=40><?=$domainfatch[1]?></td>
+							</tr>
+							<tr><td colspan=2 height=1 background=./images/line01.gif></td></tr>
+							<? } ?>
+							<tr><td colspan=2 height=8></td></tr>
+							</table>
+				</td>
+				</tr>
+				</table>
+</td>
+</tr>
+<tr><td colspan=3><img src=images/main_bar_bg03.gif></td></tr>
+</table>
+
+</td></tr>
+<tr><td align=center height=15></td></tr>
+<tr><td><img src=images/ip_bar.gif></td></tr>
+<tr><td align=center>
+
+<table border=0 cellpadding=0 cellspacing=0 width=691>
+<tr><td colspan=3><img src=images/main_bar_bg01.gif></td></tr>
+<tr>
+<td valign=top align=center background=images/main_bar_bg02.gif>
+				<table border=0 cellpadding=0 cellspacing=0 width=660 align=center>
+				<tr>
+				<td align=center><img src=images/ip_title01.gif></td>
+				<td align=center><img src=images/ip_title02.gif></td>
+				<td align=center><img src=images/ip_title03.gif></td>
+				</tr>
+				<tr>
+				<td align=center bgcolor=ffffff width=216>
+							<table border=0 cellpadding=1 cellspacing=0 width=210>
+							<tr><td colspan=2 height=8></td></tr>
+							<? while($ip1fatch = mysql_fetch_array($ip1sel)){ ?>
+							<tr bgcolor=#ffffff onMouseOver=this.style.backgroundColor='#E7F0F1' onMouseOut=this.style.backgroundColor='#ffffff'>
+							<td width=170 height=22> <a href=<?=$ip1fatch[0]?> target=_blank><?=$ip1fatch[0]?></a></tD>
+							<td width=40><?=$ip1fatch[1]?> 명</td>
+							</tr>
+							<tr><td colspan=2 height=1 background=./images/line01.gif></td></tr>
+							<? } ?>
+							<tr><td colspan=2 height=8></td></tr>
+							</table>
+
+				</td>
+				<td align=center  background=images/domain_bg01.gif width=221>
+							<table border=0 cellpadding=1 cellspacing=0 width=210>
+							<tr><td colspan=2 height=8></td></tr>
+							<? while($ip2fatch = mysql_fetch_array($ip2sel)){ ?>
+							<tr bgcolor=#ffffff onMouseOver=this.style.backgroundColor='#E7F0F1' onMouseOut=this.style.backgroundColor='#ffffff'>
+							<td width=170 height=22> <a href=<?=$ip2fatch[0]?> target=_blank><?=$ip2fatch[0]?></a></tD>
+							<td width=40><?=$ip2fatch[1]?> 명</td>
+							</tr>
+							<tr><td colspan=2 height=1 background=./images/line01.gif></td></tr>
+							<? } ?>
+							<tr><td colspan=2 height=8></td></tr>
+							</table>
+				</td>
+				<td align=center  background=images/domain_bg02.gif width=223>
+							<table border=0 cellpadding=1 cellspacing=0 width=210>
+							<tr><td colspan=2 height=8></td></tr>
+							<? while($ipfatch = mysql_fetch_array($ipselect)){ ?>
+							<tr bgcolor=#ffffff onMouseOver=this.style.backgroundColor='#E7F0F1' onMouseOut=this.style.backgroundColor='#ffffff'>
+							<td width=170 height=22> <a href=<?=$ipfatch[0]?> target=_blank><?=$ipfatch[0]?></a></tD>
+							<td width=40><?=$ipfatch[1]?> 명</td>
+							</tr>
+							<tr><td colspan=2 height=1 background=./images/line01.gif></td></tr>
+							<? } ?>
+							<tr><td colspan=2 height=8></td></tr>
+							</table>
+				</td>
+				</tr>
+				</table>
+</td>
+</tr>
+<tr><td colspan=3><img src=images/main_bar_bg03.gif></td></tr>
+</table>
+
+
+</td></tr>
+<tr><td align=right><a href=#><img src=images/icon_top.gif border=0></a></td></tr></table>
+</td></tr>
+<tr><td>
+<img src="images/log_bg03.jpg" width="825" height="49" border="0" usemap="#Map"></td></tr>
+<map name="Map">
+  <area shape="rect" coords="317,2,558,23"  target="_blank">
+</map></table>

@@ -1,0 +1,223 @@
+<?
+include_once("../include/common_file_report.php");
+include_once("../../public/inc/site.inc"); /*2016-04-06*/
+if($CP_ID) @include_once("../../public/cp/cmp_config_".$CP_ID.".inc");
+
+if($_GET[code]){
+	$code=str_replace("{p}","+",$code);
+	$id_no = decrypt($code,$SALT);
+
+	$doc_mode=0;
+}
+if(!$code && !$id_no){exit;}
+if($_GET["id_no"]){
+	if(!$sessLogin[id]){exit;}
+}
+
+
+$edit_mode = (!$doc_mode)?1:0;
+
+
+$sql = "select * from cmp_estimate where id_no=$id_no";
+$dbo->query($sql);
+$rs= $dbo->next_record();
+$arr = explode("(",$rs[main_staff]);
+$staff=$arr[0];
+$staff_id=substr($arr[1],0,-1);
+$night = ((strtotime($rs[r_date]) -  strtotime($rs[d_date]))/86400)+1;//박수
+$d_date = $rs[d_date];
+$r_date = $rs[r_date];
+
+$sql2 = "select * from cmp_staff where id='$staff_id'";
+$dbo2->query($sql2);
+$rs2= $dbo2->next_record();
+$staff_phone = " ($rs2[cell1]-$rs2[cell2]-$rs2[cell3])";
+if($staff_phone==" (--)") $staff_phone="";
+//$staff .= $rs2[mposition] . $staff_phone;
+$staff .= $rs2[mposition] ;
+
+$sql2 = "select * from cmp_air where id_no=$rs[d_air_id_no]";
+$dbo2->query($sql2);
+$rs2= $dbo2->next_record();
+$d_air = $rs2[d_air];
+$d_air_no = $rs2[d_air_no];
+$d_time_s = $rs2[d_time_s];
+$d_time_e = $rs2[d_time_e];
+$airport_in = str_replace("공항","",$rs2[airport_in]);
+$airport_out = $rs2[airport_out];
+$airport_city = $rs2[city];
+$airport_place = $rs2[airport_place];
+
+$sql2 = "select * from cmp_air where id_no=$rs[r_air_id_no]";
+$dbo2->query($sql2);
+$rs2= $dbo2->next_record();
+$r_air = $rs2[r_air_no];
+$r_air_no = $rs2[r_air_no];
+$r_time_s = $rs2[r_time_s];
+$r_time_e = $rs2[r_time_e];
+$r_airport_in = str_replace("공항","",$rs2[airport_in]);
+$r_airport_out = $rs2[airport_out];
+$r_airport_city = $rs2[city];
+$r_airport_place = $rs2[airport_place];
+
+$sql2 = "select * from cmp_hotel where id_no=$rs[hotel_id_no]";
+$dbo2->query($sql2);
+$rs2= $dbo2->next_record();
+$hotel_name = $rs2[name];
+$hotel_url = $rs2[url];
+$hotel_phone = $rs2[phone];
+$ah1 = $rs2[ah];
+
+$hotel2_name = $rs2[name];
+$hotel2_url = $rs2[url];
+$hotel2_phone = $rs2[phone];
+$ah2 = $rs2[ah];
+
+
+$sql2 = "select * from cmp_golf where id_no=$rs[golf_id_no]";
+$dbo2->query($sql2);
+$rs2= $dbo2->next_record();
+$nation = $rs2[nation];
+$car = $rs2[car];
+$city = $rs2[city];
+
+if($doc_mode){
+	$xls_name = "report1.doc";
+	header("Content-type: application/vnd.ms-word");
+	header("Content-Type: application/vnd.ms-word; charset=euc-kr");
+	header("Content-Disposition: attachment;filename=$xls_name;");
+	header( "Content-Description: PHP4 Generated Data" );
+}
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+<?
+/*og metatag*/
+$OG_TITLE = "견적요청 - $default_golf_name $rs[d_date]";
+include("inc_form_og.php");
+?>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>견적요청 - <?=$default_golf_name?></title>
+
+
+<?if($edit_mode){?>
+	<link rel="stylesheet" href="../include/default.css">
+	<link rel="stylesheet" href="../include/basic.css" type="text/css">
+<?}?>
+
+<style type="text/css">
+.table th,.table td{
+	margin:0;
+	padding:10px;
+	border:1px solid #000;
+}
+.table th{text-align:left}
+.table{
+	width:80%;
+	border-collapse:collapse;
+	border:1px solid #000;
+}
+
+</style>
+</head>
+
+<body>
+
+
+	<h1 style="text-align:center;font-size:1.5em;	font-family:'Malgun Gothic','돋움';line-height:130%;">견적요청서</h1>
+
+	<center>
+		<table class="table" style="margin-top:20px;">
+		<tr>
+			<th style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;text-align:left;">1. 일정</th>
+			<td style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;text-align:left;"><?=$d_date?>~<?=$r_date?></td>
+		</tr>
+		<tr>
+			<th style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;text-align:left;">2. 호텔명 </th>
+			<td style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;text-align:left;"><?=$hotel_name?> <?=($hotel_name2)? "<br/>$hotel_name2":""?></td>
+		</tr>
+		<tr>
+			<th style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;text-align:left;">3. 골프장</th>
+			<td style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;text-align:left;">
+				<?
+				$j=0;
+				if($rs[golf2_1_name]){
+					$arr = explode(">",$rs[golf2_1_name]);
+					echo $arr[count($arr)-1];
+					$j++;
+				}
+
+				if($rs[golf2_2_name]){
+					$arr = explode(">",$rs[golf2_2_name]);
+					$comma = ($j)? "<br/>":"";
+					echo $comma . $arr[count($arr)-1];
+					$j++;
+				}
+
+				if($rs[golf2_3_name]){
+					$arr = explode(">",$rs[golf2_3_name]);
+					$comma = ($j)? "<br/>":"";
+					echo $comma . $arr[count($arr)-1];
+					$j++;
+				}
+
+				if($rs[golf2_4_name]){
+					$arr = explode(">",$rs[golf2_4_name]);
+					$comma = ($j)? "<br/>":"";
+					echo $comma . $arr[count($arr)-1];
+					$j++;
+				}
+				?>
+			</td>
+		</tr>
+		<tr>
+			<th style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;text-align:left;">4. 룸타입 </th>
+			<td style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;text-align:left;"><?=$rs[room_type]?></td>
+		</tr>
+		<tr>
+			<th style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;text-align:left;">5. 인원</th>
+			<td style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;text-align:left;"><?=nf($rs[people])?>명</td>
+		</tr>
+		<tr>
+			<th style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;text-align:left;">6. 항공편명</th>
+			<td style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;text-align:left;">
+			   <div>
+				   <div id="air_info"><?if($rs[d_air_no]){?>출국편명:<?=$rs[d_air_no]?> (출발시간:<?=$rs[d_air_time1]?> / 도착시간:<?=$rs[d_air_time2]?>)<?}?> <?if($REMOTE_ADDR=="106.246.54.27"){?>(ID_NO:<?=$rs[d_air_id_no]?>)<?}?></div>
+				   <div id="air_info2"><?if($rs[r_air_no]){?>귀국편명:<?=$rs[r_air_no]?> (출발시간:<?=$rs[r_air_time1]?> / 도착시간:<?=$rs[r_air_time2]?>)<?}?> <?if($REMOTE_ADDR=="106.246.54.27"){?>(ID_NO:<?=$rs[r_air_id_no]?>)<?}?></div>
+			   </div>
+			</td>
+		</tr>
+		<tr>
+			<th style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;text-align:left;">7. 담당자</th>
+			<td style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;text-align:left;"><?=$staff?></td>
+		</tr>
+		</table>
+
+	  <?if($edit_mode){?>
+
+	  <!-- Button Begin---------------------------------------------->
+	  <div style="display:block;width:80%;height:30px;z-index:99999 !important;margin-top:30px;">
+	  <table border="0" width="100%" cellspacing="0" cellpadding="0" align="center">
+		<tr align="right">
+			<td align="right">
+				<span class="btn_pack medium bold"><a href="<?=SELF?>?id_no=<?=$rs[id_no]?>&doc_mode=1"> Word 저장 </a></span>
+				&nbsp;&nbsp;&nbsp;
+				<span class="btn_pack medium bold"><a href="javascript:self.close()"> 창닫기 </a></span>
+			</td>
+		</tr>
+	  </table>
+	  </div>
+	  <!-- Button End------------------------------------------------>
+
+	  <?}?>
+
+
+
+	</center>
+
+
+</body>
+</html>

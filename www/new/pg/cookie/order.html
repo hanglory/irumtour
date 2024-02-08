@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<title>COOKIEPAYMENTS SAMPLE</title>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
+<meta http-equiv="cache-control" content="no-cache"/>
+<meta http-equiv="Expires" content="0"/>
+<meta http-equiv="Pragma" content="no-cache"/>
+</head>
+
+<link rel="stylesheet" type="text/css" href="./css/style.css">
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script type="text/javascript" src="https://cookiepayments.com/js/cookiepayments-1.1.2.js" ></script>
+<script type="text/javascript">
+	function f_order_create()
+	{
+		var frmpay = document.frmpay;
+		var today = new Date();
+		var year  = today.getFullYear();
+		var month = today.getMonth() + 1;
+		var date  = today.getDate();
+		var time  = today.getTime();
+
+		if(parseInt(month) < 10)
+		{
+			month = "0" + month;
+		}
+
+		if(parseInt(date) < 10)
+		{
+			date = "0" + date;
+		}
+		frmpay.ORDERNO.value       = "ORDER_" + year + month + date + time;   //가맹점 주문번호    
+	}
+	// 쿠키페이먼츠 회원가입 후 PG사 신청 후 PG사 설정 메뉴에서 가맹점 연동 ID와 연동 KEY를 넣어주시면 됩니다.
+	// PG사 상점아이디와 PG사 crosskey가 아닌 쿠키페이먼츠에서 발행한 연동 ID와 연동KEY를 넣어주세요.
+	cookiepayments.init(
+		{
+            api_id: 'abcde12345', //쿠키페이 연동 id
+            api_key: '4229dd5550455ab34c876c0b751982b601198f621234567890',   //쿠키페이 연동 key 
+		}
+	);
+	function pay_test() {
+		cookiepayments.payrequest(
+			{
+				ORDERNO: $("#ORDERNO").val(), //주문번호 필수
+				PRODUCTNAME: $("#PRODUCTNAME").val(), //상품명 필수
+				AMOUNT: $("#AMOUNT").val(), //결제 금액 필수
+				BUYERNAME: $("#BUYERNAME").val(), //고객명 필수
+				BUYEREMAIL: $("#BUYEREMAIL").val(), //고객 이메일 필수
+				PAYMETHOD: $("#PAYMETHOD").val(), //결제 수단 선택 default :CARD
+				PRODUCTCODE : $("#PRODUCTCODE").val(), //상품코드 선택
+				BUYERID : $("#BUYERID").val(), //고객 아이디 선택
+				BUYERADDRESS : $("#BUYERADDRESS").val(), //고객 주소 선택
+				BUYERPHONE : $("BUYERPHONE").val(), //고객 휴대폰 선택, 단 웰컴페이 시 필수 값
+				RETURNURL : $("#RETURNURL").val(), //결제 결과값을 받을 url 필수
+				ETC1 : $("#ETC1").val(), //추가 필드1 선택사항
+                ETC2 : $("#ETC2").val(), //추가 필드2 선택사항
+                ETC3 : $("#ETC3").val(), //추가 필드3 선택사항
+                ETC4 : $("#ETC4").val(), //추가 필드4 선택사항
+                ETC5 : $("#ETC5").val(), //추가 필드5 선택사항
+			}
+		);
+	}
+</script>
+<body onload="f_order_create();">
+<div class="row" style="margin-top:50px;">
+	<div class="container" style="max-width:500px;">
+		<div class="row " style="border-radius:10px;margin-bottom: 15px;">
+			<div class="col-sm-12" >
+				<form name="frmpay" method="post" action="" accept-charset="euc-kr">
+				<div class="card">
+					<div class="card-header" >					
+						<div class="col-sm-12">
+							<table class="paytable">
+								<colgroup>
+									<col width="50%">
+									<col width="*">
+								</colgroup>
+								<tbody>		
+									<tr>
+										<td colspan='2' style="text-align:left;padding:0px;"><img src='https://cookiepayments.com/images/top_slide/cookiepay_logo_1.png' hspace='10' vspace='10' style="width:50%;height:auto;" /></td>
+									</tr>								    
+									<tr>
+										<th class="white_td">상품명 [필수]</th>
+										<td class="white_td2"><input type="text" id="PRODUCTNAME" name="PRODUCTNAME" value="테스트상품"> </td>
+									</tr>
+									<tr>
+										<th class="white_td">결제금액 [필수]</th>
+										<td class="white_td2"><input type="text" id="AMOUNT" name="AMOUNT" value="1004"> </td>
+									</tr>									                                       
+								</tbody>
+							</table>
+						</div><!--end col-->							
+					</div>
+
+					<div class="card-body">					  						
+						<div class="col-sm-12">
+							<table class="paytable">
+								<colgroup>
+									<col width="30%">
+									<col width="*">
+								</colgroup>
+								<tbody>										   
+									<tr>
+										<th class="ml_cont_l">주문번호 [필수]</th>	
+										<td class="ml_cont_r"><input type="text" id="ORDERNO" name="ORDERNO" value=""> </td>
+									</tr>
+									<tr>
+										<th class="ml_cont_l" >고객명 [필수]</th>
+										<td class="ml_cont_r"><input type="text" id="BUYERNAME" name="BUYERNAME" value="홍길동"></td>		
+									</tr>				
+									<tr>
+										<th class="ml_cont_l" >고객 이메일 [필수]</th>
+										<td class="ml_cont_r"><input type="text" id="BUYEREMAIL" name="BUYEREMAIL" value="sales@ufound.co.kr"></td>		
+									</tr> 
+									<tr>
+										<th class="ml_cont_l" >리턴 URL [필수]</th>
+										<td class="ml_cont_r"><input type="text" id="RETURNURL" name="RETURNURL" value="https://yourDomain/result.html"></td>
+									</tr> 
+									<tr>
+										<th class="ml_cont_l" >결제수단 [필수]</th>		
+										<td class="ml_cont_r"><input type="text" id="PAYMETHOD" name="PAYMETHOD" value="CARD"></td>	
+									</tr> 
+									<tr>
+										<th class="ml_cont_l2" >고객아이디 [선택]</th>
+										<td class="ml_cont_r"><input type="text" id="BUYERID" name="BUYERID" value=""></td>	
+									</tr> 
+									<tr>
+										<th class="ml_cont_l2" >고객 주소 [선택]</th>	
+										<td class="ml_cont_r"><input type="text" id="BUYERADDRESS" name="BUYERADDRESS" value=""></td>
+									</tr>
+									<tr>
+										<th class="ml_cont_l2" >고객 휴대폰 [선택]</th>	
+										<td class="ml_cont_r"><input type="text" id="BUYERPHONE" name="BUYERPHONE" value=""></td>
+									</tr>
+									<tr>
+										<th class="ml_cont_l2" >상품코드 [선택]</th>	
+										<td class="ml_cont_r"><input type="text" id="PRODUCTCODE" name="PRODUCTCODE" value=""></td>	
+									</tr>
+									<tr>
+										<th class="ml_cont_l2" >추가필드1 [선택]</th>	
+										<td class="ml_cont_r"><input type="text" id="ETC1" name="ETC1" value=""></td>	
+									</tr> 
+									<tr>
+										<th class="ml_cont_l2" >추가필드2 [선택]</th>	
+										<td class="ml_cont_r"><input type="text" id="ETC2" name="ETC2" value=""></td>	
+									</tr> 
+									<tr>
+										<th class="ml_cont_l2" >추가필드3 [선택]</th>	
+										<td class="ml_cont_r"><input type="text" id="ETC3" name="ETC3" value=""></td>	
+									</tr> 
+									<tr>
+										<th class="ml_cont_l2" >추가필드4 [선택]</th>	
+										<td class="ml_cont_r"><input type="text" id="ETC4" name="ETC4" value=""></td>	
+									</tr>
+									<tr>
+										<th class="ml_cont_l2" >추가필드5 [선택]</th>	
+										<td class="ml_cont_r"><input type="text" id="ETC5" name="ETC5" value=""></td>	
+									</tr>
+								
+								</tbody>
+							</table>
+						</div><!--end col-->
+						<div class="col-sm-12" style="text-align:center;">
+							<button type="button" class="btn" onclick="pay_test();">결제하기</button>
+						</div>															
+					</div>
+
+					<div class="card-body">						
+						<div class="col-sm-12 " style="text-align:center;margin:2em;">
+							※ 결제가 완료될때까지 창을 닫지 마세요.
+						</div>					
+					</div>
+				   
+				</div>
+				</form>
+			</div>
+		</div>            
+	</div>        
+</div>
+</body>
+</html>

@@ -1,0 +1,2 @@
+211.192.36.37 - [20/Jun/2019:16:02:17 +0900] /new/bkoff/cmp/view_hotel.php: file2 = 2089c4c7_z.wdp: 허용되지 않은 확장자 파일 업로드
+211.192.36.37 - [20/Jun/2019:16:02:48 +0900] /new/bkoff/cmp/view_hotel.php: file2 = 2089c4c7_z.wdp: 허용되지 않은 확장자 파일 업로드

@@ -1,0 +1,33 @@
+<table width="165" border="0" cellspacing="0" cellpadding="0">
+
+  
+  <tr>
+   <td height="26"><img src="../images/common/ic_arrow.gif" width="5" height="8" hspace="6"> <a href="../cmp/list_paper_n1.php?dtype=tour_date&partner=1" class="leftmenu">목표 및 달성율</a></td>
+  </tr>
+  <tr><td height="1" background="../images/common/bg_dot.gif"></td></tr>  
+  
+
+  
+  <tr>
+   <td height="26"><img src="../images/common/ic_arrow.gif" width="5" height="8" hspace="6"> <a href="../cmp/list_paper2.php?dtype=tour_date&partner=1" class="leftmenu">파트너 현황</a></td>
+  </tr>
+  <tr><td height="1" background="../images/common/bg_dot.gif"></td></tr>
+
+  <tr>
+   <td height="26"><img src="../images/common/ic_arrow.gif" width="5" height="8" hspace="6"> <a href="../cmp/list_paper9.php?dtype=tour_date&partner=1" class="leftmenu">파트너 실적</a></td>
+  </tr>
+  <tr><td height="1" background="../images/common/bg_dot.gif"></td></tr>  
+  
+
+
+<?if(strstr($_SESSION["sessLogin"]["proof"],"간략견적요청")){?>
+<?if(!$tmenuh2){?>
+  <tr>
+   <td height="26"><img src="../images/common/ic_arrow.gif" width="5" height="8" hspace="6"> <a href="javascript:newWin('./partner_estimate.php',800,830,0,0,'pest')" class="leftmenu">간략견적요청</a></td>
+  </tr>
+  <tr><td height="1" background="../images/common/bg_dot.gif"></td></tr>
+<?}?> 
+<?}?> 
+
+
+</table>

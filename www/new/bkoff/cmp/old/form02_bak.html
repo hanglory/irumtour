@@ -1,0 +1,428 @@
+<?
+include_once("../include/common_file_report.php");
+
+$page_width="700";
+
+
+if($mode=="save"){
+
+	$sql="
+	   update cmp_reservation set
+	      hole = '$hole',
+	      room = '$room',
+	      memo_confirm = '$memo_confirm'
+	   where id_no=$id_no
+	";
+	$dbo->query($sql);
+	error("ÀúÀåÇÏ¿´½À´Ï´Ù.");
+	exit;
+}
+
+
+$sql = "select * from cmp_reservation where id_no=$id_no";
+$dbo->query($sql);
+$rs= $dbo->next_record();
+$arr =explode("(",$rs[main_staff]);
+$staff=$arr[0];
+$staff_id=substr($arr[1],0,-1);
+$night = ((strtotime($rs[r_date]) -  strtotime($rs[d_date]))/86400)+1;//¹Ú¼ö
+$d_date = $rs[d_date];
+$r_date = $rs[r_date];
+
+$sql2 = "select * from cmp_staff where id='$staff_id'";
+$dbo2->query($sql2);
+$rs2= $dbo2->next_record();
+$mposition = $rs2[mposition];
+
+$sql2 = "select * from cmp_air where id_no=$rs[air_id_no]";
+$dbo2->query($sql2);
+$rs2= $dbo2->next_record();
+
+$d_air = $rs2[d_air];
+$d_air = $rs2[d_air_no];
+$r_air = $rs2[r_air_no];
+$d_time_s = $rs2[d_time_s];
+$d_time_e = $rs2[d_time_e];
+$r_air_no = $rs2[r_air_no];
+$r_time_s = $rs2[r_time_s];
+$r_time_e = $rs2[r_time_e];
+$airport_in = $rs2[airport_in];
+$airport_out = $rs2[airport_out];
+
+$sql2 = "select * from cmp_golf where id_no=$rs[golf_id_no]";
+$dbo2->query($sql2);
+$rs2= $dbo2->next_record();
+$golf_name = $rs2[name];
+$point_include = $rs2[point_include];
+$point_not_include = $rs2[point_not_include];
+$local_staff = $rs2[local_staff];
+$phone2 = $rs2[phone2];
+$meeting_place = $rs2[meeting_place];
+$meeting_board = $rs2[meeting_board];
+$city = $rs2[city];
+$meal = $rs2[meal];
+$nation = $rs2[nation];
+$golf_ground=$rs2[golf_name];
+$hotel_name=$rs2[hotel_name];
+
+
+$form_mode = ($nation=="ÀÏº»" || $nation=="Áß±¹")?2:1;
+
+$edit_mode = (!$doc_mode && !$print_mode)?1:0;
+
+if($doc_mode){
+	$xls_name = "report1.doc";
+	header("Content-type: application/vnd.ms-word");
+	header("Content-Type: application/vnd.ms-word; charset=euc-kr");
+	header("Content-Disposition: attachment;filename=$xls_name;");
+	header( "Content-Description: PHP4 Generated Data" );
+}
+
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>¿¹¾à¿äÃ»¼­</title>
+<?if($edit_mode){?>
+	<link rel="stylesheet" href="../include/default.css">
+	<link rel="stylesheet" href="../include/basic.css" type="text/css">
+	<script language="JavaScript" src="../../include/form_check.js"></script>
+	<script language="JavaScript" src="../../include/function.js"></script>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+
+	<!-- Include Core Datepicker Stylesheet -->
+	<link rel="stylesheet" href="../../include/ui.datepicker.css" type="text/css" media="screen" title="core css file" charset="utf-8" />
+	<!-- Include jQuery -->
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+	<!-- Include Core Datepicker JavaScript -->
+	<script src="../../include/ui.datepicker.js" type="text/javascript" charset="utf-8"></script>
+	<!-- Attach the datepicker to dateinput after document is ready -->
+	<script type="text/javascript" charset="utf-8">
+		jQuery(function($){$(".dateinput").datepicker();});
+	</script>
+	<script type="text/javascript" src="../../qtip/jquery.qtip-1.0.0-rc3.min.js"></script>
+	<script type="text/javascript" src="../../include/jquery.maskedinput.min.js"></script>
+<?}?>
+</head>
+
+<body leftmargin="0" topmargin="0">
+
+<div style="width:700px;padding:30px;text-align:center;margin-left:auto;margin-right:auto;">
+
+	<table width="<?=$page_width?>" border="0" cellspacing="0" cellpadding="0" >
+
+	  <?if($edit_mode){?>
+		<form name="fmData" method="post" enctype="multipart/form-data" action="<?=SELF?>">
+		<input type="hidden" name="mode" value='save'>
+		<input type="hidden" name="id_no" value='<?=$rs[id_no]?>'>
+	  <?}?>
+
+
+      <tr>
+        <td align="center"><img src="http://irumtour.net/new/bkoff/cmp/info.gif"  width="<?=$page_width?>"/></td>
+      </tr>
+
+	  <tr>
+        <td><table width="<?=$page_width?>" border="0" cellspacing="1" cellpadding="0" style="border-collapse:collapse;border:1px solid #ccc ">
+          <tr>
+            <td width="20%" height="30" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';font-weight:bold;color:#fff">¼ö½Å</span></td>
+            <td height="30" bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding-left:10px;font-size:10pt"><?=$rs[name]?> °í°´´Ô</td>
+            <td width="20%" height="30" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';font-weight:bold;color:#fff">¹ß½ÅÀÏ</span></td>
+            <td height="30" bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding-left:10px;font-size:10pt"><?=date("Y/m/d")?></td>
+          </tr>
+          <tr>
+            <td width="20%" height="30" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';font-weight:bold;color:#fff">¼ö½ÅÀÎ ¿¬¶ôÃ³</span></td>
+            <td height="30" bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding-left:10px;font-size:10pt"><?=$rs[phone]?></td>
+            <td width="20%" height="30" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';font-weight:bold;color:#fff">¹ß½ÅÀÎ</span></td>
+            <td height="30" bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding-left:10px;font-size:10pt">ÀÌ·ëÅõ¾î <?=$staff?> <?=$mposition?></td>
+          </tr>
+
+		</table>
+		</td>
+      </tr>
+
+      <tr>
+        <td height="100" align="center"><h1 style="font-size:20px;font-weight:bold">CONFIRMATION [È® Á¤ ¼­]</h1></td>
+      </tr>
+	  <tr>
+        <td><table width="<?=$page_width?>" border="0" cellspacing="1" cellpadding="0" style="border-collapse:collapse;border:1px solid #ccc ">
+          <tr>
+            <td width="20%" height="30" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';font-weight:bold;color:#fff">»óÇ°¸í</span></td>
+            <td width="30%" height="30" bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding-left:10px;font-size:10pt"><?=$golf_name?></td>
+            <td width="20%" height="30" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';font-weight:bold;color:#fff">¿©ÇàÀÏÁ¤</span></td>
+            <td width="30%" height="30" bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding-left:10px;font-size:10pt"><?=$d_date?> ~ <?=$r_date?> (<?=$night?>ÀÏ)</td>
+          </tr>
+          <tr>
+            <td width="20%" height="30" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';font-weight:bold;color:#fff">ÀÎ ¿ø</span></td>
+            <td height="30" bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding-left:10px;font-size:10pt"><?=$rs[people]?>ÀÎ</td>
+            <td width="20%" height="30" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';font-weight:bold;color:#fff">°´½ÇÁ¾·ù</span></td>
+            <td height="30" bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding-left:10px;font-size:10pt"><?if($edit_mode){?><?=html_input("room",25,28,'box c')?><?}else{?><?=$rs[room]?><?}?></td>
+          </tr>
+          <tr>
+            <td width="20%" height="30" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';font-weight:bold;color:#fff">ÀÜ ±Ý</span></td>
+            <td height="30" bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding-left:10px;font-size:10pt"><?=nf($rs[price_last])?></td>
+            <td width="20%" height="30" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';font-weight:bold;color:#fff">ÀÔ±Ý¿äÃ»ÀÏ</span></td>
+            <td height="30" bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding-left:10px;font-size:10pt"><?=$rs[pay_date]?> <p><?=nl2br($ACCOUNT)?></p></td>
+          </tr>
+</table></td>
+      </tr>
+      <tr>
+        <td height="1"></td>
+      </tr>
+      <tr>
+        <td><table width="<?=$page_width?>" border="0" cellspacing="1" cellpadding="0" style="border-collapse:collapse;border:1px solid #ccc ">
+          <tr>
+            <td width="20%" height="50" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';font-weight:bold;color:#fff">Æ÷ÇÔ</span></td>
+            <td align="left" height="50" bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding-left:10px;font-size:10pt"><?=nl2br($point_include)?></td>
+          </tr>
+          <tr>
+            <td height="50" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';font-weight:bold;color:#fff">ºÒÆ÷ÇÔ</span></td>
+            <td align="left" height="50" bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding-left:10px;font-size:10pt"><?=nl2br($point_not_include)?></td>
+          </tr>
+  </table></td>
+      </tr>
+      <tr>
+        <td height="1"></td>
+      </tr>
+      <tr>
+        <td><table width="<?=$page_width?>" border="0" cellspacing="1" cellpadding="0" style="border-collapse:collapse;border:1px solid #ccc ">
+          <tr>
+            <td width="20%" rowspan="2" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';font-weight:bold;color:#fff">¿©Çà°æºñ</span></td>
+            <td height="30" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';font-weight:bold;color:#fff">1ÀÎ ¿©Çà°æºñ</span></td>
+            <td height="30" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';font-weight:bold;color:#fff">Ã¼·ùÀÏ</span></td>
+            <td height="30" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';font-weight:bold;color:#fff">ÀÎ ¿ø</span></td>
+            <td height="30" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';font-weight:bold;color:#fff">ÃÑÇÕ°è</span></td>
+          </tr>
+          <tr>
+            <td height="30" align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><?=@nf($rs[price]/$rs[people])?></td>
+            <td height="30" align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><?=$night?></td>
+            <td height="30" align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><?=$rs[people]?></td>
+            <td height="30" align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;color:red"><span style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';font-weight:bold"><?=nf($rs[price])?></span></td>
+          </tr>
+        </table></td>
+      </tr>
+      <tr>
+        <td height="30">&nbsp;</td>
+      </tr>
+      <tr>
+        <td>
+
+		<table width="<?=$page_width?>" border="0" cellspacing="1" cellpadding="0" style="border-collapse:collapse;border:1px solid #ccc ">
+          <tr>
+            <td height="30" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px"><span style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';font-weight:bold;color:#fff">ÀÏÀÚ</span></td>
+            <td align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px"><span style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';font-weight:bold;color:#fff">Áö¿ª</span></td>
+            <td align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px"><span style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';font-weight:bold;color:#fff">±³ÅëÆí</span></td>
+            <td align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px"><span style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';font-weight:bold;color:#fff">½Ã°£</span></td>
+            <td align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px"><span style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';font-weight:bold;color:#fff">¿©ÇàÀÏÁ¤</span></td>
+            <td align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px"><span style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';font-weight:bold;color:#fff">ºñ°í</span></td>
+          </tr>
+
+		  <tr>
+            <td height="30" align="center" bgcolor="#948A54" rowspan="4" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px;color:#fff;font-weight:bold">Á¦1ÀÏ</td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px"><?=str_replace("°øÇ×","",$airport_in)?></td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px"><?=$d_air?></td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px"><?=$d_time_s?></td>
+            <td align="left"  bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding-left:10px;font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';"><?=$airport_in?>°øÇ× Ãâ¹ß</td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc" rowspan="4">
+
+			<?if($form_mode==2){?>
+			Áß:ºÒÆ÷ÇÔ<br/>¼®:È£ÅÚ½Ä
+			<?}else{?>
+			¼®:±â³»½Ä
+			<?}?>
+
+			</td>
+          </tr>
+		  <tr>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px"><?=str_replace("°øÇ×","",$airport_out)?></td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px"><?//=$d_air?></td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px"><?=$d_time_e?></td>
+            <td align="left"  bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding-left:10px;font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';">
+			<?=$airport_out?> µµÂø
+			</td>
+          </tr>
+		  <tr>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px"></td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px">¼Û¿µÂ÷·®</td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px"></td>
+            <td align="left"  bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding-left:10px;font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';">
+			<?=$airport_out?> µµÂø / ¼öÈ­¹° Ã£À¸½Å ÈÄ <br>
+			<?=$meeting_place?>	 È¯¿µ°´ Àå¼Ò¿¡¼­<br/>
+			(¹ÌÆÃÇÇÄÏ : ÀÌ·ëÅõ¾î + <?=$rs[name]?>´Ô)<br>
+			¾È³»¿ø ¹ÌÆÃ ÈÄ °ñÇÁÀå(<?=($form_mode==1)?$hotel_name:$golf_ground?>)À¸·Î ÀÌµ¿
+			</td>
+          </tr>
+		  <tr>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px"><?=$city?></td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px"></td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px"></td>
+            <td align="left"  bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding-left:10px;font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';"><?=$hotel_name?> </td>
+          </tr>
+
+		  <?if($night>=3){?>
+		  <tr>
+            <td height="30" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;color:#fff;font-weight:bold" rowspan="2">Á¦2ÀÏ<?if($night>=4){?><br/>~<br/>Á¦<?=($form_mode==2)?$night-1:$night-2?>ÀÏ<?}?></td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px"><?=$city?></td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px">&nbsp;</td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px">&nbsp;</td>
+            <td align="left"  bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding-left:10px;font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';">
+				¸®Á¶Æ®(È£ÅÚ) Á¶½Ä ÈÄ <br/>
+				<?=$golf_ground?>  ÀüÀÏ
+				<?if($edit_mode){?>
+					<?=html_input("hole",3,3,'box num numberic c')?>
+				<?}else{?>
+					<?=$rs[hole]?>
+				<?}?>
+				È¦ ¶ó¿îµå
+			</td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc" rowspan="2"><?=nl2br($meal)?></td>
+          </tr>
+		  <tr>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px">&nbsp;</td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px">&nbsp;</td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px">&nbsp;</td>
+            <td align="left"  bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding-left:10px;font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';"><?=$hotel_name?> </td>
+          </tr>
+		  <?}?>
+
+
+
+		  <?if($form_mode==1){?>
+
+		  <tr>
+            <td height="30" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;color:#fff;font-weight:bold" rowspan="3">Á¦<?=$night-1?>ÀÏ</td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px"><?=$city?></td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px">&nbsp;</td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px">&nbsp;</td>
+            <td align="left"  bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding-left:10px;font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';">
+				¸®Á¶Æ®(È£ÅÚ) Á¶½Ä ÈÄ <br/>
+				<?=$golf_ground?> C.C ÀüÀÏ <?=$rs[hole]?>È¦ ¶ó¿îµå
+			</td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc" rowspan="3"><?=nl2br($meal)?></td>
+          </tr>
+		  <tr>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px">&nbsp;</td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px">¼Û¿µÂ÷·®</td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px">&nbsp;</td>
+            <td align="left"  bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding-left:10px;font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';">¼®½Ä ÈÄ °øÇ×À¸·Î ÀÌµ¿</td>
+          </tr>
+		  <tr>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px"><?=$airport_out?></td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px"><?=$r_air?></td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px"><?=$r_time_s?></td>
+            <td align="left"  bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding-left:10px;font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';"><?=$airport_out?> Ãâ¹ß</td>
+          </tr>
+
+		  <tr>
+            <td height="30" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px;color:#fff;font-weight:bold">Á¦<?=$night?>ÀÏ</td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px">&nbsp;</td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px">&nbsp;</td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px"><?=$r_time_e?></td>
+            <td align="left"  bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding-left:10px;font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';"><?=$airport_in?>µµÂø</td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px">Á¶:±â³»½Ä</td>
+          </tr>
+
+          <?}else{?>
+
+
+
+		  <tr>
+            <td height="30" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;color:#fff;font-weight:bold" rowspan="4">Á¦<?=$night?>ÀÏ</td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px"><?=$city?></td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px">&nbsp;</td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px">&nbsp;</td>
+            <td align="left"  bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding-left:10px;font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';">
+				¸®Á¶Æ®(È£ÅÚ) Á¶½Ä ÈÄ <br/>
+				<?=$golf_ground?> C.C ÀüÀÏ <?=$rs[hole]?>È¦ ¶ó¿îµå
+			</td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc" rowspan="3"> Á¶:È£ÅÚ½Ä</td>
+          </tr>
+		  <tr>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px">&nbsp;</td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px">¼Û¿µÂ÷·®</td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px">&nbsp;</td>
+            <td align="left"  bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding-left:10px;font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';">°øÇ×À¸·Î ÀÌµ¿</td>
+          </tr>
+		  <tr>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px"><?=$airport_out?></td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px"><?=$r_air?></td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px"><?=$r_time_s?></td>
+            <td align="left"  bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding-left:10px;font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';"><?=$airport_out?> Ãâ¹ß</td>
+          </tr>
+
+		  <tr>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px">&nbsp;</td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px">&nbsp;</td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px"><?=$r_time_e?></td>
+            <td align="left"  bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding-left:10px;font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';"><?=$airport_in?>µµÂø</td>
+            <td align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px"></td>
+          </tr>
+
+
+          <?}?>
+
+
+        </table></td>
+      </tr>
+      <tr>
+        <td height="40" style="color:red;"><span style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';font-weight:bold">**»ó±â ÀÏÁ¤Àº Ç×°ø±â ¹× ÇöÁö»çÁ¤À¸·Î ´Ù¼Ò º¯µ¿ µÉ ¼ö ÀÖ½À´Ï´Ù.</span></td>
+      </tr>
+      <tr>
+        <td height="10"></td>
+      </tr>
+      <tr>
+        <td><table width="<?=$page_width?>" border="0" cellspacing="1" cellpadding="0" style="border-collapse:collapse;border:1px solid #ccc ">
+          <tr>
+            <td width="20%" height="50" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';font-weight:bold;color:#fff">ÇöÁö¿¬¶ôÃ³</span></td>
+            <td align="left" height="50" bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding-left:10px;font-size:10pt"><?=$local_staff?> <?=$phone2?></td>
+          </tr>
+  </table></td>
+      </tr>
+      <tr>
+        <td height="10"></td>
+      </tr>
+      <tr>
+        <td><table width="<?=$page_width?>" border="0" cellspacing="1" cellpadding="0" style="border-collapse:collapse;border:1px solid #ccc ">
+          <tr>
+            <td width="20%" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';font-weight:bold;color:#fff">Âü°í»çÇ×</span></td>
+            <td align="left" bgcolor="#ffffff" style="font-size:10pt;font-family:'¸¼Àº°íµñ','µ¸¿ò';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:10px;font-size:10pt">
+			<?if(!$edit_mode){?>
+			<?=nl2br($rs[memo_confirm])?>
+			<?}else{?>
+			<?=html_textarea("memo_confirm",0,5)?>
+			<?}?>
+            </td>
+          </tr>
+  </table></td>
+      </tr>
+      <tr>
+        <td height="30">&nbsp;</td>
+      </tr>
+
+	  <?if($edit_mode){?>
+	  </form>
+	  <?}?>
+</table>
+
+
+	  <?if($edit_mode){?>
+	  <div style="padding:20px 0 30px 0">
+	  <!-- Button Begin---------------------------------------------->
+	  <table border="0" width="200" cellspacing="0" cellpadding="0" align="right">
+		<tr align="right">
+			<td><span class="btn_pack medium bold"><a href="#" onClick="document.fmData.submit()"> ÀúÀå </a></span></td>
+			<td><span class="btn_pack medium bold"><a href="<?=SELF?>?id_no=<?=$rs[id_no]?>&doc_mode=1"> Word ÀúÀå </a></span></td>
+			<td><span class="btn_pack medium bold"><a href="javascript:self.close()"> Ã¢´Ý±â </a></span></td>
+		</tr>
+	  </table>
+	  <!-- Button End------------------------------------------------>
+	  </div>
+	  <?}?>
+
+
+</div>
+
+
+</body>
+</html>

@@ -1,0 +1,132 @@
+<?
+#### Include
+include_once('../include/fun_basic.php');
+$maxFileSize = intval(substr(ini_get(upload_max_filesize),0,-1));
+$maxWidth = "670"; //최대 가로길이
+$imgPath = "http://".$SERVER_NAME ."/public/contentImgTmp";
+
+if($_FILES["file1"]["size"]){
+
+	if($filename_old) @unlink($filename_old);
+
+	$path .= '../public/contentImgTmp';
+/*
+	if (!is_dir($path)){
+		 @mkdir($path, 0777);
+		 @chmod($path, 0777);
+
+		if (!is_dir($path)){
+			  alert('디렉토리 생성에 실패하였습니다.');
+		}
+	}
+*/
+
+
+	$maxsize=$maxFileSize  * (1024*1024) ;			//2MB	업로드 가능한 최대 사이즈 제한
+	$fname=$_FILES["file1"]["tmp_name"];						//파일이름을 담고 있는 변수 이름
+	$fname_name=$_FILES["file1"]["name"];	//파일의 이름
+	$fname_size=$_FILES["file1"]["size"];		//파일의 사이즈
+	$fname_type=$_FILES["file1"]["type"];		//파일의 type
+	$filename="IMG".str_replace(" ","",str_replace(".","",microtime()));		//파일이름 작명
+	$type = "normal"; // 일반파일 normal, 이미지만 image
+	#------------------------------------------
+	include("../include/file_upload.php");
+	$fullname = $path . "/" . $upfile;
+	$pic_info=getimagesize($fullname);	//파일의 정보  - array[0]:너비 array[1]:높이 array[2]:타입(1=gif 2=jpg 3=png)  array[3]: 너비/높이 문자열
+	$wsize = ($pic_info[0]> $maxWidth)? $maxWidth : $pic_info[0];
+
+	$img = "<img src='${imgPath}/${upfile}' width='$wsize'>";
+	echo "
+		<script>
+			parent.document.getElementById('preView').src=\"${imgPath}/${upfile}\";
+			parent.document.getElementById('filename').value=\"$img\";
+			parent.document.getElementById('filename_old').value=\"${path}/${upfile}\";
+		</script>
+	";
+
+	exit;
+}
+
+if($mode=="drop"){
+	if($file) @unlink($file);
+	echo "<script>parent.parent.document.getElementById('PopWin').style.display='none';</script>";
+	exit;
+}
+
+?>
+<html>
+<head>
+<title>이미지 삽입</title>
+<meta http-equiv="Content-Type" content="text/html; charset=euc-kr">
+<link rel="stylesheet" href="../bkoff/include/basic.css" type="text/css">
+<link rel="stylesheet" href="../bkoff/include/default.css" type="text/css">
+ <style type="text/css">
+	  .preView { width: 138px; height: 138px; text-align: center; border:1px solid silver; }
+ </style>
+<script type="text/javascript">
+
+  function fileUploadPreview(thisObj, preViewer) {
+		if(!/(\.gif|\.jpg|\.jpeg|\.png)$/i.test(thisObj.value)) {
+			 alert("이미지 형식의 파일을 선택하십시오");
+			 return;
+		}else{
+			document.fmData.submit();
+		}
+  }
+
+  function insertImg(){
+		sHTML = document.fmData.filename.value;
+		parent.parent.oEditors.getById["content"].exec("PASTE_HTML", [sHTML]);
+		parent.document.getElementById('PopWin').style.display='none';
+
+  }
+
+  function popClose(){
+		//parent.document.getElementById('PopWin').style.display='none'
+		actarea.location.href="?mode=drop&file="+document.fmData.filename_old.value;
+  }
+</script>
+</head>
+
+<body  text="#000000" leftmargin="0" marginwidth="0" topmargin="0" marginheight="0">
+<table width="400" height="100%" border="1" cellspacing="0" cellpadding="0" style="border-collapse:collapse" bordercolor="#cccccc">
+<form name="fmData" method="post" onsubmit="return checkForm(this)" enctype="multipart/form-data" target="actarea">
+  <tr>
+    <td height="35" bgcolor="#336699" style="color:#FFFFFF;font-weight: bold;padding-left:15px">이미지 삽입</td>
+  </tr>
+  <tr>
+    <td align="center" valign="top" style="padding-top:10px" bgcolor="#FFFFFF">
+
+      <table border="0" cellspacing="0" cellpadding="5" width="95%">
+        <tr><td colspan="2" class='bar'></td></tr>
+		  <tr>
+          <td class="subject">이미지</td>
+          <td>
+			<input class="box" type="file" name="file1"  size="30" maxlength="50" onchange="fileUploadPreview(this, 'preView')">
+          </td>
+        </tr>
+        <tr><td colspan="2" class='bar'></td></tr>
+		</table>
+
+      <div id="img" style="padding-top:10px">
+			<img src="img/default.gif" id="preView" class="preView" name="preView">
+			<input type="hidden" name="filename_old" id="filename_old">
+			<input type="hidden" name="filename" id="filename">
+			<br>
+			<span class="btn_pack medium bold"><a href="#" onClick="insertImg()">본문에 이미지 삽입</a></span>
+		</div>
+
+
+	 </td>
+  </tr>
+  <tr>
+    <td height="25" align="right" bgcolor="#e6e6e6">
+	  <a href="javascript:popClose()" onfocus="blur(this)" style="color:FFFFFF;text-decoration: none"><img src="/images/eboard/close.gif" border="0"  align="absmiddle"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+  </tr>
+</form>
+</table>
+
+<iframe name="actarea" style="display:none;"></iframe>
+
+</body>
+</html>

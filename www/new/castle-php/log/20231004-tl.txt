@@ -1,0 +1,2 @@
+121.128.79.27 - [04/Oct/2023:12:38:29 +0900] /new/bkoff/cmp/view_golf2.php: file3 = j_b8dUd018svc1vfqdjsaaq039_jhv1m9.jpg: 차단된 이름 파일 업로드
+121.128.79.27 - [04/Oct/2023:12:40:43 +0900] /new/bkoff/cmp/view_golf2.php: file3 = j_b8dUd018svc1vfqdjsaaq039_jhv1m9.jpg: 차단된 이름 파일 업로드

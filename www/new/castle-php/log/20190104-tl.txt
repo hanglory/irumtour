@@ -1,0 +1,2 @@
+125.128.55.224 - [04/Jan/2019:15:43:52 +0900] /new/bkoff/cmp/set_passport.php: file1 = 강형성 부부 여권.tif: 허용되지 않은 확장자 파일 업로드
+125.128.55.224 - [04/Jan/2019:15:44:02 +0900] /new/bkoff/cmp/set_passport.php: file1 = 강형성.tif: 허용되지 않은 확장자 파일 업로드

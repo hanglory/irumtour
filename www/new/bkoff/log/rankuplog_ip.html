@@ -1,0 +1,285 @@
+<?php
+session_start();
+include "./dbcon.php";
+include "./rankuplog_admincert.php";
+
+$todayyear = date("Y");
+$todaydate = date("m");
+$todayday = date("d");
+$today = $todayyear."-".$todaydate."-".$todayday;
+
+if($mode == 'search'){
+	$searchday1 = $_POST['frontyear']."-".$_POST['frontmonth']."-".$_POST['frontday'];
+	$searchday2 = $_POST['backyear']."-".$_POST['backmonth']."-".$_POST['backday'];
+	$connection = "and wdate >= '$searchday1' and wdate <= '$searchday2'";
+}else{
+	$connection = "and wdate >= '$today' and wdate <= '$today'";
+}
+
+
+
+$que = "select content,sum(num) as num from rankuplog_ip where no $connection group by content";
+$result = mysql_query($que);
+$totalList = mysql_num_rows($result);
+$first_Num = 30;
+$first_Group = 10;
+if ( !$page ) $page = 1 ;
+$listPerPage = $first_Num ;			// 한 페이지에 보여줄 게시물 수
+$groupPerPage = $first_Group ;		// 한 페이지에 보여줄 페이지 그룹의 수
+
+if ( $totalList ) {
+
+	$firstList = ( $page - 1 ) * $listPerPage ;		//  0, 10, 20,...
+	$lastList = $page * $listPerPage ;				// 10, 20, 30,...
+
+	$isNext = $totalList - $lastList;
+	if ( $isNext < 0 ) $lastList = $totalList ;
+
+} else {
+
+	$firstList = 0;
+	$lastList = 0;
+}
+
+$totalPage = ceil( $totalList / $listPerPage );		// 총페이지 수
+if ( $totalPage == 0 ) $totalPage = 1;
+$totalGroup = ceil( $totalPage / $groupPerPage );	// 총페이지 그룹의 수
+$group = ceil( $page / $groupPerPage );				// 현재 페이지가 속한 그룹
+
+$firstPage = ( $group - 1 ) * $groupPerPage;
+$lastPage = $group * $groupPerPage;
+
+if ( $group >= $totalGroup ) {
+
+	$lastPage = $totalPage;
+}
+
+$query = "select content,sum(num) as num from rankuplog_ip where no $connection group by content order by num desc limit $firstList,$listPerPage";
+$select = mysql_query($query);
+?>
+<table width="500" border="0" cellpadding="0" cellspacing="0" align='center'>
+<tr><td><img src='images/log_bg01.gif'></td></tr>
+<tr><td background='images/log_bg02.jpg' align=center>
+<?php include "./rankup_toplink.html"; ?>
+<table border=0 cellpadding=0 cellspacing=0 width='685' align='center'>
+<tr><td><br>
+<table border=0 cellpadding=0 cellspacing=0 bgcolor='dddddd' width='685' align='center'>
+<tr><td><img src=./images/search_bg1.gif></td></tr>
+<tr bgcolor=f7f7f7><td background=./images/search_bg2.gif align=center>
+<table cellpadding=3 cellspacing=1 width=520 align='center'>
+<form name=form method=post action=<?php echo $PHP_SELF; ?>>
+<input type=hidden name=mode value=search>
+		<tr>
+		<td colspan=4>
+		<?=date("Y")?>년1월1일 하루 날짜를 알고 싶을때는 <?=date("Y")?>-1-1~<?=date("Y")?>-1-1 선택하시고 검색하시면 됩니다
+		</td>
+	</tr>
+	<tr>
+		<td width=200>
+			<select name=frontyear>
+
+<?
+for($i=2005; $i < date("Y")+1;$i++){
+?>
+				<option value="<?=$i?>" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontyear']==$i)?"selected":"";}else{ echo ($todayyear==$i)?"selected":"";} ?>><?=$i?></option>
+<?
+}
+?>
+			</select>년
+			<select name=frontmonth>
+				<option value="1" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontmonth']=='1')?"selected":"";}else{ echo ($todaydate=='01')?"selected":"";}?>>1</option>
+				<option value="2" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontmonth']=='2')?"selected":"";}else{ echo ($todaydate=='02')?"selected":"";}?>>2</option>
+				<option value="3" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontmonth']=='3')?"selected":"";}else{ echo ($todaydate=='03')?"selected":"";}?>>3</option>
+				<option value="4" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontmonth']=='4')?"selected":"";}else{ echo ($todaydate=='04')?"selected":"";}?>>4</option>
+				<option value="5" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontmonth']=='5')?"selected":"";}else{ echo ($todaydate=='05')?"selected":"";}?>>5</option>
+				<option value="6" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontmonth']=='6')?"selected":"";}else{ echo ($todaydate=='06')?"selected":"";}?>>6</option>
+				<option value="7" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontmonth']=='7')?"selected":"";}else{ echo ($todaydate=='07')?"selected":"";}?>>7</option>
+				<option value="8" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontmonth']=='8')?"selected":"";}else{ echo ($todaydate=='08')?"selected":"";}?>>8</option>
+				<option value="9" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontmonth']=='9')?"selected":"";}else{ echo ($todaydate=='09')?"selected":"";}?>>9</option>
+				<option value="10" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontmonth']=='10')?"selected":"";}else{ echo ($todaydate=='10')?"selected":"";}?>>10</option>
+				<option value="11" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontmonth']=='11')?"selected":"";}else{ echo ($todaydate=='11')?"selected":"";}?>>11</option>
+				<option value="12" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontmonth']=='12')?"selected":"";}else{ echo ($todaydate=='12')?"selected":"";}?>>12</option>
+			</select>월
+			<select name=frontday>
+				<option value="1" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontday']=='1')?"selected":"";}else{echo ($todayday=='1')?"selected":"";}?>>1</option>
+				<option value="2" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontday']=='2')?"selected":"";}else{echo ($todayday=='2')?"selected":"";}?>>2</option>
+				<option value="3" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontday']=='3')?"selected":"";}else{echo ($todayday=='3')?"selected":"";}?>>3</option>
+				<option value="4" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontday']=='4')?"selected":"";}else{echo ($todayday=='4')?"selected":"";}?>>4</option>
+				<option value="5" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontday']=='5')?"selected":"";}else{echo ($todayday=='5')?"selected":"";}?>>5</option>
+				<option value="6" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontday']=='6')?"selected":"";}else{echo ($todayday=='6')?"selected":"";}?>>6</option>
+				<option value="7" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontday']=='7')?"selected":"";}else{echo ($todayday=='7')?"selected":"";}?>>7</option>
+				<option value="8" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontday']=='8')?"selected":"";}else{echo ($todayday=='8')?"selected":"";}?>>8</option>
+				<option value="9" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontday']=='9')?"selected":"";}else{echo ($todayday=='9')?"selected":"";}?>>9</option>
+				<option value="10" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontday']=='10')?"selected":"";}else{echo ($todayday=='10')?"selected":"";}?>>10</option>
+				<option value="11" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontday']=='11')?"selected":"";}else{echo ($todayday=='11')?"selected":"";}?>>11</option>
+				<option value="12" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontday']=='12')?"selected":"";}else{echo ($todayday=='12')?"selected":"";}?>>12</option>
+				<option value="13" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontday']=='13')?"selected":"";}else{echo ($todayday=='13')?"selected":"";}?>>13</option>
+				<option value="14" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontday']=='14')?"selected":"";}else{echo ($todayday=='14')?"selected":"";}?>>14</option>
+				<option value="15" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontday']=='15')?"selected":"";}else{echo ($todayday=='15')?"selected":"";}?>>15</option>
+				<option value="16" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontday']=='16')?"selected":"";}else{echo ($todayday=='16')?"selected":"";}?>>16</option>
+				<option value="17" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontday']=='17')?"selected":"";}else{echo ($todayday=='17')?"selected":"";}?>>17</option>
+				<option value="18" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontday']=='18')?"selected":"";}else{echo ($todayday=='18')?"selected":"";}?>>18</option>
+				<option value="19" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontday']=='19')?"selected":"";}else{echo ($todayday=='19')?"selected":"";}?>>19</option>
+				<option value="20" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontday']=='20')?"selected":"";}else{echo ($todayday=='20')?"selected":"";}?>>20</option>
+				<option value="21" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontday']=='21')?"selected":"";}else{echo ($todayday=='21')?"selected":"";}?>>21</option>
+				<option value="22" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontday']=='22')?"selected":"";}else{echo ($todayday=='22')?"selected":"";}?>>22</option>
+				<option value="23" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontday']=='23')?"selected":"";}else{echo ($todayday=='23')?"selected":"";}?>>23</option>
+				<option value="24" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontday']=='24')?"selected":"";}else{echo ($todayday=='24')?"selected":"";}?>>24</option>
+				<option value="25" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontday']=='25')?"selected":"";}else{echo ($todayday=='25')?"selected":"";}?>>25</option>
+				<option value="26" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontday']=='26')?"selected":"";}else{echo ($todayday=='26')?"selected":"";}?>>26</option>
+				<option value="27" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontday']=='27')?"selected":"";}else{echo ($todayday=='27')?"selected":"";}?>>27</option>
+				<option value="28" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontday']=='28')?"selected":"";}else{echo ($todayday=='28')?"selected":"";}?>>28</option>
+				<option value="29" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontday']=='29')?"selected":"";}else{echo ($todayday=='29')?"selected":"";}?>>29</option>
+				<option value="30" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontday']=='30')?"selected":"";}else{echo ($todayday=='30')?"selected":"";}?>>30</option>
+				<option value="31" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontday']=='31')?"selected":"";}else{echo ($todayday=='31')?"selected":"";}?>>31</option>
+			</select>일
+		</td>
+		<td width=20>~</td>
+		<td width=200>
+		<select name=backyear>
+<?
+for($i=2005; $i < date("Y")+1;$i++){
+?>
+				<option value="<?=$i?>" <?php if($_POST['mode'] == 'search'){echo ($_POST['backyear']==$i)?"selected":"";}else{ echo ($todayyear==$i)?"selected":"";} ?>><?=$i?></option>
+<?
+}
+?>
+			</select>년
+			<select name=backmonth>
+				<option value="1" <?php if($_POST['mode'] == 'search'){echo ($_POST['backmonth']=='1')?"selected":"";}else{ echo ($todaydate=='01')?"selected":"";}?>>1</option>
+				<option value="2" <?php if($_POST['mode'] == 'search'){echo ($_POST['backmonth']=='2')?"selected":"";}else{ echo ($todaydate=='02')?"selected":"";}?>>2</option>
+				<option value="3" <?php if($_POST['mode'] == 'search'){echo ($_POST['backmonth']=='3')?"selected":"";}else{ echo ($todaydate=='03')?"selected":"";}?>>3</option>
+				<option value="4" <?php if($_POST['mode'] == 'search'){echo ($_POST['backmonth']=='4')?"selected":"";}else{ echo ($todaydate=='04')?"selected":"";}?>>4</option>
+				<option value="5" <?php if($_POST['mode'] == 'search'){echo ($_POST['backmonth']=='5')?"selected":"";}else{ echo ($todaydate=='05')?"selected":"";}?>>5</option>
+				<option value="6" <?php if($_POST['mode'] == 'search'){echo ($_POST['backmonth']=='6')?"selected":"";}else{ echo ($todaydate=='06')?"selected":"";}?>>6</option>
+				<option value="7" <?php if($_POST['mode'] == 'search'){echo ($_POST['backmonth']=='7')?"selected":"";}else{ echo ($todaydate=='07')?"selected":"";}?>>7</option>
+				<option value="8" <?php if($_POST['mode'] == 'search'){echo ($_POST['backmonth']=='8')?"selected":"";}else{ echo ($todaydate=='08')?"selected":"";}?>>8</option>
+				<option value="9" <?php if($_POST['mode'] == 'search'){echo ($_POST['backmonth']=='9')?"selected":"";}else{ echo ($todaydate=='09')?"selected":"";}?>>9</option>
+				<option value="10" <?php if($_POST['mode'] == 'search'){echo ($_POST['backmonth']=='10')?"selected":"";}else{ echo ($todaydate=='10')?"selected":"";}?>>10</option>
+				<option value="11" <?php if($_POST['mode'] == 'search'){echo ($_POST['backmonth']=='11')?"selected":"";}else{ echo ($todaydate=='11')?"selected":"";}?>>11</option>
+				<option value="12" <?php if($_POST['mode'] == 'search'){echo ($_POST['backmonth']=='12')?"selected":"";}else{ echo ($todaydate=='12')?"selected":"";}?>>12</option>
+			</select>월
+			<select name=backday>
+				<option value="1" <?php if($_POST['mode'] == 'search'){echo ($_POST['backday']=='1')?"selected":"";}else{echo ($todayday=='1')?"selected":"";}?>>1</option>
+				<option value="2" <?php if($_POST['mode'] == 'search'){echo ($_POST['backday']=='2')?"selected":"";}else{echo ($todayday=='2')?"selected":"";}?>>2</option>
+				<option value="3" <?php if($_POST['mode'] == 'search'){echo ($_POST['backday']=='3')?"selected":"";}else{echo ($todayday=='3')?"selected":"";}?>>3</option>
+				<option value="4" <?php if($_POST['mode'] == 'search'){echo ($_POST['backday']=='4')?"selected":"";}else{echo ($todayday=='4')?"selected":"";}?>>4</option>
+				<option value="5" <?php if($_POST['mode'] == 'search'){echo ($_POST['backday']=='5')?"selected":"";}else{echo ($todayday=='5')?"selected":"";}?>>5</option>
+				<option value="6" <?php if($_POST['mode'] == 'search'){echo ($_POST['backday']=='6')?"selected":"";}else{echo ($todayday=='6')?"selected":"";}?>>6</option>
+				<option value="7" <?php if($_POST['mode'] == 'search'){echo ($_POST['backday']=='7')?"selected":"";}else{echo ($todayday=='7')?"selected":"";}?>>7</option>
+				<option value="8" <?php if($_POST['mode'] == 'search'){echo ($_POST['backday']=='8')?"selected":"";}else{echo ($todayday=='8')?"selected":"";}?>>8</option>
+				<option value="9" <?php if($_POST['mode'] == 'search'){echo ($_POST['backday']=='9')?"selected":"";}else{echo ($todayday=='9')?"selected":"";}?>>9</option>
+				<option value="10" <?php if($_POST['mode'] == 'search'){echo ($_POST['backday']=='10')?"selected":"";}else{echo ($todayday=='10')?"selected":"";}?>>10</option>
+				<option value="11" <?php if($_POST['mode'] == 'search'){echo ($_POST['backday']=='11')?"selected":"";}else{echo ($todayday=='11')?"selected":"";}?>>11</option>
+				<option value="12" <?php if($_POST['mode'] == 'search'){echo ($_POST['backday']=='12')?"selected":"";}else{echo ($todayday=='12')?"selected":"";}?>>12</option>
+				<option value="13" <?php if($_POST['mode'] == 'search'){echo ($_POST['backday']=='13')?"selected":"";}else{echo ($todayday=='13')?"selected":"";}?>>13</option>
+				<option value="14" <?php if($_POST['mode'] == 'search'){echo ($_POST['backday']=='14')?"selected":"";}else{echo ($todayday=='14')?"selected":"";}?>>14</option>
+				<option value="15" <?php if($_POST['mode'] == 'search'){echo ($_POST['backday']=='15')?"selected":"";}else{echo ($todayday=='15')?"selected":"";}?>>15</option>
+				<option value="16" <?php if($_POST['mode'] == 'search'){echo ($_POST['backday']=='16')?"selected":"";}else{echo ($todayday=='16')?"selected":"";}?>>16</option>
+				<option value="17" <?php if($_POST['mode'] == 'search'){echo ($_POST['backday']=='17')?"selected":"";}else{echo ($todayday=='17')?"selected":"";}?>>17</option>
+				<option value="18" <?php if($_POST['mode'] == 'search'){echo ($_POST['backday']=='18')?"selected":"";}else{echo ($todayday=='18')?"selected":"";}?>>18</option>
+				<option value="19" <?php if($_POST['mode'] == 'search'){echo ($_POST['backday']=='19')?"selected":"";}else{echo ($todayday=='19')?"selected":"";}?>>19</option>
+				<option value="20" <?php if($_POST['mode'] == 'search'){echo ($_POST['backday']=='20')?"selected":"";}else{echo ($todayday=='20')?"selected":"";}?>>20</option>
+				<option value="21" <?php if($_POST['mode'] == 'search'){echo ($_POST['backday']=='21')?"selected":"";}else{echo ($todayday=='21')?"selected":"";}?>>21</option>
+				<option value="22" <?php if($_POST['mode'] == 'search'){echo ($_POST['backday']=='22')?"selected":"";}else{echo ($todayday=='22')?"selected":"";}?>>22</option>
+				<option value="23" <?php if($_POST['mode'] == 'search'){echo ($_POST['backday']=='23')?"selected":"";}else{echo ($todayday=='23')?"selected":"";}?>>23</option>
+				<option value="24" <?php if($_POST['mode'] == 'search'){echo ($_POST['backday']=='24')?"selected":"";}else{echo ($todayday=='24')?"selected":"";}?>>24</option>
+				<option value="25" <?php if($_POST['mode'] == 'search'){echo ($_POST['backday']=='25')?"selected":"";}else{echo ($todayday=='25')?"selected":"";}?>>25</option>
+				<option value="26" <?php if($_POST['mode'] == 'search'){echo ($_POST['backday']=='26')?"selected":"";}else{echo ($todayday=='26')?"selected":"";}?>>26</option>
+				<option value="27" <?php if($_POST['mode'] == 'search'){echo ($_POST['backday']=='27')?"selected":"";}else{echo ($todayday=='27')?"selected":"";}?>>27</option>
+				<option value="28" <?php if($_POST['mode'] == 'search'){echo ($_POST['backday']=='28')?"selected":"";}else{echo ($todayday=='28')?"selected":"";}?>>28</option>
+				<option value="29" <?php if($_POST['mode'] == 'search'){echo ($_POST['backday']=='29')?"selected":"";}else{echo ($todayday=='29')?"selected":"";}?>>29</option>
+				<option value="30" <?php if($_POST['mode'] == 'search'){echo ($_POST['backday']=='30')?"selected":"";}else{echo ($todayday=='30')?"selected":"";}?>>30</option>
+				<option value="31" <?php if($_POST['mode'] == 'search'){echo ($_POST['backday']=='31')?"selected":"";}else{echo ($todayday=='31')?"selected":"";}?>>31</option>
+			</select>일
+		</td>
+		<td width=100>&nbsp;&nbsp;
+			<input type=image src=./images/search_button.gif border=0 align=absmiddle>
+		</td>
+	</tr>
+</form>
+</table>
+</td></tr>
+<tr><td><img src=./images/search_bg3.gif></td></tr></table>
+</td></tr>
+
+<tr>
+<td height='5' align='right'></td>
+</tr>
+<tr><td align=center>
+<table width=685 cellpadding=0 cellspacing=0>
+<tr>
+		<td colspan=4 align=right height=30><a href=regist.php?mode=ipdel onclick="return confirm('삭제하시겠습니까?')"><font color=green><img src=images/ip_delete_button.gif border=0 align=absmiddle></a></font></td>
+</tr></table>
+</td></tr>
+
+<tr><td align=center>
+<table border=0 cellpadding=3 cellspacing=1 bgcolor='dddddd' width='685' align='center'>
+	<tr bgcolor=f7f7f7 align=center>
+		<td height=30 width=61%>아이피</td>
+		<td width=13%>접속수</td>
+		<td width=13%>상세정보</td>
+	</tr>
+	<?php while($fatch = mysql_fetch_array($select)){ ?>
+	<tr bgcolor=#ffffff onMouseOver=this.style.backgroundColor='#E7F0F1' onMouseOut=this.style.backgroundColor='#ffffff'>
+		<td  height=25><?php echo $fatch[0]; ?></td>
+		<td><?php echo $fatch[1]; ?>명</td>
+		<td align=center><a href=rankuplog_ip_detail.html?content=<?php echo $fatch[0]; ?>><img src=./images/detail_button.gif border=0 align=absmiddle></a></td>
+	</tr>
+	<? } ?>
+	<tr bgcolor=ffffff>
+		<td colspan=4 align=center>
+<?
+// 첫 페이지 그룹으로 이동
+if ( $page == 1 ) echo "";
+
+else
+
+	echo "<a href='$PHP_SELF?page=1&mode=$mode&frontyear=$frontyear&frontmonth=$frontmonth&frontday=$frontday&backyear=$backyear&backmonth=$backmonth&backday=$backday'>처음</a>&nbsp;";
+
+// 이전 페이지 그룹으로 이동
+
+if ( $group > 1 ) {
+
+	$currentPage = $firstPage;
+
+	echo "<a href='$PHP_SELF?page=$firstPage&mode=$mode&frontyear=$frontyear&frontmonth=$frontmonth&frontday=$frontday&backyear=$backyear&backmonth=$backmonth&backday=$backday'> 이전 </a>&nbsp;" ;
+}
+
+// 해당 페이지 직접 이동 링크
+for ( $directPage = $firstPage + 1 ; $directPage <= $lastPage ; $directPage++ ) {
+
+	if ( $directPage == $page ) echo "<b>".$directPage."</b>&nbsp;" ;
+
+	else
+		echo "<a href='$PHP_SELF?page=$directPage&mode=$mode&frontyear=$frontyear&frontmonth=$frontmonth&frontday=$frontday&backyear=$backyear&backmonth=$backmonth&backday=$backday'>[$directPage]</a>&nbsp;" ;
+
+}
+
+// 다음 페이지 그룹으로 이동
+
+if ($group < $totalGroup) {
+
+	$currentPage = $lastPage + 1;
+
+	echo "<a href='$PHP_SELF?page=$currentPage&mode=$mode&frontyear=$frontyear&frontmonth=$frontmonth&frontday=$frontday&backyear=$backyear&backmonth=$backmonth&backday=$backday'> 다음 </a>&nbsp;" ;
+}
+
+// 마지막 페이지 그룹으로 이동
+
+if ( $page == $totalPage ) echo "";
+
+else
+	echo "<a href=' $PHP_SELF?page=$totalPage&mode=$mode&frontyear=$frontyear&frontmonth=$frontmonth&frontday=$frontday&backyear=$backyear&backmonth=$backmonth&backday=$backday'>마지막</a>&nbsp;" ;
+
+?>
+		</td>
+	</tr>
+	<tr><td colspan=3 bgcolor=ffffff align=right><a href=#><img src=images/icon_top.gif border=0></a></td></tr>
+</table>
+</td></tr>
+<tr><td>
+<img src="images/log_bg03.jpg" width="825" height="49" border="0" usemap="#Map"></td></tr>
+<map name="Map">
+  <area shape="rect" coords="317,2,558,23"  target="_blank">
+</map></table>

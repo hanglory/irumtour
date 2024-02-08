@@ -1,0 +1,3 @@
+20.101.51.37 - [10/Dec/2021:05:27:15 +0900] /new/bkoff/cmp/pop_bank.php: id = \"&gt;&lt;script &gt;alert(String.fromCharCode(88,83,83))&lt;/script&gt;: XSS 공격 패턴 탐지
+20.101.51.37 - [10/Dec/2021:05:27:15 +0900] /new/bkoff/cmp/pop_bank.php: io = \"&gt;&lt;script &gt;alert(String.fromCharCode(88,83,83))&lt;/script&gt;: XSS 공격 패턴 탐지
+20.101.51.37 - [10/Dec/2021:05:27:16 +0900] /new/bkoff/cmp/pop_bank.php: j = \"&gt;&lt;script &gt;alert(String.fromCharCode(88,83,83))&lt;/script&gt;: XSS 공격 패턴 탐지

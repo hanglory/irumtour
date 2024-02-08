@@ -1,0 +1,307 @@
+<?php
+session_start();
+include "./dbcon.php";
+include "./rankuplog_admincert.php";
+
+$todayyear = date("Y");
+$todaydate = date("m");
+$today = $todayyear."-".$todaydate;
+if($mode == 'search'){
+	$searchday1 = $_POST['frontyear']."-".$_POST['frontmonth'];
+	$connection = "and wdate like '%$searchday1%'";
+}else{
+	$connection = "and wdate like '%$today%'";
+}
+
+$exis_que = "select * from rankuplog_date where no $connection";
+$exis_select = mysql_query($exis_que);
+$num = mysql_num_rows($exis_select);
+
+if($num){
+$query = "select sum(date1),
+sum(date2),
+sum(date3),
+sum(date4),
+sum(date5),
+sum(date6),
+sum(date7),
+sum(date8),
+sum(date9),
+sum(date10),
+sum(date11),
+sum(date12),
+sum(date13),
+sum(date14),
+sum(date15),
+sum(date16),
+sum(date17),
+sum(date18),
+sum(date19),
+sum(date20),
+sum(date21),
+sum(date22),
+sum(date23),
+sum(date24),
+sum(date25),
+sum(date26),
+sum(date27),
+sum(date28),
+sum(date29),
+sum(date30),
+sum(date31) from rankuplog_date where no $connection";
+$select = mysql_query($query);
+$fatch = mysql_fetch_array($select);
+
+$maxnumque = "select greatest(sum(date1),
+sum(date2),
+sum(date3),
+sum(date4),
+sum(date5),
+sum(date6),
+sum(date7),
+sum(date8),
+sum(date9),
+sum(date10),
+sum(date11),
+sum(date12),
+sum(date13),
+sum(date14),
+sum(date15),
+sum(date16),
+sum(date17),
+sum(date18),
+sum(date19),
+sum(date20),
+sum(date21),
+sum(date22),
+sum(date23),
+sum(date24),
+sum(date25),
+sum(date26),
+sum(date27),
+sum(date28),
+sum(date29),
+sum(date30),
+sum(date31)) from rankuplog_date where no $connection";
+$maxnumsel = mysql_query($maxnumque);
+$maxnumfat = mysql_result($maxnumsel,0,0);
+$mannumber = 500; //최대값변수처리
+$width0 = ceil(($fatch[0]/$maxnumfat)*$mannumber);
+$width1 = ceil(($fatch[1]/$maxnumfat)*$mannumber);
+$width2 = ceil(($fatch[2]/$maxnumfat)*$mannumber);
+$width3 = ceil(($fatch[3]/$maxnumfat)*$mannumber);
+$width4 = ceil(($fatch[4]/$maxnumfat)*$mannumber);
+$width5 = ceil(($fatch[5]/$maxnumfat)*$mannumber);
+$width6 = ceil(($fatch[6]/$maxnumfat)*$mannumber);
+$width7 = ceil(($fatch[7]/$maxnumfat)*$mannumber);
+$width8 = ceil(($fatch[8]/$maxnumfat)*$mannumber);
+$width9 = ceil(($fatch[9]/$maxnumfat)*$mannumber);
+$width10 = ceil(($fatch[10]/$maxnumfat)*$mannumber);
+$width11 = ceil(($fatch[11]/$maxnumfat)*$mannumber);
+$width12 = ceil(($fatch[12]/$maxnumfat)*$mannumber);
+$width13 = ceil(($fatch[13]/$maxnumfat)*$mannumber);
+$width14 = ceil(($fatch[14]/$maxnumfat)*$mannumber);
+$width15 = ceil(($fatch[15]/$maxnumfat)*$mannumber);
+$width16 = ceil(($fatch[16]/$maxnumfat)*$mannumber);
+$width17 = ceil(($fatch[17]/$maxnumfat)*$mannumber);
+$width18 = ceil(($fatch[18]/$maxnumfat)*$mannumber);
+$width19 = ceil(($fatch[19]/$maxnumfat)*$mannumber);
+$width20 = ceil(($fatch[20]/$maxnumfat)*$mannumber);
+$width21 = ceil(($fatch[21]/$maxnumfat)*$mannumber);
+$width22 = ceil(($fatch[22]/$maxnumfat)*$mannumber);
+$width23 = ceil(($fatch[23]/$maxnumfat)*$mannumber);
+$width24 = ceil(($fatch[24]/$maxnumfat)*$mannumber);
+$width25 = ceil(($fatch[25]/$maxnumfat)*$mannumber);
+$width26 = ceil(($fatch[26]/$maxnumfat)*$mannumber);
+$width27 = ceil(($fatch[27]/$maxnumfat)*$mannumber);
+$width28 = ceil(($fatch[28]/$maxnumfat)*$mannumber);
+$width29 = ceil(($fatch[29]/$maxnumfat)*$mannumber);
+$width30 = ceil(($fatch[30]/$maxnumfat)*$mannumber);
+}
+
+?>
+<table width="500" border="0" cellpadding="0" cellspacing="0" align='center'>
+<tr><td><img src='images/log_bg01.gif'></td></tr>
+<tr><td background='images/log_bg02.jpg' align=center>
+<?php include "./rankup_toplink.html"; ?>
+<table border=0 cellpadding=0 cellspacing=0 width='685' align='center'>
+<tr><td><br>
+<table border=0 cellpadding=0 cellspacing=0 bgcolor='dddddd' width='685' align='center'>
+<tr><td><img src=./images/search_bg1.gif></td></tr>
+<tr bgcolor=f7f7f7><td background=./images/search_bg2.gif align=center>
+<table cellpadding=3 cellspacing=1 width=520 align='center'>
+<form name=form method=post action=<?php echo $PHP_SELF; ?>>
+<input type=hidden name=mode value=search>
+	<tr>
+			<td width=50% align=right>
+		검색할 년도와 달을 선택하세요&nbsp;&nbsp;</td>
+		<td width=50%>
+			<select name=frontyear>
+<?
+for($i=2005; $i < date("Y")+1;$i++){
+?>
+				<option value="<?=$i?>" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontyear']==$i)?"selected":"";}else{ echo ($todayyear==$i)?"selected":"";} ?>><?=$i?></option>
+<?
+}
+?>
+
+			</select>년
+			<select name=frontmonth>
+				<option value="01" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontmonth']=='1')?"selected":"";}else{ echo ($todaydate=='01')?"selected":"";} ?>>1</option>
+				<option value="02" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontmonth']=='2')?"selected":"";}else{ echo ($todaydate=='02')?"selected":"";} ?>>2</option>
+				<option value="03" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontmonth']=='3')?"selected":"";}else{ echo ($todaydate=='03')?"selected":"";} ?>>3</option>
+				<option value="04" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontmonth']=='4')?"selected":"";}else{ echo ($todaydate=='04')?"selected":"";} ?>>4</option>
+				<option value="05" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontmonth']=='5')?"selected":"";}else{ echo ($todaydate=='05')?"selected":"";} ?>>5</option>
+				<option value="06" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontmonth']=='6')?"selected":"";}else{ echo ($todaydate=='06')?"selected":"";} ?>>6</option>
+				<option value="07" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontmonth']=='7')?"selected":"";}else{ echo ($todaydate=='07')?"selected":"";} ?>>7</option>
+				<option value="08" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontmonth']=='8')?"selected":"";}else{ echo ($todaydate=='08')?"selected":"";} ?>>8</option>
+				<option value="09" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontmonth']=='9')?"selected":"";}else{ echo ($todaydate=='09')?"selected":"";} ?>>9</option>
+				<option value="10" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontmonth']=='10')?"selected":"";}else{ echo ($todaydate=='10')?"selected":"";} ?>>10</option>
+				<option value="11" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontmonth']=='11')?"selected":"";}else{ echo ($todaydate=='11')?"selected":"";} ?>>11</option>
+				<option value="12" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontmonth']=='12')?"selected":"";}else{ echo ($todaydate=='12')?"selected":"";} ?>>12</option>
+			</select>월&nbsp;&nbsp;
+			<input type=image src=./images/search_button.gif border=0 align=absmiddle>
+		</td>
+	</tr>
+</form>
+</table>
+</td></tr>
+<tr><td><img src=./images/search_bg3.gif></td></tr> </table>
+</td></tr>
+<tr>
+<td height='25' align='right'>&nbsp;&nbsp;</td>
+</tr>
+<tr><td align=center>
+<table border=0 cellpadding=3 cellspacing=1 bgcolor='dddddd' width='685' align='center'>
+	<tr bgcolor=ffffff>
+		<td width=60 height=20 align=center bgcolor=f7f7f7>1일</td>
+		<td><img src=images/bar3.gif width=<?php echo $width0; ?> height=9> <font color=268015><?php echo $fatch[0]; ?>명</font></td>
+	</tr>
+	<tr bgcolor=ffffff>
+		<td height=20 align=center bgcolor=f7f7f7>2일</td>
+		<td><img src=images/bar3.gif width=<?php echo $width1; ?> height=9> <font color=268015><?php echo $fatch[1]; ?>명</font></td>
+	</tr>
+	<tr bgcolor=ffffff>
+		<td height=20 align=center bgcolor=f7f7f7>3일</td>
+		<td><img src=images/bar3.gif width=<?php echo $width2; ?> height=9> <font color=268015><?php echo $fatch[2]; ?>명</font></td>
+	</tr>
+	<tr bgcolor=ffffff>
+		<td height=20 align=center bgcolor=f7f7f7>4일</td>
+		<td><img src=images/bar3.gif width=<?php echo $width3; ?> height=9> <font color=268015><?php echo $fatch[3]; ?>명</font></td>
+	</tr>
+	<tr bgcolor=ffffff>
+		<td height=20 align=center bgcolor=f7f7f7>5일</td>
+		<td><img src=images/bar3.gif width=<?php echo $width4; ?> height=9> <font color=268015><?php echo $fatch[4]; ?>명</font></td>
+	</tr>
+	<tr bgcolor=ffffff>
+		<td height=20 align=center bgcolor=f7f7f7>6일</td>
+		<td><img src=images/bar3.gif width=<?php echo $width5; ?> height=9> <font color=268015><?php echo $fatch[5]; ?>명</font></td>
+	</tr>
+	<tr bgcolor=ffffff>
+		<td height=20 align=center bgcolor=f7f7f7>7일</td>
+		<td><img src=images/bar3.gif width=<?php echo $width6; ?> height=9> <font color=268015><?php echo $fatch[6]; ?>명</font></td>
+	</tr>
+	<tr bgcolor=ffffff>
+		<td height=20 align=center bgcolor=f7f7f7>8일</td>
+		<td><img src=images/bar3.gif width=<?php echo $width7; ?> height=9> <font color=268015><?php echo $fatch[7]; ?>명</font></td>
+	</tr>
+	<tr bgcolor=ffffff>
+		<td height=20 align=center bgcolor=f7f7f7>9일</td>
+		<td><img src=images/bar3.gif width=<?php echo $width8; ?> height=9> <font color=268015><?php echo $fatch[8]; ?>명</font></td>
+	</tr>
+	<tr bgcolor=ffffff>
+		<td height=20 align=center bgcolor=f7f7f7>10일</td>
+		<td><img src=images/bar3.gif width=<?php echo $width9; ?> height=9> <font color=268015><?php echo $fatch[9]; ?>명</font></td>
+	</tr>
+	<tr bgcolor=ffffff>
+		<td height=20 align=center bgcolor=f7f7f7>11일</td>
+		<td><img src=images/bar3.gif width=<?php echo $width10; ?> height=9> <font color=268015><?php echo $fatch[10]; ?>명</font></td>
+	</tr>
+	<tr bgcolor=ffffff>
+		<td height=20 align=center bgcolor=f7f7f7>12일</td>
+		<td><img src=images/bar3.gif width=<?php echo $width11; ?> height=9> <font color=268015><?php echo $fatch[11]; ?>명</font></td>
+	</tr>
+	<tr bgcolor=ffffff>
+		<td height=20 align=center bgcolor=f7f7f7>13일</td>
+		<td><img src=images/bar3.gif width=<?php echo $width12; ?> height=9> <font color=268015><?php echo $fatch[12]; ?>명</font></td>
+	</tr>
+	<tr bgcolor=ffffff>
+		<td height=20 align=center bgcolor=f7f7f7>14일</td>
+		<td><img src=images/bar3.gif width=<?php echo $width13; ?> height=9> <font color=268015><?php echo $fatch[13]; ?>명</font></td>
+	</tr>
+	<tr bgcolor=ffffff>
+		<td height=20 align=center bgcolor=f7f7f7>15일</td>
+		<td><img src=images/bar3.gif width=<?php echo $width14; ?> height=9> <font color=268015><?php echo $fatch[14]; ?>명</font></td>
+	</tr>
+	<tr bgcolor=ffffff>
+		<td height=20 align=center bgcolor=f7f7f7>16일</td>
+		<td><img src=images/bar3.gif width=<?php echo $width15; ?> height=9> <font color=268015><?php echo $fatch[15]; ?>명</font></td>
+	</tr>
+	<tr bgcolor=ffffff>
+		<td height=20 align=center bgcolor=f7f7f7>17일</td>
+		<td><img src=images/bar3.gif width=<?php echo $width16; ?> height=9> <font color=268015><?php echo $fatch[16]; ?>명</font></td>
+	</tr>
+	<tr bgcolor=ffffff>
+		<td height=20 align=center bgcolor=f7f7f7>18일</td>
+		<td><img src=images/bar3.gif width=<?php echo $width17; ?> height=9> <font color=268015><?php echo $fatch[17]; ?>명</font></td>
+	</tr>
+	<tr bgcolor=ffffff>
+		<td height=20 align=center bgcolor=f7f7f7>19일</td>
+		<td><img src=images/bar3.gif width=<?php echo $width18; ?> height=9> <font color=268015><?php echo $fatch[18]; ?>명</font></td>
+	</tr>
+	<tr bgcolor=ffffff>
+		<td height=20 align=center bgcolor=f7f7f7>20일</td>
+		<td><img src=images/bar3.gif width=<?php echo $width19; ?> height=9> <font color=268015><?php echo $fatch[19]; ?>명</font></td>
+	</tr>
+	<tr bgcolor=ffffff>
+		<td height=20 align=center bgcolor=f7f7f7>21일</td>
+		<td><img src=images/bar3.gif width=<?php echo $width20; ?> height=9> <font color=268015><?php echo $fatch[20]; ?>명</font></td>
+	</tr>
+	<tr bgcolor=ffffff>
+		<td height=20 align=center bgcolor=f7f7f7>22일</td>
+		<td><img src=images/bar3.gif width=<?php echo $width21; ?> height=9> <font color=268015><?php echo $fatch[21]; ?>명</font></td>
+	</tr>
+	<tr bgcolor=ffffff>
+		<td height=20 align=center bgcolor=f7f7f7>23일</td>
+		<td><img src=images/bar3.gif width=<?php echo $width22; ?> height=9> <font color=268015><?php echo $fatch[22]; ?>명</font></td>
+	</tr>
+	<tr bgcolor=ffffff>
+		<td height=20 align=center bgcolor=f7f7f7>24일</td>
+		<td><img src=images/bar3.gif width=<?php echo $width23; ?> height=9> <font color=268015><?php echo $fatch[23]; ?>명</font></td>
+	</tr>
+	<tr bgcolor=ffffff>
+		<td height=20 align=center bgcolor=f7f7f7>25일</td>
+		<td><img src=images/bar3.gif width=<?php echo $width24; ?> height=9> <font color=268015><?php echo $fatch[24]; ?>명</font></td>
+	</tr>
+	<tr bgcolor=ffffff>
+		<td height=20 align=center bgcolor=f7f7f7>26일</td>
+		<td><img src=images/bar3.gif width=<?php echo $width25; ?> height=9> <font color=268015><?php echo $fatch[25]; ?>명</font></td>
+	</tr>
+	<tr bgcolor=ffffff>
+		<td height=20 align=center bgcolor=f7f7f7>27일</td>
+		<td><img src=images/bar3.gif width=<?php echo $width26; ?> height=9> <font color=268015><?php echo $fatch[26]; ?>명</font></td>
+	</tr>
+	<tr bgcolor=ffffff>
+		<td height=20 align=center bgcolor=f7f7f7>28일</td>
+		<td><img src=images/bar3.gif width=<?php echo $width27; ?> height=9> <font color=268015><?php echo $fatch[27]; ?>명</font></td>
+	</tr>
+	<tr bgcolor=ffffff>
+		<td height=20 align=center bgcolor=f7f7f7>29일</td>
+		<td><img src=images/bar3.gif width=<?php echo $width28; ?> height=9> <font color=268015><?php echo $fatch[28]; ?>명</font></td>
+	</tr>
+	<tr bgcolor=ffffff>
+		<td height=20 align=center bgcolor=f7f7f7>30일</td>
+		<td><img src=images/bar3.gif width=<?php echo $width29; ?> height=9> <font color=268015><?php echo $fatch[29]; ?>명</font></td>
+	</tr>
+	<tr bgcolor=ffffff>
+		<td height=20 align=center bgcolor=f7f7f7>31일</td>
+		<td><img src=images/bar3.gif width=<?php echo $width30; ?> height=9> <font color=268015><?php echo $fatch[30]; ?>명</font></td>
+	</tr>
+	<tr><td colspan=2 bgcolor=ffffff align=right><a href=#><img src=images/icon_top.gif border=0></a></td></tr>
+</table>
+</td></tr>
+<tr><td>
+<img src="images/log_bg03.jpg" width="825" height="49" border="0" usemap="#Map"></td></tr>
+<map name="Map">
+  <area shape="rect" coords="317,2,558,23"  target="_blank">
+</map></table>

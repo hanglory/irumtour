@@ -1,0 +1,263 @@
+<?php
+if($SESSION_CACHE_LIMITER)
+session_cache_limiter($SESSION_CACHE_LIMITER);
+else
+session_cache_limiter('nocache, must-revalidate');
+
+session_start();
+include "./dbcon.php";
+include "./rankuplog_admincert.php";
+
+
+$todayyear = date("Y");
+$todaydate = date("m");
+$todayday = date("d");
+$today = $todayyear."-".$todaydate."-".$todayday;
+
+if($_POST['mode'] == 'search'){
+	$searchday1 = $_POST['frontyear']."-".$_POST['frontmonth']."-".$_POST['frontday'];
+	$searchday2 = $_POST['backyear']."-".$_POST['backmonth']."-".$_POST['backday'];
+	$connection = "and wdate >= '$searchday1' and wdate <= '$searchday2'";
+}else{
+	$connection = "and wdate >= '$today' and wdate <= '$today'";
+}
+
+
+$content = str_replace("http://","",$content);
+$query = "select * from rankuplog_domain where content like '%$content%' $connection order by num desc";
+$select = mysql_query($query);
+
+
+
+function search_text($site)
+{
+                $val = array();
+                $site = parse_url($site);
+                $val = explode("&",$site[query]);
+                if(eregi("yahoo",$site[host]))                                ## 야후 "p=" ##
+                {        for($j=0;$j < count($val);$j++){        if(eregi("p=",$val[$j]))        {list($a,$b) = explode("=",$val[$j]);return $b;        }}
+                }
+                elseif(eregi("naver",$site[host]))                        ## 네이버 "query="        ##
+                {        for($j=0;$j < count($val);$j++){        if(eregi("query=",$val[$j]))        {list($a,$b) = explode("=",$val[$j]);return $b;}}
+                }
+                elseif(eregi("empas",$site[host]))                ## 엠파스 ##
+                {        for($j=0;$j < count($val);$j++){if(eregi("q=",$val[$j]))        {list($a,$b) = explode("=",$val[$j]);return $b;        }}
+                }
+                elseif(eregi("daum",$site[host]))                        ## 다음 ##
+                {        for($j=0;$j < count($val);$j++){if(eregi("q=",$val[$j]))        {list($a,$b) = explode("=",$val[$j]);        return $b;}}
+                }
+                elseif(eregi("hanmir",$site[host]))                ## 한미르 ##
+                {        for($j=0;$j < count($val);$j++){if(eregi("QR=",$val[$j]))        {list($a,$b) = explode("=",$val[$j]);return $b;        }}
+                }
+                elseif(eregi("hanafos",$site[host]))                ## 하나포스 ##
+                {        for($j=0;$j < count($val);$j++){if(eregi("query=",$val[$j]))        {list($a,$b) = explode("=",$val[$j]);return $b;}}
+                }
+                elseif(eregi("nate",$site[host]))                        ## 라이코스 ,네이트##
+                {        for($j=0;$j < count($val);$j++){if(eregi("query=",$val[$j]))        {list($a,$b) = explode("=",$val[$j]);return $b;        }}
+                }
+                elseif(eregi("altavista",$site[host]))                ## 알타비스타 ##
+                {        for($j=0;$j < count($val);$j++){        if(eregi("q=",$val[$j]))        {list($a,$b) = explode("=",$val[$j]);        return $b;}}
+                }
+                elseif(eregi("google",$site[host]))                ## 구글 ##
+                {        for($j=0;$j < count($val);$j++){        if(eregi("q=",$val[$j]))        {list($a,$b) = explode("=",$val[$j]);        return $b;}}
+                }
+                else{         return 0;}
+}
+
+
+function Jun_wordcut($str, $len, $tail="..."){
+
+if(strlen($str)>$len)
+{
+for($i=0; $i<$len; $i++) if(ord($str[$i])>127) $i++;
+$str=substr($str,0,$i);
+$str .= $tail;
+}
+
+return $str;
+}
+
+
+?>
+
+
+<table width="500" border="0" cellpadding="0" cellspacing="0" align='center'>
+<tr><td><img src='images/log_bg01.gif'></td></tr>
+<tr><td background='images/log_bg02.jpg' align=center>
+<?php include "./rankup_toplink.html"; ?><br>
+
+
+
+
+<table border=0 cellpadding=0 cellspacing=0 bgcolor='dddddd' width='685' align='center'>
+<tr><td><img src=./images/search_bg1.gif></td></tr>
+<tr bgcolor=f7f7f7><td background=./images/search_bg2.gif align=center>
+<table cellpadding=3 cellspacing=1 width=520 align='center'>
+<form name=form method=post action=<?php echo $PHP_SELF;?>>
+<input type=hidden name=content value="<?php echo $content;;?>">
+<input type=hidden name=mode value=search>
+
+	<tr>
+		<td colspan=4>
+		2005년1월1일 하루 날짜를 알고 싶을때는 2005-1-1~2005-1-1 선택하시고 검색하시면 됩니다
+		</td>
+	</tr>
+	<tr>
+		<td width=200>
+			<select name=frontyear>
+				<option value="2005" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontyear']=='2005')?"selected":"";}else{ echo ($todayyear=='2005')?"selected":"";} ?>>2005</option>
+				<option value="2006" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontyear']=='2006')?"selected":"";}else{ echo ($todayyear=='2006')?"selected":"";} ?>>2006</option>
+				<option value="2007" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontyear']=='2007')?"selected":"";}else{ echo ($todayyear=='2007')?"selected":"";} ?>>2007</option>
+				<option value="2008" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontyear']=='2008')?"selected":"";}else{ echo ($todayyear=='2008')?"selected":"";} ?>>2008</option>
+				<option value="2009" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontyear']=='2009')?"selected":"";}else{ echo ($todayyear=='2009')?"selected":"";} ?>>2009</option>
+				<option value="2010" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontyear']=='2010')?"selected":"";}else{ echo ($todayyear=='2010')?"selected":"";} ?>>2010</option>
+			</select>년
+			<select name=frontmonth>
+				<option value="1" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontmonth']=='1')?"selected":"";}else{ echo ($todaydate=='01')?"selected":"";} ?>>1</option>
+				<option value="2" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontmonth']=='2')?"selected":"";}else{ echo ($todaydate=='02')?"selected":"";} ?>>2</option>
+				<option value="3" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontmonth']=='3')?"selected":"";}else{ echo ($todaydate=='03')?"selected":"";} ?>>3</option>
+				<option value="4" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontmonth']=='4')?"selected":"";}else{ echo ($todaydate=='04')?"selected":"";} ?>>4</option>
+				<option value="5" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontmonth']=='5')?"selected":"";}else{ echo ($todaydate=='05')?"selected":"";} ?>>5</option>
+				<option value="6" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontmonth']=='6')?"selected":"";}else{ echo ($todaydate=='06')?"selected":"";} ?>>6</option>
+				<option value="7" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontmonth']=='7')?"selected":"";}else{ echo ($todaydate=='07')?"selected":"";} ?>>7</option>
+				<option value="8" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontmonth']=='8')?"selected":"";}else{ echo ($todaydate=='08')?"selected":"";} ?>>8</option>
+				<option value="9" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontmonth']=='9')?"selected":"";}else{ echo ($todaydate=='09')?"selected":"";} ?>>9</option>
+				<option value="10" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontmonth']=='10')?"selected":"";}else{ echo ($todaydate=='10')?"selected":"";} ?>>10</option>
+				<option value="11" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontmonth']=='11')?"selected":"";}else{ echo ($todaydate=='11')?"selected":"";} ?>>11</option>
+				<option value="12" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontmonth']=='12')?"selected":"";}else{ echo ($todaydate=='12')?"selected":"";} ?>>12</option>
+			</select>월
+			<select name=frontday>
+				<option value="1" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontday']=='1')?"selected":"";}else{echo ($todayday=='1')?"selected":"";}?>>1</option>
+				<option value="2" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontday']=='2')?"selected":"";}else{echo ($todayday=='2')?"selected":"";}?>>2</option>
+				<option value="3" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontday']=='3')?"selected":"";}else{echo ($todayday=='3')?"selected":"";}?>>3</option>
+				<option value="4" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontday']=='4')?"selected":"";}else{echo ($todayday=='4')?"selected":"";}?>>4</option>
+				<option value="5" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontday']=='5')?"selected":"";}else{echo ($todayday=='5')?"selected":"";}?>>5</option>
+				<option value="6" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontday']=='6')?"selected":"";}else{echo ($todayday=='6')?"selected":"";}?>>6</option>
+				<option value="7" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontday']=='7')?"selected":"";}else{echo ($todayday=='7')?"selected":"";}?>>7</option>
+				<option value="8" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontday']=='8')?"selected":"";}else{echo ($todayday=='8')?"selected":"";}?>>8</option>
+				<option value="9" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontday']=='9')?"selected":"";}else{echo ($todayday=='9')?"selected":"";}?>>9</option>
+				<option value="10" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontday']=='10')?"selected":"";}else{echo ($todayday=='10')?"selected":"";}?>>10</option>
+				<option value="11" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontday']=='11')?"selected":"";}else{echo ($todayday=='11')?"selected":"";}?>>11</option>
+				<option value="12" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontday']=='12')?"selected":"";}else{echo ($todayday=='12')?"selected":"";}?>>12</option>
+				<option value="13" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontday']=='13')?"selected":"";}else{echo ($todayday=='13')?"selected":"";}?>>13</option>
+				<option value="14" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontday']=='14')?"selected":"";}else{echo ($todayday=='14')?"selected":"";}?>>14</option>
+				<option value="15" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontday']=='15')?"selected":"";}else{echo ($todayday=='15')?"selected":"";}?>>15</option>
+				<option value="16" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontday']=='16')?"selected":"";}else{echo ($todayday=='16')?"selected":"";}?>>16</option>
+				<option value="17" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontday']=='17')?"selected":"";}else{echo ($todayday=='17')?"selected":"";}?>>17</option>
+				<option value="18" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontday']=='18')?"selected":"";}else{echo ($todayday=='18')?"selected":"";}?>>18</option>
+				<option value="19" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontday']=='19')?"selected":"";}else{echo ($todayday=='19')?"selected":"";}?>>19</option>
+				<option value="20" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontday']=='20')?"selected":"";}else{echo ($todayday=='20')?"selected":"";}?>>20</option>
+				<option value="21" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontday']=='21')?"selected":"";}else{echo ($todayday=='21')?"selected":"";}?>>21</option>
+				<option value="22" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontday']=='22')?"selected":"";}else{echo ($todayday=='22')?"selected":"";}?>>22</option>
+				<option value="23" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontday']=='23')?"selected":"";}else{echo ($todayday=='23')?"selected":"";}?>>23</option>
+				<option value="24" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontday']=='24')?"selected":"";}else{echo ($todayday=='24')?"selected":"";}?>>24</option>
+				<option value="25" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontday']=='25')?"selected":"";}else{echo ($todayday=='25')?"selected":"";}?>>25</option>
+				<option value="26" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontday']=='26')?"selected":"";}else{echo ($todayday=='26')?"selected":"";}?>>26</option>
+				<option value="27" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontday']=='27')?"selected":"";}else{echo ($todayday=='27')?"selected":"";}?>>27</option>
+				<option value="28" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontday']=='28')?"selected":"";}else{echo ($todayday=='28')?"selected":"";}?>>28</option>
+				<option value="29" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontday']=='29')?"selected":"";}else{echo ($todayday=='29')?"selected":"";}?>>29</option>
+				<option value="30" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontday']=='30')?"selected":"";}else{echo ($todayday=='30')?"selected":"";}?>>30</option>
+				<option value="31" <?php if($_POST['mode'] == 'search'){echo ($_POST['frontday']=='31')?"selected":"";}else{echo ($todayday=='31')?"selected":"";}?>>31</option>
+			</select>일
+		</td>
+		<td width=20>~</td>
+		<td width=200>
+		<select name=backyear>
+				<option value="2005" <?php if($_POST['mode'] == 'search'){echo ($_POST['backyear']=='2005')?"selected":"";}else{ echo ($todayyear=='2005')?"selected":"";} ?>>2005</option>
+				<option value="2006" <?php if($_POST['mode'] == 'search'){echo ($_POST['backyear']=='2006')?"selected":"";}else{ echo ($todayyear=='2006')?"selected":"";} ?>>2006</option>
+				<option value="2007" <?php if($_POST['mode'] == 'search'){echo ($_POST['backyear']=='2007')?"selected":"";}else{ echo ($todayyear=='2007')?"selected":"";} ?>>2007</option>
+				<option value="2008" <?php if($_POST['mode'] == 'search'){echo ($_POST['backyear']=='2008')?"selected":"";}else{ echo ($todayyear=='2008')?"selected":"";} ?>>2008</option>
+				<option value="2009" <?php if($_POST['mode'] == 'search'){echo ($_POST['backyear']=='2009')?"selected":"";}else{ echo ($todayyear=='2009')?"selected":"";} ?>>2009</option>
+				<option value="2010" <?php if($_POST['mode'] == 'search'){echo ($_POST['backyear']=='2010')?"selected":"";}else{ echo ($todayyear=='2010')?"selected":"";} ?>>2010</option>
+			</select>년
+			<select name=backmonth>
+				<option value="1" <?php if($_POST['mode'] == 'search'){echo ($_POST['backmonth']=='1')?"selected":"";}else{ echo ($todaydate=='01')?"selected":"";} ?>>1</option>
+				<option value="2" <?php if($_POST['mode'] == 'search'){echo ($_POST['backmonth']=='2')?"selected":"";}else{ echo ($todaydate=='02')?"selected":"";} ?>>2</option>
+				<option value="3" <?php if($_POST['mode'] == 'search'){echo ($_POST['backmonth']=='3')?"selected":"";}else{ echo ($todaydate=='03')?"selected":"";} ?>>3</option>
+				<option value="4" <?php if($_POST['mode'] == 'search'){echo ($_POST['backmonth']=='4')?"selected":"";}else{ echo ($todaydate=='04')?"selected":"";} ?>>4</option>
+				<option value="5" <?php if($_POST['mode'] == 'search'){echo ($_POST['backmonth']=='5')?"selected":"";}else{ echo ($todaydate=='05')?"selected":"";} ?>>5</option>
+				<option value="6" <?php if($_POST['mode'] == 'search'){echo ($_POST['backmonth']=='6')?"selected":"";}else{ echo ($todaydate=='06')?"selected":"";} ?>>6</option>
+				<option value="7" <?php if($_POST['mode'] == 'search'){echo ($_POST['backmonth']=='7')?"selected":"";}else{ echo ($todaydate=='07')?"selected":"";} ?>>7</option>
+				<option value="8" <?php if($_POST['mode'] == 'search'){echo ($_POST['backmonth']=='8')?"selected":"";}else{ echo ($todaydate=='08')?"selected":"";} ?>>8</option>
+				<option value="9" <?php if($_POST['mode'] == 'search'){echo ($_POST['backmonth']=='9')?"selected":"";}else{ echo ($todaydate=='09')?"selected":"";} ?>>9</option>
+				<option value="10" <?php if($_POST['mode'] == 'search'){echo ($_POST['backmonth']=='10')?"selected":"";}else{ echo ($todaydate=='10')?"selected":"";} ?>>10</option>
+				<option value="11" <?php if($_POST['mode'] == 'search'){echo ($_POST['backmonth']=='11')?"selected":"";}else{ echo ($todaydate=='11')?"selected":"";} ?>>11</option>
+				<option value="12" <?php if($_POST['mode'] == 'search'){echo ($_POST['backmonth']=='12')?"selected":"";}else{ echo ($todaydate=='12')?"selected":"";} ?>>12</option>
+			</select>월
+			<select name=backday>
+				<option value="1" <?php if($_POST['mode'] == 'search'){echo ($_POST['backday']=='1')?"selected":"";}else{echo ($todayday=='1')?"selected":"";}?>>1</option>
+				<option value="2" <?php if($_POST['mode'] == 'search'){echo ($_POST['backday']=='2')?"selected":"";}else{echo ($todayday=='2')?"selected":"";}?>>2</option>
+				<option value="3" <?php if($_POST['mode'] == 'search'){echo ($_POST['backday']=='3')?"selected":"";}else{echo ($todayday=='3')?"selected":"";}?>>3</option>
+				<option value="4" <?php if($_POST['mode'] == 'search'){echo ($_POST['backday']=='4')?"selected":"";}else{echo ($todayday=='4')?"selected":"";}?>>4</option>
+				<option value="5" <?php if($_POST['mode'] == 'search'){echo ($_POST['backday']=='5')?"selected":"";}else{echo ($todayday=='5')?"selected":"";}?>>5</option>
+				<option value="6" <?php if($_POST['mode'] == 'search'){echo ($_POST['backday']=='6')?"selected":"";}else{echo ($todayday=='6')?"selected":"";}?>>6</option>
+				<option value="7" <?php if($_POST['mode'] == 'search'){echo ($_POST['backday']=='7')?"selected":"";}else{echo ($todayday=='7')?"selected":"";}?>>7</option>
+				<option value="8" <?php if($_POST['mode'] == 'search'){echo ($_POST['backday']=='8')?"selected":"";}else{echo ($todayday=='8')?"selected":"";}?>>8</option>
+				<option value="9" <?php if($_POST['mode'] == 'search'){echo ($_POST['backday']=='9')?"selected":"";}else{echo ($todayday=='9')?"selected":"";}?>>9</option>
+				<option value="10" <?php if($_POST['mode'] == 'search'){echo ($_POST['backday']=='10')?"selected":"";}else{echo ($todayday=='10')?"selected":"";}?>>10</option>
+				<option value="11" <?php if($_POST['mode'] == 'search'){echo ($_POST['backday']=='11')?"selected":"";}else{echo ($todayday=='11')?"selected":"";}?>>11</option>
+				<option value="12" <?php if($_POST['mode'] == 'search'){echo ($_POST['backday']=='12')?"selected":"";}else{echo ($todayday=='12')?"selected":"";}?>>12</option>
+				<option value="13" <?php if($_POST['mode'] == 'search'){echo ($_POST['backday']=='13')?"selected":"";}else{echo ($todayday=='13')?"selected":"";}?>>13</option>
+				<option value="14" <?php if($_POST['mode'] == 'search'){echo ($_POST['backday']=='14')?"selected":"";}else{echo ($todayday=='14')?"selected":"";}?>>14</option>
+				<option value="15" <?php if($_POST['mode'] == 'search'){echo ($_POST['backday']=='15')?"selected":"";}else{echo ($todayday=='15')?"selected":"";}?>>15</option>
+				<option value="16" <?php if($_POST['mode'] == 'search'){echo ($_POST['backday']=='16')?"selected":"";}else{echo ($todayday=='16')?"selected":"";}?>>16</option>
+				<option value="17" <?php if($_POST['mode'] == 'search'){echo ($_POST['backday']=='17')?"selected":"";}else{echo ($todayday=='17')?"selected":"";}?>>17</option>
+				<option value="18" <?php if($_POST['mode'] == 'search'){echo ($_POST['backday']=='18')?"selected":"";}else{echo ($todayday=='18')?"selected":"";}?>>18</option>
+				<option value="19" <?php if($_POST['mode'] == 'search'){echo ($_POST['backday']=='19')?"selected":"";}else{echo ($todayday=='19')?"selected":"";}?>>19</option>
+				<option value="20" <?php if($_POST['mode'] == 'search'){echo ($_POST['backday']=='20')?"selected":"";}else{echo ($todayday=='20')?"selected":"";}?>>20</option>
+				<option value="21" <?php if($_POST['mode'] == 'search'){echo ($_POST['backday']=='21')?"selected":"";}else{echo ($todayday=='21')?"selected":"";}?>>21</option>
+				<option value="22" <?php if($_POST['mode'] == 'search'){echo ($_POST['backday']=='22')?"selected":"";}else{echo ($todayday=='22')?"selected":"";}?>>22</option>
+				<option value="23" <?php if($_POST['mode'] == 'search'){echo ($_POST['backday']=='23')?"selected":"";}else{echo ($todayday=='23')?"selected":"";}?>>23</option>
+				<option value="24" <?php if($_POST['mode'] == 'search'){echo ($_POST['backday']=='24')?"selected":"";}else{echo ($todayday=='24')?"selected":"";}?>>24</option>
+				<option value="25" <?php if($_POST['mode'] == 'search'){echo ($_POST['backday']=='25')?"selected":"";}else{echo ($todayday=='25')?"selected":"";}?>>25</option>
+				<option value="26" <?php if($_POST['mode'] == 'search'){echo ($_POST['backday']=='26')?"selected":"";}else{echo ($todayday=='26')?"selected":"";}?>>26</option>
+				<option value="27" <?php if($_POST['mode'] == 'search'){echo ($_POST['backday']=='27')?"selected":"";}else{echo ($todayday=='27')?"selected":"";}?>>27</option>
+				<option value="28" <?php if($_POST['mode'] == 'search'){echo ($_POST['backday']=='28')?"selected":"";}else{echo ($todayday=='28')?"selected":"";}?>>28</option>
+				<option value="29" <?php if($_POST['mode'] == 'search'){echo ($_POST['backday']=='29')?"selected":"";}else{echo ($todayday=='29')?"selected":"";}?>>29</option>
+				<option value="30" <?php if($_POST['mode'] == 'search'){echo ($_POST['backday']=='30')?"selected":"";}else{echo ($todayday=='30')?"selected":"";}?>>30</option>
+				<option value="31" <?php if($_POST['mode'] == 'search'){echo ($_POST['backday']=='31')?"selected":"";}else{echo ($todayday=='31')?"selected":"";}?>>31</option>
+			</select>일
+		</td>
+		<td width=100>&nbsp;&nbsp;
+			<input type=image src=./images/search_button.gif border=0 align=absmiddle>
+		</td>
+	</tr>
+</form>
+</table>
+</td></tr>
+<tr><td><img src=./images/search_bg3.gif></td></tr>
+</table>
+
+
+<br><br>
+
+<table border=0 cellpadding=3 cellspacing=1 bgcolor='dddddd' width='685' align='center'>
+	<tr bgcolor=f7f7f7 align=center>
+		<td width=70 height=25>날짜</td>
+		<td width=435>상세주소</td>
+		<td width=75>접속수</td>
+		<td width=105>검색어</td>
+	</tr>
+	<?php while($row = mysql_fetch_array($select)){ ?>
+	<tr bgcolor=#ffffff onMouseOver=this.style.backgroundColor='#E7F0F1' onMouseOut=this.style.backgroundColor='#ffffff'>
+		<td align=center  height=30><?php echo $row[wdate]; ?></td>
+		<td><a href="<?=$row[content]?>"  target=_blank>
+			<?php
+			$dotitle =  urldecode($row[content]);
+			$dotitle = Jun_wordcut($dotitle,65);
+			echo $dotitle;
+			?> </a>
+		</td>
+		<td align=center><?php echo $row[num]; ?> 명</td>
+		<td><?php echo urldecode(search_text($row[content])); ?></td>
+	</tr>
+	<? } ?>
+	<tr><td colspan=4 bgcolor=ffffff align=right><a href=#><img src=images/icon_top.gif border=0></a></td></tr>
+</table><br><a href=# onclick="history.go(-1)" style=cursor:hand><img src=./images/back_button.gif border=0></a>
+</td></tr>
+
+<tr><td>
+<img src="images/log_bg03.jpg" width="825" height="49" border="0" usemap="#Map"></td></tr>
+<map name="Map">
+  <area shape="rect" coords="317,2,558,23"  target="_blank">
+</map></table>

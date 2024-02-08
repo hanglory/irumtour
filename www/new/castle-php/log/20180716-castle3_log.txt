@@ -1,0 +1,2 @@
+106.246.54.27 - [16/Jul/2018:12:09:23 +0900] /new/bkoff/login_check.php: id = \'or 1=1--: SQL_Injection 공격 패턴 탐지
+106.246.54.27 - [16/Jul/2018:12:10:04 +0900] /renew/comty01.html: keyword = \'or 1=1--: SQL_Injection 공격 패턴 탐지

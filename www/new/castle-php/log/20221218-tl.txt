@@ -1,0 +1,2 @@
+111.246.91.245 - [18/Dec/2022:10:00:56 +0900] /m2/pop_hotel.html: inc = \"&gt;&lt;script &gt;alert(String.fromCharCode(88,83,83))&lt;/script&gt;: XSS 공격 패턴 탐지
+111.246.91.245 - [18/Dec/2022:10:00:57 +0900] /m2/pop_cc.html: inc = \"&gt;&lt;script &gt;alert(String.fromCharCode(88,83,83))&lt;/script&gt;: XSS 공격 패턴 탐지

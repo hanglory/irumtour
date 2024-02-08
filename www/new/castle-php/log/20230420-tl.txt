@@ -1,0 +1,2 @@
+121.128.79.27 - [20/Apr/2023:10:08:45 +0900] /new/bkoff/tour/pop_contents.php: content = &lt;p align=\"center\"&gt;&lt;br style=\"CLEAR: both\"&gt;&lt;/p&gt;\r\n\r\n&lt;p&gt;&lt;sp: TAG 공격 패턴 탐지
+121.128.79.27 - [20/Apr/2023:10:55:00 +0900] /new/bkoff/tour/pop_contents.php: content = &lt;p align=\"center\"&gt;&lt;br style=\"CLEAR: both\"&gt;&lt;/p&gt;\r\n&lt;p align=\: TAG 공격 패턴 탐지

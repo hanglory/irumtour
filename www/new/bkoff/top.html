@@ -1,0 +1,126 @@
+<?
+//if($REMOTE_ADDR=="106.246.54.18") checkVar($_SESSION["sessLogin"]["cmp"],$_SESSION["sessMenu"]);
+
+
+$_SESSION['sessMenu'] = (strstr($_SERVER["SCRIPT_NAME"],"/cmp"))?"cmp":"tour";
+//$_SESSION['sessMenu']
+?>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>골프여행사 전용 ERP - <?=($_SESSION["sessLogin"]["company"])? $_SESSION["sessLogin"]["company"] : "이룸투어"?></title>
+<link rel="stylesheet" href="../include/default.css">
+<link rel="stylesheet" href="../include/basic.css" type="text/css">
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+<!-- tooltip s-->
+<script type="text/javascript" src="../../lib/tipped/dist/js/tipped.min.js"></script>
+<link rel="stylesheet" type="text/css" href="../../lib/tipped/dist/css/tipped.css"/>
+<!-- tooltip f-->
+
+
+<script type="text/javascript" src="../../include/jquery.maskedinput.min.js"></script>
+<script language="JavaScript" src="../../include/form_check.js"></script>
+<script language="JavaScript" src="../../include/function.js"></script>
+
+
+<script type="text/javascript">
+$(function(){
+	$(".dateinput").datepicker({
+		dateFormat: "yy/mm/dd",
+        changeMonth: true,
+	    changeYear: true
+	});
+
+	Tipped.create('.tooltip');
+});
+</script>
+
+
+<script type="text/javascript">
+function set_tmenu(str){
+	actarea.location.href="../tmenu.php?str="+str;
+
+	if(str=="cmp"){
+		$("#tour_menu").hide();
+		$("#cmp_menu").show();
+	}else{
+		$("#tour_menu").show();
+		$("#cmp_menu").hide();
+	}
+}
+
+$(function(){
+	$("#select_menu").val('<?=$_SESSION['sessMenu']?>');
+
+	<?if($_SESSION['sessMenu']=="cmp" || $cmp_mode=="cmp"){?>
+		$("#tour_menu").hide();
+		$("#cmp_menu").show();
+	<?}else{?>
+		$("#tour_menu").show();
+		$("#cmp_menu").hide();
+	<?}?>
+});
+</script>
+</head>
+
+
+<body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+
+<table width="100%" height="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td align="center" height="60">
+		  <table width="95%" border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td width="200" align="center">
+                <?if($_SESSION["sessLogin"]["logo"]){?>
+                <img src="../../public/partner/<?=$_SESSION["sessLogin"]["logo"]?>" style="cursor:pointer;max-width:150px;max-height: 80px;" onclick="location.href='../index.html'">
+                <?}else{?>
+                    <img src="../images/logo.gif" style="cursor:pointer" onclick="location.href='../index.html'">
+                <?}?>
+            </td>
+
+            <td align="right">
+
+                <?
+                include("inc_top.html");
+                //include("inc_top_old.html");
+                ?>
+
+			</td>
+          </tr>
+        </table>
+
+		  </td>
+      </tr>
+      <tr>
+        <td height="39" align="center" background="../images/common/bg_main.gif">
+
+		  <!--상단메뉴-->
+		  <?include("../topmenu.html");?>
+
+		  </td>
+      </tr>
+      <tr>
+        <td align="center" valign="top">
+
+		  <table width="95%" height="100%" border="0" cellspacing="0" cellpadding="0" align="center">
+          <tr>
+                <?
+                $LEFT_MENU_CLOSE=(strstr("@calendar.php@list_daily.php@list_report2.php@",SELF))?1:0;
+                if(!$LEFT_MENU_CLOSE){
+                ?>
+                <td width="212" align="center" valign="top" background="../images/common/l_menu_bg.gif" style="padding-top:15px;">
+                    <!--왼쪽메뉴-->
+                    <?
+                    include("../left_cmpmenu.html");                    
+                    if(!$total_menu_mode) include("../left_".$MENU.".html");
+                    ?>
+                </td>
+                <?}?>
+            <td width="20">&nbsp;</td>
+            <td class="contents">

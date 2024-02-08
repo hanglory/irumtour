@@ -1,0 +1,35 @@
+.tooltip-red
+{
+	padding:10px 10px 10px 10px;
+	z-index:100;
+}
+
+.tooltip-blue
+{
+	z-index:100;
+}
+
+.tooltip_container {
+	width: 250px;
+}
+
+/* Steve's Tooltip */
+.tooltip_steve {
+	border: 1px solid #7a9db9;
+	z-index: 100;
+}
+
+/* Caption Text */
+.tooltip_caption {
+}
+
+/* Close Link (x) */
+a.tooltip_close,a:hover.tooltip_close {
+	float: center;
+}
+
+/* Tooltip Links */
+a.tooltip {
+} a:hover.tooltip {
+	text-decoration: none;	
+}

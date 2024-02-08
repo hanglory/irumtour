@@ -1,0 +1,2 @@
+125.128.55.224 - [14/Jan/2019:17:29:01 +0900] /new/bkoff/cmp/view_tour.php: file4 = 폴리네시아 문화센터 - Polynesian Cultural Center.tif: 허용되지 않은 확장자 파일 업로드
+125.128.55.224 - [14/Jan/2019:17:29:02 +0900] /new/bkoff/cmp/view_tour.php: file4 = 폴리네시아 문화센터 - Polynesian Cultural Center.tif: 허용되지 않은 확장자 파일 업로드

@@ -1,0 +1,328 @@
+<?
+include_once("../include/common_file_report.php");
+
+$page_width="700";
+
+$edit_mode=1;
+
+$bit_power_action = ($_SESSION["sessLogin"]["id"]=="sanha" || $_SESSION["sessLogin"]["id"]=="chadori" || $_SERVER[REMOTE_ADDR]=="106.246.54.27")?1:0;
+
+if($mode=="save"){
+
+  $cnt_golf=ceil(rnf($cnt_golf));
+  $cnt_golf2=ceil(rnf($cnt_golf2));
+  $cnt_air=ceil(rnf($cnt_air));
+  $cnt_book=ceil(rnf($cnt_book));
+
+  $reg_date = date('Y/m/d');
+  $reg_date2 = date('H:i:s');
+
+  $sqlInsert="
+     insert into cmp_saleshook (
+        doc_no,
+        golf,
+        golf2,
+        air,
+        book,
+        id,
+        reg_date,
+        reg_date2
+    ) values (
+        '$doc_no',
+        '$cnt_golf',
+        '$cnt_golf2',
+        '$cnt_air',
+        '$cnt_book',
+        '$user_id',
+        '$reg_date',
+        '$reg_date2'
+  )";
+
+  if(!$bit_power_action) $update_filter="and id='$user_id'";
+
+  $sqlModify="
+     update cmp_saleshook set
+        golf = '$cnt_golf',
+        golf2 = '$cnt_golf2',
+        air = '$cnt_air',
+        book = '$cnt_book',
+        id_proof = '$id_proof',
+        proof_date = '$proof_date',
+        proof_date2 = '$proof_date2'
+     where id_no='$id_no' and doc_no=$doc_no $update_filter
+  ";
+  
+  $sql = ($id_no)? $sqlModify : $sqlInsert;
+  $dbo->query($sql);
+  //checkVar(mysql_error(),$sql);exit;
+
+  error("저장하였습니다.");
+  exit;
+}
+
+
+
+$sql = "select * from cmp_reservation where id_no=$id_no";
+$dbo->query($sql);
+$rs= $dbo->next_record();
+$customer = $rs[name];
+$people = $rs[people];
+$d_date= $rs[d_date];
+$r_date= $rs[r_date];
+$plan_type= $rs[plan_type];
+
+$default_golf = nf($rs[golf_ball]);
+$default_golf2 = nf($rs[golf_ball2]);
+$default_air = nf($rs[air_cover]);
+$default_book = nf($rs[dollarbook]);
+
+
+$sql2 = "select * from cmp_golf where id_no=$rs[golf_id_no]";
+$dbo2->query($sql2);
+$rs2= $dbo2->next_record();
+$golf_name = $rs2[name];
+
+$sql = "select * from cmp_saleshook where doc_no=$id_no and id='$user_id'";
+if($id_no && $id_no2 && $id){
+  $sql = "select * from cmp_saleshook where doc_no=$id_no and id_no=$id_no2 and id='$id'";  
+}
+$dbo->query($sql);
+$rs= $dbo->next_record();
+
+$rs[cnt_golf] = nf($rs[golf]);
+$rs[cnt_golf2] = nf($rs[golf2]);
+$rs[cnt_air] = nf($rs[air]);
+$rs[cnt_book] = nf($rs[book]);
+
+if($rs[id_proof]){
+  $edit_mode=0;
+}
+
+
+if($doc_mode){
+$xls_name = "reservation_request_".date("Ymd").".doc";
+header("Content-type: application/vnd.ms-word");
+header("Content-Type: application/vnd.ms-word; charset=euc-kr");
+header("Content-Disposition: attachment;filename=$xls_name;");
+header( "Content-Description: PHP4 Generated Data" );
+}
+
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>판촉물 사용승인 요청서 - <?=$rs2[name]?></title>
+
+<?php if (preg_match('/(facebook|kakaotalk)/',$_SERVER['HTTP_USER_AGENT']) == true) { ?>
+<meta property="og:type" content="website">
+<meta property="og:title" content="판촉물 사용승인 요청서 -<?=$rs2[name]?>">
+<meta property="og:url" content="http://<?=$_SERVER["HTTP_HOST"]?>/<?=$_SE2RVER["REQUEST_URI"]?>">
+<meta property="og:description" content="<?=$SITE_NAME?>">
+<meta property="og:image" content="<?=$caurl?>/images/cmp/paper_logo.jpg">
+<?php } ?>
+
+
+<link rel="stylesheet" href="https://<?=$_SERVER["HTTP_HOST"]?>/new/bkoff/include/default.css">
+<link rel="stylesheet" href="https://<?=$_SERVER["HTTP_HOST"]?>/new/bkoff/include/basic.css" type="text/css">
+
+<?if($edit_mode && !$doc_mode){?>
+  <script language="JavaScript" src="../../include/form_check.js"></script>
+  <script language="JavaScript" src="../../include/function.js"></script>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+
+  <script type="text/javascript">
+  function chk_staff(partner_name,partner_staff){
+
+    $.ajax({
+      url: "<?=SELF?>",
+      type: "POST",
+      data: {
+        'mode': 'partner_staff',
+        'id_no': '<?=$id_no?>',
+        'partner_name': partner_name,
+        'partner_staff': partner_staff
+      },
+      success: function(data) {
+        $("#bx_partner_staff").html(data);
+      }
+    });
+  }  
+
+  $(function(){
+    chk_staff('<?=$rs[partner]?>','<?=$rs[partner_staff]?>');
+  })
+  </script>
+
+
+  <style type="text/css">
+  #partner2{
+    font-size:10pt;
+    padding:2px;
+    border:1px solid #ccc;
+  }
+  </style>
+<?}?>
+
+</head>
+
+<body leftmargin="0" topmargin="0">
+
+<div style="width:700px;padding:30px;text-align:center;margin-left:auto;margin-right:auto;">
+
+  <table width="<?=$page_width?>" border="0" cellspacing="0" cellpadding="0" align="center">
+
+
+    <?if($edit_mode && !$doc_mode){?>
+    <form name="fmData" method="post" enctype="multipart/form-data" action="<?=SELF?>">
+    <input type="hidden" name="mode" value='save'>
+    <input type="hidden" name="id_no" value='<?=$rs[id_no]?>'>
+    <input type="hidden" name="doc_no" value='<?=$id_no?>'>
+  
+    <?}?>
+
+      <tr>
+        <td align="center">
+          <?if($staff_header){?>
+            <img src="<?=$staff_header?>" width="<?=$page_width?>"/>
+          <?}else{?>
+            <img src="<?=$caurl?>/bkoff/cmp/info.gif" width="<?=$page_width?>"/>
+          <?}?>
+        </td>        
+      </tr>
+      <tr>
+        <td height="50" align="center"><h1 style="font-size:20px;font-weight:bold">판촉물 사용승인 요청서</h1></td>
+      </tr>
+    <tr>
+        <td>
+    <table width="<?=$page_width?>" border="0" cellspacing="1" cellpadding="0" class="tbl" style="border-collapse:collapse;border:1px solid #ccc ">
+          <tr>
+            <td width="25%" height="30" align="center" bgcolor="#f4f4f4" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'Malgun Gothic','돋움';font-weight:bold">고객명</span></td>
+            <td align="left" height="30" bgcolor="#ffffff" style="padding-left:10px;font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><?=$customer?> (인원 <?=$people?>명)</td>
+          </tr>
+          <tr>
+            <td height="30" align="center" bgcolor="#f4f4f4" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'Malgun Gothic','돋움';font-weight:bold">골프장명</span></td>
+            <td align="left" height="30" bgcolor="#ffffff" style="padding-left:10px;font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><?=$golf_name?></td>
+          </tr>
+          <tr>
+            <td height="30" align="center" bgcolor="#f4f4f4" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'Malgun Gothic','돋움';font-weight:bold">승인자</span></td>
+            <td align="left" height="30" bgcolor="#ffffff" style="padding-left:10px;font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc">
+
+              <?=staff_full_name($rs[id_proof])?>
+
+          </td>
+          </tr>
+          <tr>
+            <td height="30" align="center" bgcolor="#f4f4f4" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'Malgun Gothic','돋움';font-weight:bold">요청담당자</span></td>
+            <td align="left" height="30" bgcolor="#ffffff" style="padding-left:10px;font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><?=($rs[id])? staff_full_name($rs[id]) : staff_full_name($user_id)?></td>
+          </tr>
+          <tr>
+            <td height="30" align="center" bgcolor="#f4f4f4" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'Malgun Gothic','돋움';font-weight:bold">일    정</span></td>
+            <td align="left" height="30" bgcolor="#ffffff" style="padding-left:10px;font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><?=$d_date?> ~ <?=$r_date?> (<?=@get_day_night($d_date,$r_date,$plan_type)?>)
+
+      </td>
+          </tr>
+</table></td>
+      </tr>
+      <tr>
+        <td height="5"></td>
+      </tr>
+      <tr>
+        <td><table width="<?=$page_width?>" border="0" cellspacing="1" cellpadding="0" class="tbl" style="border-collapse:collapse;border:1px solid #ccc ">
+          <tr>
+            <td width="50%" height="30" align="center" bgcolor="#f4f4f4" style="color:#F03;;border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'Malgun Gothic','돋움';font-weight:bold;">구분</span></td>
+            <td width="50%" height="30" align="center" bgcolor="#f4f4f4" style="color:#F03;;border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'Malgun Gothic','돋움';font-weight:bold;">수량</span></td>
+            
+          </tr>
+
+  
+
+          <tr>
+            <td width="50%" height="30" align="center" bgcolor="#f4f4f4" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'Malgun Gothic','돋움';font-weight:bold">골프공</span></td>
+            <td width="50%" height="30" align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc">
+              <?if(!$edit_mode || $doc_mode){?>
+              <?=nl2br($rs[cnt_golf])?>
+              <?}else{?>
+              <?=html_input("cnt_golf",5,3,'box numberic')?>
+              <?}?>              
+            </td>
+          </tr>
+          <tr>
+            <td width="50%" height="30" align="center" bgcolor="#f4f4f4" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'Malgun Gothic','돋움';font-weight:bold">골프공(고급)</span></td>
+            <td width="50%" height="30" align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc">
+              <?if(!$edit_mode || $doc_mode){?>
+              <?=nl2br($rs[cnt_golf2])?>
+              <?}else{?>
+              <?=html_input("cnt_golf2",5,3,'box numberic')?>
+              <?}?>              
+            </td>
+          </tr>
+          <tr>
+            <td width="50%" height="30" align="center" bgcolor="#f4f4f4" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'Malgun Gothic','돋움';font-weight:bold">항공커버</span></td>
+            <td width="50%" height="30" align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc">
+              <?if(!$edit_mode || $doc_mode){?>
+              <?=nl2br($rs[cnt_air])?>
+              <?}else{?>
+              <?=html_input("cnt_air",5,3,'box numberic')?>
+              <?}?>              
+            </td>
+          </tr>
+          <tr>
+            <td width="50%" height="30" align="center" bgcolor="#f4f4f4" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'Malgun Gothic','돋움';font-weight:bold">달러북</span></td>
+            <td width="50%" height="30" align="center" bgcolor="#ffffff" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc">
+              <?if(!$edit_mode || $doc_mode){?>
+              <?=nl2br($rs[cnt_book])?>
+              <?}else{?>
+              <?=html_input("cnt_book",5,3,'box numberic')?>
+              <?}?>              
+            </td>
+          </tr>
+          
+        </table></td>
+      </tr>
+      <tr>
+        <td height="5"></td>
+      </tr>
+
+
+    <?if($edit_mode){?>
+    </form>
+    <?}?>
+</table>
+
+
+    <?if($edit_mode && !$doc_mode){?>
+    <div style="padding:20px 0 30px 0">
+    <!-- Button Begin---------------------------------------------->
+    <table border="0" width="200" cellspacing="0" cellpadding="0" align="right">
+    <tr align="right">
+      <td><span class="btn_pack medium bold"><a href="#" onClick="document.fmData.submit()"> 저장 </a></span></td>
+      <td><span class="btn_pack medium bold"><a href="<?=SELF?>?id_no=<?=$rs[id_no]?>&doc_mode=1&code=<?=$code?>"> Word 저장 </a></span></td>
+      <!-- <td><span class="btn_pack medium bold"><a href="<?=SELF?>?id_no=<?=$rs[id_no]?>&doc_mode=1&"> Word 저장 </a></span></td> -->
+      <td><span class="btn_pack medium bold"><a href="javascript:self.close()"> 창닫기 </a></span></td>
+    </tr>
+    </table>
+    <!-- Button End------------------------------------------------>
+    </div>
+    <?}else{?>
+
+      <?if(!$MOBILE){?>
+        <div style="padding:20px 0 30px 0">
+        <!-- Button Begin---------------------------------------------->
+        <table border="0" width="200" cellspacing="0" cellpadding="0" align="right">
+        <tr align="right">
+          <td><span class="btn_pack medium bold"><a href="<?=SELF?>?id_no=<?=$rs[id_no]?>&doc_mode=1&code=<?=$code?>"> Word 저장 </a></span></td>
+          <td><span class="btn_pack medium bold"><a href="javascript:self.close()"> 창닫기 </a></span></td>
+        </tr>
+        </table>
+        <!-- Button End------------------------------------------------>
+        </div>
+      <?}?>
+
+    <?}?>
+
+
+</div>
+
+</body>
+</html>

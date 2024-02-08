@@ -1,0 +1,84 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<title>COOKIEPAYMENTS SAMPLE</title>
+<meta charset="euc-kr">
+<meta http-equiv="X-UA-Compatible">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
+<meta http-equiv="cache-control" content="no-cache"/>
+<meta http-equiv="Expires" content="0"/>
+<meta http-equiv="Pragma" content="no-cache"/>
+</head>
+
+<link rel="stylesheet" type="text/css" href="./css/style.css">
+
+<script type="text/javascript">
+function base64_encode(str) {
+  return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, function(match, p1) {
+    return String.fromCharCode('0x' + p1);
+  }));
+}
+function pay_receipt(){
+	var frmpay = document.frmpay;
+	var tid = base64_encode(frmpay.TID.value);
+    window.open("https://www.cookiepayments.com/api/receipt?tid="+tid, "Pay2pay Receipt", "width=468,height=750");
+}
+
+</script>
+<body >
+<div class="row" style="margin-top:50px;">
+	<div class="container" style="max-width:500px;">
+		<div class="row " style="border-radius:10px;margin-bottom: 15px;">
+			<div class="col-sm-12" >
+				<form name="frmpay" method="post" action="" accept-charset="euc-kr">
+				<div class="card">
+					<div class="card-header" >					
+						<div class="col-sm-12">
+							<table class="paytable">
+								<colgroup>
+									<col width="50%">
+									<col width="*">
+								</colgroup>
+								<tbody>		
+									<tr>
+										<td colspan='2' style="text-align:left;padding:0px;"><img src='https://cookiepayments.com/images/top_slide/cookiepay_logo_1.png' hspace='10' vspace='10' style="width:50%;height:auto;" /></td>
+									</tr>								    												                                       
+								</tbody>
+							</table>
+						</div><!--end col-->							
+					</div>
+					<div class="card-body">					  						
+						<div class="col-sm-12">
+							<table class="paytable">
+								<colgroup>
+									<col width="30%">
+									<col width="*">
+								</colgroup>
+								<tbody>
+									<tr>
+										<th class="ml_cont_l" colspan="2">전표출력은 신용카드 결제만 가능합니다.</th>	
+										
+									</tr>
+									<tr>
+										<th class="ml_cont_l">PG거래 고유번호[TID] [필수]</th>	
+										<td class="ml_cont_r"><input type="text" id="TID" name="TID" value=""></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+					<div class="card-body">					  											
+						<div class="col-sm-12" style="text-align:center;padding:1em;">
+							<button type="button" class="btn" onclick="pay_receipt();">전표출력하기</button>
+						</div>															
+					</div>			   
+				</div>
+				</form>
+			</div>
+		</div>            
+	</div>        
+</div>
+</body>
+</html>

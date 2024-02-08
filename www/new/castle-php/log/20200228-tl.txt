@@ -1,0 +1,1 @@
+175.125.32.49 - [28/Feb/2020:12:37:45 +0900] /new/bkoff/tour/view_tour.php: file1 = holiday-inn-pattaya-5597743858-2x1.webp: 허용되지 않은 확장자 파일 업로드

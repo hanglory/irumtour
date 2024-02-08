@@ -1,0 +1,5 @@
+210.123.29.229 - [19/Jan/2024:16:01:55 +0900] /new/bkoff/tour/view_tour.php: content3 = * 1일차 골프는 일몰플레이입니다.\r\n* 싱글챠지 : TAG 공격 패턴 탐지
+210.123.29.229 - [19/Jan/2024:16:02:11 +0900] /new/bkoff/tour/view_tour.php: content3 = * 1일차 골프는 일몰플레이입니다.\r\n* 싱글챠지 : TAG 공격 패턴 탐지
+210.123.29.229 - [19/Jan/2024:16:03:42 +0900] /new/bkoff/tour/view_tour.php: content3 = * 1일차 골프는 일몰플레이입니다.\r\n* 싱글챠지 : TAG 공격 패턴 탐지
+210.123.29.229 - [19/Jan/2024:16:03:56 +0900] /new/bkoff/cmp/view_golf.php: etc = ※ 현지 사정에 따라 골프장 순서 및 배정은 동�: TAG 공격 패턴 탐지
+210.123.29.229 - [19/Jan/2024:16:06:47 +0900] /new/bkoff/tour/view_tour.php: content3 = * 1일차 골프는 일몰플레이입니다.\r\n* 싱글챠지 : TAG 공격 패턴 탐지

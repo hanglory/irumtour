@@ -1,0 +1,25 @@
+<style type="text/css">
+.topmenu2{
+    margin:0 30px 0 30px !important;
+} 
+.tbl_topmenu{
+    min-width:1350px !important;
+}
+</style>    
+
+<table border="0" cellspacing="0" cellpadding="0" width="98%" >
+ <tr>
+    <td align="center">
+
+        <?
+        if($_SESSION["sessMenu"]=="cmp")   
+            include("inc_topmenu_erp.php");
+        else
+            include("inc_topmenu_homepage.php");
+        ?>
+
+    </td>
+ </tr>
+</table>
+
+
