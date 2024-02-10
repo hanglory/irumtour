@@ -434,7 +434,7 @@ $(function(){
           <td class="subject">입사일</td>
           <td>
           <input type="text" name="join_day" id="join_day" size="13" maxlength="10" value="<?=$rs[join_day]?>" class="box c dateinput">
-             /  <strong>생일</strong> <input type="text" name="birth_day" id="birth_day" size="13" maxlength="10" value="<?=$rs[birth_day]?>" class="box c dateinput">
+             /  <strong>생일2</strong> <input type="text" name="birth_day" id="birth_day" size="13" maxlength="10" value="<?=$rs[birth_day]?>" class="box c dateinput">
           </td>
         </tr>
         <tr><td colspan="2" class="tblLine"></td></tr>
