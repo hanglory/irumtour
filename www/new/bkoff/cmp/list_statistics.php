@@ -63,7 +63,7 @@ $FILTER_PARTNER_QUERY=str_replace("and cp_id","and a.cp_id",$FILTER_PARTNER_QUER
 $FILTER_PARTNER_QUERY=str_replace("and main_staff","and a.main_staff",$FILTER_PARTNER_QUERY);
 #query
 $sql_1 = "
-    SELECT AA.nation, AA.sd, AA.tot_cnt, BB.rev_cnt
+    SELECT AA.view_path, AA.sd, AA.tot_cnt, BB.rev_cnt
 FROM(
 select
 view_path, substr(send_date,1,7) AS sd, COUNT(*) AS tot_cnt
@@ -211,58 +211,170 @@ ON AA.nation=BB.nation AND AA.sd = BB.sd";
 <!-- Search End------------------------------------------------>
 <!-- Table Begin------------------------------------------------>
 
+<!-- 국가 분석 테이블-->
 <table border="0" cellspacing="0" cellpadding="3" width="100%" id="tbl_cmp_list">
 
     <tr align=center height=25 bgcolor="#F7F7F6">
         <th class="subject">나라</th>
-        <?php
+<?php
         // 월 헤더 생성
-        for ($month = 1; $month <= 12; $month++) {
+        for ($month = 1; $month <= 12; $month++)
+        {
             echo "<th class='subject'>{$month}월</th>";
         }
-        ?>
-
-    <?
 $dbo->query($sql_2);
 if($debug) checkVar(mysql_error(),$sql_2);
 
 $_1 = "";
-while($rs=$dbo->next_record()){
+while($rs=$dbo->next_record())
+{
 
-    if($rs[nation] == $_1){
-        if($i == substr($rs[sd],5,2)){
+    if($rs[nation] == $_1)
+    {
+        if($i == substr($rs[sd],5,2))
+        {
 ?>
             <td> <?=$rs[tot_cnt]?>( <?=@round($rs[rev_cnt]/$rs[tot_cnt]*100,1)?> %)</td>
 <?
-        }else{
+        }else
+        {
             echo "<td> </td>";
         }
         $i++;
     } else
-    {
-    $i=1;
+      {
+         $i=1;
 ?>
         </tr>
          <tr align='center' onMouseOver="this.style.backgroundColor='#EEEEFF'" onMouseOut="this.style.backgroundColor='#FFFFFF'">
             <td height="35"><?=$rs[nation]?>(예약율)</td>
 <?          for($j=1; substr($rs[sd],5,2)>=$j;$j++)
             {
-             if($i == substr($rs[sd],5,2)){
+             if($i == substr($rs[sd],5,2))
+             {
 ?>
             <td> <?=$rs[tot_cnt]?>( <?=@round($rs[rev_cnt]/$rs[tot_cnt]*100,1)?> %)</td>
-<?              }else
+<?           } else
                 {
                     echo "<td> </td>";
                 }
                 $i++;
             }
-    }
+      }
 
     $_1 = $rs[nation];
 }
 ?>
     </tr>
 </table>
+<!--경로 분석 테이블1-->
+<table border="0" cellspacing="0" cellpadding="3" width="100%" id="tbl_cmp_list">
+
+    <tr align=center height=25 bgcolor="#F7F7F6">
+        <th class="subject">경로</th>
+        <?php
+        // 월 헤더 생성
+        for ($month = 1; $month <= 12; $month++) {
+            echo "<th class='subject'>{$month}월</th>";
+        }
+
+        $dbo->query($sql_1);
+        if($debug) checkVar(mysql_error(),$sql_1);
+
+        $_1 = "";
+        while($rs=$dbo->next_record()){
+
+        if($rs[view_path] == $_1){
+            if($i == substr($rs[sd],5,2))
+            {
+?>
+                <td> <?=$rs[tot_cnt]?>( <?=@round($rs[rev_cnt]/$rs[tot_cnt]*100,1)?> %)</td>
+<?
+            }else{
+                echo "<td> </td>";
+            }
+            $i++;
+        } else
+        {
+        $i=1;
+?>
+    </tr>
+    <tr align='center' onMouseOver="this.style.backgroundColor='#EEEEFF'" onMouseOut="this.style.backgroundColor='#FFFFFF'">
+        <td height="35"><?=$rs[view_path]?>(예약율)</td>
+<?      for($j=1; substr($rs[sd],5,2)>=$j;$j++)
+        {
+            if($i == substr($rs[sd],5,2))
+            {
+?>
+                <td> <?=$rs[tot_cnt]?>( <?=@round($rs[rev_cnt]/$rs[tot_cnt]*100,1)?> %)</td>
+<?              }else
+            {
+                echo "<td> </td>";
+            }
+            $i++;
+        }
+        }
+
+        $_1 = $rs[view_path];
+        }
+        ?>
+    </tr>
+</table>
+<!--경로 분석 테이블 연습-->
+<!--
+<table border="0" cellspacing="0" cellpadding="3" width="100%" id="tbl_cmp_list">
+
+    <tr align=center height=25 bgcolor="#F7F7F6">
+        <th class="subject">경로</th>
+        <?php
+        // 월 헤더 생성
+        for ($month = 1; $month <= 12; $month++) {
+            echo "<th class='subject'>{$month}월</th>";
+        }
+
+        $dbo->query($sql_1);
+        if($debug) checkVar(mysql_error(),$sql_1);
+
+        $_1 = "";
+        while($rs=$dbo->next_record()){
+
+        if($rs[view_path] == $_1){
+            if($i == substr($rs[sd],5,2))
+            {
+                ?>
+                <td> <?=$rs[tot_cnt]?>( <?=@round($rs[rev_cnt]/$rs[tot_cnt]*100,1)?> %)</td>
+                <?
+            }else{
+                echo "<td> </td>";
+            }
+            $i++;
+        } else
+        {
+        $i=1;
+        ?>
+    </tr>
+    <tr align='center' onMouseOver="this.style.backgroundColor='#EEEEFF'" onMouseOut="this.style.backgroundColor='#FFFFFF'">
+        <td height="35"><?=$rs[view_path]?>(예약율)</td>
+        <?      for($j=1; substr($rs[sd],5,2)>=$j;$j++)
+        {
+            if($i == substr($rs[sd],5,2))
+            {
+                ?>
+                <td> <?=$rs[tot_cnt]?>( <?=@round($rs[rev_cnt]/$rs[tot_cnt]*100,1)?> %)</td>
+            <?              }else
+            {
+                echo "<td> </td>";
+            }
+            $i++;
+        }
+        }
+
+        $_1 = $rs[view_path];
+        }
+        ?>
+    </tr>
+</table>
+-->
 
 <!--내용이 들어가는 곳 끝-->
 

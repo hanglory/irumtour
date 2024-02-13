@@ -95,6 +95,12 @@ if($mode=="save"){
     //     exit;
     // }
 
+    // Eunchan_ 24.02.13_ mysql서버에 table 추가.
+    // ALTER TABLE `cmp_staff`
+    //	ADD COLUMN `birth_day` CHAR(10) NULL DEFAULT NULL AFTER `bit_hide`,
+    //	ADD COLUMN `join_day` CHAR(10) NULL DEFAULT NULL AFTER `birth_day`,
+    //	ADD COLUMN `zipcode` CHAR(6) NULL DEFAULT NULL AFTER `join_day`,
+    //	ADD COLUMN `address` VARCHAR(250) NULL DEFAULT NULL AFTER `zipcode`;
 
     $sqlInsert="
        insert into $table (
@@ -127,7 +133,11 @@ if($mode=="save"){
           company,
           cp_url,     
           reg_date,
-          reg_date2
+          reg_date2,
+          birth_day,
+          join_day,
+          zipcode,
+          address
       ) values (
           '$id',
           password('$pwd'),
@@ -154,11 +164,14 @@ if($mode=="save"){
           '$target_rate',
           '$kakao_link',
           '$paper_color',
-          '$bank_account',            
-          '$company',             
-          '$cp_url',              
+          '$bank_account',
+          '$company',
+          '$cp_url',
           '$reg_date',
-          '$reg_date2'
+          '$reg_date2',
+          '$join_day',
+          '$zipcode',
+          '$address'
     )";
 
     $query_cp="";
@@ -195,7 +208,12 @@ if($mode=="save"){
           kakao_link = '$kakao_link',
           paper_color='$paper_color',
           bank_account='$bank_account',
-          email = '$email'
+          email = '$email',
+          birth_day = '$birth_day',
+          join_day = '$join_day',
+          zipcode = '$zipcode',
+          address = '$address'
+          
        where 
             id_no='$id_no'
             $FILTER_PARTNER_QUERY
@@ -434,7 +452,8 @@ $(function(){
           <td class="subject">입사일</td>
           <td>
           <input type="text" name="join_day" id="join_day" size="13" maxlength="10" value="<?=$rs[join_day]?>" class="box c dateinput">
-             /  <strong>생일2</strong> <input type="text" name="birth_day" id="birth_day" size="13" maxlength="10" value="<?=$rs[birth_day]?>" class="box c dateinput">
+             /  <strong>생일</strong> <input type="text" name="birth_day" id="birth_day" size="13" maxlength="10" value="<?=$rs[birth_day]?>" class="box c dateinput">
+
           </td>
         </tr>
         <tr><td colspan="2" class="tblLine"></td></tr>

@@ -59,9 +59,11 @@ $sql_1 = "
 ";        
 $sql_2 = $sql_1 . " order by id_no desc limit  $start, $view_row";
 
+$sql_3 = $sql_1 . " order by FIELD(staff_type,'staff','leader_partner','ceo','partner','partner_i','partner_a','partner_g','') limit $start,$view_row";
 
 
 ####자료갯수
+list($rows)=$dbo->query($sql_1);//검색된 자료의 갯수
 list($rows)=$dbo->query($sql_1);//검색된 자료의 갯수
 $row_search = $rows;
 
@@ -93,7 +95,7 @@ $selectValue ="name,id";
 
 #### Link
 $keyword2 = base64_encode($keyword);
-$link = "keyword=$keyword&target=$target&ctg1=$ctg1&best=$best&ctg1=$ctg1";
+$link = "keyword=$keyword&target=$target&ctg1=$ctg1&best=$best&ctg1=$ctg1&mposition=$mposition";
 $sessLink = "page=$page&" . $link;
 
 ?>
@@ -126,7 +128,6 @@ function del(){
         fm.submit();
     }
 }
-
 
 function bit_hide(){
     var j = 0;
@@ -205,7 +206,7 @@ function bit_hide(){
         <tr align="center" height=25 bgcolor="#F7F7F6">
         <th class="subject"><input type="checkbox" name="checkAll" value="checkbox" onClick="selectAll();" onFocus='blur(this)'></th>
         <th class="subject" >번호</th>
-        <th class="subject" >구분</th>
+        <th class="subject" ><a href="<?=SELF?>?mposition=1">구분 </a></th>
         <th class="subject" >접속허용</th>
         <th class="subject" >파트너</th>
         <th class="subject" >아이디</th>
@@ -214,12 +215,21 @@ function bit_hide(){
         <th class="subject" >마지막 로그인</th>
         <th class="subject" >등록일</th>
         </tr>
-<?
-if($page!=1){$num=$row_search-($view_row*($page-1));}
-else{$num=$row_search;}
 
-$dbo->query($sql_2);
-if($debug) checkVar(mysql_error(),$sql_2);
+
+<?
+if($page!=1){
+    $num=$row_search-($view_row*($page-1));
+} else{$num=$row_search;
+}
+if($mposition == 1){
+    $dbo->query($sql_3);
+    if($debug) checkVar(mysql_error(),$sql_3);
+} else{
+    $dbo->query($sql_2);
+    if($debug) checkVar(mysql_error(),$sql_2);
+}
+
 while($rs=$dbo->next_record()){
 
     $bit_login = ($rs[bit_login])?"허용":"차단";
