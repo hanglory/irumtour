@@ -42,11 +42,13 @@ if(strstr("
 elseif(strstr("
     @list_estimate.php@view_estimate.php@
     @list_group.php@view_group.php@
+    @list_statistics.php@view_statistics.php@
     ",SELF)){
 
     $left_memus = array(
         "list_estimate.php"=>"일정표등록",
         "list_group.php"=>"골프투어문의",
+        "list_statistics.php"=>"일정표 통계",
     );
     $total_menu_mode=1;
 }
@@ -102,9 +104,10 @@ elseif(strstr("
     @list_paper_n1.php@
     @list_paper3.php@
     @list_paper5.php@
-    @list_paper17.php@
     @list_paper5.php@
-    @list_paper5.php@    
+    @list_paper5.php@
+    @list_paper5.php@
+    @list_paper17.php@     <!--이거 추가해서 됐는데 왜 됐는지 모름ㅔ!-->
     @list_download.php@    
     ",SELF)){
 
@@ -121,6 +124,7 @@ elseif(strstr("
             "list_paper5.php?ctype=태국&dtype=tour_date"=>"기간별 현황(태국)",
             "list_paper5.php?ctype=중국&dtype=tour_date"=>"기간별 현황(중국)",
             "list_paper5.php?ctype=한국&dtype=tour_date"=>"기간별 현황(한국)",
+            "list_paper5.php?ctype=베트남&dtype=tour_date"=>"기간별 현황(베트남)",
             "list_download.php"=>"고객정보 프로파일링",
         );
         $total_menu_mode=1;
