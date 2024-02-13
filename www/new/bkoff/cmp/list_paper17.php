@@ -39,7 +39,7 @@ $sql = "
 	order by b.city asc
 ";
 $dbo->query($sql);
-//if(strstr("@112.172.15.90@221.154.110.119@","@".$_SERVER["REMOTE_ADDR"]."@")){checkVar($rows.mysql_error(),$sql);}
+if($debug){checkVar($rows.mysql_error(),$sql);}
 while($rs=$dbo->next_record()){
 	$i++;
 	if(!$i) $city_default = $rs[city];
@@ -146,7 +146,7 @@ $TITLE .=($dtype=="d_date")? "(출국일자 기준)" : "(예약일자 기준)";
 		group by left(a.$dtype,4)
 	";
 	$dbo->query($sql);
-	//checkVar(mysql_error(),$sql);
+    if($debug) checkVar(mysql_error(),$sql);
 	while($rs=$dbo->next_record()){
 		$did = $rs[did];
 		$DATA2[$did]["people"] = $rs[sum_people];
@@ -169,9 +169,10 @@ $TITLE .=($dtype=="d_date")? "(출국일자 기준)" : "(예약일자 기준)";
 			$filter
 			and b.city='$city'
 		group by b.nation,b.city,a.golf_id_no,left(a.$dtype,4)
+		ORDER BY did2 DESC, sum_people DESC
 	";
 	$dbo->query($sql);
-	//if(strstr("@112.172.15.90@221.154.110.119@","@".$_SERVER["REMOTE_ADDR"]."@")) checkVar(mysql_error(),$sql);
+    if($debug) checkVar(mysql_error(),$sql);
 	while($rs=$dbo->next_record()){
 		$did = $rs[did];
 		$did2 = $rs[did2];
@@ -182,7 +183,7 @@ $TITLE .=($dtype=="d_date")? "(출국일자 기준)" : "(예약일자 기준)";
 	}
 
 	@$arr = array_unique($arr);
-	@sort($arr);
+//	@sort($arr);
 
 	?>
 
