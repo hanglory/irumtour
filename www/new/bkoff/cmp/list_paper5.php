@@ -66,7 +66,7 @@ $TITLE .=($dtype=="d_date")? "(출국일자 기준)" : "(예약일자 기준)";
                 <input type="text" name="date_e" id="date_e" size="13" maxlength="10" value="<?=$date_e?>" class="box c dateinput">
 
                 <select name="ctype">
-                    <?=option_str("일본,태국,중국,한국","일본,태국,중국,한국",$ctype)?>
+                    <?=option_str("일본,태국,중국,한국,베트남","일본,태국,중국,한국,베트남",$ctype)?>
                 </select>
 
                 <select name="dtype">
