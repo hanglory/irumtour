@@ -631,6 +631,9 @@ function my_tag($str,$bit=""){
 	$css_golf="font-weight:bold;background-color:yellow;line-height:130%";
 	$css_color1="font-weight:bold;background-color:#86B404;line-height:130%";
 	$css_color2="font-weight:bold;background-color:#81BEF7;line-height:130%";
+    $css_colorR="font-weight:bold;color:#FF0000;line-height:130%";
+    $css_colorB="font-weight:bold;color:#0000FF;line-height:130%";
+    $css_colorG="font-weight:bold;color:#00FF00;line-height:130%";
 
 	$str = str_replace("[","<span style='$css_golf'>",$str);
 	$str = str_replace("]","</span>",$str);
@@ -641,6 +644,14 @@ function my_tag($str,$bit=""){
 	$str = str_replace("((","<span style='$css_color2'>",$str);
 	$str = str_replace("))","</span>",$str);
 
+    $str = str_ireplace("<FCR>","<span style='$css_colorR'>",$str);
+    $str = str_ireplace("</FCR>","</span>",$str);
+
+    $str = str_ireplace("<FCB>","<span style='$css_colorB'>",$str);
+    $str = str_ireplace("</FCB>","</span>",$str);
+
+    $str = str_ireplace("<FCG>","<span style='$css_colorG'>",$str);
+    $str = str_ireplace("</FCG>","</span>",$str);
 
 	return $str;
 }
