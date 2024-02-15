@@ -56,22 +56,20 @@ $TITLE .=($dtype=="d_date")? "(출국일자 기준)" : "(예약일자 기준)";
 	<!-- Search Begin------------------------------------------------>
 	<div style="padding:0 0 5px 0">
     <table border="0" cellspacing="0" cellpadding="3" width="100%" id="tbl_list">
-	<form name=fmSearch method="get">
+	<form name=fmSearch method="get" action="list_paper5.php">
 	<input type=hidden name='position' value="">
 	<input type=hidden name='ctg1' value="<?=$ctg1?>">
 
 
 	<tr height=22>
 	<td valign='bottom' align=right>
-
-
-	<input type="text" name="date_s" id="date_s" size="13" maxlength="10" value="<?=$date_s?>" class="box c dateinput">
-	~
-	<input type="text" name="date_e" id="date_e" size="13" maxlength="10" value="<?=$date_e?>" class="box c dateinput">
+	    <input type="text" name="date_s" id="date_s" size="13" maxlength="10" value="<?=$date_s?>" class="box c dateinput">
+	    ~
+	    <input type="text" name="date_e" id="date_e" size="13" maxlength="10" value="<?=$date_e?>" class="box c dateinput">
 
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-	<select name="dtype" style="width:130px">
+    	<select name="dtype" style="width:130px">
 		<?=option_str("예약일기준,출국일기준","tour_date,d_date",$dtype)?>
 	</select>
 
@@ -176,7 +174,7 @@ $TITLE .=($dtype=="d_date")? "(출국일자 기준)" : "(예약일자 기준)";
 			<th class="subject" >매출</th>
 			<th class="subject" >객단가</th>
 		</tr>
-		<?
+<?
 		$sum1_1 = 0;
 		$sum1_2 = 0;
 		$sum1_3 = 0;
@@ -194,7 +192,8 @@ $TITLE .=($dtype=="d_date")? "(출국일자 기준)" : "(예약일자 기준)";
 		$sum2_7 = 0;
 		$sum2_8 = 0;
 
-		while(list($key,$val)=each($arr)){
+		while(list($key,$val)=each($arr))
+        {
 			$did = $val;
 			$did2 = $year_this;
 
@@ -202,7 +201,8 @@ $TITLE .=($dtype=="d_date")? "(출국일자 기준)" : "(예약일자 기준)";
 			$sum_this2=0;
 
 			$sum_this1=0;
-			for($i=0;$i<count($paths);$i++){
+			for($i=0;$i<count($paths);$i++)
+            {
 				$sum_this1+=$DATA[$did][$did2][$paths[$i]]["people"];
 				$sum_this2+=$DATA[$did][$did2][$paths[$i]]["fee"];
 			}
@@ -220,10 +220,18 @@ $TITLE .=($dtype=="d_date")? "(출국일자 기준)" : "(예약일자 기준)";
 			$sum1_6 += $sum_this2;
 			$sum1_7 += @($sum_this2/$sum_this1);
 			$pos_link = strpos($val, '기타');
-		?>
+?>
 		
 		<tr>
-			<td rowspan="2" style="background-color:#f0f0f0"><? if($pos_link !== false ){ echo $val;}else{?><a href="/new/bkoff/cmp/list_paper5.php?ctype=<?=$val?>&dtype=tour_date"><?=$val?></a><? } ?></td>
+			<td rowspan="2" style="background-color:#f0f0f0">
+<?
+                if($pos_link !== false )
+                { echo $val;
+                } else
+                  {
+?>                  <a href="/new/bkoff/cmp/list_paper5.php?ctype=<?=$val?>&dtype=tour_date&date_s=<?$date_s?>&date_e=<?$date_e?>"><?=$val?></a>
+<?                }
+?>          </td>
 			<td>금년</td>
 			<td><?=nf($DATA[$did][$did2]["신규"]["people"])?>명</td>
 			<td><?=nf($DATA[$did][$did2]["재방문"]["people"]+$DATA[$did][$did2]["재문의"]["people"])?>명</td>
@@ -235,11 +243,12 @@ $TITLE .=($dtype=="d_date")? "(출국일자 기준)" : "(예약일자 기준)";
 			<td class="r"><?=@nf($sum_this2/$sum_this1)?>원</td>
 		</tr>
 
-		<?
+<?
 			$did2 = $year_prev;
 			$sum_prev1=0;
 			$sum_prev2=0;
-			for($i=0;$i<count($paths);$i++){
+			for($i=0;$i<count($paths);$i++)
+            {
 				$sum_prev1+=$DATA[$did][$did2][$paths[$i]]["people"];
 				$sum_prev2+=$DATA[$did][$did2][$paths[$i]]["fee"];
 
@@ -256,7 +265,7 @@ $TITLE .=($dtype=="d_date")? "(출국일자 기준)" : "(예약일자 기준)";
 			$sum2_6 += $sum_prev2;
 			$sum2_7 += @($sum_prev2/$sum_prev1);
 
-		?>
+?>
 		<tr style="background-color:#f0f0f0">
 			<td>작년</td>
 			<td><?=nf($DATA[$did][$did2]["신규"]["people"])?>명</td>
@@ -268,7 +277,8 @@ $TITLE .=($dtype=="d_date")? "(출국일자 기준)" : "(예약일자 기준)";
 			<td class="r"><?=@nf($sum_prev2)?>원</td>
 			<td class="r"><?=@nf($sum_prev2/$sum_prev1)?>원</td>
 		</tr>
-		<?}?>
+<?      }
+?>
 
 
 		<tr style="background-color:#ffe6cc">

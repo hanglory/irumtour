@@ -6,9 +6,14 @@ chk_power($_SESSION["sessLogin"]["proof"],"통계");
 $dtype=($dtype)? $dtype : "d_date";
 
 
-
-$date_s = ($date_s)? $date_s : $PAPER_DEFAULT_DAY1;
-$date_e = ($date_e)? $date_e : $PAPER_DEFAULT_DAY2;
+if(!empty($_GET['date_s'])){
+    $date_s = ($date_s)? $date_s : $_GET['date_s'];
+    $date_e = ($date_e)? $date_e : $_GET['date_e'];
+}
+else{
+    $date_s = ($date_s)? $date_s : $PAPER_DEFAULT_DAY1;
+    $date_e = ($date_e)? $date_e : $PAPER_DEFAULT_DAY2;
+}
 
 $year_this = substr($date_s,0,4);
 $year_prev = substr($date_s,0,4)-1;
