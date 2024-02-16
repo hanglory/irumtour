@@ -47,11 +47,16 @@ if($keyword){
 }
 
 $dtype = ($dtype)? $dtype : "send_date";
-if(!$date_s) $date_s= date("Y"); //"2015/06/01";
-if(!$date_e) $date_e=date("Y/m/d",strtotime(date("Y/m/d")." +1 month"));
-$filter.=" and a.$dtype >='$date_s'";
-$filter.=" and a.$dtype <='$date_e'";
-$year = ($year)? $year : date("Y");
+
+if($year) {
+    $filter .= " AND substr(a.$dtype,1,4) = $year ";
+}
+if(!$date_s) $date_s= date("Y/m/d",strtotime(date("Y/m/d")." -11 month")); //date("Y"); //"2015/06/01";
+if(!$date_e) $date_e= date("Y/m/d",strtotime(date("Y/m/d")." +1 month"));
+$filter.=" AND a.$dtype >='$date_s'";
+$filter.=" AND a.$dtype <='$date_e'";
+// $year = ($year)? $year : date("Y");
+
 
 
 if($bit_worked) $filter.=" and bit_worked=1";
@@ -72,7 +77,7 @@ where
 a.id_no>0
 and a.cp_id=''
 AND (a.view_path LIKE '%신규%' OR a.view_path LIKE '%재방문%' OR a.view_path LIKE '%투어문의%' )
-AND substr(a.send_date,1,4)= '$year' 
+$filter
 GROUP BY 1,2
 ) AA
 LEFT JOIN (
@@ -86,7 +91,7 @@ a.id_no>0
 and a.cp_id=''
 and c.origin_id_no<>''
 AND (a.view_path LIKE '%신규%' OR a.view_path LIKE '%재방문%' OR a.view_path LIKE '%투어문의%' )
-AND substr(a.send_date,1,4)='$year' 
+$filter
 group BY 1, 2
 )BB 
 ON AA.view_path=BB.vpath AND AA.sd = BB.sd";
@@ -103,7 +108,7 @@ where
 a.id_no>0
 and a.cp_id=''
 AND (b.nation ='일본' OR b.nation='태국' OR b.nation ='베트남' OR b.nation='중국')
-AND substr(a.send_date,1,4)='$year' 
+$filter
 GROUP BY 1,2
 ) AA
 LEFT JOIN (
@@ -117,10 +122,12 @@ a.id_no>0
 and a.cp_id=''
 and c.origin_id_no<>''
 AND (b.nation ='일본' OR b.nation='태국' OR b.nation ='베트남' OR b.nation='중국')
-AND substr(a.send_date,1,4)='$year' 
+$filter
 group BY 1, 2
 )BB 
 ON AA.nation=BB.nation AND AA.sd = BB.sd";
+
+$sql_1 =""
 
 ?>
 <?include("../top.html");?>
@@ -198,8 +205,11 @@ ON AA.nation=BB.nation AND AA.sd = BB.sd";
 
             <tr height=22>
                 <td valign='bottom' align=right>
+                <input type="text" name="date_s" id="date_s" size="13" maxlength="10" value="<?=$date_s?>" class="box c dateinput">
+                ~
+                <input type="text" name="date_e" id="date_e" size="13" maxlength="10" value="<?=$date_e?>" class="box c dateinput">
                     <select name="year" class="select">
-                        <?= option_int2($date_s, 2015, 1)?>
+                        <?= option_int2(date("Y"), 2015, 1)?>
                     </select>
 
                     <input class=button type="submit" name="Submit" value=" 검 색 " onFocus='blur(this)'>
