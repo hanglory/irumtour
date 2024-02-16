@@ -25,6 +25,14 @@ textarea.box{line-height:23px;padding-left:3px}
 .leftmenu{
 	font-weight: normal !important;
 	color:#666666 !important;
+	onMouseOver:"this.style.backgroundColor='#EEEEFF'";
+	onMouseOut: "this.style.backgroundColor='#F7F7F6'";
+	}	
+/**********************************************************
+* left
+***********************************************************/
+.left_submenu:hover{
+	background-color: #EEEEFF;
 	}	
 
 

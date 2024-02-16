@@ -1023,12 +1023,7 @@ include("inc_form_og.php");
                 <?if($edit_mode){?>
                 <textarea name="add_text10" class="add_text10 editor3" style="height:150px"><?=$rs[add_text10]?></textarea>
                 <?}else{?>
-                    <?
-                    $txt2=$rs[add_text10];
-                    include("inc_plan_color.php");
-                    $rs[add_text10]=$txt2;
-                    ?>
-                    <?=nl2br($rs[add_text10])?>
+                    <?=nl2br(my_tag($rs[add_text10]))?>
                 <?}?>
 
             </td>
@@ -1043,12 +1038,7 @@ include("inc_form_og.php");
                 <?if($edit_mode){?>
                 <textarea name="std_cargo2" class="std_cargo2 editor3" style="height:50px"><?=$std_cargo2?></textarea>
                 <?}else{?>
-                    <?
-                    $txt2=$std_cargo2;
-                    include("inc_plan_color.php");
-                    $std_cargo2=$txt2;
-                    ?>
-                    <?=nl2br($std_cargo2)?>
+                    <?=nl2br(my_tag($std_cargo2))?>
                 <?}?> 
 
             </td>
@@ -1069,12 +1059,7 @@ include("inc_form_og.php");
                 <?if($edit_mode){?>
                 <textarea name="prepare" class="editor2"><?=$prepare?></textarea>
                 <?}else{?>
-                    <?
-                    $txt2=$prepare;
-                    include("inc_plan_color.php");
-                    $prepare=$txt2;
-                    ?>
-                    <?=nl2br($prepare)?>                    
+                    <?=nl2br(my_tag($prepare))?>                    
                 <?}?>
 
 
@@ -1102,12 +1087,7 @@ include("inc_form_og.php");
                 <?if($edit_mode){?>
                 <textarea name="form3_text" class="editor2"><?=$form3_text?></textarea>
                 <?}else{?>
-                    <?
-                    $txt2=$form3_text;
-                    include("inc_plan_color.php");
-                    $form3_text=$txt2;
-                    ?>
-                    <?=nl2br($form3_text)?>                                        
+                    <?=nl2br(my_tag($form3_text))?>                                        
                 <?}?>
 
                 </td>
@@ -1135,12 +1115,7 @@ include("inc_form_og.php");
                     <?if($edit_mode){?>
                     <textarea name="form3_text2" class="editor2" style="height:170px"><?=$form3_text2?></textarea>
                     <?}else{?>
-                        <?
-                        $txt2=$form3_text2;
-                        include("inc_plan_color.php");
-                        $form3_text2=$txt2;
-                        ?>
-                        <?=nl2br($form3_text2)?>
+                        <?=nl2br(my_tag($form3_text2))?>
                     <?}?>
 
                 </td>
@@ -1214,16 +1189,11 @@ include("inc_form_og.php");
             <tr>
               <td width="20%" align="center" bgcolor="#948A54" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'Malgun Gothic','돋움';font-weight:bold;color:#fff">참고사항</span></td>
               <td align="left" bgcolor="#ffffff" style="font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:10px;font-size:10pt">
-                <?
-                //$txt2=$rs[add_text3];
-                //include("inc_plan_color.php");
-                //$rs[add_text3]=$txt2;
-                ?>
 
                 <?if($edit_mode){?>
                 <textarea name="add_text3" style="height:200px" class="editor2"><?=$rs[add_text3]?></textarea>
                 <?}else{?>
-                    <?=nl2br($rs[add_text3])?>
+                    <?=nl2br(my_tag($rs[add_text3]))?>
                 <?}?>
 
               </td>

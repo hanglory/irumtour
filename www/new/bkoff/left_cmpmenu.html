@@ -62,7 +62,7 @@ elseif(strstr("
     @list_report2.php@
     @list_sms.php@
     @list_transfer2.php@
-    ",SELF)){
+    ",SELF) || $LEFT_MENU == "cmp_resv"){
 
     $left_memus = array(
         "list_reservation.php"=>"예약정보",
@@ -107,9 +107,9 @@ elseif(strstr("
     @list_paper5.php@
     @list_paper5.php@
     @list_paper5.php@
-    @list_paper17.php@     <!--이거 추가해서 됐는데 왜 됐는지 모름ㅔ!-->
+    @list_paper17.php@    
     @list_download.php@    
-    ",SELF)){
+    ",SELF) || $LEFT_MENU = "cmp_sales"){
 
     if($_SESSION[SESS_TOP_MENU_SELECTED]==6){
 
@@ -176,15 +176,20 @@ if(!strstr($_SERVER['SCRIPT_NAME'],"/cmp")){
 
             $key2_arr = explode(".php",$key);
             $key2 = $key2_arr[0].".php";
-
-            //if(strstr("@14.37.242.84@221.154.110.119@","@".$_SERVER["REMOTE_ADDR"]."@")){checkVar($key2,$value);}
+            if(strstr($key, SELF)){
+                $img_arow = "../images/common/ic_arrow02.gif";
+                $class_arow = "leftmenuselect";
+            }else{                    
+                $img_arow = "../images/common/ic_arrow.gif";
+                $class_arow = "leftmenu";
+            }
             if(!strstr($hide_memu_tmp,$key2)){
     ?>
         <tr>
-            <?if($value){?>
-            <td height="26" style="padding-left:0">
-                <img src="../images/common/ic_arrow.gif">
-                <a href="<?=$url?>" class="leftmenu"><?=$value?></a>
+            <? if($value) { ?>
+            <td height="26" style="padding-left:0" onMouseOver="this.style.backgroundColor='#EEEEFF'" onMouseOut="this.style.backgroundColor='#F7F7F6'">
+                <img src="<?=$img_arow?>">
+                <a href="<?=$url?>" class="<?=$class_arow?>"><?=$value?></a>
             </td>
             <?}else{?>
             <td height="16"></td>            
