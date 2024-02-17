@@ -78,7 +78,7 @@ a.id_no>0
 and a.cp_id=''
 AND (a.view_path LIKE '%신규%' OR a.view_path LIKE '%재방문%' OR a.view_path LIKE '%투어문의%' )
 $filter
-GROUP BY 1,2
+GROUP BY 2,1
 ) AA
 LEFT JOIN (
 select
@@ -92,7 +92,7 @@ and a.cp_id=''
 and c.origin_id_no<>''
 AND (a.view_path LIKE '%신규%' OR a.view_path LIKE '%재방문%' OR a.view_path LIKE '%투어문의%' )
 $filter
-group BY 1, 2
+group BY 2, 1
 )BB 
 ON AA.view_path=BB.vpath AND AA.sd = BB.sd";
 
@@ -109,7 +109,7 @@ a.id_no>0
 and a.cp_id=''
 AND (b.nation ='일본' OR b.nation='태국' OR b.nation ='베트남' OR b.nation='중국')
 $filter
-GROUP BY 1,2
+GROUP BY 2,1
 ) AA
 LEFT JOIN (
 select
@@ -123,230 +123,273 @@ and a.cp_id=''
 and c.origin_id_no<>''
 AND (b.nation ='일본' OR b.nation='태국' OR b.nation ='베트남' OR b.nation='중국')
 $filter
-group BY 1, 2
+group BY  2,1
 )BB 
 ON AA.nation=BB.nation AND AA.sd = BB.sd";
 
-$sql_1 =""
-
+$nation_arr = array("베트남","일본","중국","태국");
+$path_arr = array("신규","재방문","투어문의");
+$nation_cnt = count($nation_arr);
+$path_cnt = count($path_arr);
+$nation_tot = array(0,0,0,0);
+$nation_rev = array(0,0,0,0);
+$path_tot = array(0,0,0);
+$path_rev = array(0,0,0);
 ?>
 <?include("../top.html");?>
-<script language="JavaScript">
-    <!--
-    function selectAll(){
-        fm = document.fmData;
-        for(var i = 1; i < fm.elements.length; i++){
-            fm.elements[i].checked = (fm.checkAll.checked == 1)? 1 : 0;
-        }
-    }
-
-    function del(){
-        var j = 0;
-        fm = document.fmData;
-
-        for(var i = 1; i < fm.elements.length; i++){
-            if(fm.elements[i].checked == 1){
-                j++;
+    <script language="JavaScript">
+        <!--
+        function selectAll(){
+            fm = document.fmData;
+            for(var i = 1; i < fm.elements.length; i++){
+                fm.elements[i].checked = (fm.checkAll.checked == 1)? 1 : 0;
             }
         }
-        if(j == 0){
-            alert("삭제할 상품을 선택하지 않으셨습니다.");
-            return;
+
+        function del(){
+            var j = 0;
+            fm = document.fmData;
+
+            for(var i = 1; i < fm.elements.length; i++){
+                if(fm.elements[i].checked == 1){
+                    j++;
+                }
+            }
+            if(j == 0){
+                alert("삭제할 상품을 선택하지 않으셨습니다.");
+                return;
+            }
+            if(confirm("선택한 상품을 삭제하시겠습니까?")){
+                fm.action="view_<?=$filecode?>.php";
+                fm.mode.value="drop";
+                fm.submit();
+            }
         }
-        if(confirm("선택한 상품을 삭제하시겠습니까?")){
-            fm.action="view_<?=$filecode?>.php";
-            fm.mode.value="drop";
-            fm.submit();
+
+        function copy(id_no){
+            actarea.location.href="list_<?=$filecode?>_copy.php?id_no="+id_no;
         }
-    }
 
-    function copy(id_no){
-        actarea.location.href="list_<?=$filecode?>_copy.php?id_no="+id_no;
-    }
-
-    function copy_to_clip(val) {
-        var t = document.createElement("textarea");
-        document.body.appendChild(t);
-        t.value = val;
-        t.select();
-        document.execCommand('copy');
-        document.body.removeChild(t);
-        alert("복사되었습니다.");
-    }
-    //-->
-</script>
+        function copy_to_clip(val) {
+            var t = document.createElement("textarea");
+            document.body.appendChild(t);
+            t.value = val;
+            t.select();
+            document.execCommand('copy');
+            document.body.removeChild(t);
+            alert("복사되었습니다.");
+        }
+        //-->
+    </script>
 
 
-<!--상단 제목(일정표 통계)-->
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
-    <tr>
-        <td class="title_con"><img src="../images/common/ic_title.gif" align="absmiddle"><?=$TITLE?>
+    <!--상단 제목(일정표 통계)-->
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+            <td class="title_con"><img src="../images/common/ic_title.gif" align="absmiddle"><?=$TITLE?>
 
-        </td>
-    </tr>
-    <tr>
-        <td> </td>
-    </tr>
-    <tr>
-        <td background="../images/common/bg_title.gif" height="5"></td>
-    </tr>
-</table>
-
-
-<!--내용이 들어가는 곳 시작-->
-
-<!-- Search Begin------------------------------------------------>
-<div style="padding:0 0 5px 0">
-    <table border="0" cellspacing="0" cellpadding="3" width="100%" id="tbl_list">
-        <form name="fmSearch" method="get">
-            <input type="hidden" name='position' value="">
-            <input type="hidden" name='ctg1' value="<?=$ctg1?>">
-
-
-            <tr height=22>
-                <td valign='bottom' align=right>
-                <input type="text" name="date_s" id="date_s" size="13" maxlength="10" value="<?=$date_s?>" class="box c dateinput">
-                ~
-                <input type="text" name="date_e" id="date_e" size="13" maxlength="10" value="<?=$date_e?>" class="box c dateinput">
-                    <select name="year" class="select">
-                        <?= option_int2(date("Y"), 2015, 1)?>
-                    </select>
-
-                    <input class=button type="submit" name="Submit" value=" 검 색 " onFocus='blur(this)'>
-                </td>
-            <tr>
-        </form>
+            </td>
+        </tr>
+        <tr>
+            <td> </td>
+        </tr>
+        <tr>
+            <td background="../images/common/bg_title.gif" height="5"></td>
+        </tr>
     </table>
-</div>
-<!-- Search End------------------------------------------------>
-<!-- Table Begin------------------------------------------------>
 
-<!-- 국가 분석 테이블-->
-<table border="0" cellspacing="0" cellpadding="3" width="100%" id="tbl_cmp_list">
 
-    <tr align=center height=25 bgcolor="#F7F7F6">
-        <th class="subject">나라</th>
+    <!--내용이 들어가는 곳 시작-->
+
+    <!-- Search Begin------------------------------------------------>
+    <div style="padding:0 0 5px 0">
+        <table border="0" cellspacing="0" cellpadding="3" width="100%" id="tbl_list">
+            <form name="fmSearch" method="get">
+                <input type="hidden" name='position' value="">
+                <input type="hidden" name='ctg1' value="<?=$ctg1?>">
+
+
+                <tr height=22>
+                    <td valign='bottom' align=right>
+                        <input type="text" name="date_s" id="date_s" size="13" maxlength="10" value="<?=$date_s?>" class="box c dateinput">
+                        ~
+                        <input type="text" name="date_e" id="date_e" size="13" maxlength="10" value="<?=$date_e?>" class="box c dateinput">
+                        <select name="year" class="select">
+                            <?= option_int2(date("Y"), 2015, 1)?>
+                        </select>
+
+                        <input class=button type="submit" name="Submit" value=" 검 색 " onFocus='blur(this)'>
+                    </td>
+                <tr>
+            </form>
+        </table>
+    </div>
+    <!-- Search End------------------------------------------------>
+    <!-- Table Begin------------------------------------------------>
+
+    <!-- 국가 분석 테이블-->
+    <table border="0" cellspacing="0" cellpadding="3" width="100%" id="tbl_cmp_list">
+
+        <tr align=center height=25 bgcolor="#F7F7F6">
+            <th class="subject" rowspan="2">나라</th>
+            <?php
+            for ($i = 0; $nation_cnt > $i; $i++)
+            {
+                echo "<th class='subject' colspan='2'>$nation_arr[$i]</th>\n";
+            }
+            ?>
+        </tr>
+        <tr align=center height=25 bgcolor="#F7F7F6">
+            <?php
+            for ($i = 0; $nation_cnt > $i; $i++)
+            {
+                echo "<th class='subject'>예약건수</th><th class='subject'>예약율(%)</th>\n";
+            }
+            ?>
+        <!-- /tr -->
+            <?
+            $dbo->query($sql_2);
+            if($debug) checkVar(mysql_error(),$sql_2);
+
+            $_1 = "";
+            $i = 0;
+            while($rs=$dbo->next_record())
+            {
+                if($rs[sd] == $_1)
+                {
+                    for($j=0; $nation_cnt > $j ; $j++)
+                    {
+                        if($nation_arr[$i] == $rs[nation]){
+            ?>
+                            <td> <?=$rs[rev_cnt]?></td> <td> <?=@round($rs[rev_cnt]/$rs[tot_cnt]*100,1)?> %</td>
+            <?
+                            $nation_tot[$i]+=$rs[tot_cnt];
+                            $nation_rev[$i]+=$rs[rev_cnt];
+                            $i++;
+                            break;
+                        } else {
+                            echo "<td> </td><td> </td>\n";
+                        }
+                        $i++;
+                    }
+                } else {    //월이 변경 되면
+            if($nation_cnt == $i)   $i=0;
+            ?>
+        </tr>
+        <tr align='center' onMouseOver="this.style.backgroundColor='#EEEEFF'" onMouseOut="this.style.backgroundColor='#FFFFFF'">
+            <th class='subject' height="35"><?=$rs[sd]?>월</th>
+            <?
+                    for($j=0; $nation_cnt > $j ; $j++)
+                    {
+                        if($nation_arr[$i] == $rs[nation])
+                        {
+            ?>
+                            <td> <?=$rs[rev_cnt]?></td><td> <?=@round($rs[rev_cnt]/$rs[tot_cnt]*100,1)?> %</td>
+            <?
+                            $nation_tot[$i]+=$rs[tot_cnt];
+                            $nation_rev[$i]+=$rs[rev_cnt];
+                            $i++;
+                            break;
+                        } else {
+                            echo "<td> </td> <td> </td>\n";
+                        }
+                        $i++;
+                    }
+                }
+                $_1 = $rs[sd];
+            }
+            ?>
+        </tr>
+        <tr>
+            <th class='subject' height="35">전체</th>
 <?php
-        // 월 헤더 생성
-        for ($month = 1; $month <= 12; $month++)
-        {
-            echo "<th class='subject'>{$month}월</th>";
-        }
-$dbo->query($sql_2);
-if($debug) checkVar(mysql_error(),$sql_2);
-
-$_1 = "";
-while($rs=$dbo->next_record())
-{
-
-    if($rs[nation] == $_1)
-    {
-        if($i == substr($rs[sd],5,2))
-        {
-?>
-            <td> <?=$rs[tot_cnt]?>( <?=@round($rs[rev_cnt]/$rs[tot_cnt]*100,1)?> %)</td>
-<?
-        }else
-        {
-            echo "<td> </td>";
-        }
-        $i++;
-    } else
-      {
-         $i=1;
+            for ($i = 0; $nation_cnt > $i; $i++)
+            {
+                echo "<th class='subject'>$nation_rev[$i]</th><th class='subject'>".round($nation_rev[$i]/$nation_tot[$i]*100,1)."%</th>\n";
+            }
 ?>
         </tr>
-         <tr align='center' onMouseOver="this.style.backgroundColor='#EEEEFF'" onMouseOut="this.style.backgroundColor='#FFFFFF'">
-            <td height="35"><?=$rs[nation]?>(예약율)</td>
-<?          for($j=1; substr($rs[sd],5,2)>=$j;$j++)
+    </table>
+    <!--경로 분석 테이블1-->
+    <table border="0" cellspacing="0" cellpadding="3" width="100%" id="tbl_cmp_list">
+
+        <tr align=center height=25 bgcolor="#F7F7F6">
+            <th class="subject" rowspan="2">경로</th>
+            <?php
+            for ($i = 0; $path_cnt > $i; $i++)
             {
-             if($i == substr($rs[sd],5,2))
-             {
+                echo "<th class='subject' colspan='2'>$path_arr[$i]</th>\n";
+            }
+            ?>
+        </tr>
+        <tr align=center height=25 bgcolor="#F7F7F6">
+<?php
+            for ($i = 0; $path_cnt > $i; $i++)
+            {
+                echo "<th class='subject'>예약건수</th><th class='subject'>예약율(%)</th>\n";
+            }
 ?>
-            <td> <?=$rs[tot_cnt]?>( <?=@round($rs[rev_cnt]/$rs[tot_cnt]*100,1)?> %)</td>
-<?           } else
+<?
+            $dbo->query($sql_1);
+            if($debug) checkVar(mysql_error(),$sql_1);
+
+            $_1 = "";
+            $i = 0;
+            while($rs=$dbo->next_record()){
+
+            if($rs[view_path] == $_1){
+                if($i == substr($rs[sd],5,2))
+                {
+?>
+                    <td> <?=$rs[tot_cnt]?>( <?=@round($rs[rev_cnt]/$rs[tot_cnt]*100,1)?> %)</td>
+<?
+                }else{
+                    echo "<td> </td>";
+                }
+                $i++;
+            } else
+            {
+            $i=1;
+?>
+        </tr>
+        <tr align='center' onMouseOver="this.style.backgroundColor='#EEEEFF'" onMouseOut="this.style.backgroundColor='#FFFFFF'">
+            <td height="35"><?=$rs[view_path]?>(예약율)</td>
+            <?      for($j=1; substr($rs[sd],5,2)>=$j;$j++)
+            {
+                if($i == substr($rs[sd],5,2))
+                {
+                    ?>
+                    <td> <?=$rs[tot_cnt]?>( <?=@round($rs[rev_cnt]/$rs[tot_cnt]*100,1)?> %)</td>
+                <?              }else
                 {
                     echo "<td> </td>";
                 }
                 $i++;
             }
-      }
+            }
 
-    $_1 = $rs[nation];
-}
-?>
-    </tr>
-</table>
-<!--경로 분석 테이블1-->
+            $_1 = $rs[view_path];
+            }
+            ?>
+        </tr>
+    </table>
+    <!--경로 분석 테이블 연습-->
+    <!--
 <table border="0" cellspacing="0" cellpadding="3" width="100%" id="tbl_cmp_list">
 
     <tr align=center height=25 bgcolor="#F7F7F6">
         <th class="subject">경로</th>
         <?php
-        // 월 헤더 생성
-        for ($month = 1; $month <= 12; $month++) {
-            echo "<th class='subject'>{$month}월</th>";
-        }
+    // 월 헤더 생성
+    for ($month = 1; $month <= 12; $month++) {
+        echo "<th class='subject'>{$month}월</th>";
+    }
 
-        $dbo->query($sql_1);
-        if($debug) checkVar(mysql_error(),$sql_1);
+    $dbo->query($sql_1);
+    if($debug) checkVar(mysql_error(),$sql_1);
 
-        $_1 = "";
-        while($rs=$dbo->next_record()){
-
-        if($rs[view_path] == $_1){
-            if($i == substr($rs[sd],5,2))
-            {
-?>
-                <td> <?=$rs[tot_cnt]?>( <?=@round($rs[rev_cnt]/$rs[tot_cnt]*100,1)?> %)</td>
-<?
-            }else{
-                echo "<td> </td>";
-            }
-            $i++;
-        } else
-        {
-        $i=1;
-?>
-    </tr>
-    <tr align='center' onMouseOver="this.style.backgroundColor='#EEEEFF'" onMouseOut="this.style.backgroundColor='#FFFFFF'">
-        <td height="35"><?=$rs[view_path]?>(예약율)</td>
-<?      for($j=1; substr($rs[sd],5,2)>=$j;$j++)
-        {
-            if($i == substr($rs[sd],5,2))
-            {
-?>
-                <td> <?=$rs[tot_cnt]?>( <?=@round($rs[rev_cnt]/$rs[tot_cnt]*100,1)?> %)</td>
-<?              }else
-            {
-                echo "<td> </td>";
-            }
-            $i++;
-        }
-        }
-
-        $_1 = $rs[view_path];
-        }
-        ?>
-    </tr>
-</table>
-<!--경로 분석 테이블 연습-->
-<!--
-<table border="0" cellspacing="0" cellpadding="3" width="100%" id="tbl_cmp_list">
-
-    <tr align=center height=25 bgcolor="#F7F7F6">
-        <th class="subject">경로</th>
-        <?php
-        // 월 헤더 생성
-        for ($month = 1; $month <= 12; $month++) {
-            echo "<th class='subject'>{$month}월</th>";
-        }
-
-        $dbo->query($sql_1);
-        if($debug) checkVar(mysql_error(),$sql_1);
-
-        $_1 = "";
-        while($rs=$dbo->next_record()){
+    $_1 = "";
+    while($rs=$dbo->next_record()){
 
         if($rs[view_path] == $_1){
             if($i == substr($rs[sd],5,2))
@@ -360,8 +403,8 @@ while($rs=$dbo->next_record())
             $i++;
         } else
         {
-        $i=1;
-        ?>
+            $i=1;
+            ?>
     </tr>
     <tr align='center' onMouseOver="this.style.backgroundColor='#EEEEFF'" onMouseOut="this.style.backgroundColor='#FFFFFF'">
         <td height="35"><?=$rs[view_path]?>(예약율)</td>
@@ -380,15 +423,13 @@ while($rs=$dbo->next_record())
         }
 
         $_1 = $rs[view_path];
-        }
-        ?>
+    }
+    ?>
     </tr>
 </table>
 -->
 
-<!--내용이 들어가는 곳 끝-->
+    <!--내용이 들어가는 곳 끝-->
 
-<!-- Copyright -->
+    <!-- Copyright -->
 <?include_once("../bottom.html");?>
-
-
