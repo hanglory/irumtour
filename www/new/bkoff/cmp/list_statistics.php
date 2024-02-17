@@ -69,63 +69,51 @@ $FILTER_PARTNER_QUERY=str_replace("and main_staff","and a.main_staff",$FILTER_PA
 #query
 $sql_1 = "
     SELECT AA.view_path, AA.sd, AA.tot_cnt, BB.rev_cnt
-FROM(
-select
-view_path, substr(send_date,1,7) AS sd, COUNT(*) AS tot_cnt
-from cmp_estimate a
-where
-a.id_no>0
-and a.cp_id=''
-AND (a.view_path LIKE '%신규%' OR a.view_path LIKE '%재방문%' OR a.view_path LIKE '%투어문의%' )
-$filter
-GROUP BY 2,1
-) AA
-LEFT JOIN (
-select
-a.view_path AS vpath, substr(a.send_date,1,7) AS sd, COUNT(c.origin_id_no) rev_cnt
-from cmp_estimate as a 
-left join cmp_reservation AS c on a.id_no = c.origin_id_no
-left join cmp_golf b on b.id_no = a.golf_id_no
-where
-a.id_no>0
-and a.cp_id=''
-and c.origin_id_no<>''
-AND (a.view_path LIKE '%신규%' OR a.view_path LIKE '%재방문%' OR a.view_path LIKE '%투어문의%' )
-$filter
-group BY 2, 1
-)BB 
-ON AA.view_path=BB.vpath AND AA.sd = BB.sd";
-
+    FROM(
+        SELECT  view_path, substr(send_date,1,7) AS sd, COUNT(*) AS tot_cnt
+        FROM cmp_estimate a
+        WHERE a.id_no>0
+        AND a.cp_id=''
+        AND (a.view_path LIKE '%신규%' OR a.view_path LIKE '%재방문%' OR a.view_path LIKE '%투어문의%' )
+        $filter
+        GROUP BY 2,1
+    ) AA LEFT JOIN (
+        SELECT  a.view_path AS vpath, substr(a.send_date,1,7) AS sd, COUNT(c.origin_id_no) rev_cnt
+        FROM cmp_estimate as a 
+        LEFT JOIN cmp_reservation AS c on a.id_no = c.origin_id_no
+        LEFT JOIN cmp_golf b on b.id_no = a.golf_id_no
+        WHERE  a.id_no>0
+        AND a.cp_id=''
+        AND c.origin_id_no<>''
+        AND (a.view_path LIKE '%신규%' OR a.view_path LIKE '%재방문%' OR a.view_path LIKE '%투어문의%' )
+        $filter
+        group BY 2, 1
+    )BB  ON AA.view_path=BB.vpath AND AA.sd = BB.sd";
 
 $sql_2 = "
-        SELECT AA.nation, AA.sd, AA.tot_cnt, BB.rev_cnt
-FROM(
-select
-nation, substr(send_date,1,7) AS sd, COUNT(*) AS tot_cnt
-from cmp_estimate a LEFT JOIN cmp_golf b
-ON a.golf_id_no=b.id_no
-where
-a.id_no>0
-and a.cp_id=''
-AND (b.nation ='일본' OR b.nation='태국' OR b.nation ='베트남' OR b.nation='중국')
-$filter
-GROUP BY 2,1
-) AA
-LEFT JOIN (
-select
-nation, substr(a.send_date,1,7) AS sd, COUNT(c.origin_id_no) AS rev_cnt
-from cmp_estimate as a 
-left join cmp_reservation AS c on a.id_no = c.origin_id_no
-left join cmp_golf b on b.id_no = a.golf_id_no
-where
-a.id_no>0
-and a.cp_id=''
-and c.origin_id_no<>''
-AND (b.nation ='일본' OR b.nation='태국' OR b.nation ='베트남' OR b.nation='중국')
-$filter
-group BY  2,1
-)BB 
-ON AA.nation=BB.nation AND AA.sd = BB.sd";
+    SELECT AA.nation, AA.sd, AA.tot_cnt, BB.rev_cnt
+    FROM(
+        SELECT  nation, substr(send_date,1,7) AS sd, COUNT(*) AS tot_cnt
+        FROM cmp_estimate a 
+        LEFT JOIN cmp_golf b  ON a.golf_id_no=b.id_no
+        WHERE  a.id_no>0
+        AND a.cp_id=''
+        AND (b.nation ='일본' OR b.nation='태국' OR b.nation ='베트남' OR b.nation='중국')
+        $filter
+        GROUP BY 2,1
+    ) AA  LEFT JOIN (
+        SELECT
+        nation, substr(a.send_date,1,7) AS sd, COUNT(c.origin_id_no) AS rev_cnt
+        FROM cmp_estimate as a 
+        LEFT JOIN cmp_reservation AS c on a.id_no = c.origin_id_no
+        LEFT JOIN cmp_golf b on b.id_no = a.golf_id_no
+        WHERE   a.id_no>0
+        AND a.cp_id=''
+        AND c.origin_id_no<>''
+        AND (b.nation ='일본' OR b.nation='태국' OR b.nation ='베트남' OR b.nation='중국')
+        $filter
+        GROUP BY  2,1
+    )BB  ON AA.nation=BB.nation AND AA.sd = BB.sd";
 
 $nation_arr = array("베트남","일본","중국","태국");
 $path_arr = array("신규","재방문","투어문의");
