@@ -56,7 +56,7 @@ $TITLE .=($dtype=="d_date")? "(출국일자 기준)" : "(예약일자 기준)";
 	<!-- Search Begin------------------------------------------------>
 	<div style="padding:0 0 5px 0">
     <table border="0" cellspacing="0" cellpadding="3" width="100%" id="tbl_list">
-	<form name=fmSearch method="get" action="list_paper5.php">
+	<form name=fmSearch method="get" action="list_paper3.php">
 	<input type=hidden name='position' value="">
 	<input type=hidden name='ctg1' value="<?=$ctg1?>">
 

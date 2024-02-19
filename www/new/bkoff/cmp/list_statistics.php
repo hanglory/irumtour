@@ -202,10 +202,11 @@ $path_rev = array(0,0,0);
                         <input type="text" name="date_s" id="date_s" size="13" maxlength="10" value="<?=$date_s?>" class="box c dateinput">
                         ~
                         <input type="text" name="date_e" id="date_e" size="13" maxlength="10" value="<?=$date_e?>" class="box c dateinput">
+                        <!--
                         <select name="year" class="select">
                             <?= option_int2(date("Y"), 2015, 1)?>
                         </select>
-
+                         -->
                         <input class=button type="submit" name="Submit" value=" 검 색 " onFocus='blur(this)'>
                     </td>
                 <tr>

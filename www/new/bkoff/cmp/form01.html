@@ -476,7 +476,7 @@ include("inc_form_og.php");
               <td align="left" bgcolor="#ffffff" style="padding:10px;font-size:10pt;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc">
               <?//=nl2br($rs[memo])?>
               <?if(!$edit_mode || $doc_mode){?>
-              <?=nl2br($rs[memo2])?>
+              <?=nl2br(my_tag($rs[memo2]))?>
               <?}else{?>
               <?=html_textarea("memo2",0,13)?>
               <?}?>
