@@ -51,8 +51,11 @@ textarea.box{line-height:23px;padding-left:3px}
 	vertical-align: middle;
 	font-weight: bold;
 	margin:10px 3px 10px 3px;
-	}	
+	}
 
+.topmenu2:hover{
+		color: #b7fbb3 !important;
+}
 
 /**********************************************************
 * contents
