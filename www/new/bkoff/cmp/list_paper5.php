@@ -140,6 +140,7 @@ $TITLE .=($dtype=="d_date")? "(출국일자 기준)" : "(예약일자 기준)";
             $FILTER_PARTNER_QUERY_CPID
             and b.city<>''
         group by b.nation,b.city,left(a.$dtype,4)
+        ORDER BY did2 DESC, sum_people DESC
     ";
     $dbo->query($sql);
     if($debug) checkVar(mysql_error(),$sql);
@@ -153,7 +154,7 @@ $TITLE .=($dtype=="d_date")? "(출국일자 기준)" : "(예약일자 기준)";
     }
 
     @$arr = array_unique($arr);
-    @sort($arr);
+//    @sort($arr);
 
     ?>
 
