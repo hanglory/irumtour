@@ -61,15 +61,16 @@ $filter.=" and a.$dtype <='$date_e'";
 #query
 $sql_1 = "
 	select 
-			a.*,
+			a.*, b.nation, b.city,
 			(select count(*) from cmp_people where code=a.code and bit_cancel=1) as bit_cancel
 		from $table as a
+		LEFT JOIN cmp_golf AS b ON a.golf_id_no=b.id_no
 	where 
-        cp_id='$CP_ID'
+        a.cp_id='$CP_ID'
         $filter
 	";			//자료수
 $sql_2 = $sql_1 . " order by tour_date desc,id_no desc limit  $start, $view_row";
-//if($_SERVER["REMOTE_ADDR"]=="106.246.54.27") checkVar("",$sql_2);
+if($debug) checkVar("",$sql_2);
 
 ####자료갯수
 list($rows)=$dbo->query($sql_1);//검색된 자료의 갯수

@@ -9,7 +9,7 @@ chk_power($_SESSION["sessLogin"]["proof"],"담당자관리");
 $filecode = substr(SELF,5,-5);
 $table = "cmp_staff";
 $MENU = "cmp_paper";
-$TITLE = "권한관리";
+$TITLE = "직원관리";
 
 
 
@@ -212,6 +212,7 @@ function bit_hide(){
         <th class="subject" >입사일</th>
         <th class="subject" >직급</th>
         <th class="subject" >핸드폰번호</th>
+        <th class="subject" >생일</th>
         <th class="subject" >주소</th>
         <th class="subject" >비고</th>
         </tr>
@@ -248,6 +249,7 @@ while($rs=$dbo->next_record()){
             ?>
           </td>
           <td><?=$rs[cell1]?>-<?=$rs[cell2]?>-<?=$rs[cell3]?></td>
+          <td><?=$rs[birth_day]?></td>
           <td><?=$rs[address]?></td>
           <td><?=$rs[zipcode]?></td>
         </tr>
@@ -264,7 +266,7 @@ while($rs=$dbo->next_record()){
               <!-- Button Begin-------------------------------------------
               <table width="100%" border="0" cellspacing="0" cellpadding="0" align="right">
                  <tr>
-                  <td width="60%" align="left">
+                 <td width="60%" align="left">
                         <select id="bit_hide" name="bit_hide">
                             <?=option_str("활성화,비활성화","0,1")?>
                         </select>

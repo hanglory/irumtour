@@ -108,7 +108,8 @@ while ($rs = $dbo->next_record()) {
     $d_date[$i] = substr($rs[d_date], 0, 4);
     $i++;
 }
-
+$ageM = $ageM2 = $ageM3 = $ageM4 = $ageM5 = $ageM6 = $ageM7 =0;
+$ageF = $ageF2 = $ageF3 = $ageF4 = $ageF5 = $ageF6 = $ageF7 =0;
 for ($j = 0; $j < count($d_date); $j++) {
     $age = (int)$d_date[$j] - (int)("19" . $rn[$j]);
     if ($rn[$j] == "") $age = 0; //주민번호가 없으면 0으로 세팅
@@ -117,9 +118,7 @@ for ($j = 0; $j < count($d_date); $j++) {
     }
 //    echo "age=$age";
     if ($sex[$j] == 'M') {
-        if ($age >= 10 && $age <= 19) {
-            $ageM1++;
-        } else if ($age >= 20 && $age <= 29) {
+        if ($age >= 20 && $age <= 29) {
             $ageM2++;
         } else if ($age >= 30 && $age <= 39) {
             $ageM3++;
@@ -135,9 +134,7 @@ for ($j = 0; $j < count($d_date); $j++) {
             $ageM++;
         }
     } else {
-        if ($age >= 10 && $age <= 19) {
-            $ageF1++;
-        } else if ($age >= 20 && $age <= 29) {
+        if ($age >= 20 && $age <= 29) {
             $ageF2++;
         } else if ($age >= 30 && $age <= 39) {
             $ageF3++;
@@ -164,7 +161,7 @@ echo "$row_search";
 <div style="padding:0 10px 0 10px">
 
     <table width="100%" border="0" cellspacing="0" cellpadding="0">
-        <tr>
+        <tr >
             <td class="title_con" style="padding-left:10px"><img src="../images/common/ic_title.gif"
                                                                  align="absmiddle"><?= $TITLE ?></td>
         </tr>
@@ -177,114 +174,155 @@ echo "$row_search";
     </table>
 </div>
 <!--내용이 들어가는 곳 시작-->
-
-<table border="0" cellspacing="0" cellpadding="3" width="100%" id="tbl_cmp_list">
-    <tbody>
+<table border="1" cellspacing="0" cellpadding="3" width="100%" id="tbl_cmp_list">
     <tr>
         <td colspan=2 bgcolor='#5E90AE' height=2></td>
     </tr>
     <tr align='center' onMouseOver="this.style.backgroundColor='#EEEEFF'"
         onMouseOut="this.style.backgroundColor='#FFFFFF'">
-        <td class="subject" width="15%">총 고객</td>
-        <td width="37%"><?= $row_search ?>명</td>
+        <th class="subject" width="50%" height="35">총 고객</th>
+        <td width="50%"><?= $row_search ?>명</td>
     </tr>
-    <tr align='center' onMouseOver="this.style.backgroundColor='#EEEEFF'"
-        onMouseOut="this.style.backgroundColor='#FFFFFF'">
-        <td class="subject" width="15%">남성</td>
-        <td width="37%"><?= $ageM + $ageM1 + $ageM2 + $ageM3 + $ageM4 + $ageM5 + $ageM6 + $ageM7 ?>명
-            (<?= ($ageM + $ageM1 + $ageM2 + $ageM3 + $ageM4 + $ageM5 + $ageM6 + $ageM7) / $row_search * 100 ?> )%
-        </td>
-    </tr>
-    <tr align='center' onMouseOver="this.style.backgroundColor='#EEEEFF'"
-        onMouseOut="this.style.backgroundColor='#FFFFFF'">
-        <td class="subject" width="15%">10대</td>
-        <td width="37%"><?= $ageM1 ?>명</td>
-    </tr>
-    <tr align='center' onMouseOver="this.style.backgroundColor='#EEEEFF'"
-        onMouseOut="this.style.backgroundColor='#FFFFFF'">
-        <th class="subject" width="15%">20대</th>
-        <td width="37%"><?= $ageM2 ?>명</td>
-    </tr>
-    <tr align='center' onMouseOver="this.style.backgroundColor='#EEEEFF'"
-        onMouseOut="this.style.backgroundColor='#FFFFFF'">
-        <th class="subject" width="15%">30대</th>
-        <td width="37%"><?= $ageM3 ?>명</td>
-    </tr>
-    <tr align='center' onMouseOver="this.style.backgroundColor='#EEEEFF'"
-        onMouseOut="this.style.backgroundColor='#FFFFFF'">
-        <th class="subject" width="15%">40대</th>
-        <td width="37%"><?= $ageM4 ?>명</td>
-    </tr>
-    <tr align='center' onMouseOver="this.style.backgroundColor='#EEEEFF'"
-        onMouseOut="this.style.backgroundColor='#FFFFFF'">
-        <th class="subject" width="15%">50대</th>
-        <td width="37%"><?= $ageM5 ?>명</td>
-    </tr>
-    <tr align='center' onMouseOver="this.style.backgroundColor='#EEEEFF'"
-        onMouseOut="this.style.backgroundColor='#FFFFFF'">
-        <th class="subject" width="15%">60대</th>
-        <td width="37%"><?= $ageM6 ?>명</td>
-    </tr>
-    <tr align='center' onMouseOver="this.style.backgroundColor='#EEEEFF'"
-        onMouseOut="this.style.backgroundColor='#FFFFFF'">
-        <th class="subject" width="15%">70대이상</th>
-        <td width="37%"><?= $ageM7 ?>명</td>
-    </tr>
-    <tr align='center' onMouseOver="this.style.backgroundColor='#EEEEFF'"
-        onMouseOut="this.style.backgroundColor='#FFFFFF'">
-        <th class="subject" width="15%">기타</th>
-        <td width="37%"><?= $ageM ?>명</td>
-    </tr>
+    <tr>
+        <td>
+<table border="1" cellspacing="0" cellpadding="3" width="100%" id="tbl_cmp_list">
+    <tbody>
 
     <tr align='center' onMouseOver="this.style.backgroundColor='#EEEEFF'"
         onMouseOut="this.style.backgroundColor='#FFFFFF'">
-        <th class="subject" width="15%">여성</th>
-        <td width="37%"><?= $ageF + $ageF1 + $ageF2 + $ageF3 + $ageF4 + $ageF5 + $ageF6 + $ageF7 ?>명
-            (<?= ($ageF + $ageF1 + $ageF2 + $ageF3 + $ageF4 + $ageF5 + $ageF6 + $ageF7) / $row_search * 100 ?> )%
+        <th class="subject" width="15%">남성</th>
+        <td width="37%"><?= $ageM + $ageM2 + $ageM3 + $ageM4 + $ageM5 + $ageM6 + $ageM7 ?>명
+            (<?=@round(($ageM + $ageM2 + $ageM3 + $ageM4 + $ageM5 + $ageM6 + $ageM7) / $row_search * 100,1) ?> )%
         </td>
     </tr>
     <tr align='center' onMouseOver="this.style.backgroundColor='#EEEEFF'"
         onMouseOut="this.style.backgroundColor='#FFFFFF'">
-        <th class="subject" width="15%">10대</th>
-        <td width="37%"><?= $ageF1 ?>명</td>
+        <th class="subject" width="15%">20대</th>  <td width="37%"><?= $ageM2 ?>명</td>
     </tr>
     <tr align='center' onMouseOver="this.style.backgroundColor='#EEEEFF'"
         onMouseOut="this.style.backgroundColor='#FFFFFF'">
-        <th class="subject" width="15%">20대</th>
-        <td width="37%"><?= $ageF2 ?>명</td>
+        <th class="subject" width="15%">30대</th>  <td width="37%"><?= $ageM3 ?>명</td>
     </tr>
     <tr align='center' onMouseOver="this.style.backgroundColor='#EEEEFF'"
         onMouseOut="this.style.backgroundColor='#FFFFFF'">
-        <th class="subject" width="15%">30대</th>
-        <td width="37%"><?= $ageF3 ?>명</td>
+        <th class="subject" width="15%">40대</th>  <td width="37%"><?= $ageM4 ?>명</td>
     </tr>
     <tr align='center' onMouseOver="this.style.backgroundColor='#EEEEFF'"
         onMouseOut="this.style.backgroundColor='#FFFFFF'">
-        <th class="subject" width="15%">40대</th>
-        <td width="37%"><?= $ageF4 ?>명</td>
+        <th class="subject" width="15%">50대</th>  <td width="37%"><?= $ageM5 ?>명</td>
     </tr>
     <tr align='center' onMouseOver="this.style.backgroundColor='#EEEEFF'"
         onMouseOut="this.style.backgroundColor='#FFFFFF'">
-        <th class="subject" width="15%">50대</th>
-        <td width="37%"><?= $ageF5 ?>명</td>
+        <th class="subject" width="15%">60대</th>  <td width="37%"><?= $ageM6 ?>명</td>
     </tr>
     <tr align='center' onMouseOver="this.style.backgroundColor='#EEEEFF'"
         onMouseOut="this.style.backgroundColor='#FFFFFF'">
-        <th class="subject" width="15%">60대</th>
-        <td width="37%"><?= $ageF6 ?>명</td>
+        <th class="subject" width="15%">70대이상</th>   <td width="37%"><?= $ageM7 ?>명</td>
     </tr>
     <tr align='center' onMouseOver="this.style.backgroundColor='#EEEEFF'"
         onMouseOut="this.style.backgroundColor='#FFFFFF'">
-        <th class="subject" width="15%">70대이상</th>
-        <td width="37%"><?= $ageF7 ?>명</td>
-    </tr>
-    <tr align='center' onMouseOver="this.style.backgroundColor='#EEEEFF'"
-        onMouseOut="this.style.backgroundColor='#FFFFFF'">
-        <th class="subject" width="15%">기타</th>
-        <td width="37%"><?= $ageF ?>명</td>
+        <th class="subject" width="15%">기타</th>   <td width="37%"><?= $ageM ?>명</td>
     </tr>
     </tbody>
 </table>
+</td>
+<td>
+    <table border="1" cellspacing="0" cellpadding="3" width="100%" id="tbl_cmp_list">
+    <tbody>
+    <tr align='center' onMouseOver="this.style.backgroundColor='#EEEEFF'"
+        onMouseOut="this.style.backgroundColor='#FFFFFF'">
+        <th class="subject" width="15%">여성</th>
+        <td width="37%"><?= $ageF + $ageF2 + $ageF3 + $ageF4 + $ageF5 + $ageF6 + $ageF7 ?>명
+            (<?= @round(($ageF + $ageF2 + $ageF3 + $ageF4 + $ageF5 + $ageF6 + $ageF7) / $row_search * 100,1) ?> )%
+        </td>
+    </tr>
+    <tr align='center' onMouseOver="this.style.backgroundColor='#EEEEFF'"
+        onMouseOut="this.style.backgroundColor='#FFFFFF'">
+        <th class="subject" width="15%">20대</th>   <td width="37%"><?= $ageF2 ?>명</td>
+    </tr>
+    <tr align='center' onMouseOver="this.style.backgroundColor='#EEEEFF'"
+        onMouseOut="this.style.backgroundColor='#FFFFFF'">
+        <th class="subject" width="15%">30대</th>  <td width="37%"><?= $ageF3 ?>명</td>
+    </tr>
+    <tr align='center' onMouseOver="this.style.backgroundColor='#EEEEFF'"
+        onMouseOut="this.style.backgroundColor='#FFFFFF'">
+        <th class="subject" width="15%">40대</th>   <td width="37%"><?= $ageF4 ?>명</td>
+    </tr>
+    <tr align='center' onMouseOver="this.style.backgroundColor='#EEEEFF'"
+        onMouseOut="this.style.backgroundColor='#FFFFFF'">
+        <th class="subject" width="15%">50대</th>   <td width="37%"><?= $ageF5 ?>명</td>
+    </tr>
+    <tr align='center' onMouseOver="this.style.backgroundColor='#EEEEFF'"
+        onMouseOut="this.style.backgroundColor='#FFFFFF'">
+        <th class="subject" width="15%">60대</th>  <td width="37%"><?= $ageF6 ?>명</td>
+    </tr>
+    <tr align='center' onMouseOver="this.style.backgroundColor='#EEEEFF'"
+        onMouseOut="this.style.backgroundColor='#FFFFFF'">
+        <th class="subject" width="15%">70대이상</th>   <td width="37%"><?= $ageF7 ?>명</td>
+    </tr>
+    <tr align='center' onMouseOver="this.style.backgroundColor='#EEEEFF'"
+        onMouseOut="this.style.backgroundColor='#FFFFFF'">
+        <th class="subject" width="15%">기타</th>   <td width="37%"><?= $ageF ?>명</td>
+    </tr>
+    </tbody>
+</table>
+</td>
+    </tr>
+</table>
 
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    //구글차트
+    google.charts.load('current', {'packages':['corechart']});
+    google.charts.setOnLoadCallback(drawMChart);
+    google.charts.setOnLoadCallback(drawFChart);
+    function drawMChart() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string','남성연령대');
+        data.addColumn('number','비중');
+
+        data.addRows([
+            ['20대',<?=$ageM2?>],
+            ['30대',<?=$ageM3?>],
+            ['40대',<?=$ageM4?>],
+            ['50대',<?=$ageM5?>],
+            ['60대',<?=$ageM6?>],
+            ['70대이상',<?=$ageM7?>],
+            ['기타',<?=$ageM?>]
+        ]);
+        var opt = {
+            'title':'남성 연령대 비중',
+            'width':400,
+            'height':400
+        };
+        var chart = new google.visualization.PieChart(document.getElementById('manChart'));
+        chart.draw(data,opt);
+    }
+    function drawFChart() {
+        var dataF = new google.visualization.DataTable();
+        dataF.addColumn('string','여성연령대');
+        dataF.addColumn('number','비중');
+
+        dataF.addRows([
+            ['20대',<?=$ageF2?>],
+            ['30대',<?=$ageF3?>],
+            ['40대',<?=$ageF4?>],
+            ['50대',<?=$ageF5?>],
+            ['60대',<?=$ageF6?>],
+            ['70대이상',<?=$ageF7?>],
+            ['기타',<?=$ageF?>]
+        ]);
+        var optF = {
+            'title':'여성 연령대 비중',
+            'width':400,
+            'height':400
+        };
+        var chartF = new google.visualization.PieChart(document.getElementById('womanChart'));
+        chartF.draw(dataF,optF);
+    }
+
+</script>
+<div id="manChart" style="float:left;"></div>
+<div id="womanChart" style="float:left;"></div>
 <!-- Copyright -->
 <? include_once("../bottom_min.html"); ?>

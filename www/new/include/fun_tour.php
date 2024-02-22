@@ -629,8 +629,8 @@ function get_air($code){
 function my_tag($str,$bit=""){
 
 	$css_golf="font-weight:bold;background-color:yellow;line-height:130%";
-	$css_color1="font-weight:bold;background-color:#86B404;line-height:130%";
-	$css_color2="font-weight:bold;background-color:#81BEF7;line-height:130%";
+	$css_color1="font-weight:bold;background-color:#A9F5A9;line-height:130%";
+	$css_color2="font-weight:bold;background-color:#CEE3F6;line-height:130%";
     $css_colorR="font-weight:bold;color:red;line-height:130%";
     $css_colorB="font-weight:bold;color:blue;line-height:130%";
     $css_colorG="font-weight:bold;color:green;line-height:130%";

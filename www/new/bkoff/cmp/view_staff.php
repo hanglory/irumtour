@@ -549,8 +549,8 @@ $(function(){
                         //document.getElementById("zipcode").value = data.postcode1 + "-" + data.postcode2;
                         document.getElementById("zipcode").value = data.zonecode;
                         document.getElementById("address").value = fullRoadAddr;
-                        document.getElementById("address_old").value = data.jibunAddress;
-                        document.getElementById("address2").focus();
+//                        document.getElementById("address_old").value = data.jibunAddress;
+//                        document.getElementById("address2").focus();
 
                         // 사용자가 '선택 안함'을 클릭한 경우, 예상 주소라는 표시를 해준다.
                         if(data.autoRoadAddress) {

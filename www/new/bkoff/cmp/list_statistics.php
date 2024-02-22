@@ -229,12 +229,12 @@ $path_rev = array(0,0,0);
             ?>
         </tr>
         <tr align=center height=25 bgcolor="#F7F7F6">
-            <?php
+<?php
             for ($i = 0; $nation_cnt > $i; $i++)
             {
                 echo "<th class='subject'>예약건수</th><th class='subject'>예약율(%)</th>\n";
             }
-            ?>
+?>
         <!-- /tr -->
             <?
             $dbo->query($sql_2);
@@ -304,12 +304,12 @@ $path_rev = array(0,0,0);
 
         <tr align=center height=25 bgcolor="#F7F7F6">
             <th class="subject" rowspan="2">경로</th>
-            <?php
+<?php
             for ($i = 0; $path_cnt > $i; $i++)
             {
                 echo "<th class='subject' colspan='2'>$path_arr[$i]</th>\n";
             }
-            ?>
+?>
         </tr>
         <tr align=center height=25 bgcolor="#F7F7F6">
 <?php
@@ -326,98 +326,62 @@ $path_rev = array(0,0,0);
             $i = 0;
             while($rs=$dbo->next_record()){
 
-            if($rs[view_path] == $_1){
-                if($i == substr($rs[sd],5,2))
+            if($rs[sd] == $_1){
+                for($j=0; $path_cnt > $j ; $j++)
                 {
+                    if($path_arr[$i] == $rs[view_path]){
 ?>
-                    <td> <?=$rs[tot_cnt]?>( <?=@round($rs[rev_cnt]/$rs[tot_cnt]*100,1)?> %)</td>
+                        <td> <?=$rs[rev_cnt]?></td> <td> <?=@round($rs[rev_cnt]/$rs[tot_cnt]*100,1)?> %</td>
 <?
-                }else{
-                    echo "<td> </td>";
-                }
+                    $path_tot[$i] += $rs[tot_cnt];
+                    $path_rev[$i] += $rs[rev_cnt];
+                    $i++;
+                    break;
+                    } else{
+                    echo "<td> </td><td> </td>\n";
+                    }
                 $i++;
-            } else
-            {
-            $i=1;
+                }
+            } else{ //월이 변경되면
+            if($path_cnt == $i) $i =0;
+
 ?>
         </tr>
         <tr align='center' onMouseOver="this.style.backgroundColor='#EEEEFF'" onMouseOut="this.style.backgroundColor='#FFFFFF'">
-            <td height="35"><?=$rs[view_path]?>(예약율)</td>
-            <?      for($j=1; substr($rs[sd],5,2)>=$j;$j++)
-            {
-                if($i == substr($rs[sd],5,2))
+            <th class='subject' height="35"><?=$rs[sd]?>월</th>
+<?
+                for($j=1; $path_cnt>$j;$j++)
                 {
-                    ?>
-                    <td> <?=$rs[tot_cnt]?>( <?=@round($rs[rev_cnt]/$rs[tot_cnt]*100,1)?> %)</td>
-                <?              }else
-                {
-                    echo "<td> </td>";
-                }
+                    if($path_arr[$i] == $rs[view_path])
+                    {
+?>
+                        <td> <?=$rs[rev_cnt]?></td><td> <?=@round($rs[rev_cnt]/$rs[tot_cnt]*100,1)?> %</td>
+<?                      $path_tot[$i]+=$rs[tot_cnt];
+                        $path_rev[$i]+=$rs[rev_cnt];
+                        $i++;
+                        break;
+                    }else
+                    {
+                        echo "<td> </td><td> </td>\n";
+                    }
                 $i++;
-            }
+                }
             }
 
-            $_1 = $rs[view_path];
+            $_1 = $rs[sd];
+            }
+            ?>
+        </tr>
+        <tr>
+            <th class='subject' height="35">전체</th>
+            <?php
+            for ($i = 0; $path_cnt > $i; $i++)
+            {
+                echo "<th class='subject'>$path_rev[$i]</th><th class='subject'>".round($path_rev[$i]/$path_tot[$i]*100,1)."%</th>\n";
             }
             ?>
         </tr>
     </table>
-    <!--경로 분석 테이블 연습-->
-    <!--
-<table border="0" cellspacing="0" cellpadding="3" width="100%" id="tbl_cmp_list">
-
-    <tr align=center height=25 bgcolor="#F7F7F6">
-        <th class="subject">경로</th>
-        <?php
-    // 월 헤더 생성
-    for ($month = 1; $month <= 12; $month++) {
-        echo "<th class='subject'>{$month}월</th>";
-    }
-
-    $dbo->query($sql_1);
-    if($debug) checkVar(mysql_error(),$sql_1);
-
-    $_1 = "";
-    while($rs=$dbo->next_record()){
-
-        if($rs[view_path] == $_1){
-            if($i == substr($rs[sd],5,2))
-            {
-                ?>
-                <td> <?=$rs[tot_cnt]?>( <?=@round($rs[rev_cnt]/$rs[tot_cnt]*100,1)?> %)</td>
-                <?
-            }else{
-                echo "<td> </td>";
-            }
-            $i++;
-        } else
-        {
-            $i=1;
-            ?>
-    </tr>
-    <tr align='center' onMouseOver="this.style.backgroundColor='#EEEEFF'" onMouseOut="this.style.backgroundColor='#FFFFFF'">
-        <td height="35"><?=$rs[view_path]?>(예약율)</td>
-        <?      for($j=1; substr($rs[sd],5,2)>=$j;$j++)
-        {
-            if($i == substr($rs[sd],5,2))
-            {
-                ?>
-                <td> <?=$rs[tot_cnt]?>( <?=@round($rs[rev_cnt]/$rs[tot_cnt]*100,1)?> %)</td>
-            <?              }else
-            {
-                echo "<td> </td>";
-            }
-            $i++;
-        }
-        }
-
-        $_1 = $rs[view_path];
-    }
-    ?>
-    </tr>
-</table>
--->
-
     <!--내용이 들어가는 곳 끝-->
 
     <!-- Copyright -->
