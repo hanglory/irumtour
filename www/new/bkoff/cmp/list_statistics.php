@@ -67,6 +67,15 @@ if(strstr("partner_i,partner_g",$_SESSION["sessLogin"]["staff_type"])) $filter.=
 $FILTER_PARTNER_QUERY=str_replace("and cp_id","and a.cp_id",$FILTER_PARTNER_QUERY);
 $FILTER_PARTNER_QUERY=str_replace("and main_staff","and a.main_staff",$FILTER_PARTNER_QUERY);
 #query
+$sql_nation = "
+        SELECT distinct nation 
+            FROM cmp_estimate a 
+            LEFT JOIN cmp_golf b  ON a.golf_id_no=b.id_no
+            WHERE  a.id_no>0
+            AND a.cp_id=''
+            $filter
+            ORDER BY nation ";
+
 $sql_1 = "
     SELECT AA.view_path, AA.sd, AA.tot_cnt, BB.rev_cnt
     FROM(
@@ -91,14 +100,13 @@ $sql_1 = "
     )BB  ON AA.view_path=BB.vpath AND AA.sd = BB.sd";
 
 $sql_2 = "
-    SELECT AA.nation, AA.sd, AA.tot_cnt, BB.rev_cnt
+    SELECT AA.nation, AA.sd, AA.tot_cnt, ifnull(BB.rev_cnt,0) AS rev_cnt
     FROM(
         SELECT  nation, substr(send_date,1,7) AS sd, COUNT(*) AS tot_cnt
         FROM cmp_estimate a 
         LEFT JOIN cmp_golf b  ON a.golf_id_no=b.id_no
         WHERE  a.id_no>0
         AND a.cp_id=''
-        AND (b.nation ='일본' OR b.nation='태국' OR b.nation ='베트남' OR b.nation='중국')
         $filter
         GROUP BY 2,1
     ) AA  LEFT JOIN (
@@ -110,17 +118,26 @@ $sql_2 = "
         WHERE   a.id_no>0
         AND a.cp_id=''
         AND c.origin_id_no<>''
-        AND (b.nation ='일본' OR b.nation='태국' OR b.nation ='베트남' OR b.nation='중국')
         $filter
         GROUP BY  2,1
     )BB  ON AA.nation=BB.nation AND AA.sd = BB.sd";
 
-$nation_arr = array("베트남","일본","중국","태국");
+$nation_arr = array();
+$nation_tot = array();
+$nation_rev = array();
+$nation_cnt = 0;
+$dbo->query($sql_nation);
+if($debug) checkVar(mysql_error(),$sql_2);
+while($rs=$dbo->next_record())
+{
+    array_push($nation_arr, $rs[nation]);
+    array_push($nation_tot, 0);
+    array_push($nation_rev, 0);
+    $nation_cnt++;
+}
+
 $path_arr = array("신규","재방문","투어문의");
-$nation_cnt = count($nation_arr);
 $path_cnt = count($path_arr);
-$nation_tot = array(0,0,0,0);
-$nation_rev = array(0,0,0,0);
 $path_tot = array(0,0,0);
 $path_rev = array(0,0,0);
 ?>
@@ -240,17 +257,17 @@ $path_rev = array(0,0,0);
             $dbo->query($sql_2);
             if($debug) checkVar(mysql_error(),$sql_2);
 
-            $_1 = "";
-            $i = 0;
+            $_1 = "1";
+            $i = $nation_cnt;
             while($rs=$dbo->next_record())
             {
-                if($rs[sd] == $_1)
+                if($rs[sd] == $_1)  //월이 같으면
                 {
                     for($j=0; $nation_cnt > $j ; $j++)
                     {
                         if($nation_arr[$i] == $rs[nation]){
             ?>
-                            <td> <?=$rs[rev_cnt]?></td> <td> <?=@round($rs[rev_cnt]/$rs[tot_cnt]*100,1)?> %</td>
+                            <td> <?=$rs[rev_cnt]?>/<?=$rs[tot_cnt]?></td> <td> <?=@round($rs[rev_cnt]/$rs[tot_cnt]*100,1)?> %</td>
             <?
                             $nation_tot[$i]+=$rs[tot_cnt];
                             $nation_rev[$i]+=$rs[rev_cnt];
@@ -262,7 +279,12 @@ $path_rev = array(0,0,0);
                         $i++;
                     }
                 } else {    //월이 변경 되면
-            if($nation_cnt == $i)   $i=0;
+                    if($nation_cnt > $i ){   // 월은 변경됐는데 아직 나라가 남아 있으면<td>값을 채운다
+                        for( ; $nation_cnt > $i; $i++){
+                            echo "<td> </td> <td> </td>\n";
+                        }
+                    }
+                    if($nation_cnt == $i)   $i=0;
             ?>
         </tr>
         <tr align='center' onMouseOver="this.style.backgroundColor='#EEEEFF'" onMouseOut="this.style.backgroundColor='#FFFFFF'">
@@ -273,7 +295,7 @@ $path_rev = array(0,0,0);
                         if($nation_arr[$i] == $rs[nation])
                         {
             ?>
-                            <td> <?=$rs[rev_cnt]?></td><td> <?=@round($rs[rev_cnt]/$rs[tot_cnt]*100,1)?> %</td>
+                            <td> <?=$rs[rev_cnt]?>/<?=$rs[tot_cnt]?></td><td> <?=@round($rs[rev_cnt]/$rs[tot_cnt]*100,1)?> %</td>
             <?
                             $nation_tot[$i]+=$rs[tot_cnt];
                             $nation_rev[$i]+=$rs[rev_cnt];
@@ -284,9 +306,12 @@ $path_rev = array(0,0,0);
                         }
                         $i++;
                     }
-                }
+                }   // 월 체크 종료
                 $_1 = $rs[sd];
             }
+            for( ; $nation_cnt > $i; $i++){ //종료 했는데 아직 나라를 다 안채웠으면 나라끝날때까지 채움
+                echo "<td> </td> <td> </td>\n";
+            }            
             ?>
         </tr>
         <tr>
