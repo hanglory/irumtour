@@ -5,6 +5,7 @@ chk_power($_SESSION["sessLogin"]["proof"],"경영관리");
 
 $dtype=($dtype)? $dtype : "tour_date";
 $year =($year)? $year : date("Y");
+$previousYear = $year - 1;
 
 /*
 if($REMOTE_ADDR=="106.246.54.27"){
@@ -25,6 +26,9 @@ $dbo->query($sql);
 
 $date_s = ($date_s)? $date_s : "${year}/01/01";
 $date_e = ($date_e)? $date_e : "${year}/12/31";
+
+$p_date_s = "${previousYear}/01/01";
+$p_date_e = "${previousYear}/12/31";
 
 $year_this = substr($date_s,0,4);
 $year_prev = substr($date_s,0,4)-1;
@@ -127,8 +131,28 @@ if($year==date("Y")){
     <!-- Search End------------------------------------------------>
 
 
-    <?
-    $sql = "
+
+
+<h1>매출</h1>
+<p> </p>
+(단위 : 천원)
+    <table border="0" cellspacing="0" cellpadding="3" width="100%" id="tbl_cmp_list">
+
+        <tr align=center height=25 bgcolor="#F7F7F6">
+            <th class="subject" >구분</th>
+            <th class="subject" >연도</th>
+            <? for ($i = 1; $i <= 12; $i++){
+                echo "<th class='subject'>". $i."월</th>";
+            }
+?>
+            <th class="subject" >합계</th>
+            <th class="subject" >객단가</th>
+        </tr>
+        <tr>
+            <td style="background-color:#f0f0f0" rowspan="2">미구분</td>
+
+<?
+$sql1 = "
         select
             bit_oversea as did,
             right(left($dtype,7),2) as did2,
@@ -139,47 +163,516 @@ if($year==date("Y")){
         where
             ($dtype >= '$date_s' and $dtype <='$date_e')
             $filter
+            and bit_oversea is null
             $FILTER_PARTNER_QUERY_CPID
         group by b.bit_oversea,right(left($dtype,7),2)
     ";
-    $dbo->query($sql);
-    if(strstr("@14.37.242.84@221.154.110.119@","@".$_SERVER["REMOTE_ADDR"]."@")) checkVar(mysql_error(),$sql);
-    while($rs=$dbo->next_record()){
-        //$rs[did] = ($rs[did])? $rs[did] : "해외";
-        $did = $rs[did];
-        $did2 = $rs[did2];
+$dbo->query($sql1);
+            echo "<td>$year</td>";
+            for($month_cnt=1;$month_cnt<=12;$month_cnt++){
+                $rs=$dbo->next_record();
+                for($month_cnt;$rs[did2] > $month_cnt; $month_cnt++){
+                    echo "<td>0</td>";
+                }
+                if($rs[did2] == $month_cnt){
+                    echo "<td>".@nf($rs[sum_fee]/$TEN)."</td>";
+                }
+                else{ // 달이 12월 전에 끝나는경우
+                    echo "<td>0</td>";
+                }
+                $sum_money += $rs[sum_fee];
+                $sum_person += $rs[sum_people];
+            }
 
-        $DATA[$did][$did2]["people"] = $rs[sum_people];
-        $DATA[$did][$did2]["fee"] = $rs[sum_fee];
-        $arr[] = $rs[did];
+?>
+            <td style="background-color:#f0f0f0"><?=nf($sum_money/$TEN)?></td>
+            <td style="background-color:#f0f0f0"><?=nf(round($sum_money/$sum_person, 0)/$TEN)?></td>
 
-        //if($_SERVER["REMOTE_ADDR"]=="106.246.54.27") checkVar($did,$did2);
-    }
-
-    $arr = @array_unique($arr);
-
-    ?>
-
-
-    <table border="0" cellspacing="0" cellpadding="3" width="100%" id="tbl_cmp_list">
-
-        <tr align=center height=25 bgcolor="#F7F7F6">
-            <th class="subject" >구분</th>
-            <?if($bit_show[1]){?><th class="subject month1">1월</th><?}?>
-            <?if($bit_show[2]){?><th class="subject month2">2월</th><?}?>
-            <?if($bit_show[3]){?><th class="subject month3">3월</th><?}?>
-            <?if($bit_show[4]){?><th class="subject month4">4월</th><?}?>
-            <?if($bit_show[5]){?><th class="subject month5">5월</th><?}?>
-            <?if($bit_show[6]){?><th class="subject month6">6월</th><?}?>
-            <?if($bit_show[7]){?><th class="subject month7">7월</th><?}?>
-            <?if($bit_show[8]){?><th class="subject month8">8월</th><?}?>
-            <?if($bit_show[9]){?><th class="subject month9">9월</th><?}?>
-            <?if($bit_show[10]){?><th class="subject month10">10월</th><?}?>
-            <?if($bit_show[11]){?><th class="subject month11">11월</th><?}?>
-            <?if($bit_show[12]){?><th class="subject month12">12월</th><?}?>
-            <th class="subject" >합계</th>
-            <th class="subject" >객단가</th>
         </tr>
+        <tr>
+
+            <?
+            $sql1 = "
+        select
+            bit_oversea as did,
+            right(left($dtype,7),2) as did2,
+            sum(people) as sum_people,
+            sum((select sum((price_prev+price_prev2+price_prev3)-(price_air + price_land + price_refund)) as payed_price from cmp_people where code=a.code and bit=1)) as sum_fee
+        from cmp_reservation as a left join cmp_golf as b
+        on a.golf_id_no=b.id_no
+        where
+            ($dtype >= '$p_date_s' and $dtype <='$p_date_e')
+            $filter
+            and bit_oversea is null
+            $FILTER_PARTNER_QUERY_CPID
+        group by b.bit_oversea,right(left($dtype,7),2)
+    ";
+            $dbo->query($sql1);
+            if($debug) checkVar(mysql_error(),$sql1);
+            echo "<td>$previousYear</td>";
+            $sum_person = $sum_money = 0;
+
+            for($month_cnt=1;$month_cnt<=12;$month_cnt++){
+                $rs=$dbo->next_record();
+                for($month_cnt;$rs[did2] > $month_cnt; $month_cnt++){
+                    echo "<td>0</td>";
+                }
+                if($rs[did2] == $month_cnt){
+                    echo "<td>".nf($rs[sum_fee]/$TEN)."</td>";
+                }
+                else{
+                    echo "<td>0</td>";
+                }
+                $sum_money += $rs[sum_fee];
+                $sum_person += $rs[sum_people];
+            }
+
+            ?>
+            <td style="background-color:#f0f0f0"><?=nf($sum_money/$TEN)?></td>
+            <td style="background-color:#f0f0f0"><?=nf(round($sum_money/$sum_person, 0)/$TEN)?></td>
+
+        </tr>
+        <tr>
+            <td style="background-color:#f0f0f0" rowspan="2">국내</td>
+
+            <?
+            $sql1 = "
+        select
+            bit_oversea as did,
+            right(left($dtype,7),2) as did2,
+            sum(people) as sum_people,
+            sum((select sum((price_prev+price_prev2+price_prev3)-(price_air + price_land + price_refund)) as payed_price from cmp_people where code=a.code and bit=1)) as sum_fee
+        from cmp_reservation as a left join cmp_golf as b
+        on a.golf_id_no=b.id_no
+        where
+            ($dtype >= '$date_s' and $dtype <='$date_e')
+            $filter
+            and bit_oversea = '국내'
+            $FILTER_PARTNER_QUERY_CPID
+        group by b.bit_oversea,right(left($dtype,7),2)
+    ";
+            $dbo->query($sql1);
+            echo "<td>$year</td>";
+            for($month_cnt=1;$month_cnt<=12;$month_cnt++){
+                $rs=$dbo->next_record();
+                for($month_cnt;$rs[did2] > $month_cnt; $month_cnt++){
+                    echo "<td>0</td>";
+                }
+                if($rs[did2] == $month_cnt){
+                    echo "<td>".nf($rs[sum_fee]/$TEN)."</td>";
+                }
+                else{ // 달이 12월 전에 끝나는경우
+                    echo "<td>0</td>";
+                }
+                $sum_money += $rs[sum_fee];
+                $sum_person += $rs[sum_people];
+            }
+
+            ?>
+            <td style="background-color:#f0f0f0"><?=nf($sum_money/$TEN)?></td>
+            <td style="background-color:#f0f0f0"><?=nf(round($sum_money/$sum_person, 0)/$TEN)?></td>
+
+        </tr>
+        <tr>
+
+            <?
+            $sql1 = "
+        select
+            bit_oversea as did,
+            right(left($dtype,7),2) as did2,
+            sum(people) as sum_people,
+            sum((select sum((price_prev+price_prev2+price_prev3)-(price_air + price_land + price_refund)) as payed_price from cmp_people where code=a.code and bit=1)) as sum_fee
+        from cmp_reservation as a left join cmp_golf as b
+        on a.golf_id_no=b.id_no
+        where
+            ($dtype >= '$p_date_s' and $dtype <='$p_date_e')
+            $filter
+            and bit_oversea = '국내'
+            $FILTER_PARTNER_QUERY_CPID
+        group by b.bit_oversea,right(left($dtype,7),2)
+    ";
+            $dbo->query($sql1);
+            if($debug) checkVar(mysql_error(),$sql1);
+            echo "<td>$previousYear</td>";
+            $sum_person = $sum_money = 0;
+
+            for($month_cnt=1;$month_cnt<=12;$month_cnt++){
+                $rs=$dbo->next_record();
+                for($month_cnt;$rs[did2] > $month_cnt; $month_cnt++){
+                    echo "<td>0</td>";
+                }
+                if($rs[did2] == $month_cnt){
+                    echo "<td>".nf($rs[sum_fee]/$TEN)."</td>";
+                }
+                else{
+                    echo "<td>0</td>";
+                }
+                $sum_money += $rs[sum_fee];
+                $sum_person += $rs[sum_people];
+            }
+
+            ?>
+            <td style="background-color:#f0f0f0"><?=nf($sum_money/$TEN)?></td>
+            <td style="background-color:#f0f0f0"><?=nf(round($sum_money/$sum_person, 0)/$TEN)?></td>
+
+        </tr>
+        <tr>
+            <td style="background-color:#f0f0f0" rowspan="2">해외</td>
+
+            <?
+            $sql1 = "
+        select
+            bit_oversea as did,
+            right(left($dtype,7),2) as did2,
+            sum(people) as sum_people,
+            sum((select sum((price_prev+price_prev2+price_prev3)-(price_air + price_land + price_refund)) as payed_price from cmp_people where code=a.code and bit=1)) as sum_fee
+        from cmp_reservation as a left join cmp_golf as b
+        on a.golf_id_no=b.id_no
+        where
+            ($dtype >= '$date_s' and $dtype <='$date_e')
+            $filter
+            and bit_oversea = '해외'
+            $FILTER_PARTNER_QUERY_CPID
+        group by b.bit_oversea,right(left($dtype,7),2)
+    ";
+            $dbo->query($sql1);
+            echo "<td>$year</td>";
+            for($month_cnt=1;$month_cnt<=12;$month_cnt++){
+                $rs=$dbo->next_record();
+                for($month_cnt;$rs[did2] > $month_cnt; $month_cnt++){
+                    echo "<td>0</td>";
+                }
+                if($rs[did2] == $month_cnt){
+                    echo "<td>".nf($rs[sum_fee]/$TEN)."</td>";
+                }
+                else{ // 달이 12월 전에 끝나는경우
+                    echo "<td>0</td>";
+                }
+                $sum_money += $rs[sum_fee];
+                $sum_person += $rs[sum_people];
+            }
+
+            ?>
+            <td style="background-color:#f0f0f0"><?=nf($sum_money/$TEN)?></td>
+            <td style="background-color:#f0f0f0"><?=nf(round($sum_money/$sum_person, 0)/$TEN)?></td>
+
+        </tr>
+        <tr>
+
+            <?
+            $sql1 = "
+        select
+            bit_oversea as did,
+            right(left($dtype,7),2) as did2,
+            sum(people) as sum_people,
+            sum((select sum((price_prev+price_prev2+price_prev3)-(price_air + price_land + price_refund)) as payed_price from cmp_people where code=a.code and bit=1)) as sum_fee
+        from cmp_reservation as a left join cmp_golf as b
+        on a.golf_id_no=b.id_no
+        where
+            ($dtype >= '$p_date_s' and $dtype <='$p_date_e')
+            $filter
+            and bit_oversea = '해외'
+            $FILTER_PARTNER_QUERY_CPID
+        group by b.bit_oversea,right(left($dtype,7),2)
+    ";
+            $dbo->query($sql1);
+            if($debug) checkVar(mysql_error(),$sql1);
+            echo "<td>$previousYear</td>";
+            $sum_person = $sum_money = 0;
+
+            for($month_cnt=1;$month_cnt<=12;$month_cnt++){
+                $rs=$dbo->next_record();
+                for($month_cnt;$rs[did2] > $month_cnt; $month_cnt++){
+                    echo "<td>0</td>";
+                }
+                if($rs[did2] == $month_cnt){
+                    echo "<td>".nf($rs[sum_fee]/$TEN)."</td>";
+                }
+                else{
+                    echo "<td>0</td>";
+                }
+                $sum_money += $rs[sum_fee];
+                $sum_person += $rs[sum_people];
+            }
+
+            ?>
+            <td style="background-color:#f0f0f0"><?=nf($sum_money/$TEN)?></td>
+            <td style="background-color:#f0f0f0"><?=nf(round($sum_money/$sum_person, 0)/$TEN)?></td>
+
+        </tr>
+    </table>
+
+<br>
+<h1>인원</h1>
+<p> </p>
+(단위 : 천원)
+<table border="0" cellspacing="0" cellpadding="3" width="100%" id="tbl_cmp_list">
+
+    <tr align=center height=25 bgcolor="#F7F7F6">
+        <th class="subject" >구분</th>
+        <th class="subject" >연도</th>
+        <? for ($i = 1; $i <= 12; $i++){
+            echo "<th class='subject'>". $i."월</th>";
+        }
+        ?>
+        <th class="subject" >합계</th>
+        <th class="subject" >객단가</th>
+    </tr>
+    <tr>
+        <td style="background-color:#f0f0f0" rowspan="2">미구분</td>
+
+        <?
+        $sql1 = "
+        select
+            bit_oversea as did,
+            right(left($dtype,7),2) as did2,
+            sum(people) as sum_people,
+            sum((select sum((price_prev+price_prev2+price_prev3)-(price_air + price_land + price_refund)) as payed_price from cmp_people where code=a.code and bit=1)) as sum_fee
+        from cmp_reservation as a left join cmp_golf as b
+        on a.golf_id_no=b.id_no
+        where
+            ($dtype >= '$date_s' and $dtype <='$date_e')
+            $filter
+            and bit_oversea is null
+            $FILTER_PARTNER_QUERY_CPID
+        group by b.bit_oversea,right(left($dtype,7),2)
+    ";
+        $dbo->query($sql1);
+        echo "<td>$year</td>";
+        $sum_person = $sum_money = 0;
+        for($month_cnt=1;$month_cnt<=12;$month_cnt++){
+            $rs=$dbo->next_record();
+            for($month_cnt;$rs[did2] > $month_cnt; $month_cnt++){
+                echo "<td>0</td>";
+            }
+            if($rs[did2] == $month_cnt){
+                echo "<td>".@nf($rs[sum_people])."</td>";
+            }
+            else{ // 달이 12월 전에 끝나는경우
+                echo "<td>0</td>";
+            }
+            $sum_money += $rs[sum_fee];
+            $sum_person += $rs[sum_people];
+        }
+
+        ?>
+        <td style="background-color:#f0f0f0"><?=nf($sum_person)?></td>
+        <td style="background-color:#f0f0f0"><?=nf(round($sum_money/$sum_person, 0)/$TEN)?></td>
+
+    </tr>
+    <tr>
+
+        <?
+        $sql1 = "
+        select
+            bit_oversea as did,
+            right(left($dtype,7),2) as did2,
+            sum(people) as sum_people,
+            sum((select sum((price_prev+price_prev2+price_prev3)-(price_air + price_land + price_refund)) as payed_price from cmp_people where code=a.code and bit=1)) as sum_fee
+        from cmp_reservation as a left join cmp_golf as b
+        on a.golf_id_no=b.id_no
+        where
+            ($dtype >= '$p_date_s' and $dtype <='$p_date_e')
+            $filter
+            and bit_oversea is null
+            $FILTER_PARTNER_QUERY_CPID
+        group by b.bit_oversea,right(left($dtype,7),2)
+    ";
+        $dbo->query($sql1);
+        if($debug) checkVar(mysql_error(),$sql1);
+        echo "<td>$previousYear</td>";
+        $sum_person = $sum_money = 0;
+
+        for($month_cnt=1;$month_cnt<=12;$month_cnt++){
+            $rs=$dbo->next_record();
+            for($month_cnt;$rs[did2] > $month_cnt; $month_cnt++){
+                echo "<td>0</td>";
+            }
+            if($rs[did2] == $month_cnt){
+                echo "<td>".nf($rs[sum_people])."</td>";
+            }
+            else{
+                echo "<td>0</td>";
+            }
+            $sum_money += $rs[sum_fee];
+            $sum_person += $rs[sum_people];
+        }
+
+        ?>
+        <td style="background-color:#f0f0f0"><?=nf($sum_person)?></td>
+        <td style="background-color:#f0f0f0"><?=nf(round($sum_money/$sum_person, 0)/$TEN)?></td>
+
+    </tr>
+    <tr>
+        <td style="background-color:#f0f0f0" rowspan="2">국내</td>
+
+        <?
+        $sql1 = "
+        select
+            bit_oversea as did,
+            right(left($dtype,7),2) as did2,
+            sum(people) as sum_people,
+            sum((select sum((price_prev+price_prev2+price_prev3)-(price_air + price_land + price_refund)) as payed_price from cmp_people where code=a.code and bit=1)) as sum_fee
+        from cmp_reservation as a left join cmp_golf as b
+        on a.golf_id_no=b.id_no
+        where
+            ($dtype >= '$date_s' and $dtype <='$date_e')
+            $filter
+            and bit_oversea = '국내'
+            $FILTER_PARTNER_QUERY_CPID
+        group by b.bit_oversea,right(left($dtype,7),2)
+    ";
+        $dbo->query($sql1);
+        echo "<td>$year</td>";
+        for($month_cnt=1;$month_cnt<=12;$month_cnt++){
+            $rs=$dbo->next_record();
+            for($month_cnt;$rs[did2] > $month_cnt; $month_cnt++){
+                echo "<td>0</td>";
+            }
+            if($rs[did2] == $month_cnt){
+                echo "<td>".nf($rs[sum_people])."</td>";
+            }
+            else{ // 달이 12월 전에 끝나는경우
+                echo "<td>0</td>";
+            }
+            $sum_money += $rs[sum_fee];
+            $sum_person += $rs[sum_people];
+        }
+
+        ?>
+        <td style="background-color:#f0f0f0"><?=nf($sum_person)?></td>
+        <td style="background-color:#f0f0f0"><?=nf(round($sum_money/$sum_person, 0)/$TEN)?></td>
+
+    </tr>
+    <tr>
+
+        <?
+        $sql1 = "
+        select
+            bit_oversea as did,
+            right(left($dtype,7),2) as did2,
+            sum(people) as sum_people,
+            sum((select sum((price_prev+price_prev2+price_prev3)-(price_air + price_land + price_refund)) as payed_price from cmp_people where code=a.code and bit=1)) as sum_fee
+        from cmp_reservation as a left join cmp_golf as b
+        on a.golf_id_no=b.id_no
+        where
+            ($dtype >= '$p_date_s' and $dtype <='$p_date_e')
+            $filter
+            and bit_oversea = '국내'
+            $FILTER_PARTNER_QUERY_CPID
+        group by b.bit_oversea,right(left($dtype,7),2)
+    ";
+        $dbo->query($sql1);
+        if($debug) checkVar(mysql_error(),$sql1);
+        echo "<td>$previousYear</td>";
+        $sum_person = $sum_money = 0;
+
+        for($month_cnt=1;$month_cnt<=12;$month_cnt++){
+            $rs=$dbo->next_record();
+            for($month_cnt;$rs[did2] > $month_cnt; $month_cnt++){
+                echo "<td>0</td>";
+            }
+            if($rs[did2] == $month_cnt){
+                echo "<td>".nf($rs[sum_people])."</td>";
+            }
+            else{
+                echo "<td>0</td>";
+            }
+            $sum_money += $rs[sum_fee];
+            $sum_person += $rs[sum_people];
+        }
+
+        ?>
+        <td style="background-color:#f0f0f0"><?=nf($sum_person)?></td>
+        <td style="background-color:#f0f0f0"><?=nf(round($sum_money/$sum_person, 0)/$TEN)?></td>
+
+    </tr>
+    <tr>
+        <td style="background-color:#f0f0f0" rowspan="2">해외</td>
+
+        <?
+        $sql1 = "
+        select
+            bit_oversea as did,
+            right(left($dtype,7),2) as did2,
+            sum(people) as sum_people,
+            sum((select sum((price_prev+price_prev2+price_prev3)-(price_air + price_land + price_refund)) as payed_price from cmp_people where code=a.code and bit=1)) as sum_fee
+        from cmp_reservation as a left join cmp_golf as b
+        on a.golf_id_no=b.id_no
+        where
+            ($dtype >= '$date_s' and $dtype <='$date_e')
+            $filter
+            and bit_oversea = '해외'
+            $FILTER_PARTNER_QUERY_CPID
+        group by b.bit_oversea,right(left($dtype,7),2)
+    ";
+        $dbo->query($sql1);
+        echo "<td>$year</td>";
+        for($month_cnt=1;$month_cnt<=12;$month_cnt++){
+            $rs=$dbo->next_record();
+            for($month_cnt;$rs[did2] > $month_cnt; $month_cnt++){
+                echo "<td>0</td>";
+            }
+            if($rs[did2] == $month_cnt){
+                echo "<td>".nf($rs[sum_people])."</td>";
+            }
+            else{ // 달이 12월 전에 끝나는경우
+                echo "<td>0</td>";
+            }
+            $sum_money += $rs[sum_fee];
+            $sum_person += $rs[sum_people];
+        }
+
+        ?>
+        <td style="background-color:#f0f0f0"><?=nf($sum_person)?></td>
+        <td style="background-color:#f0f0f0"><?=nf(round($sum_money/$sum_person, 0)/$TEN)?></td>
+
+    </tr>
+    <tr>
+
+        <?
+        $sql1 = "
+        select
+            bit_oversea as did,
+            right(left($dtype,7),2) as did2,
+            sum(people) as sum_people,
+            sum((select sum((price_prev+price_prev2+price_prev3)-(price_air + price_land + price_refund)) as payed_price from cmp_people where code=a.code and bit=1)) as sum_fee
+        from cmp_reservation as a left join cmp_golf as b
+        on a.golf_id_no=b.id_no
+        where
+            ($dtype >= '$p_date_s' and $dtype <='$p_date_e')
+            $filter
+            and bit_oversea = '해외'
+            $FILTER_PARTNER_QUERY_CPID
+        group by b.bit_oversea,right(left($dtype,7),2)
+    ";
+        $dbo->query($sql1);
+        if($debug) checkVar(mysql_error(),$sql1);
+        echo "<td>$previousYear</td>";
+        $sum_person = $sum_money = 0;
+
+        for($month_cnt=1;$month_cnt<=12;$month_cnt++){
+            $rs=$dbo->next_record();
+            for($month_cnt;$rs[did2] > $month_cnt; $month_cnt++){
+                echo "<td>0</td>";
+            }
+            if($rs[did2] == $month_cnt){
+                echo "<td>".nf($rs[sum_people])."</td>";
+            }
+            else{
+                echo "<td>0</td>";
+            }
+            $sum_money += $rs[sum_fee];
+            $sum_person += $rs[sum_people];
+        }
+
+        ?>
+        <td style="background-color:#f0f0f0"><?=nf($sum_person)?></td>
+        <td style="background-color:#f0f0f0"><?=nf(round($sum_money/$sum_person, 0)/$TEN)?></td>
+
+    </tr>
+</table>
+<!--
         <?
         $sum1 = 0;
         $sum2 = 0;
@@ -247,7 +740,7 @@ if($year==date("Y")){
 
         ?>
         <tr>
-            <td style="background-color:#f0f0f0"><?=($arr2[0])?trim($arr2[0]):"미구분"?></td>
+            <td style="background-color:#f0f0f0" rowspan="2"><?=($arr2[0])?trim($arr2[0]):"미구분"?></td>
             <?if($bit_show[1]){?><td class="month1"><?=nf($DATA[$did]["01"]["fee"])?></td><?}?>
             <?if($bit_show[2]){?><td class="month2"><?=nf($DATA[$did]["02"]["fee"])?></td><?}?>
             <?if($bit_show[3]){?><td class="month3"><?=nf($DATA[$did]["03"]["fee"])?></td><?}?>
@@ -299,7 +792,11 @@ if($year==date("Y")){
             bit_oversea as did,
             right(left($dtype,7),2) as did2,
             sum(people) as sum_people,
-            sum((select sum((price_prev+price_prev2+price_prev3)-(price_air + price_land + price_refund)) as payed_price from cmp_people where code=a.code and bit=1)) as sum_fee
+            sum(
+                (select sum((price_prev+price_prev2+price_prev3)-(price_air + price_land + price_refund)) as payed_price 
+                from cmp_people 
+                where code=a.code and bit=1)
+            ) as sum_fee
         from cmp_reservation as a left join cmp_golf as b
         on a.golf_id_no=b.id_no
         where
@@ -327,6 +824,7 @@ if($year==date("Y")){
     ?>
 
 
+<h1>인원</h1>
     <table border="0" cellspacing="0" cellpadding="3" width="100%" id="tbl_cmp_list">
 
         <tr align=center height=25 bgcolor="#F7F7F6">
@@ -454,7 +952,7 @@ if($year==date("Y")){
 
 
     </table>
-
+-->
     <table border="0" cellspacing="0" cellpadding="3" width="100%" id="tbl_list">
         <tr>
           <td colspan="12">
