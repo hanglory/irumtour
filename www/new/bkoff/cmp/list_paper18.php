@@ -167,6 +167,29 @@ $sql1 = "
             $FILTER_PARTNER_QUERY_CPID
         group by b.bit_oversea,right(left($dtype,7),2)
     ";
+
+$sql2 ="
+SELECT
+    bit_oversea AS did,
+    DATE_FORMAT($dtype, '%Y/%m') AS did2,
+    SUM(people) AS sum_people,
+    SUM(
+        (SELECT SUM((price_prev+price_prev2+price_prev3)-(price_air + price_land + price_refund))
+        FROM cmp_people
+        WHERE code = a.code AND bit = 1)
+    ) AS sum_fee
+FROM cmp_reservation AS a
+LEFT JOIN cmp_golf AS b ON a.golf_id_no = b.id_no
+WHERE
+        ($dtype >= '$date_s' and $dtype <='$date_e')
+        $filter
+        $FILTER_PARTNER_QUERY_CPID
+GROUP BY bit_oversea, DATE_FORMAT(tour_date, '%Y/%m')
+ORDER BY   
+   		bit_oversea ASC,
+   		bit_oversea IS NULL, -- null이 가장 먼저 나오도록 함
+			SUBSTRING(did2, 1, 4) DESC, 
+			did2 ASC;";
 $dbo->query($sql1);
             echo "<td>$year</td>";
             for($month_cnt=1;$month_cnt<=12;$month_cnt++){
