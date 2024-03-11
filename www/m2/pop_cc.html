@@ -37,7 +37,7 @@ $filename5 = $PUBLIC_PATH ."public/cmp/".$rs_[filename5];
 <html lang="ko">
 <head>
 <?include("header.php")?>
-
+<script src="js/goBackFunction.js"></script>
 
 </head>
 <body>
@@ -77,6 +77,8 @@ $filename5 = $PUBLIC_PATH ."public/cmp/".$rs_[filename5];
 
 		   <div class="pop_cts">
 		   <?=nl2br($rs_[content2])?>
+			   <img src="/renew/images/ez_board/btn_close.gif" border="0" align="absmiddle" style="width:20px;height:20px;float:right" onclick="goBack()">
+
 		   </div>
 
 
