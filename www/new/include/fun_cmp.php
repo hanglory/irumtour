@@ -201,4 +201,15 @@ function plan_time($plan_time){
     return $result;
 }
 /*일정표 시간 첫줄 행바꿈f*/
+/*array 더하기s*/
+function sumArrayValues($array) {
+    $sum = 0;
+    foreach ($array as $value) {
+        if (is_numeric($value)) {
+            $sum += $value;
+        }
+    }
+    return $sum;
+}
+/*array 더하기f*/
 ?>

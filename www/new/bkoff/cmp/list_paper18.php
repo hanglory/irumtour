@@ -35,6 +35,13 @@ $year_prev = substr($date_s,0,4)-1;
 $date_s2 = $year_prev . substr($date_s,4);
 $date_e2 = $year_prev . substr($date_e,4);
 
+$arr_year_sum = array(0,0,0,0,0,0,0,0,0,0,0,0,0);
+$arr_pyear_sum = array(0,0,0,0,0,0,0,0,0,0,0,0,0);
+$arr_person_year_sum = array(0,0,0,0,0,0,0,0,0,0,0,0,0);
+$arr_person_pyear_sum = array(0,0,0,0,0,0,0,0,0,0,0,0,0);
+$sum_year_pp = 0;
+$sum_pyear_pp = 0;
+
 
 if(substr($date_s,0,4)!=substr($date_e,0,4)){
     error("검색하시는 시작일의 년도와 종료일의 연도가 같아야 합니다.");
@@ -134,8 +141,6 @@ if($year==date("Y")){
 
 
 <h1>매출</h1>
-<p> </p>
-(단위 : 천원)
     <table border="0" cellspacing="0" cellpadding="3" width="100%" id="tbl_cmp_list">
 
         <tr align=center height=25 bgcolor="#F7F7F6">
@@ -150,7 +155,7 @@ if($year==date("Y")){
         </tr>
         <tr>
             <td style="background-color:#f0f0f0" rowspan="2">미구분</td>
-
+            <!--미구분 올해-->
 <?
 $sql1 = "
         select
@@ -187,33 +192,36 @@ WHERE
 GROUP BY bit_oversea, DATE_FORMAT(tour_date, '%Y/%m')
 ORDER BY   
    		bit_oversea ASC,
-   		bit_oversea IS NULL, -- null이 가장 먼저 나오도록 함
+   		bit_oversea IS NULL, -- null이 가장 나중에 나오도록 함
 			SUBSTRING(did2, 1, 4) DESC, 
-			did2 ASC;";
+			did2 ASC";
+
 $dbo->query($sql1);
-            echo "<td>$year</td>";
+            echo "<td>금년</td>";
             for($month_cnt=1;$month_cnt<=12;$month_cnt++){
                 $rs=$dbo->next_record();
                 for($month_cnt;$rs[did2] > $month_cnt; $month_cnt++){
                     echo "<td>0</td>";
                 }
                 if($rs[did2] == $month_cnt){
-                    echo "<td>".@nf($rs[sum_fee]/$TEN)."</td>";
+                    echo "<td>".@nf($rs[sum_fee])."</td>";
                 }
                 else{ // 달이 12월 전에 끝나는경우
                     echo "<td>0</td>";
                 }
                 $sum_money += $rs[sum_fee];
                 $sum_person += $rs[sum_people];
-            }
+                $arr_year_sum[$month_cnt] = $rs[sum_fee];
 
+            }
+$sum_year_pp = round($sum_money/$sum_person,0);
 ?>
-            <td style="background-color:#f0f0f0"><?=nf($sum_money/$TEN)?></td>
-            <td style="background-color:#f0f0f0"><?=nf(round($sum_money/$sum_person, 0)/$TEN)?></td>
+            <td style="background-color:#f0f0f0" class="r"><?=nf($sum_money)?></td>
+            <td style="background-color:#f0f0f0" class="r"><?=nf(round($sum_money/$sum_person, 0))?></td>
 
         </tr>
         <tr>
-
+            <!--미구분 전년-->
             <?
             $sql1 = "
         select
@@ -232,7 +240,7 @@ $dbo->query($sql1);
     ";
             $dbo->query($sql1);
             if($debug) checkVar(mysql_error(),$sql1);
-            echo "<td>$previousYear</td>";
+            echo "<td>전년</td>";
             $sum_person = $sum_money = 0;
 
             for($month_cnt=1;$month_cnt<=12;$month_cnt++){
@@ -241,18 +249,19 @@ $dbo->query($sql1);
                     echo "<td>0</td>";
                 }
                 if($rs[did2] == $month_cnt){
-                    echo "<td>".nf($rs[sum_fee]/$TEN)."</td>";
+                    echo "<td>".nf($rs[sum_fee])."</td>";
                 }
                 else{
                     echo "<td>0</td>";
                 }
                 $sum_money += $rs[sum_fee];
                 $sum_person += $rs[sum_people];
+                $arr_pyear_sum[$month_cnt] = $rs[sum_fee];
             }
-
+$sum_pyear_pp = round($sum_money/$sum_person,0);
             ?>
-            <td style="background-color:#f0f0f0"><?=nf($sum_money/$TEN)?></td>
-            <td style="background-color:#f0f0f0"><?=nf(round($sum_money/$sum_person, 0)/$TEN)?></td>
+            <td style="background-color:#f0f0f0" class="r"><?=nf($sum_money)?></td>
+            <td style="background-color:#f0f0f0" class="r"><?=nf(round($sum_money/$sum_person, 0))?></td>
 
         </tr>
         <tr>
@@ -275,25 +284,27 @@ $dbo->query($sql1);
         group by b.bit_oversea,right(left($dtype,7),2)
     ";
             $dbo->query($sql1);
-            echo "<td>$year</td>";
+            echo "<td>금년</td>";
+            $sum_person = $sum_money = 0;
             for($month_cnt=1;$month_cnt<=12;$month_cnt++){
                 $rs=$dbo->next_record();
                 for($month_cnt;$rs[did2] > $month_cnt; $month_cnt++){
                     echo "<td>0</td>";
                 }
                 if($rs[did2] == $month_cnt){
-                    echo "<td>".nf($rs[sum_fee]/$TEN)."</td>";
+                    echo "<td>".nf($rs[sum_fee])."</td>";
                 }
                 else{ // 달이 12월 전에 끝나는경우
                     echo "<td>0</td>";
                 }
                 $sum_money += $rs[sum_fee];
                 $sum_person += $rs[sum_people];
+                $arr_year_sum[$month_cnt] += $rs[sum_fee];
             }
-
+$sum_year_pp += round($sum_money/$sum_person,0);
             ?>
-            <td style="background-color:#f0f0f0"><?=nf($sum_money/$TEN)?></td>
-            <td style="background-color:#f0f0f0"><?=nf(round($sum_money/$sum_person, 0)/$TEN)?></td>
+            <td style="background-color:#f0f0f0" class="r"><?=nf($sum_money)?></td>
+            <td style="background-color:#f0f0f0" class="r"><?=nf(round($sum_money/$sum_person, 0))?></td>
 
         </tr>
         <tr>
@@ -316,7 +327,7 @@ $dbo->query($sql1);
     ";
             $dbo->query($sql1);
             if($debug) checkVar(mysql_error(),$sql1);
-            echo "<td>$previousYear</td>";
+            echo "<td>전년</td>";
             $sum_person = $sum_money = 0;
 
             for($month_cnt=1;$month_cnt<=12;$month_cnt++){
@@ -325,18 +336,19 @@ $dbo->query($sql1);
                     echo "<td>0</td>";
                 }
                 if($rs[did2] == $month_cnt){
-                    echo "<td>".nf($rs[sum_fee]/$TEN)."</td>";
+                    echo "<td>".nf($rs[sum_fee])."</td>";
                 }
                 else{
                     echo "<td>0</td>";
                 }
                 $sum_money += $rs[sum_fee];
                 $sum_person += $rs[sum_people];
+                $arr_pyear_sum[$month_cnt] += $rs[sum_fee];
             }
-
+            $sum_pyear_pp += round($sum_money/$sum_person,0);
             ?>
-            <td style="background-color:#f0f0f0"><?=nf($sum_money/$TEN)?></td>
-            <td style="background-color:#f0f0f0"><?=nf(round($sum_money/$sum_person, 0)/$TEN)?></td>
+            <td style="background-color:#f0f0f0" class="r"><?=nf($sum_money)?></td>
+            <td style="background-color:#f0f0f0" class="r"><?=nf(round($sum_money/$sum_person, 0))?></td>
 
         </tr>
         <tr>
@@ -359,25 +371,27 @@ $dbo->query($sql1);
         group by b.bit_oversea,right(left($dtype,7),2)
     ";
             $dbo->query($sql1);
-            echo "<td>$year</td>";
+            echo "<td>금년</td>";
+            $sum_person = $sum_money = 0;
             for($month_cnt=1;$month_cnt<=12;$month_cnt++){
                 $rs=$dbo->next_record();
                 for($month_cnt;$rs[did2] > $month_cnt; $month_cnt++){
                     echo "<td>0</td>";
                 }
                 if($rs[did2] == $month_cnt){
-                    echo "<td>".nf($rs[sum_fee]/$TEN)."</td>";
+                    echo "<td>".nf($rs[sum_fee])."</td>";
                 }
                 else{ // 달이 12월 전에 끝나는경우
                     echo "<td>0</td>";
                 }
                 $sum_money += $rs[sum_fee];
                 $sum_person += $rs[sum_people];
+                $arr_year_sum[$month_cnt] += $rs[sum_fee];
             }
-
+            $sum_year_pp += round($sum_money/$sum_person,0);
             ?>
-            <td style="background-color:#f0f0f0"><?=nf($sum_money/$TEN)?></td>
-            <td style="background-color:#f0f0f0"><?=nf(round($sum_money/$sum_person, 0)/$TEN)?></td>
+            <td style="background-color:#f0f0f0" class="r"><?=nf($sum_money)?></td>
+            <td style="background-color:#f0f0f0" class="r"><?=nf(round($sum_money/$sum_person, 0))?></td>
 
         </tr>
         <tr>
@@ -400,7 +414,7 @@ $dbo->query($sql1);
     ";
             $dbo->query($sql1);
             if($debug) checkVar(mysql_error(),$sql1);
-            echo "<td>$previousYear</td>";
+            echo "<td>전년</td>";
             $sum_person = $sum_money = 0;
 
             for($month_cnt=1;$month_cnt<=12;$month_cnt++){
@@ -409,31 +423,50 @@ $dbo->query($sql1);
                     echo "<td>0</td>";
                 }
                 if($rs[did2] == $month_cnt){
-                    echo "<td>".nf($rs[sum_fee]/$TEN)."</td>";
+                    echo "<td>".nf($rs[sum_fee])."</td>";
                 }
                 else{
                     echo "<td>0</td>";
                 }
                 $sum_money += $rs[sum_fee];
                 $sum_person += $rs[sum_people];
+                $arr_pyear_sum[$month_cnt] += $rs[sum_fee];
             }
-
+            $sum_pyear_pp += round($sum_money/$sum_person,0);
             ?>
-            <td style="background-color:#f0f0f0"><?=nf($sum_money/$TEN)?></td>
-            <td style="background-color:#f0f0f0"><?=nf(round($sum_money/$sum_person, 0)/$TEN)?></td>
+            <td style="background-color:#f0f0f0" class="r"><?=nf($sum_money)?></td>
+            <td style="background-color:#f0f0f0" class="r"><?=nf(round($sum_money/$sum_person, 0))?></td>
 
+        </tr>
+        <tr style="background-color:#ffe6cc">
+            <td rowspan="2">합계</td>
+            <td >금년</td>
+            <? for($i=1;$i<13;$i++){
+                echo "<td>".nf($arr_year_sum[$i])."</td>";
+            }
+            ?>
+            <td class="r"><?=nf(sumArrayValues($arr_year_sum))?></td>
+            <td class="r"><?=nf($sum_year_pp)?></td>
+        </tr>
+        <tr style="background-color:#ffe6cc">
+            <td>전년</td>
+            <? for($i=1;$i<13;$i++){
+                echo "<td>".nf($arr_pyear_sum[$i])."</td>";
+            }
+            ?>
+            <td class="r"><?=nf(sumArrayValues($arr_pyear_sum))?></td>
+            <td class="r"><?=nf($sum_pyear_pp)?></td>
         </tr>
     </table>
 
 <br>
 <h1>인원</h1>
-<p> </p>
-(단위 : 천원)
+
 <table border="0" cellspacing="0" cellpadding="3" width="100%" id="tbl_cmp_list">
 
     <tr align=center height=25 bgcolor="#F7F7F6">
         <th class="subject" >구분</th>
-        <th class="subject" >연도</th>
+        <th class="subject" >구분</th>
         <? for ($i = 1; $i <= 12; $i++){
             echo "<th class='subject'>". $i."월</th>";
         }
@@ -461,7 +494,7 @@ $dbo->query($sql1);
         group by b.bit_oversea,right(left($dtype,7),2)
     ";
         $dbo->query($sql1);
-        echo "<td>$year</td>";
+        echo "<td>금년</td>";
         $sum_person = $sum_money = 0;
         for($month_cnt=1;$month_cnt<=12;$month_cnt++){
             $rs=$dbo->next_record();
@@ -476,11 +509,12 @@ $dbo->query($sql1);
             }
             $sum_money += $rs[sum_fee];
             $sum_person += $rs[sum_people];
+            $arr_person_year_sum[$month_cnt] = $rs[sum_people];
         }
 
         ?>
-        <td style="background-color:#f0f0f0"><?=nf($sum_person)?></td>
-        <td style="background-color:#f0f0f0"><?=nf(round($sum_money/$sum_person, 0)/$TEN)?></td>
+        <td style="background-color:#f0f0f0" class="r"><?=nf($sum_person)?></td>
+        <td style="background-color:#f0f0f0" class="r"><?=nf(round($sum_money/$sum_person, 0))?></td>
 
     </tr>
     <tr>
@@ -503,7 +537,7 @@ $dbo->query($sql1);
     ";
         $dbo->query($sql1);
         if($debug) checkVar(mysql_error(),$sql1);
-        echo "<td>$previousYear</td>";
+        echo "<td>전년</td>";
         $sum_person = $sum_money = 0;
 
         for($month_cnt=1;$month_cnt<=12;$month_cnt++){
@@ -519,11 +553,12 @@ $dbo->query($sql1);
             }
             $sum_money += $rs[sum_fee];
             $sum_person += $rs[sum_people];
+            $arr_person_pyear_sum[$month_cnt] = $rs[sum_people];
         }
 
         ?>
-        <td style="background-color:#f0f0f0"><?=nf($sum_person)?></td>
-        <td style="background-color:#f0f0f0"><?=nf(round($sum_money/$sum_person, 0)/$TEN)?></td>
+        <td style="background-color:#f0f0f0" class="r"><?=nf($sum_person)?></td>
+        <td style="background-color:#f0f0f0" class="r"><?=nf(round($sum_money/$sum_person, 0))?></td>
 
     </tr>
     <tr>
@@ -546,7 +581,8 @@ $dbo->query($sql1);
         group by b.bit_oversea,right(left($dtype,7),2)
     ";
         $dbo->query($sql1);
-        echo "<td>$year</td>";
+        echo "<td>금년</td>";
+        $sum_person = $sum_money = 0;
         for($month_cnt=1;$month_cnt<=12;$month_cnt++){
             $rs=$dbo->next_record();
             for($month_cnt;$rs[did2] > $month_cnt; $month_cnt++){
@@ -560,11 +596,12 @@ $dbo->query($sql1);
             }
             $sum_money += $rs[sum_fee];
             $sum_person += $rs[sum_people];
+            $arr_person_year_sum[$month_cnt] += $rs[sum_people];
         }
 
         ?>
-        <td style="background-color:#f0f0f0"><?=nf($sum_person)?></td>
-        <td style="background-color:#f0f0f0"><?=nf(round($sum_money/$sum_person, 0)/$TEN)?></td>
+        <td style="background-color:#f0f0f0" class="r"><?=nf($sum_person)?></td>
+        <td style="background-color:#f0f0f0" class="r"><?=nf(round($sum_money/$sum_person, 0))?></td>
 
     </tr>
     <tr>
@@ -587,7 +624,7 @@ $dbo->query($sql1);
     ";
         $dbo->query($sql1);
         if($debug) checkVar(mysql_error(),$sql1);
-        echo "<td>$previousYear</td>";
+        echo "<td>전년</td>";
         $sum_person = $sum_money = 0;
 
         for($month_cnt=1;$month_cnt<=12;$month_cnt++){
@@ -603,11 +640,12 @@ $dbo->query($sql1);
             }
             $sum_money += $rs[sum_fee];
             $sum_person += $rs[sum_people];
+            $arr_person_pyear_sum[$month_cnt] += $rs[sum_people];
         }
 
         ?>
-        <td style="background-color:#f0f0f0"><?=nf($sum_person)?></td>
-        <td style="background-color:#f0f0f0"><?=nf(round($sum_money/$sum_person, 0)/$TEN)?></td>
+        <td style="background-color:#f0f0f0" class="r"><?=nf($sum_person)?></td>
+        <td style="background-color:#f0f0f0" class="r"><?=nf(round($sum_money/$sum_person, 0))?></td>
 
     </tr>
     <tr>
@@ -630,7 +668,8 @@ $dbo->query($sql1);
         group by b.bit_oversea,right(left($dtype,7),2)
     ";
         $dbo->query($sql1);
-        echo "<td>$year</td>";
+        echo "<td>금년</td>";
+        $sum_person = $sum_money = 0;
         for($month_cnt=1;$month_cnt<=12;$month_cnt++){
             $rs=$dbo->next_record();
             for($month_cnt;$rs[did2] > $month_cnt; $month_cnt++){
@@ -644,11 +683,12 @@ $dbo->query($sql1);
             }
             $sum_money += $rs[sum_fee];
             $sum_person += $rs[sum_people];
+            $arr_person_year_sum[$month_cnt] += $rs[sum_people];
         }
 
         ?>
-        <td style="background-color:#f0f0f0"><?=nf($sum_person)?></td>
-        <td style="background-color:#f0f0f0"><?=nf(round($sum_money/$sum_person, 0)/$TEN)?></td>
+        <td style="background-color:#f0f0f0" class="r"><?=nf($sum_person)?></td>
+        <td style="background-color:#f0f0f0" class="r"><?=nf(round($sum_money/$sum_person, 0))?></td>
 
     </tr>
     <tr>
@@ -671,7 +711,7 @@ $dbo->query($sql1);
     ";
         $dbo->query($sql1);
         if($debug) checkVar(mysql_error(),$sql1);
-        echo "<td>$previousYear</td>";
+        echo "<td>전년</td>";
         $sum_person = $sum_money = 0;
 
         for($month_cnt=1;$month_cnt<=12;$month_cnt++){
@@ -687,12 +727,32 @@ $dbo->query($sql1);
             }
             $sum_money += $rs[sum_fee];
             $sum_person += $rs[sum_people];
+            $arr_person_pyear_sum[$month_cnt] += $rs[sum_people];
         }
 
         ?>
-        <td style="background-color:#f0f0f0"><?=nf($sum_person)?></td>
-        <td style="background-color:#f0f0f0"><?=nf(round($sum_money/$sum_person, 0)/$TEN)?></td>
+        <td style="background-color:#f0f0f0" class="r"><?=nf($sum_person)?></td>
+        <td style="background-color:#f0f0f0" class="r"><?=nf(round($sum_money/$sum_person, 0))?></td>
 
+    <tr style="background-color:#ffe6cc">
+        <td rowspan="2">합계</td>
+        <td >금년</td>
+        <? for($i=1;$i<13;$i++){
+            echo "<td>".nf($arr_person_year_sum[$i])."</td>";
+        }
+        ?>
+        <td class="r"><?=nf(sumArrayValues($arr_person_year_sum))?></td>
+        <td class="r"><?=nf($sum_year_pp)?></td>
+    </tr>
+    <tr style="background-color:#ffe6cc">
+        <td>전년</td>
+        <? for($i=1;$i<13;$i++){
+            echo "<td>".nf($arr_person_pyear_sum[$i])."</td>";
+        }
+        ?>
+        <td class="r"><?=nf(sumArrayValues($arr_person_pyear_sum))?></td>
+        <td class="r"><?=nf($sum_pyear_pp)?></td>
+    </tr>
     </tr>
 </table>
 <!--
