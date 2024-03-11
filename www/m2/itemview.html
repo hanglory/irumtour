@@ -110,15 +110,19 @@ $(function(){
 		autoControls: false
 	});
 
-	<?if($rs[bx_inter]){?>
-	$(".bx_inter").hide();
-	<?}?>
-
-    <?if(!$rs3[content]){?>
-    $(".tab7").hide();
-    <?}else{?>
-    $(".tab7").show();
-    <?}?>
+<?
+	if($rs[bx_inter]){
+?>
+		$(".bx_inter").hide();
+<?  }
+	if(!$rs3[content]){
+?>
+		$(".tab7").hide();
+<?	}else{
+?>
+    	$(".tab7").show();
+<?	}
+?>
 
 });
 //-->
@@ -412,14 +416,20 @@ $(function(){
 				<table class="basic_info" style="margin-bottom:10px !important;">
 				<tr>
 					<th>포함내역</th>
+				</tr>
+				<tr>
 					<td><?=nl2br(stripslashes(check_content_https($rs[content1])))?></td>
 				</tr>
 				<tr>
 					<th>불포함내역</th>
+				</tr>
+				<tr>
 					<td><?=nl2br(stripslashes(check_content_https($rs[content2])))?></td>
 				</tr>
 				<tr>
 					<th>참고사항</th>
+				</tr>
+				<tr>
 					<td><?=nl2br(stripslashes(check_content_https($rs[content3])))?></td>
 				</tr>
 				</table>
@@ -671,4 +681,4 @@ $(function(){
 
 
 </body>
-</new>
+</html>

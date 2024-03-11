@@ -98,11 +98,11 @@ if(!$row_search){
 
 
 ####검색 항목
-$selectTxt = "대표자,경로,담당자,서브 담당자,예약일,출국일,귀국일,상품명,핸드폰";
-$selectValue ="name,view_path,main_staff,sub_staff,tour_date,d_date,r_date,subject,phone";
+$selectTxt = "대표자,경로,담당자,서브 담당자,예약일,출국일,귀국일,국가,지역,상품명,핸드폰";
+$selectValue ="name,view_path,main_staff,sub_staff,tour_date,d_date,r_date,nation,city,subject,phone";
 if($user_id=="tester" || $user_id=="test"){
-  $selectTxt = "대표자,경로,담당자,예약일,출국일,귀국일,상품명,핸드폰";
-  $selectValue ="name,view_path,main_staff,tour_date,d_date,r_date,subject,phone";  
+  $selectTxt = "대표자,경로,담당자,예약일,출국일,귀국일,국가,지역,상품명,핸드폰";
+  $selectValue ="name,view_path,main_staff,tour_date,d_date,r_date,nation,city,subject,phone";
 }
 
 
@@ -224,6 +224,8 @@ function copy(id_no){
 		<th class="subject" >출국일</th>
 		<th class="subject" >귀국일</th>
 		<th class="subject" >총인원</th>
+        <th class="subject" >국가</th>
+        <th class="subject" >지역</th>
 		<th class="subject" >상품명</th>
 		<th class="subject" >거래처</th>
 		<th class="subject" >판매가</th>
@@ -275,6 +277,8 @@ while($rs=$dbo->next_record()){
 	      <td style="<?=$css?>"><?=$rs[d_date]?></td>
 	      <td style="<?=$css?>"><?=$rs[r_date]?></td>
 	      <td style="<?=$css?>"><?=nf($rs[people])?></td>
+          <td style="<?=$css?>"><?=$rs[nation]?></td>
+          <td style="<?=$css?>"><?=$rs[city]?></td>
 	      <td style="l pl10"><?=($rs[subject])?$rs[subject]:$rs[golf_name]?></td>
 	      <td style="<?=$css?>"><?=$rs[partner]?></td>
 	      <td style="<?=$css?>"><?=nf($price)?></td>

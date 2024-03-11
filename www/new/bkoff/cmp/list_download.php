@@ -191,7 +191,7 @@ $price_e = nf($price_e);
 
 
                         <select name="sex">
-                            <option value="">성별</optioni>
+                            <option value="">성별</option>
                                 <?= option_str("남성,여성", "M,F", $sex) ?>
                         </select>
                         <span class="gap">|</span>
@@ -217,7 +217,7 @@ $price_e = nf($price_e);
 
 
                     <select name="nation" onchange="find()">
-                        <option value="">국가</optioni>
+                        <option value="">국가</option>
                             <?= option_str($NATIONS, $NATIONS, $nation) ?>
                     </select>
 

@@ -148,11 +148,15 @@ if($inc_table=="cmp_hotel"){
 						   <?=nl2br(check_content_https($rs_[content2]))?>
 						   </div>
 
+                             <a href="javascript:show_close()"><img src="/renew/images/ez_board/btn_close.gif" border="0" align="absmiddle" style="width:20px;height:20px;float:right">
+
                          </div>
                          <!--//pop_contents-->
 
+
                        </div>
                        <!--//pop_wrap-->
+
 
                      </div>
                      <!--//모달윈도우-->
