@@ -51,7 +51,8 @@ If($mode=="save"){
       memo,
       status,
       reg_date,
-      reg_date2
+      reg_date2,
+      s_airport
     ) values (
       '$date_s',
       '$date_e',
@@ -74,7 +75,8 @@ If($mode=="save"){
       '$memo',
       '$status',
       '$reg_date',
-      '$reg_date2'
+      '$reg_date2',
+      '$s_airport'
   )";
 
   if($dbo->query($sql)){
@@ -125,6 +127,7 @@ If($mode=="save"){
     $mailContent ="문의 날짜 : $reg_date <br/>";
     $mailContent .="문의구분 : $assort  <br/>";
     $mailContent .="여행일정 : $date_s ~ $date_e <br/>";
+    $mailContent .="출발공항 : $s_airport <br/>";
     $mailContent .="예상인원 : $people <br/>";
     $mailContent .="희망지역 : $reg_date <br/>";
     $mailContent .="희망국가 : $nation <br/>";
@@ -201,14 +204,27 @@ document.writeln(mi_script);
 <script type="text/javascript">
 <!--
 $(function(){
-  $("[name=nation]").click(function(){
-    var str = $(this).val();
-    $("#area1").hide();$("#area2").hide();$("#area3").hide();$("#area4").hide();
-    if(str=="동남아") $("#area1").show();
-    else if(str=="일본") $("#area2").show();
-    else if(str=="중국") $("#area3").show();
-    else if(str=="기타해외") $("#area4").show();
-  });
+    $("[name=nation]").click(function(){
+        var str = $(this).val();
+        $("#area1").hide();
+        $("#area2").hide();
+        $("#area3").hide();
+        $("#area4").hide();
+        $("#area5").hide();
+        $("#area6").hide();
+        $("#area7").hide();
+        $("#area8").hide();
+        $("#area9").hide();
+        if(str=="동남아") $("#area1").show();
+        else if(str=="일본") $("#area2").show();
+        else if(str=="중국") $("#area3").show();
+        else if(str=="기타해외") $("#area4").show();
+        else if(str=="한국") $("#area5").show();
+        else if(str=="태국") $("#area6").show();
+        else if(str=="베트남") $("#area7").show();
+        else if(str=="필리핀") $("#area8").show();
+        else if(str=="미주") $("#area9").show();
+    });
 
   $(".assort").click(function(){
     $("#assort_tmp").val($(this).val());
@@ -219,9 +235,13 @@ $(function(){
   });
 
 
-    <?if($CP_NAVER){?>
+<?
+    if($CP_NAVER){
+?>
         window.open('<?=$CP_NAVER?>');
-    <?}?>
+<?
+      }
+?>
 
 });
 
@@ -244,7 +264,7 @@ function checkForm(){
   if(fm.nation_tmp.value=="중국" && fm.area3_tmp.value==1){alert('희망지역을 선택해 주세요.'); return}
   if(fm.nation_tmp.value=="기타해외" && fm.area4_tmp.value==1){alert('희망지역을 선택해 주세요.'); return}
 
-  if(check_blank(fm.org,'단체명을',0)=='wrong'){return }
+  if(check_blank(fm.org,'희망 라운드를',0)=='wrong'){return }
   if(check_blank(fm.name,'성명을',0)=='wrong'){return }
   if(check_blank(fm.phone1,'연락처를',0)=='wrong'){return }
   if(check_blank(fm.phone2,'연락처를',0)=='wrong'){return }
@@ -252,8 +272,7 @@ function checkForm(){
   if(check_num(fm.phone1,'연락처')=='wrong'){return }
   if(check_num(fm.phone2,'연락처')=='wrong'){return }
   if(check_num(fm.phone3,'연락처')=='wrong'){return }
-  if(check_blank(fm.email,'이메일주소를',0)=='wrong'){return }
-  if(check_email(fm.email)=='wrong'){return}
+
 
   //if(fm.assort_tmp.value==""){alert('투어성격을 선택해 주세요.'); return}
   if(fm.etc1_tmp.value==""){alert('골프장종류를 선택해 주세요.'); return}
@@ -335,16 +354,7 @@ function checkForm(){
 
 
 
-          <div class="title_h4"><span class="green02 bold">개인정보 수집 </span>및 이용에 대한 안내</div>
 
-            <div class="privacy">
-              <div class="privacy_box">
-                <iframe width="100%" height="100%" src="/renew/text/privacy5.html" frameborder="0"  scrolling="no"></iframe>
-              </div>
-              <div class="acceet01">
-                <input type="checkbox" id="agree" name="agree" />
-                <label for="agree">위의 <strong>개인정보취급방침</strong>에 동의합니다.</label> </div>
-            </div>
 
             <div class="title_h4"><span class="green02 bold">정보</span>입력</div>
 
@@ -360,62 +370,73 @@ function checkForm(){
       					<col width="*" />
       				</colgroup>
       				<tbody>
-                <tr>
+                 <tr>
                   <th scope="row"><img src="images/common/ico_point.png"  />문의날짜</th>
                   <td><span class="red bold"><?=date("Y년 m월 d일")?></span></td>
-                </tr>
+                 </tr>
                  <tr>
                   <th scope="row"><img src="images/common/ico_point.png"  />여행출발일</th>
                   <td><?=html_input("date_s",13,10,'input dateinput')?> ~ <?=html_input("date_e",13,10,'input dateinput')?></td>
-                </tr>
+                 </tr>
                  <tr>
-                  <th scope="row"><img src="images/common/ico_point.png"  />예상인원</th>
+                    <th scope="row"><img src="images/comty/ic_compulsory.png"  />국내 출발 공항</th>
+                    <td colspan="2"><select name="s_airport" style="width:130px">
+                            <?=option_str("인천,김포,김해,청주,제주,무안","인천,김포,김해,청주,제주,무안",$s_airport)?>
+                        </select></td>
+
+                 <tr>
+                 <tr>
+                  <th scope="row"><img src="images/common/ico_point.png"  />인원</th>
                   <td><?=html_input("people",5,5)?>
                   명</td>
-                </tr>
+                 </tr>
 
 
                 <tr>
-                  <th scope="row"><img src="images/common/ico_point.png"  />희망지역</th>
+                  <th scope="row"><img src="images/common/ico_point.png"  />희망국가</th>
                   <td><?=radio($EVENT_NATION,$EVENT_NATION,'동남아','nation')?></td>
                 </tr>
                 <tr>
-                  <th scope="row"><img src="images/common/ico_point.png"  />희망국가</th>
+                  <th scope="row"><img src="images/common/ico_point.png"  />희망지역</th>
                   <td>
           					<div id="area1"><?=checkbox($EVENT_AREA1,$EVENT_AREA1,'','area1')?></div>
           					<div id="area2" class="hide"><?=checkbox($EVENT_AREA2,$EVENT_AREA2,'','area2')?></div>
           					<div id="area3" class="hide"><?=checkbox($EVENT_AREA3,$EVENT_AREA3,'','area3')?></div>
           					<div id="area4" class="hide"><?=checkbox($EVENT_AREA4,$EVENT_AREA4,'','area4')?></div>
+                            <div id="area5" class="hide"><?=checkbox($EVENT_AREA5,$EVENT_AREA5,'','area5')?></div>
+                            <div id="area6" class="hide"><?=checkbox($EVENT_AREA6,$EVENT_AREA6,'','area6')?></div>
+                            <div id="area7" class="hide"><?=checkbox($EVENT_AREA7,$EVENT_AREA7,'','area7')?></div>
+                            <div id="area8" class="hide"><?=checkbox($EVENT_AREA8,$EVENT_AREA8,'','area8')?></div>
+                            <div id="area9" class="hide"><?=checkbox($EVENT_AREA9,$EVENT_AREA9,'','area9')?></div>
+
                   </td>
                 </tr>
 
-                 <tr>
-                   <th scope="row">소속/단체명</th>
-                   <td><?=html_input("org",30,40)?></td>
-                 </tr>
-                 <tr>
-                   <th scope="row"><img src="images/common/ico_point.png"  /> 단체 성비 구성</th>
-                   <td><input type="radio" id="gender" name="gender">
-                       <label for="gender">혼성</label>
-                       <input type="radio" id="man" name="man">
-                       <label for="man">남성</label>
-                       <input type="radio" id="woman" name="woman">
-                       <label for="woman">여성</label>
-                   </td>
-                 </tr>
+
+
                  <tr>
                    <th scope="row"><img src="images/common/ico_point.png"  /> 성명</th>
                    <td><?=html_input("name",20,30)?></td>
                  </tr>
                  <tr>
-                   <th scope="row"><img src="images/common/ico_point.png"  /> 연락처</th>
+                   <th scope="row"><img src="images/common/ico_point.png"  /> 휴대폰 번호</th>
                    <td>
           					<?=html_input("phone1",5,4)?> - <?=html_input("phone2",5,4)?> - <?=html_input("phone3",5,4)?>
                    </td>
                  </tr>
                  <tr>
-                   <th scope="row"><img src="images/common/ico_point.png"  /> E-mail주소</th>
-                   <td><?=html_input("email",20,50)?></td>
+                     <th scope="row"><img src="images/common/ico_point.png"  /> 단체 성비 구성</th>
+                     <td><input type="radio" id="gender" name="gender">
+                         <label for="gender">혼성</label>
+                         <input type="radio" id="man" name="man">
+                         <label for="man">남성</label>
+                         <input type="radio" id="woman" name="woman">
+                         <label for="woman">여성</label>
+                     </td>
+                 </tr>
+                 <tr>
+                     <th scope="row"><img src="images/common/ico_point.png"  />희망 라운드 횟수</th>
+                     <td><?=html_input("org",30,40)?>라운드</td>
                  </tr>
 
 
@@ -434,7 +455,7 @@ function checkForm(){
       				  </td>
                 </tr>-->
                 <tr>
-                  <th scope="row"><img src="images/common/ico_point.png"  />골프장종류</th>
+                  <th scope="row"><img src="images/common/ico_point.png"  />여행테마</th>
                   <td><?=radio($EVENT_ETC1,$EVENT_ETC1,'','etc1')?></td>
                 </tr>
                 <tr>
@@ -462,8 +483,46 @@ function checkForm(){
 
            <!-- <div class="button_center"><a href="javascript:checkForm()"><img src="http://irumtour.net/renew/images/comty/btn_qna.gif" alt="문의하기" height="40" /></a>&nbsp;<a href="javascript:cancel()"><img src="http://irumtour.net/renew/images/comty/btn_cancel.gif" alt="취소하기" height="40" /></a></div>-->
 
+            <div class="title_h4"><span class="green02 bold">개인정보 수집 </span>및 이용에 대한 안내</div>
 
-           <div class="btn_join03"><a href="javascript:checkForm()">문의하기</a></div>
+              <div class="privacy">
+              <div class="privacy_box">
+
+                  <link rel="stylesheet" href="terms.css" type="text/css" media="all">
+                  <!--wrap_terms-->
+                  <div id="wrap_terms">
+                      <!--<h1>개인정보의 보유 및 이용기간</h1>-->
+                      <div class="cts_normal" style="padding-top:10px; color:#257488">
+                          ※
+                          <?=($_SESSION[CP_COMPANY])?$_SESSION[CP_COMPANY]:"(주)이룸플레이스/이룸투어"?>
+                          <!-- 서비스 제공을 위해서 필요한 최소한의 개인정보 이므로 동의를 해 주셔야 서비스를 이용하실 수 있습니다. -->
+                          ㈜이룸플레이스/이룸투어 서비스 제공을 위해서 필요한 최소한의 개인정보이용에 동의합니다.
+                      </div>
+
+                      <div class="cts_normal">
+                          <table class="tbl_group">
+                              <tbody>
+                              <tr>
+                                  <th width="60px">목적</th> <td>이용자 식별 및 본인여부 확인</td> <td>계약이행을 위한 연락민원 등 고객고충처리</td>
+                              </tr>
+                              <tr>
+                                  <th>항목</th><td>성명</td><td>연락처(전화번호,이메일)</td>
+                              </tr>
+                              <tr>
+                                  <th>보유기간</th><td>서비스 종료 후 3년 까지</td>  <td>서비스 종료 후 3년 까지</td>
+                              </tr>
+                              </tbody>
+                          </table>
+                      </div>
+                  </div>
+
+              </div>
+              <div class="acceet01">
+                  <input type="checkbox" id="agree" name="agree" />
+                  <label for="agree">위의 <strong>개인정보취급방침</strong>에 동의합니다.</label> </div>
+          </div>
+
+            <div class="btn_join03"><a href="javascript:checkForm()">문의하기</a></div>
 
 		  </form>
 

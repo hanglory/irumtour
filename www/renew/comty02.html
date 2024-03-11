@@ -71,7 +71,8 @@ If($mode=="save"){
 		  ip,
 		  status,
 		  reg_date,
-		  reg_date2
+		  reg_date2,
+		  s_airport
 	  ) values (
 		  '$CID',
           '$user_id',
@@ -98,7 +99,8 @@ If($mode=="save"){
 		  '$ip',
 		  '$status',
 		  '$reg_date',
-		  '$reg_date2'
+		  '$reg_date2',
+	      '$s_airport'
 	)";
 
 	if($dbo->query($sql)){
@@ -147,6 +149,7 @@ If($mode=="save"){
 		$mailContent ="문의 날짜 : $reg_date <br/>";
 		$mailContent .="문의구분 : $assort  <br/>";
 		$mailContent .="여행일정 : $date_s ~ $date_e <br/>";
+        $mailContent .="국내 출발 공항 : $s_airport <br/>";
 		$mailContent .="예상인원 : $people <br/>";
 		$mailContent .="희망국가 : $nation <br/>";
 		$mailContent .="희망지역 : $area <br/>";
@@ -227,12 +230,17 @@ document.writeln(mi_script);
 $(function(){
 	$("[name=nation]").click(function(){
 		var str = $(this).val();
-		$("#area1").hide();$("#area2").hide();$("#area3").hide();$("#area4").hide();$("#area5").hide();
+		$("#area1").hide();$("#area2").hide();$("#area3").hide();$("#area4").hide();$("#area5").hide();$("#area6").hide();
+        $("#area7").hide();$("#area8").hide();$("#area9").hide();
 		if(str=="동남아") $("#area1").show();
 		else if(str=="일본") $("#area2").show();
 		else if(str=="중국") $("#area3").show();
 		else if(str=="기타해외") $("#area4").show();
 		else if(str=="한국") $("#area5").show();
+        else if(str=="태국") $("#area6").show();
+        else if(str=="베트남") $("#area7").show();
+        else if(str=="필리핀") $("#area8").show();
+        else if(str=="미주") $("#area9").show();
 	});
 
 	$(".assort").click(function(){
@@ -270,8 +278,6 @@ function checkForm(){
 	if(check_num(fm.phone1,'연락처')=='wrong'){return }
 	if(check_num(fm.phone2,'연락처')=='wrong'){return }
 	if(check_num(fm.phone3,'연락처')=='wrong'){return }
-	if(check_blank(fm.email,'이메일주소를',0)=='wrong'){return }
-	if(check_email(fm.email)=='wrong'){return}
 
 	//if(fm.assort_tmp.value==""){alert('투어성격을 선택해 주세요.'); return}
 	if(fm.etc1_tmp.value==""){alert('골프장종류를 선택해 주세요.'); return}
@@ -293,11 +299,6 @@ function checkForm(){
   <!--Header-->
   <?include("header.html")?>
   <!--//Header-->
-
-  <!--서브메인 비주얼-->
-  <?include("sub_visual03.html")?>
-  <!--//서브메인 비주얼-->
-
 
   <!--Container-->
   <div id="container">
@@ -400,8 +401,14 @@ function checkForm(){
                   <th scope="row"><img src="images/comty/ic_compulsory.png"  />여행출발일</th>
                   <td colspan="2"><?=html_input("date_s",13,10,'input dateinput c')?> ~ <?=html_input("date_e",13,10,'input dateinput c')?></td>
                 </tr>
+                <tr>
+                    <th scope="row"><img src="images/comty/ic_compulsory.png"  />국내 출발 공항</th>
+                    <td colspan="2"><select name="s_airport" style="width:130px">
+                            <?=option_str("인천,김포,김해,청주,제주,무안","인천,김포,김해,청주,제주,무안",$s_airport)?>
+                        </select></td>
+
                  <tr>
-                  <th scope="row"><img src="images/comty/ic_compulsory.png"  />예상인원</th>
+                  <th scope="row"><img src="images/comty/ic_compulsory.png"  />인원</th>
                   <td colspan="2"><?=html_input("people",5,5,'box num3')?>
                   명</td>
                 </tr>
@@ -419,31 +426,33 @@ function checkForm(){
 					<div id="area3" class="hide"><?=checkbox($EVENT_AREA3,$EVENT_AREA3,'','area3')?></div>
 					<div id="area4" class="hide"><?=checkbox($EVENT_AREA4,$EVENT_AREA4,'','area4')?></div>
 					<div id="area5" class="hide"><?=checkbox($EVENT_AREA5,$EVENT_AREA5,'','area5')?></div>
+                    <div id="area6" class="hide"><?=checkbox($EVENT_AREA6,$EVENT_AREA6,'','area6')?></div>
+                    <div id="area7" class="hide"><?=checkbox($EVENT_AREA7,$EVENT_AREA7,'','area7')?></div>
+                    <div id="area8" class="hide"><?=checkbox($EVENT_AREA8,$EVENT_AREA8,'','area8')?></div>
+                    <div id="area9" class="hide"><?=checkbox($EVENT_AREA9,$EVENT_AREA9,'','area9')?></div>
 				  </td>
                 </tr>
 
                  <tr>
                    <th rowspan="5" scope="row"><img src="images/comty/ic_compulsory.png"  />문의자정보</th>
-                   <td class="sub_tit"> 소속/단체명</td>
-                   <td><?=html_input("org",30,40)?></td>
-                 </tr>
-                 <tr>
-                   <td class="sub_tit"><img src="images/comty/ic_compulsory.png"  /> 단체 성비 구성</td>
-                   <td><?=radio("혼성,여성,남성","혼성,여성,남성",$rs[gender],'gender')?></td>
                  </tr>
                  <tr>
                    <td class="sub_tit"><img src="images/comty/ic_compulsory.png"  /> 성명</td>
                    <td><?=html_input("name",20,30)?></td>
                  </tr>
                  <tr>
-                   <td class="sub_tit"><img src="images/comty/ic_compulsory.png"  /> 연락처</td>
+                   <td class="sub_tit"><img src="images/comty/ic_compulsory.png"  /> 휴대폰번호</td>
                    <td>
 					<?=html_input("phone1",5,4,'box num4')?> - <?=html_input("phone2",5,4,'box num4')?> - <?=html_input("phone3",5,4,'box num4')?>
 				   </td>
                  </tr>
                  <tr>
-                   <td class="sub_tit"><img src="images/comty/ic_compulsory.png"  /> E-mail주소</td>
-                   <td><?=html_input("email",50,50)?></td>
+                    <td class="sub_tit"><img src="images/comty/ic_compulsory.png"  /> 단체 성비 구성</td>
+                    <td><?=radio("혼성,여성,남성","혼성,여성,남성",$rs[gender],'gender')?></td>
+                 </tr>
+                 <tr>
+                    <td class="sub_tit"><img src="images/comty/ic_compulsory.png"  /> 희망 라운드 횟수</td>
+                    <td><?=html_input("org",20,30)?> 라운드</td>
                  </tr>
 
 
@@ -462,7 +471,7 @@ function checkForm(){
 				  </td>
                 </tr>-->
                 <tr>
-                  <th scope="row"><img src="images/comty/ic_compulsory.png"  />골프장종류</th>
+                  <th scope="row"><img src="images/comty/ic_compulsory.png"  />여행테마</th>
                   <td colspan="2"><?=radio($EVENT_ETC1,$EVENT_ETC1,'','etc1')?></td>
                 </tr>
                 <tr>
