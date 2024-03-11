@@ -276,29 +276,29 @@ function chkForm()
 
 
 		<tr>
-			<td class="subject" scope="row">*문의날짜</th>
+			<th class="subject" scope="row">*문의날짜</th>
 			<td colspan="3"><span class="red bold"><?=date("Y년 m월 d일")?></span></td>
 		</tr>
 		<tr><td colspan="4" class="tblLine"></td></tr>
 		<tr>
-			<td class="subject" scope="row">*여행출발일</th>
+			<th class="subject" scope="row">*여행출발일</th>
 			<td colspan="3"><?=html_input("date_s",13,10,'box dateinput')?> ~ <?=html_input("date_e",13,10,'box dateinput')?></td>
 		</tr>
 		<tr><td colspan="4" class="tblLine"></td></tr>
 		<tr>
-			<td class="subject" scope="row">*예상인원</th>
+			<th class="subject" scope="row">*예상인원</th>
 			<td colspan="3"><?=html_input("people",5,5)?>명</td>
 		</tr>
 		<tr><td colspan="4" class="tblLine"></td></tr>
 
 
 		<tr>
-			<td class="subject" scope="row">*희망국가</th>
+			<th class="subject" scope="row">*희망국가</th>
 			<td colspan="3"><?=radio($EVENT_NATION,$EVENT_NATION,'동남아','nation')?></td>
 		</tr>
 		<tr><td colspan="4" class="tblLine"></td></tr>
 		<tr>
-			<td class="subject" scope="row">*희망지역</th>
+			<th class="subject" scope="row">*희망지역</th>
 			<td colspan="3">
 				<div id="area1"><?=checkbox($EVENT_AREA1,$EVENT_AREA1,'','area1')?></div>
 				<div id="area2" class="hide"><?=checkbox($EVENT_AREA2,$EVENT_AREA2,'','area2')?></div>
@@ -310,7 +310,7 @@ function chkForm()
 		<tr><td colspan="4" class="tblLine"></td></tr>
 
 		<tr>
-			<td class="subject" rowspan="4" scope="row">*문의자정보</th>
+			<th class="subject" rowspan="4" scope="row">*문의자정보</th>
 			<td class="sub_tit" width="100">* 소속/단체명</td>
 			<td><?=html_input("org",30,40)?></td>
 		</tr>
@@ -330,7 +330,7 @@ function chkForm()
 		</tr>
 		<tr><td colspan="4" class="tblLine"></td></tr>
 		<tr>
-			<td class="subject" scope="row">*투어성격</th>
+			<th class="subject" scope="row">*투어성격</th>
 			<td colspan="3">
 				<div style="line-height:250%">
 					<label><input name="assort" type="radio" value="개인투어" class="assort"> 개인투어</label><br/>
@@ -343,32 +343,32 @@ function chkForm()
 		</tr>
 		<tr><td colspan="4" class="tblLine"></td></tr>
 		<tr>
-			<td class="subject" scope="row">*골프장종류</th>
+			<th class="subject" scope="row">*골프장종류</th>
 			<td colspan="3"><?=radio($EVENT_ETC1,$EVENT_ETC1,'','etc1')?></td>
 		</tr>
 		<tr><td colspan="4" class="tblLine"></td></tr>
 		<tr>
-			<td class="subject" scope="row">*호텔/골프장수준</th>
+			<th class="subject" scope="row">*호텔/골프장수준</th>
 			<td colspan="3"><?=radio($EVENT_ETC2,$EVENT_ETC2,'','etc2')?></td>
 		</tr>
 		<tr><td colspan="4" class="tblLine"></td></tr>
 		<tr>
-			<td class="subject" scope="row">*식사수준</th>
+			<th class="subject" scope="row">*식사수준</th>
 			<td colspan="3"><?=radio($EVENT_ETC3,$EVENT_ETC3,'','etc3')?></td>
 		</tr>
 		<tr><td colspan="4" class="tblLine"></td></tr>
 		<tr>
-			<td class="subject" scope="row">*객실수준</th>
+			<th class="subject" scope="row">*객실수준</th>
 			<td colspan="3"><?=radio($EVENT_ETC4,$EVENT_ETC4,'','etc4')?></td>
 		</tr>
 		<tr><td colspan="4" class="tblLine"></td></tr>
 		<tr>
-			<td class="subject" scope="row">*싱글룸 사용여부</th>
+			<th class="subject" scope="row">*싱글룸 사용여부</th>
 			<td colspan="3"><?=radio($EVENT_ETC5,$EVENT_ETC5,'','etc5')?></td>
 		</tr>
 		<tr><td colspan="4" class="tblLine"></td></tr>
 		<tr>
-			<td class="subject" scope="row">기타 요청사항</th>
+			<th class="subject" scope="row">기타 요청사항</th>
 			<td colspan="3"><textarea cols="30" rows="5" class="box"  name="content" style="width:96%; height:150px;"></textarea></td>
 		</tr>
 		<tr><td colspan="4" class="tblLine"></td></tr>
