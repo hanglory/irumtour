@@ -181,7 +181,7 @@
 .prd_info01 {display:inline-block;overflow-y:hidden;width:343px; height:95px; padding:10px 20px; border:1px solid #e6e6e6; border-top:0;  float:left}
 .prd_info02 {width:268px; height:120px; padding:15px 20px; border:1px solid #e6e6e6; border-top:0;  float:left}
 
-.title_prd {width:100%; color:#333; font-size:19px; line-height:130%; font-family:NotoKR-Medium;   float:left 
+.title_prd {width:100%; color:#333; font-size:19px; line-height:130%; font-family:NotoKR-Medium; float:left;
 display:inline-block;
 height:80px;
 overflow-y:hidden;
@@ -217,7 +217,7 @@ overflow-y:hidden;
 }
 .title_prd_on02 {display:inline-block;width:100%;height:50px;overflow-y:hidden;padding:15px 0 15px 0; text-align:center; color:#292929; font-size:24px; line-height:130%; font-family:NotoKR-Medium;  border-bottom:1px solid #f79f99; float:left}
 
-.comment_prd_on {display:inline-block;height:90px;overflow-y:hidden;width:100%; padding:15px 0 15px 0;  color:#666; font-size:15px; line-height:140%; float:left
+.comment_prd_on {display:inline-block;height:90px;overflow-y:hidden;width:100%; padding:15px 0 15px 0;  color:#666; font-size:15px; line-height:140%; float:left;
 display:inline-block;
 height:50px;
 overflow-y:hidden;
