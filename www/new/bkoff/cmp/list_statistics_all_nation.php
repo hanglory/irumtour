@@ -140,6 +140,11 @@ $path_arr = array("신규","재방문","투어문의");
 $path_cnt = count($path_arr);
 $path_tot = array(0,0,0);
 $path_rev = array(0,0,0);
+
+####검색 항목
+$selectTxt = "담당자";
+$selectValue ="a.main_staff";
+
 ?>
 <?include("../top.html");?>
     <script language="JavaScript">
@@ -224,6 +229,11 @@ $path_rev = array(0,0,0);
                             <?= option_int2(date("Y"), 2015, 1)?>
                         </select>
                          -->
+                        <select name="target" class='select'>
+                            <?=option_str($selectTxt,$selectValue,$target)?>
+                        </select>
+
+                        <input class=box type="text" name="keyword" size="15" maxlength="40" value='<?=$keyword?>'>
                         <input class=button type="submit" name="Submit" value=" 검 색 " onFocus='blur(this)'>
                     </td>
                 <tr>
@@ -249,13 +259,15 @@ $path_rev = array(0,0,0);
 <?php
             for ($i = 0; $nation_cnt > $i; $i++)
             {
-                echo "<th class='subject'>예약건수</th><th class='subject'>예약율(%)</th>\n";
+                echo "<th class='subject'>예약<br>/전체</th>
+                      <th class='subject'>예약율(%)</th>\n";
             }
 ?>
         <!-- /tr -->
             <?
             $dbo->query($sql_2);
             if($debug) checkVar(mysql_error(),$sql_2);
+
 
             $_1 = "1";
             $i = $nation_cnt;
@@ -274,14 +286,14 @@ $path_rev = array(0,0,0);
                             $i++;
                             break;
                         } else {
-                            echo "<td> </td><td> </td>\n";
+                            echo "<td> 0</td><td> 0 %</td>\n";
                         }
                         $i++;
                     }
                 } else {    //월이 변경 되면
                     if($nation_cnt > $i ){   // 월은 변경됐는데 아직 나라가 남아 있으면<td>값을 채운다
                         for( ; $nation_cnt > $i; $i++){
-                            echo "<td> </td> <td> </td>\n";
+                            echo "<td> 0</td> <td> 0 %</td>\n";
                         }
                     }
                     if($nation_cnt == $i)   $i=0;
@@ -302,7 +314,7 @@ $path_rev = array(0,0,0);
                             $i++;
                             break;
                         } else {
-                            echo "<td> </td> <td> </td>\n";
+                            echo "<td> 0</td> <td> 0 %</td>\n";
                         }
                         $i++;
                     }
@@ -310,7 +322,7 @@ $path_rev = array(0,0,0);
                 $_1 = $rs[sd];
             }
             for( ; $nation_cnt > $i; $i++){ //종료 했는데 아직 나라를 다 안채웠으면 나라끝날때까지 채움
-                echo "<td> </td> <td> </td>\n";
+                echo "<td> 0</td> <td> 0 %</td>\n";
             }            
             ?>
         </tr>
@@ -325,6 +337,7 @@ $path_rev = array(0,0,0);
         </tr>
     </table>
     <!--경로 분석 테이블1-->
+<a> </a>
     <table border="0" cellspacing="0" cellpadding="3" width="100%" id="tbl_cmp_list">
 
         <tr align=center height=25 bgcolor="#F7F7F6">
@@ -340,9 +353,10 @@ $path_rev = array(0,0,0);
 <?php
             for ($i = 0; $path_cnt > $i; $i++)
             {
-                echo "<th class='subject'>예약건수</th><th class='subject'>예약율(%)</th>\n";
+                echo "<th class='subject'>예약건수/전체건수</th><th class='subject'>예약율(%)</th>\n";
             }
 ?>
+        </tr>
 <?
             $dbo->query($sql_1);
             if($debug) checkVar(mysql_error(),$sql_1);
@@ -356,18 +370,23 @@ $path_rev = array(0,0,0);
                 {
                     if($path_arr[$i] == $rs[view_path]){
 ?>
-                        <td> <?=$rs[rev_cnt]?></td> <td> <?=@round($rs[rev_cnt]/$rs[tot_cnt]*100,1)?> %</td>
+                        <td> <?=$rs[rev_cnt]?>/<?=$rs[tot_cnt]?></td> <td> <?=@round($rs[rev_cnt]/$rs[tot_cnt]*100,1)?> %</td>
 <?
                     $path_tot[$i] += $rs[tot_cnt];
                     $path_rev[$i] += $rs[rev_cnt];
                     $i++;
                     break;
                     } else{
-                    echo "<td> </td><td> </td>\n";
+                    echo "<td> 0</td><td> 0 %</td>\n";
                     }
                 $i++;
                 }
             } else{ //월이 변경되면
+                    if($path_cnt > $i ){   // 월은 변경됐는데 아직 나라가 남아 있으면<td>값을 채운다
+                        for( ; $path_cnt > $i; $i++){
+                            echo "<td> 0</td> <td> 0 %</td>\n";
+                        }
+                    }
             if($path_cnt == $i) $i =0;
 
 ?>
@@ -380,22 +399,27 @@ $path_rev = array(0,0,0);
                     if($path_arr[$i] == $rs[view_path])
                     {
 ?>
-                        <td> <?=$rs[rev_cnt]?></td><td> <?=@round($rs[rev_cnt]/$rs[tot_cnt]*100,1)?> %</td>
+                        <td> <?=$rs[rev_cnt]?>/<?=$rs[tot_cnt]?></td>
+                        <td> <?=@round($rs[rev_cnt]/$rs[tot_cnt]*100,1)?> %</td>
 <?                      $path_tot[$i]+=$rs[tot_cnt];
                         $path_rev[$i]+=$rs[rev_cnt];
                         $i++;
                         break;
                     }else
                     {
-                        echo "<td> </td><td> </td>\n";
+                        echo "<td> 0</td><td> 0 %</td>\n";
                     }
                 $i++;
                 }
+
             }
 
             $_1 = $rs[sd];
             }
-            ?>
+        for( ; $path_cnt > $i; $i++){ //종료 했는데 아직 나라를 다 안채웠으면 나라끝날때까지 채움
+            echo "<td> 0</td> <td> 0 %</td>\n";
+        }
+?>
         </tr>
         <tr>
             <th class='subject' height="35">전체</th>
