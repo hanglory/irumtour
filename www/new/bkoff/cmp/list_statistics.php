@@ -1,4 +1,4 @@
-<?
+<?php
 include_once("../include/common_file.php");
 
 
@@ -16,9 +16,8 @@ $TITLE = "일정표 통계";
 ####각종 기초 정보 결정
 $view_row=15;   //한 페이지에 보여줄 행 수를 결정
 
-if(!$page){     //페이지 디폴트 정보 결정
-    $page=1;
-}
+if(!$page) $page=1;   //페이지 디폴트 정보 결정
+
 $start=($view_row*($page-1))+1; //페이지에 따라 처음 불러올 row의 포인터를 결정
 $start=$start-1;
 
@@ -129,7 +128,7 @@ $path_tot = array(0,0,0);
 $path_rev = array(0,0,0);
 $path_pp = array(0,0,0);
 ?>
-<?include("../top.html");?>
+<?php include("../top.html");?>
     <script language="JavaScript">
         <!--
         function selectAll(){
@@ -243,7 +242,7 @@ $path_pp = array(0,0,0);
             }
 ?>
         <!-- /tr -->
-            <?
+            <?php
             $dbo->query($sql_2);
             if($debug) checkVar(mysql_error(),$sql_2);
 
@@ -261,7 +260,7 @@ $path_pp = array(0,0,0);
                             <td> <?=$rs[rev_cnt]?></td>
                             <td> <?=$rs[people]?></td>
                             <td> <?=@round($rs[rev_cnt]/$rs[tot_cnt]*100,1)?> %</td>
-            <?
+                            <?php
                             $nation_tot[$i]+=$rs[tot_cnt];
                             $nation_rev[$i]+=$rs[rev_cnt];
                             $nation_pp[$i]+=$rs[people];
@@ -283,7 +282,7 @@ $path_pp = array(0,0,0);
         </tr>
         <tr align='center' onMouseOver="this.style.backgroundColor='#EEEEFF'" onMouseOut="this.style.backgroundColor='#FFFFFF'">
             <th class='subject' height="35"><?=$rs[sd]?>월</th>
-            <?
+            <?php
                     for($j=0; $nation_cnt > $j ; $j++)
                     {
                         if($nation_arr[$i] == $rs[nation])
@@ -293,7 +292,7 @@ $path_pp = array(0,0,0);
                             <td> <?=$rs[rev_cnt]?></td>
                             <td> <?=$rs[people]?></td>
                             <td> <?=@round($rs[rev_cnt]/$rs[tot_cnt]*100,1)?> %</td>
-            <?
+                            <?php
                             $nation_tot[$i]+=$rs[tot_cnt];
                             $nation_rev[$i]+=$rs[rev_cnt];
                             $nation_pp[$i]+=$rs[people];
@@ -319,8 +318,12 @@ $path_pp = array(0,0,0);
             {
                 echo "<th class='subject'>$nation_tot[$i]</th>
                       <th class='subject'>$nation_rev[$i]</th>
-                      <th class='subject'>$nation_pp[$i]</th>
-                      <th class='subject'>".round($nation_rev[$i]/$nation_tot[$i]*100,1)."%</th>\n";
+                      <th class='subject'>$nation_pp[$i]</th>";
+                if($nation_tot[$i] == 0){
+                    echo "<th class='subject'>0 %</th>\n";
+                }else{
+                    echo "<th class='subject'>".round($nation_rev[$i]/$nation_tot[$i]*100,1)." %</th>\n";
+                }
             }
 ?>
         </tr>
@@ -347,7 +350,7 @@ $path_pp = array(0,0,0);
                       <th class='subject'>예약율(%)</th>\n";
             }
 ?>
-<?
+            <?php
             $dbo->query($sql_1);
             if($debug) checkVar(mysql_error(),$sql_1);
 
@@ -364,7 +367,7 @@ $path_pp = array(0,0,0);
                         <td> <?=$rs[rev_cnt]?></td>
                         <td> <?=$rs[people]?></td>
                         <td> <?=@round($rs[rev_cnt]/$rs[tot_cnt]*100,1)?> %</td>
-<?
+                        <?php
                     $path_tot[$i] += $rs[tot_cnt];
                     $path_rev[$i] += $rs[rev_cnt];
                     $path_pp[$i] += $rs[people];
@@ -387,7 +390,7 @@ $path_pp = array(0,0,0);
         </tr>
         <tr align='center' onMouseOver="this.style.backgroundColor='#EEEEFF'" onMouseOut="this.style.backgroundColor='#FFFFFF'">
             <th class='subject' height="35"><?=$rs[sd]?>월</th>
-<?
+            <?php
                 for($j=1; $path_cnt>$j;$j++)
                 {
                     if($path_arr[$i] == $rs[view_path])
@@ -397,7 +400,7 @@ $path_pp = array(0,0,0);
                         <td> <?=$rs[rev_cnt]?></td>
                         <td> <?=$rs[people]?></td>
                         <td> <?=@round($rs[rev_cnt]/$rs[tot_cnt]*100,1)?> %</td>
-<?                      $path_tot[$i]+=$rs[tot_cnt];
+                        <?php $path_tot[$i]+=$rs[tot_cnt];
                         $path_rev[$i]+=$rs[rev_cnt];
                         $path_pp[$i] += $rs[people];
                         $i++;
@@ -423,8 +426,12 @@ $path_pp = array(0,0,0);
             {
                 echo "<th class='subject'>$path_tot[$i]</th>
                       <th class='subject'>$path_rev[$i]</th>
-                      <th class='subject'>$path_pp[$i]</th>               
-                      <th class='subject'>".round($path_rev[$i]/$path_tot[$i]*100,1)."%</th>\n";
+                      <th class='subject'>$path_pp[$i]</th>";
+                 if($path_tot[$i] == 0){
+                     echo "<th class='subject'>0 %</th>\n";
+                 }else{
+                     echo "<th class='subject'>".round($path_rev[$i]/$path_tot[$i]*100,1)." %</th>\n";
+                 }
             }
             ?>
         </tr>
@@ -432,4 +439,4 @@ $path_pp = array(0,0,0);
     <!--내용이 들어가는 곳 끝-->
 
     <!-- Copyright -->
-<?include_once("../bottom.html");?>
+<?php include_once("../bottom.html");?>
