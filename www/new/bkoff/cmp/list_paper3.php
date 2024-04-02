@@ -5,8 +5,6 @@ chk_power($_SESSION["sessLogin"]["proof"],"통계");
 
 $dtype=($dtype)? $dtype : "d_date";
 
-
-
 $date_s = ($date_s)? $date_s : $PAPER_DEFAULT_DAY1;
 $date_e = ($date_e)? $date_e : $PAPER_DEFAULT_DAY2;
 
@@ -94,7 +92,6 @@ $TITLE .=($dtype=="d_date")? "(출국일자 기준)" : "(예약일자 기준)";
 
 	$total = "1";
 
-	//$keyword = "괌";
 	if($keyword){$filter = " and b.nation like '%$keyword%'";}
 
 
@@ -102,7 +99,8 @@ $TITLE .=($dtype=="d_date")? "(출국일자 기준)" : "(예약일자 기준)";
 		select
 			left(a.$dtype,4) as did,
 			sum(a.people) as sum_people,
-			sum((select sum((price_prev+price_prev2+price_prev3)-(price_air + price_land + price_refund)) as payed_price from cmp_people where code=a.code and bit=1)) as sum_fee
+			sum((select sum((price_prev+price_prev2+price_prev3)-(price_air + price_land + price_refund)) as payed_price 
+		    from cmp_people where code=a.code and bit=1)) as sum_fee
 			from cmp_reservation as a left join cmp_golf as b
 			on a.golf_id_no=b.id_no
 		where
@@ -111,15 +109,15 @@ $TITLE .=($dtype=="d_date")? "(출국일자 기준)" : "(예약일자 기준)";
 			(a.$dtype >= '$date_s2' and a.$dtype <='$date_e2'))
 			$filter
             $FILTER_PARTNER_QUERY_CPID
-			and b.nation<>''
+			AND (b.nation IS NULL OR b.nation != '한국')  
 		group by left(a.$dtype,4)
 	";
 	$dbo->query($sql);
 	if($debug) checkVar(mysql_error(),$sql);
 	while($rs=$dbo->next_record()){
 		$did = $rs[did];
-		$DATA2[$did]["people"] = $rs[sum_people];
-		$DATA2[$did]["fee"] = $rs[sum_fee];
+		$DATA2[$did]["people"] = $rs[sum_people]; //인원합계
+		$DATA2[$did]["fee"] = $rs[sum_fee]; //가격합계
 	}
 
 	$sql = "
@@ -138,11 +136,17 @@ $TITLE .=($dtype=="d_date")? "(출국일자 기준)" : "(예약일자 기준)";
 			$filter
             $FILTER_PARTNER_QUERY_CPID
 		group by b.nation,a.view_path,left(a.$dtype,4)
-		order by b.nation asc
+		order by 
+		    CASE WHEN b.nation = '한국' THEN 1 ELSE 0 END ASC,  
+		    b.nation asc
 	";
 	$dbo->query($sql);
 	if($debug) checkVar(mysql_error(),$sql);
-	while($rs=$dbo->next_record()){
+
+    $DATA = array();
+    $arr = array();
+
+    while($rs=$dbo->next_record()){
 		$rs[did] = ($rs[did])? $rs[did] : "기타(없음)";
 		$did = $rs[did];
 		$did2 = $rs[did2];
@@ -151,11 +155,16 @@ $TITLE .=($dtype=="d_date")? "(출국일자 기준)" : "(예약일자 기준)";
 		$DATA[$did][$did2][$did3]["people"] = $rs[sum_people];
 		$DATA[$did][$did2][$did3]["fee"] = $rs[sum_fee];
 
-		$arr[] = $rs[did];
+        if($did != '한국') {
+            $arr[] = $rs[did];
+        }
 	}
+    if(isset($DATA['한국'])){
+        $arr[] = '한국';
+    }
 
 	$arr = array_unique($arr);
-	sort($arr);
+//	sort($arr);
 
 	?>
 
@@ -194,13 +203,42 @@ $TITLE .=($dtype=="d_date")? "(출국일자 기준)" : "(예약일자 기준)";
 
 		while(list($key,$val)=each($arr))
         {
+        if($val == '한국'){
+            ?>
+            <tr style="background-color:#ffe6cc">
+                <td rowspan="2" style="background-color:#f0f0f0">해외소계</td>
+                <td>금년</td>
+                <td><?=nf($sum1_1)?>명</td>
+                <td><?=nf($sum1_2)?>명</td>
+                <td><?=nf($sum1_3)?>명</td>
+                <td><?=nf($sum1_4)?>명</td>
+                <td><?=nf($sum1_5)?>명</td>
+                <td>100%</td>
+                <td class="r"><?=nf($sum1_6)?>원</td>
+                <td class="r"><?=nf($sum1_7)?>원</td>
+            </tr>
+            <tr  style="background-color:#ffe6cc">
+                <td>작년</td>
+                <td><?=nf($sum2_1)?>명</td>
+                <td><?=nf($sum2_2)?>명</td>
+                <td><?=nf($sum2_3)?>명</td>
+                <td><?=nf($sum2_4)?>명</td>
+                <td><?=nf($sum2_5)?>명</td>
+                <td>100%</td>
+                <td class="r"><?=nf($sum2_6)?>원</td>
+                <td class="r"><?=nf($sum2_7)?>원</td>
+            </tr>
+            <?
+        }
+
+
+
 			$did = $val;
 			$did2 = $year_this;
 
 			$sum_this1=0;
 			$sum_this2=0;
 
-			$sum_this1=0;
 			for($i=0;$i<count($paths);$i++)
             {
 				$sum_this1+=$DATA[$did][$did2][$paths[$i]]["people"];
@@ -225,12 +263,11 @@ $TITLE .=($dtype=="d_date")? "(출국일자 기준)" : "(예약일자 기준)";
 		<tr>
 			<td rowspan="2" style="background-color:#f0f0f0">
 <?
-                if($pos_link !== false )
-                { echo $val;
-                } else
-                  {
+                if($pos_link !== false ) {
+                    echo $val;
+                } else {
 ?>                  <a href="/new/bkoff/cmp/list_paper5.php?ctype=<?=$val?>&dtype=tour_date&date_s=<?$date_s?>&date_e=<?$date_e?>"><?=$val?></a>
-<?                }
+<?              }
 ?>          </td>
 			<td>금년</td>
 			<td><?=nf($DATA[$did][$did2]["신규"]["people"])?>명</td>
@@ -238,7 +275,7 @@ $TITLE .=($dtype=="d_date")? "(출국일자 기준)" : "(예약일자 기준)";
 			<td><?=nf($DATA[$did][$did2]["추천"]["people"])?>명</td>
 			<td><?=nf($DATA[$did][$did2]["기타"]["people"]+$DATA[$did][$did2]["기타2"]["people"])?>명</td>
 			<td><?=nf($sum_this1)?>명</td>
-			<td><?=$x?>%</td>
+            <td><?= $val=='한국' ? '':$x.'%'?></td>
 			<td class="r"><?=@nf($sum_this2)?>원</td>
 			<td class="r"><?=@nf($sum_this2/$sum_this1)?>원</td>
 		</tr>
@@ -273,7 +310,7 @@ $TITLE .=($dtype=="d_date")? "(출국일자 기준)" : "(예약일자 기준)";
 			<td><?=nf($DATA[$did][$did2]["추천"]["people"])?>명</td>
 			<td><?=nf($DATA[$did][$did2]["기타"]["people"]+$DATA[$did][$did2]["기타2"]["people"])?>명</td>
 			<td><?=nf($sum_prev1)?>명</td>
-			<td><?=$x?>%</td>
+            <td><?= $val=='한국' ? '':$x.'%'?></td>
 			<td class="r"><?=@nf($sum_prev2)?>원</td>
 			<td class="r"><?=@nf($sum_prev2/$sum_prev1)?>원</td>
 		</tr>
