@@ -264,7 +264,7 @@ function proof(id_no,bit){
 		<th class="subject" >골프공</th>
 		<th class="subject" >골프골(고급)</th>
 		<th class="subject" >항공커버</th>
-		<th class="subject" >달러북</th>
+		<th class="subject" >마스크</th>
 		<th class="subject" >담당자</th>
 		<th class="subject" >승인자</th>
 		<th class="subject" >승인</th>
@@ -363,7 +363,7 @@ while($rs=$dbo->next_record()){
 			<th class="subject" >골프공</th>
 			<th class="subject" >골프골(고급)</th>
 			<th class="subject" >항공커버</th>
-			<th class="subject" >달러북</th>
+			<th class="subject" >마스크</th>
 		</tr>
 	    <tr align=center height=25 bgcolor="#F7F7F6">
 			<th class="subject" >기준재고</th>

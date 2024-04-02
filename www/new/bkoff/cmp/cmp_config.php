@@ -478,7 +478,7 @@ function chkForm(){
 			<p><span class="col_danga">골프공</span><input class="box numberic" type="text" name="danga_golf" value="<?=nf($DANGA_GOLF)?>" size="11" maxlength="10">원</p>
 			<p><span class="col_danga">골프공(고급)</span><input class="box numberic" type="text" name="danga_golf2" value="<?=nf($DANGA_GOLF2)?>" size="11" maxlength="10">원</p>
 			<p><span class="col_danga">항공커버</span><input class="box numberic" type="text" name="danga_air" value="<?=nf($DANGA_AIR)?>" size="11" maxlength="10">원</p>
-			<p><span class="col_danga">달러북</span><input class="box numberic" type="text" name="danga_book" value="<?=nf($DANGA_BOOK)?>" size="11" maxlength="10">원</p>
+			<p><span class="col_danga">마스크</span><input class="box numberic" type="text" name="danga_book" value="<?=nf($DANGA_BOOK)?>" size="11" maxlength="10">원</p>
 			<p><span class="col_danga">여행자보험</span><input class="box numberic" type="text" name="danga_inc" value="<?=nf($DANGA_INC)?>" size="11" maxlength="10">원</p>
           </td>
         </tr>
@@ -490,7 +490,7 @@ function chkForm(){
 			<p><span class="col_danga">골프공</span><input class="box numberic" type="text" name="stock_golf" value="<?=nf($STOCK_GOLF)?>" size="4" maxlength="10">개</p>
 			<p><span class="col_danga">골프공(고급)</span><input class="box numberic" type="text" name="stock_golf2" value="<?=nf($STOCK_GOLF2)?>" size="4" maxlength="10">개</p>
 			<p><span class="col_danga">항공커버</span><input class="box numberic" type="text" name="stock_air" value="<?=nf($STOCK_AIR)?>" size="4" maxlength="10">개</p>
-			<p><span class="col_danga">달러북</span><input class="box numberic" type="text" name="stock_book" value="<?=nf($STOCK_BOOK)?>" size="4" maxlength="10">개</p>
+			<p><span class="col_danga">마스크</span><input class="box numberic" type="text" name="stock_book" value="<?=nf($STOCK_BOOK)?>" size="4" maxlength="10">개</p>
 			<!-- <p><span class="col_danga">여행자보험</span><input class="box numberic" type="text" name="stock_inc" value="<?=nf($STOCK_INC)?>" size="4" maxlength="10">개</p> -->
 
 			(현재 재고가 아닙니다. 기준 재고-사용량=현재 재고)

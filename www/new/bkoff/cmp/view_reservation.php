@@ -315,6 +315,7 @@ if ($mode=="save"){
             ah1 = '$ah1',
             ah2 = '$ah2',
 
+            origin_id_no='$origin_id_no',
 
             partner_staff='$partner_staff',
             bit_content='$bit_content',
@@ -689,6 +690,10 @@ function set_golf(k,v){
     actarea.location.href="<?=SELF?>?mode=partner&id_no="+v;
 }
 
+function find_estimate(){
+    newWin('pop_find_estimate.php?keyword=<?=$rs[name]?>',1000,400,1,1,'','goods');
+}
+
 function pop_win(){
     var fm = document.fmData;
     if(check_blank(fm.name,'대표자명을',0)=='wrong'){return }
@@ -904,6 +909,8 @@ jQuery(function($){
 
         <input type="hidden" name="partner_staff" id="partner_staff" value='<?=$rs[partner_staff]?>'>
 
+        <input type="hidden" name="origin_id_no" id="origin_id_no" value='<?=$rs[origin_id_no]?>'>
+
         <tr><td colspan=8  bgcolor='#5E90AE' height=2></td></tr>
 
         <tr>
@@ -1053,6 +1060,38 @@ jQuery(function($){
         </tr>
         <tr><td colspan="4" class="tblLine"></td></tr>
 
+
+
+
+        <tr>
+          <td class="subject">일정표</td>
+          <td colspan="3">
+               <?
+               if($rs[origin_id_no]){
+                 $sql2 = "
+                     select
+                      *
+                     from cmp_estimate
+                     where 
+                      id_no=$rs[origin_id_no]
+                   ";
+                 $dbo2->query($sql2);
+                 $rs2=$dbo2->next_record();
+                 $rs[name_estimate] = $rs2[name];
+               }
+               ?>
+               <span id="name_estimate"><?=$rs[name_estimate]?></span>
+               <span class="btn_pack medium bold"><a href="javascript:find_estimate()"> 검색 </a></span>
+
+               <?if($rs[origin_id_no] && !$bit_partner){?>
+               &nbsp;&nbsp;&nbsp;
+               (일정표코드 : <a href="javascript:newWin('view_estimate.php?id_no=<?=$rs[origin_id_no]?>',1200,650,1,1,'','estimate')"><?=$rs[origin_id_no]?></a>)
+               <?}?>
+          </td>
+        </tr>
+        <tr><td colspan="4" class="tblLine"></td></tr>
+
+    
 
 
         <tr>
@@ -1281,12 +1320,12 @@ jQuery(function($){
                 </select>
 
                 <select name="air_cover">
-                    <option value="0">항공카버</option>
+                    <option value="0">항공커버</option>
                     <?=option_int(1,50,1,$rs[air_cover])?>
                 </select>
 
                 <select name="dollarbook">
-                    <option value="0">달러북</option>
+                    <option value="0">마스크</option>
                     <?=option_int(1,50,1,$rs[dollarbook])?>
                 </select>
 
