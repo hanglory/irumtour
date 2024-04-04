@@ -99,10 +99,10 @@ if(!$row_search){
 
 ####검색 항목
 $selectTxt = "대표자,경로,담당자,서브 담당자,예약일,출국일,귀국일,국가,지역,상품명,핸드폰";
-$selectValue ="name,view_path,main_staff,sub_staff,tour_date,d_date,r_date,nation,city,subject,phone";
+$selectValue ="a.name,view_path,a.main_staff,sub_staff,tour_date,d_date,r_date,nation,city,subject,a.phone";
 if($user_id=="tester" || $user_id=="test"){
   $selectTxt = "대표자,경로,담당자,예약일,출국일,귀국일,국가,지역,상품명,핸드폰";
-  $selectValue ="name,view_path,main_staff,tour_date,d_date,r_date,nation,city,subject,phone";
+  $selectValue ="a.name,view_path,a.main_staff,tour_date,d_date,r_date,nation,city,subject,a.phone";
 }
 
 
