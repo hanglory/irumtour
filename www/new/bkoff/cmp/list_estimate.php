@@ -46,11 +46,13 @@ if($keyword){
 }
 
 $dtype = ($dtype)? $dtype : "send_date";
-if(!$date_s) $date_s= "2015/06/01"; //date("Y/m/d",strtotime(date("Y/m/d")." -2 year"));
-if(!$date_e) $date_e=date("Y/m/d",strtotime(date("Y/m/d")." +1 month"));
-$filter.=" and a.$dtype >='$date_s'";
-$filter.=" and a.$dtype <='$date_e'";
-
+//if(!$date_s) $date_s=date("Y/m/d",strtotime(date("Y/m/d")." -2 year"));
+//if(!$date_e) $date_e=date("Y/m/d",strtotime(date("Y/m/d")." +1 month"));
+if($date_s){
+    if(!$date_e) $date_e=$$date_s;
+    $filter.=" and a.$dtype >='$date_s'";
+    $filter.=" and a.$dtype <='$date_e'";
+}
 
 if($bit_worked) $filter.=" and bit_worked=1";
 
@@ -61,33 +63,34 @@ $FILTER_PARTNER_QUERY=str_replace("and cp_id","and a.cp_id",$FILTER_PARTNER_QUER
 $FILTER_PARTNER_QUERY=str_replace("and main_staff","and a.main_staff",$FILTER_PARTNER_QUERY);
 #query
 $sql_1 = "
-    select 
+   select 
         a.*,
-        b.nation
-    from $table as a left join cmp_golf as b
-    on a.golf_id_no=b.id_no
+        b.nation,
+        c.d_air
+    from $table as a 
+        left join cmp_golf as b on a.golf_id_no=b.id_no
+        LEFT JOIN cmp_air AS c ON a.d_air_id_no=c.id_no
     where 
         a.id_no>0
         and a.cp_id='$CP_ID'
         $filter
         $FILTER_PARTNER_QUERY
-    ";
-//cmp_golf table에 nation 존재.
+    ";;
 $sql_2 = $sql_1 . " order by a.id_no desc limit  $start, $view_row";    
 
 
+//checkVar("",$sql_2);
 
 
 
 ####자료갯수
 list($rows)=$dbo->query($sql_1);//검색된 자료의 갯수
 if($debug) checkVar("",$sql_2);
-
 $row_search = $rows;
 
-if($keyword){
-    $sql_3 = "
-        select 
+
+$sql_3 = "
+    select 
             count(c.origin_id_no) as cnt
             from $table as a left join cmp_reservation as c
             on a.id_no = c.origin_id_no
@@ -98,26 +101,12 @@ if($keyword){
               $filter
               and c.origin_id_no<>''
         ";
-    //cmp_reservatoin table 에 origin_id_no 라는 name 의 열이 존재 X
-        /*SELECT
-            COUNT(DISTINCT a.id_no) AS cnt
-        FROM $table AS a
-        LEFT JOIN cmp_reservation AS b ON a.id_no = b.origin_id_no
-        WHERE
-            a.id_no > 0
-            AND a.cp_id = '$CP_ID'
-            $filter
-            AND b.origin_id_no <> ''
-            AND ($target LIKE '%$keyword%' OR b.nation LIKE '%$keyword%')
-    ";*/
+$dbo3->query($sql_3);
+if($debug) checkVar("",$sql_3);
+$rs3=$dbo3->next_record();
+$cnt_y = $rs3[cnt];
+$percent = @round(($cnt_y/$row_search)*100,1);
 
-    $dbo3->query($sql_3);
-   if($debug) checkVar("",$sql_3);
-
-    $rs3=$dbo3->next_record();
-    $cnt_y = $rs3[cnt];
-    $percent = @round(($cnt_y/$row_search)*100,1);
-}
 
 
 
@@ -181,9 +170,11 @@ function del(){
     }
 }
 
+
 function copy(id_no){
     actarea.location.href="list_<?=$filecode?>_copy.php?id_no="+id_no;
 }
+
 
 function copy_to_clip(val) {
   var t = document.createElement("textarea");
@@ -226,7 +217,7 @@ function copy_to_clip(val) {
 
     <tr height=22>
     <td><font color="#666666">* <?=($status)?> 자료수: <?=number_format($row_search)?>개 <?if(!$seq_mode){?>{ <?=number_format($total_page)?> page /  <?=number_format($page)?> page }<?}?>
-    <?if($keyword){?>(예약율 : <?=nf($cnt_y)?>/<?=nf($row_search)?>건 <?=$percent?>%)<?}?>
+    (예약율 : <?=nf($cnt_y)?>/<?=nf($row_search)?>건 <?=$percent?>%)
     </font></td>
     <td valign='bottom' align=right>
     <?if($keyword || $find_bit):?>
@@ -273,6 +264,7 @@ function copy_to_clip(val) {
         <th class="subject">귀국일</th>
         <th class="subject">체류일</th>
         <th class="subject">인원</th>
+        <th class="subject">항공</th>
         <th class="subject">국가</th>
         <th class="subject">상품명</th>
         <th class="subject">거래처</th>
@@ -331,6 +323,7 @@ while($rs=$dbo->next_record()){
           <td><?=substr($rs[r_date],2)?></td>
           <td><?=get_day_night($rs[d_date],$rs[r_date])?></td>
           <td><?=nf($rs[people])?></td>
+          <td><?=$rs[d_air]?></td>
           <td><?=$rs[nation]?></td>
           <td align="left" style="padding-left:10px"><span style="display:inline-block;width:100%;height:20px;overflow-x: hidden;"><?=($rs[subject])? $rs[subject]: $rs[golf_name]?></span></td>
           <td><?=titleCut2($rs[partner],10)?></td>
