@@ -1,4 +1,4 @@
-<?
+<?php
 include_once("../include/common_file.php");
 
 
@@ -21,8 +21,9 @@ if($bit_partner){
 	$query_partner = " and main_staff like '%($user_id)'";
 }
 $query_partner .= " and cp_id ='$CP_ID'";
+$query_partner2 .= " and c.cp_id ='$CP_ID'";
 ?>
-<?include("../top.html");?>
+<?php include("../top.html");?>
 <script>
 $(function(){
 	$("#date_s").on("change",function(){
@@ -85,7 +86,7 @@ $(function(){
 		<th class="subject" >고객명</th>
 		<th class="subject" >BSP</th>
 		</tr>
-<?
+<?php
 $name = trim($keyword);
 $sql = "select * from cmp_reservation where tl>='$rs[date_s]' and tl<='$rs[date_e]' and bsp<>'' $query_partner order by id_no desc ";
 $dbo->query($sql);
@@ -98,7 +99,7 @@ while($rs=$dbo->next_record()){
 	      <td><?=$rs[name]?></td>
 	      <td><?=$rs[bsp]?></td>
 	    </tr>
-<?
+<?php
 	$num--;
 }
 ?>
@@ -122,7 +123,7 @@ while($rs=$dbo->next_record()){
 		<th class="subject" >샌딩여부</th>
 		<th class="subject" >담당자</th>
 		</tr>
-<?
+<?php
 $name = trim($keyword);
 $sql = "select * from cmp_reservation where d_date>='$date_s'  and d_date<='$date_e' $query_partner order by d_date desc ";
 $dbo->query($sql);
@@ -146,7 +147,7 @@ while($rs=$dbo->next_record()){
 	      <td><?=$rs[bit_sending]?></td>
 	      <td><?=$rs[main_staff]?></td>
 	    </tr>
-<?
+<?php
 	$num--;
 }
 ?>
@@ -171,7 +172,7 @@ while($rs=$dbo->next_record()){
 		<th class="subject" >샌딩여부</th>
 		<th class="subject" >담당자</th>
 		</tr>
-<?
+<?php
 $name = trim($keyword);
 $sql = "select * from cmp_reservation where r_date>='$date_s' and r_date<='$date_e' $query_partner order by d_date desc ";
 $dbo->query($sql);
@@ -195,7 +196,7 @@ while($rs=$dbo->next_record()){
 	      <td><?=$rs[bit_sending]?></td>
 	      <td><?=$rs[main_staff]?></td>
 	    </tr>
-<?
+<?php
 	$num--;
 }
 ?>
@@ -217,17 +218,39 @@ while($rs=$dbo->next_record()){
 		<th class="subject" >판매가</th>
 		<th class="subject" >담당자</th>
 		</tr>
-<?
+<?php
 $arr = explode("/",$date_s); $date_s2 = date("Y/m/d",mktime(0,0,0,$arr[1],$arr[2],$arr[0]));
 $arr = explode("/",$date_e); $date_e2 = date("Y/m/d",mktime(0,0,0,$arr[1],$arr[2],$arr[0]));
 //checkVar($date_s,$date_s2);
-$sql = "select * from cmp_reservation where tour_date>='$date_s2' and tour_date<='$date_e2' $query_partner order by d_date desc ";
+$sql = "
+SELECT c.*, b.nation AS nation
+from cmp_reservation AS c 
+			LEFT JOIN cmp_golf b on b.id_no = c.golf_id_no
+			where c.tour_date>='$date_s2' 
+			  and c.tour_date<='$date_e2' 
+			  $query_partner2		
+			order BY 
+				CASE WHEN b.nation = '한국' THEN 1 ELSE 0 END, 
+    			c.d_date DESC";
 $dbo->query($sql);
 //if(strstr("@14.37.242.84@221.154.110.119@","@".$_SERVER["REMOTE_ADDR"]."@")) checkVar(mysql_error(),$sql);
 $total1=0;
 $total2=0;
 while($rs=$dbo->next_record()){
-
+    if($rs[nation] == '한국'){$i+=1;}
+    if($i == 1){
+?>
+        <tr align='center' bgcolor="#F7F7F6">
+            <td height="25">해외소계</td>
+            <td></td>
+            <td><?=nf($total1)?></td>
+            <td></td>
+            <td><?=nf($total2)?></td>
+            <td></td>
+        </tr>
+<?php
+        $i+=1;
+    }
 ?>
 	    <tr align='center' onMouseOver="this.style.backgroundColor='#EEEEFF'" onMouseOut="this.style.backgroundColor='#FFFFFF'">
 	      <td height="25"><a href="javascript:newWin('view_reservation.php?id_no=<?=$rs[id_no]?>',1100,650,1,1,'','reservation')"><?=$rs[d_date]?></a></td>
@@ -237,7 +260,7 @@ while($rs=$dbo->next_record()){
 	      <td><?=nf($rs[price])?></td>
 	      <td><?=$rs[main_staff]?></td>
 	     </tr>
-<?
+<?php
 	$total1+=$rs[people];
 	$total2 +=$rs[price];
 
@@ -269,7 +292,7 @@ while($rs=$dbo->next_record()){
 		<th class="subject" >인원</th>
 		<th class="subject" >항공</th>
 		</tr>
-<?
+<?php
 $arr = explode("/",$date_e);
 $w = date("w",mktime(0,0,0,$arr[1],$arr[2],$arr[0]));
 $days = ($w==5)? 3:1;
@@ -289,7 +312,7 @@ while($rs=$dbo->next_record()){
 	      <td><?=$rs[people]?></td>
 	      <td><?if($rs[d_air_no] || $rs[r_date_no]){?>출국편명:<?=$rs[d_air_no]?>,귀국편명:<?=$rs[r_air_no]?><?}?></span></td>
 	     </tr>
-<?
+<?php
 	$num--;
 }
 ?>
@@ -315,7 +338,7 @@ while($rs=$dbo->next_record()){
 		<th class="subject" >잔금</th>
 		<th class="subject" >담당자</th>
 		</tr>
-<?
+<?php
 $today  =date("Y/m/d");
 $sort = "d_date desc";
 $day = date("Y/m/d",strtotime(date("Y/m/d")." +1 day"));
@@ -347,7 +370,7 @@ while($rs=$dbo->next_record()){
 	      <td style="color:#ff3300" class="numberic"><?=nf($rs[price_last])?></td>
 	      <td><?=$arr[0]?></td>
 	    </tr>
-<?
+<?php
 	$num--;
 }
 ?>
@@ -356,9 +379,9 @@ while($rs=$dbo->next_record()){
 	<br/>
 	<br/>
 	<h3>7. 실적현황 (<?=date("Y/m/d")?>까지의 누계)</h3>
-	<?include("home.php");?>
+<? include("home.php");?>
 
 	<!--내용이 들어가는 곳 끝-->
 
 <!-- Copyright -->
-<?include_once("../bottom.html");?>
+<? include_once("../bottom.html");?>
