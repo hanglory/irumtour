@@ -193,7 +193,7 @@ function del(){
             <td class="subject">번호</td>
             <td class="subject">구분</td>
             <td class="subject">성명</td>
-            <td class="subject">단체명</td>
+            <td class="subject">라운드 횟수</td>
             <td class="subject">연락처</td>
             <td class="subject">출발일</td>
             <td class="subject">희망지역</td>
