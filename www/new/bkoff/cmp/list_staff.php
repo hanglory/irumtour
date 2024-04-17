@@ -57,7 +57,7 @@ $sql_1 = "
         a.id<>'' 
         $filter
 ";        
-$sql_2 = $sql_1 . " order by id_no desc limit  $start, $view_row";
+$sql_2 = $sql_1 . " order by bit_login DESC, id_no ASC limit  $start, $view_row";
 
 $sql_3 = $sql_1 . " order by FIELD(staff_type,'staff','leader_partner','ceo','partner','partner_i','partner_a','partner_g','') limit $start,$view_row";
 

@@ -354,7 +354,7 @@ $(function(){
 	    $sum3+=$danga_c*$rs[cover];
 	    ?>
 	    <tr align='center' onMouseOver="this.style.backgroundColor='#EEEEFF'" onMouseOut="this.style.backgroundColor='#FFFFFF'">
-	      <td>달러북<!-- 비용 --></td>
+	      <td>마스크<!-- 비용 --></td>
 	      <td><?=nf($danga_b)?><!-- 단가 --></td>
 	      <td><?=nf($rs[book])?><!-- 개수 --></td>
 	      <td><?=nf($danga_b*$rs[book])?><!-- 금액 --></td>
