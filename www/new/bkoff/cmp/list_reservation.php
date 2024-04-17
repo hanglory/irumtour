@@ -45,7 +45,7 @@ partner_g(partner_a의 직원)
 는 자기 것만 볼 수 있도록
 */
 if(strstr("partner_i,partner_g",$_SESSION["sessLogin"]["staff_type"])){
-	$filter.=" and main_staff like '%(".$_SESSION["sessLogin"]["id"].")'";      
+	$filter.=" and a.main_staff like '%(".$_SESSION["sessLogin"]["id"].")'";      
 }
 
 
