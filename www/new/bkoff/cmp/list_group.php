@@ -49,7 +49,7 @@ $start=$start-1;
 #검색조건
 
 
-$filter = " and CID='$CP_ID'";
+$filter = " and CID='$cp_id'";
 if(!strstr($_SESSION["sessLogin"]["staff_type"],"partner") && $CID_F) $filter = " and CID='$CID_F'";
 
 if($keyword)     {
@@ -196,8 +196,8 @@ function del(){
             <td class="subject">라운드 횟수</td>
             <td class="subject">연락처</td>
             <td class="subject">출발일</td>
-            <td class="subject">희망지역</td>
             <td class="subject">희망국가</td>
+            <td class="subject">희망지역</td>
             <td class="subject">처리자</td>
             <td class="subject">상태</td>
             <td class="subject">문의날짜</td>

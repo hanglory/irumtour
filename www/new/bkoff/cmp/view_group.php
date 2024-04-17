@@ -218,7 +218,7 @@ function data_copy(){
 
         <tr><td colspan="4" class='bar'></td></tr>
         <tr>
-          <td class="subject" width="20%">소속/단체명</td>
+          <td class="subject" width="20%">라운드 횟수</td>
           <td>
             <?=$rs[org]?>
           </td>
