@@ -1,6 +1,6 @@
 <?
-// ¿øº» ÀÌ¹ÌÁö¸¦ ³Ñ±â¸é ºñÀ²¿¡ µû¶ó ½æ³×ÀÏ ÀÌ¹ÌÁö¸¦ »ı¼ºÇÔ
-// °¡·Î, ¼¼·Î, ÆÄÀÏ°æ·Î, »ı¼º°æ·Î, true
+// ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¹ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ñ±ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¹ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+// ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½Ï°ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, true
 function createThumb($imgWidth, $imgHeight, $imgSource, $imgThumb='', $iscut=false)
 {
     if (!$imgThumb)
@@ -15,7 +15,7 @@ function createThumb($imgWidth, $imgHeight, $imgSource, $imgThumb='', $iscut=fal
     else if ($size[2] == 3)
         $source = imagecreatefrompng($imgSource);
     else
-        continue;
+        return;
 
     $rate = $imgWidth / $size[0];
     $height = (int)($size[1] * $rate);
@@ -32,71 +32,71 @@ function createThumb($imgWidth, $imgHeight, $imgSource, $imgThumb='', $iscut=fal
 
     @imagecopyresampled($target, $source, 0, 0, 0, 0, $imgWidth, $height, $size[0], $size[1]);
     @imagejpeg($target, $imgThumb, 100);
-    @chmod($imgThumb, 0606); // ÃßÈÄ »èÁ¦¸¦ À§ÇÏ¿© ÆÄÀÏ¸ğµå º¯°æ
+    @chmod($imgThumb, 0606); // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½ï¿½ï¿½Ï¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 }
 
-// ÇÁ·Î±×·¥ : ºÒ´ç½æ 2.0.x
-// °³ ¹ß ÀÚ : ¾ÆºüºÒ´ç (echo4me@gmail.com)
-// ¶óÀÌ¼¾½º : ÇÁ·Î±×·¥(ÀÌÇÏ ºÒ´ç½æ)ÀÇ ¶óÀÌ¼¾½º´Â GPLÀÌ¸ç, ÀÌÇÁ·Î±×·¥À» ¹ßÃé ¶Ç´Â °³ÀÛÇÏ¿© ÆÇ¸ÅÇÏ´Â °ÍÀº Çã¿ëÇÏÁö ¾Ê½À´Ï´Ù.
-//            ºÒ´ç½æÀÇ ¹èÆ÷´Â sir.co.kr°ú opencode.co.kr¿¡¼­¸¸ ÇÒ ¼ö ÀÖ½À´Ï´Ù.
+// ï¿½ï¿½ï¿½Î±×·ï¿½ : ï¿½Ò´ï¿½ï¿½ 2.0.x
+// ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ : ï¿½Æºï¿½ï¿½Ò´ï¿½ (echo4me@gmail.com)
+// ï¿½ï¿½ï¿½Ì¼ï¿½ï¿½ï¿½ : ï¿½ï¿½ï¿½Î±×·ï¿½(ï¿½ï¿½ï¿½ï¿½ ï¿½Ò´ï¿½ï¿½)ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¼ï¿½ï¿½ï¿½ï¿½ï¿½ GPLï¿½Ì¸ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½Î±×·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ç´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½Ç¸ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê½ï¿½ï¿½Ï´ï¿½.
+//            ï¿½Ò´ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ sir.co.krï¿½ï¿½ opencode.co.krï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½Ö½ï¿½ï¿½Ï´ï¿½.
 
 @ini_set("memory_limit", "512M");
 
-// $file_name   : ÆÄÀÏ¸í
-// $width       : ½æ³×ÀÏÀÇ Æø
-// $height      : ½æ³×ÀÏÀÇ ³ôÀÌ (ÁöÁ¤ÇÏÁö ¾ÊÀ¸¸é ½æ³×ÀÏÀÇ ³ĞÀÌ¸¦ »ç¿ë)
-//                * $width, $height¿¡ ¸ğµÎ °ªÀÌ ¾øÀ¸¸é, ÀÌ¹ÌÁö »çÀÌÁî ±×´ë·Î thumbÀ» »ı¼º
-// $is_create   : ½æ³×ÀÏÀÌ ÀÌ¹Ì ÀÖÀ» ¶§, »õ·Î »ı¼ºÇÒÁö ¿©ºÎ¸¦ °áÁ¤
-// $is_crop     : ¼¼·Î ³ôÀÌ°¡ $height¸¦ ³ÑÀ» ¶§ crop ÇÒ °ÍÀÎÁö¸¦ °áÁ¤
-//                0 : crop ÇÏÁö ¾Ê½À´Ï´Ù
-//                1 : ±âº» crop
-//                2 : Áß°£À» ±âÁØÀ¸·Î crop
-// $quality     : ½æ³×ÀÏÀÇ quality (jpeg, png¿¡¸¸ ÇØ´çÇÏ¸ç, gif¿¡´Â ÇØ´ç ¾ø½¿)
-// $small_thumb : true(1)ÀÌ¸é, ÀÌ¹ÌÁö°¡ ½æ³×ÀÏÀÇ Æø/³ôÀÌº¸´Ù ÀÛÀ» ¶§¿¡µµ ½æÀ» »ı¼º
-// $watermark   : ¿öÅÍ¸¶Å© Ãâ·Â¿¡ ´ëÇÑ ¼³Á¤
-//                $watermark[][filename] - ¿öÅÍ¸¶Å© ÆÄÀÏ¸í
+// $file_name   : ï¿½ï¿½ï¿½Ï¸ï¿½
+// $width       : ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
+// $height      : ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½)
+//                * $width, $heightï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½×´ï¿½ï¿½ thumbï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+// $is_create   : ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¹ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Î¸ï¿½ ï¿½ï¿½ï¿½ï¿½
+// $is_crop     : ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ì°ï¿½ $heightï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ crop ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+//                0 : crop ï¿½ï¿½ï¿½ï¿½ ï¿½Ê½ï¿½ï¿½Ï´ï¿½
+//                1 : ï¿½âº» crop
+//                2 : ï¿½ß°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ crop
+// $quality     : ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ quality (jpeg, pngï¿½ï¿½ï¿½ï¿½ ï¿½Ø´ï¿½ï¿½Ï¸ï¿½, gifï¿½ï¿½ï¿½ï¿½ ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ï¿½)
+// $small_thumb : true(1)ï¿½Ì¸ï¿½, ï¿½Ì¹ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½/ï¿½ï¿½ï¿½Ìºï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+// $watermark   : ï¿½ï¿½ï¿½Í¸ï¿½Å© ï¿½ï¿½Â¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+//                $watermark[][filename] - ï¿½ï¿½ï¿½Í¸ï¿½Å© ï¿½ï¿½ï¿½Ï¸ï¿½
 //                $watermark[location] - center, top, top_left, top_right, bottom, bottom_left, bottom_right
-//                $watermark[x],$watermark[y] - location¿¡¼­ÀÇ offset
+//                $watermark[x],$watermark[y] - locationï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ offset
 // $filter      : php imagefilter, http://kr.php.net/imagefilter
 //                $filter[type], [arg1] ... [arg4]
-// $noimg       : $noimg(ÀÌ¹ÌÁöÆÄÀÏ)
+// $noimg       : $noimg(ï¿½Ì¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)
 /*
-thumbnailÀÇ if ·ÎÁ÷ÀÔ´Ï´Ù. ±¸Á¶È­ µÇÁö ¾Ê°í ³Ê¹« ¸¹Àº if¸¦ ½á¹ö·È½À´Ï´Ù. ¤Ğ..¤Ğ...
+thumbnailï¿½ï¿½ if ï¿½ï¿½ï¿½ï¿½ï¿½Ô´Ï´ï¿½. ï¿½ï¿½ï¿½ï¿½È­ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê°ï¿½ ï¿½Ê¹ï¿½ ï¿½ï¿½ï¿½ï¿½ ifï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½È½ï¿½ï¿½Ï´ï¿½. ï¿½ï¿½..ï¿½ï¿½...
 
-$width¿¡ °ªÀÌ ÀÖÀ¸¸é
-    - $height¿¡ °ªÀÌ ÀÖÀ¸¸é
-       - $width > ÀÌ¹ÌÁöÅ©±â
-           - $height > ÀÌ¹ÌÁöÅ©±â : ÀÌ¹ÌÁö Å©±â´ë·Î ½æÀ» »ı¼º
+$widthï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    - $heightï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+       - $width > ï¿½Ì¹ï¿½ï¿½ï¿½Å©ï¿½ï¿½
+           - $height > ï¿½Ì¹ï¿½ï¿½ï¿½Å©ï¿½ï¿½ : ï¿½Ì¹ï¿½ï¿½ï¿½ Å©ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
            - else
-                - $is_crop : Å©·Ó
-                - else : ºñÀ²´ë·Î ½æÀ» »ı¼º
+                - $is_crop : Å©ï¿½ï¿½
+                - else : ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
        - else
-          $ratio·Î $height¸¦ ±¸ÇØ¼­,
-          - $height > $tmp_y : ºñÀ²´ë·Î ½æ »ı¼º (³ôÀÌ°¡ Á» ºÎÁ· ÇÕ´Ï´Ù) <-- ÀÌºÎºĞ¿¡¼­ ³ôÀÌ¸¦ ¸ÂÃß°í ³Ğ±â¸¦ cropÇÏÀÚ´Â ÀÇ°ßµµ ÀÖ¾î¿ä
-          - else : ÀÌ¹ÌÁö ºñÀ²·Î Á¶Á¤ÇÑ ÈÄ ³ôÀÌ¸¦ crop
-    - $height¿¡ °ªÀÌ ¾øÀ¸¸é (crop ÇÏÁö ¾Ê½À´Ï´Ù)
-       - $width°¡ ÀÌ¹ÌÁö Å©±âº¸´Ù ´õ Å©¸é : ÀÌ¹ÌÁö Å©±â´ë·Î ½æÀ» »ı¼º
-       - else : ºñÀ²´ë·Î ½æÀ» »ı¼º
+          $ratioï¿½ï¿½ $heightï¿½ï¿½ ï¿½ï¿½ï¿½Ø¼ï¿½,
+          - $height > $tmp_y : ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½Ì°ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Õ´Ï´ï¿½) <-- ï¿½ÌºÎºĞ¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¸ï¿½ ï¿½ï¿½ï¿½ß°ï¿½ ï¿½Ğ±â¸¦ cropï¿½ï¿½ï¿½Ú´ï¿½ ï¿½Ç°ßµï¿½ ï¿½Ö¾ï¿½ï¿½
+          - else : ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¸ï¿½ crop
+    - $heightï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ (crop ï¿½ï¿½ï¿½ï¿½ ï¿½Ê½ï¿½ï¿½Ï´ï¿½)
+       - $widthï¿½ï¿½ ï¿½Ì¹ï¿½ï¿½ï¿½ Å©ï¿½âº¸ï¿½ï¿½ ï¿½ï¿½ Å©ï¿½ï¿½ : ï¿½Ì¹ï¿½ï¿½ï¿½ Å©ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+       - else : ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
-$width¿¡ °ªÀÌ ¾øÀ¸¸é (³ôÀÌ·Î¸¸ Á¤·ÄÇÏ´Â °¶·¯¸®ÀÇ °æ¿ì)
-    - $height°¡ ÀÌ¹ÌÁö Å©±âº¸´Ù ´õ Å©¸é : ÀÌ¹ÌÁö Å©±â´ë·Î ½æÀ» »ı¼º
+$widthï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ (ï¿½ï¿½ï¿½Ì·Î¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½)
+    - $heightï¿½ï¿½ ï¿½Ì¹ï¿½ï¿½ï¿½ Å©ï¿½âº¸ï¿½ï¿½ ï¿½ï¿½ Å©ï¿½ï¿½ : ï¿½Ì¹ï¿½ï¿½ï¿½ Å©ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     - else
         - $is_crop : crop
-        - else : ºñÀ²´ë·Î ½æÀ» »ı¼º
+        - else : ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 */
 function thumbnail($file_name, $width=0, $height=0, $is_create=false, $is_crop=2, $quality=70, $small_thumb=true, $watermark="", $filter="", $noimg="")
 {
     if (!$file_name)
         return;
 
-    // ½æ³×ÀÏ µğ·ºÅä¸®
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ä¸®
     $real_dir = dirname($_SERVER['DOCUMENT_ROOT'] . "/nothing");
     $dir = dirname(file_path($file_name));
     $file = basename($file_name);
 
     $thumb_dir = $dir . "/thumb";
 
-    // ½æ³×ÀÏÀ» ÀúÀåÇÒ µğ·ºÅä¸®
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ä¸®
     $thumb_path = $thumb_dir . "/" . $width . "x" . $height . "_" . $quality;
 
     if (!file_exists($thumb_dir)) {
@@ -113,18 +113,18 @@ function thumbnail($file_name, $width=0, $height=0, $is_create=false, $is_crop=2
 
     $size = @getimagesize($source_file);
 
-    // animated gif¿¡ ´ëÇØ¼­ ½æÀ» ¸¸µé°í ½ÍÀ¸¸é ÄÚ¸àÆ®¸¦ Ç®¾îÁÖ¼¼¿ä. ¾Æ·¡ÄÚµå´Â cpu¿Í disk access¸¦ Å©°Ô À¯¹ßÇÒ ¼ö ÀÖ½À´Ï´Ù
+    // animated gifï¿½ï¿½ ï¿½ï¿½ï¿½Ø¼ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ú¸ï¿½Æ®ï¿½ï¿½ Ç®ï¿½ï¿½ï¿½Ö¼ï¿½ï¿½ï¿½. ï¿½Æ·ï¿½ï¿½Úµï¿½ï¿½ cpuï¿½ï¿½ disk accessï¿½ï¿½ Å©ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ö½ï¿½ï¿½Ï´ï¿½
     //if ($size[2] == IMG_GIF && is_ani_gif($file_name)) return;
 
-    // ÀÌ¹ÌÁö ÆÄÀÏÀÌ ¾ø´Â °æ¿ì
+    // ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½
     if (!$size[0]) {
 
-        // $nomimg¿¡ ¼³Á¤ÀÌ ¾øÀ¸¸é ºó ÀÌ¹ÌÁö ÆÄÀÏÀ» »ı¼º
+        // $nomimgï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         if (!$noimg && !file_exists($noimg)) {
 
             if (!$height) $height = $width;
             $thumb_file = $thumb_dir . "/" . $width . "x" . $height . "_noimg.gif";
-            // noimg ½æÆÄÀÏÀÌ Á¸ÀçÇÏ´Â °æ¿ì¿¡´Â »õ·Î noimg ½æÆÄÀÏÀ» ¾È¸¸µì´Ï´Ù.
+            // noimg ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ì¿¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ noimg ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½È¸ï¿½ï¿½ï¿½Ï´ï¿½.
             if (!@file_exists($thumb_file)) {
                 if (!$width)
                     $width = 30;
@@ -134,7 +134,7 @@ function thumbnail($file_name, $width=0, $height=0, $is_create=false, $is_crop=2
                 imagecolorallocate($target, 250, 250, 250);
                 imagecopy($target, $target, 0, 0, 0, 0, $width, $height);
                 imagegif($target, $thumb_file, $quality);
-                @chmod($thumb_file, 0606); // ÃßÈÄ »èÁ¦¸¦ À§ÇÏ¿© ÆÄÀÏ¸ğµå º¯°æ
+                @chmod($thumb_file, 0606); // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½ï¿½ï¿½Ï¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             }
             return str_replace($real_dir, "", $thumb_file);
 
@@ -145,7 +145,7 @@ function thumbnail($file_name, $width=0, $height=0, $is_create=false, $is_crop=2
 
     $thumb_file = $thumb_path . "/" . $file;
 
-    // ½æÆÄÀÏÀÌ ÀÖÀ¸¸é¼­ ¼Ò½ºÆÄÀÏº¸´Ù »ı¼º ³¯Â¥°¡ ÃÖ±ÙÀÏ ¶§
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½é¼­ ï¿½Ò½ï¿½ï¿½ï¿½ï¿½Ïºï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Â¥ï¿½ï¿½ ï¿½Ö±ï¿½ï¿½ï¿½ ï¿½ï¿½
     if (@file_exists($thumb_file)) {
         $thumb_time = @filemtime($thumb_file);
         $source_time = @filemtime($source_file);
@@ -154,11 +154,11 @@ function thumbnail($file_name, $width=0, $height=0, $is_create=false, $is_crop=2
         }
     }
 
-    // $width, $height °ªÀÌ ¸ğµÎ ¾ø´Â °æ¿ì´Â ÇöÀç »çÀÌÁî ±×´ë·Î thumbÀ» »ı¼º
+    // $width, $height ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½×´ï¿½ï¿½ thumbï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     if (!$width && !$height)
         $width = $size[0];
 
-    // ÀÛÀº ÀÌ¹ÌÁöÀÇ °æ¿ì¿¡µµ ½æ³×ÀÏÀ» »ı¼ºÇÏ´Â ¿É¼ÇÀÌ ¾ø°í, ¿øº» ÀÌ¹ÌÁöÀÇ size°¡ thumbº¸´Ù ÀÛÀ¸¸é ½æ³×ÀÏÀ» ¸¸µéÁö ¾Ê´Â´Ù (³ôÀÌ°¡ ÁöÁ¤µÇÁö ¾ÊÀ¸¸é pass~!)
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¹ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ì¿¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½É¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¹ï¿½ï¿½ï¿½ï¿½ï¿½ sizeï¿½ï¿½ thumbï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê´Â´ï¿½ (ï¿½ï¿½ï¿½Ì°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ pass~!)
     if (!$small_thumb && $width >= $size[0] && $height && $height >= $size[1])
         return str_replace($real_dir, "", $source_file);
 
@@ -173,7 +173,7 @@ function thumbnail($file_name, $width=0, $height=0, $is_create=false, $is_crop=2
         $source = imagecreatefrompng($source_file);
     else if ($size[2] == 6)
     {
-        // bmp ÆÄÀÏÀº gif Çü½ÄÀ¸·Î ½æ³×ÀÏÀ» »ı¼º
+        // bmp ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ gif ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         $source = ImageCreateFromBMP($source_file);
         $size[2] = 1;
     }
@@ -182,14 +182,14 @@ function thumbnail($file_name, $width=0, $height=0, $is_create=false, $is_crop=2
         $x = $width;
         if ($height) {
 
-            if ($width > $size[0]) {  // $width°¡ ÀÌ¹ÌÁö Æøº¸´Ù Å¬¶§ ($widthÀÇ resize´Â ºÒÇÊ¿ä)
+            if ($width > $size[0]) {  // $widthï¿½ï¿½ ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ ($widthï¿½ï¿½ resizeï¿½ï¿½ ï¿½ï¿½ï¿½Ê¿ï¿½)
                 if ($height > $size[1]) {
                     $x = $size[0];
                     $tmp_y = $size[1];
                     $target = imagecreatetruecolor($x, $tmp_y);
                     imagecopyresampled($target, $source, 0, 0, 0, 0, $x, $tmp_y, $size[0], $size[1]);
                 } else {
-                    if ($is_crop) { // ³ÑÄ¡´Â ³ôÀÌ¸¦ Àß¶óÁà¾ß ÇÕ´Ï´Ù
+                    if ($is_crop) { // ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½Ì¸ï¿½ ï¿½ß¶ï¿½ï¿½ï¿½ï¿½ ï¿½Õ´Ï´ï¿½
                         $x = $size[0];
                         $y = $size[1];
                         $tmp_y = $height;
@@ -205,18 +205,18 @@ function thumbnail($file_name, $width=0, $height=0, $is_create=false, $is_crop=2
                         imagecopyresampled($target, $source, 0, 0, 0, 0, $x, $y, $size[0], $size[1]);
                     }
                 }
-            } else { // $width°¡ ÀÌ¹ÌÁö Æøº¸´Ù ÀÛÀ» ¶§ (ÆøÀÇ resize°¡ ÇÊ¿ä)
+            } else { // $widthï¿½ï¿½ ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ (ï¿½ï¿½ï¿½ï¿½ resizeï¿½ï¿½ ï¿½Ê¿ï¿½)
                 $y = $height;
                 $rate = $x / $size[0];
                 $tmp_y = (int)($size[1] * $rate);
                 if ($height > $tmp_y) {
-                    if ($is_crop) {     // ³ôÀÌ°¡ ÀÛÀ¸¹Ç·Î ÀÌ¹ÌÁöÀÇ Æø¸¸ crop
+                    if ($is_crop) {     // ï¿½ï¿½ï¿½Ì°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ ï¿½Ì¹ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ crop
                         $rate = $y / $size[1];
                         $tmp_x = (int)($size[0] * $rate);
                         $target = imagecreatetruecolor($x, $y);
                         $tmp_target = imagecreatetruecolor($tmp_x, $y);
                         imagecopyresampled($tmp_target, $source, 0, 0, 0, 0, $tmp_x, $y, $size[0], $size[1]);
-                        // copyÇÏ´Â À§Ä¡°¡ ÀÌ¹ÌÁöÀÇ ¼öÆòÁß½ÉÀÌ µÇ°Ô Á¶Á¤
+                        // copyï¿½Ï´ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½Ì¹ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ß½ï¿½ï¿½ï¿½ ï¿½Ç°ï¿½ ï¿½ï¿½ï¿½ï¿½
                         $src_x = (int)(($tmp_x - $x)/2);
                         imagecopy($target, $tmp_target, 0, 0, $src_x, 0, $x, $y);
                     } else {
@@ -239,8 +239,8 @@ function thumbnail($file_name, $width=0, $height=0, $is_create=false, $is_crop=2
             }
         }
         else
-        { // $height¿¡ °ªÀÌ ¾ø´Â °æ¿ì (cropÀº ÇØ´ç »çÇ×ÀÌ ¾øÁÒ? ^^)
-            if ($width >= $size[0]) { // ½æ³×ÀÏÀÇ Æøº¸´Ù $width°¡ ´õ Å©¸é, ÀÌ¹ÌÁöÀÇ ÆøÀ¸·Î ½æ¿¡ÀÏÀ» ¸¸µì´Ï´Ù (È®´ëµÈ ½æÀº Çã¿ë¾ÊÀ½)
+        { // $heightï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ (cropï¿½ï¿½ ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½? ^^)
+            if ($width >= $size[0]) { // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ $widthï¿½ï¿½ ï¿½ï¿½ Å©ï¿½ï¿½, ï¿½Ì¹ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½æ¿¡ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ (È®ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)
                 $x = $size[0];
                 $tmp_y = $size[1];
             } else {
@@ -252,9 +252,9 @@ function thumbnail($file_name, $width=0, $height=0, $is_create=false, $is_crop=2
             imagecopyresampled($target, $source, 0, 0, 0, 0, $x, $tmp_y, $size[0], $size[1]);
         }
     }
-    else // $width´Â ¾ø°í $height¸¸ ÀÖ´Â °æ¿ì
+    else // $widthï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ $heightï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½
     {
-        if ($height > $size[1]) {   // ½æ³×ÀÏÀÇ ³ôÀÌº¸´Ù $height°¡ ´õ Å©¸é, ÀÌ¹ÌÁöÀÇ ³ôÀÌ·Î ½æ³×ÀÏÀ» ¸¸µì´Ï´Ù (È®´ëµÈ ½æÀº Çã¿ë¾ÊÀ½)
+        if ($height > $size[1]) {   // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ìºï¿½ï¿½ï¿½ $heightï¿½ï¿½ ï¿½ï¿½ Å©ï¿½ï¿½, ï¿½Ì¹ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ì·ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ (È®ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)
             $y = $size[1];
             $tmp_x = $size[0];
             $target = imagecreatetruecolor($tmp_x, $y);
@@ -277,23 +277,23 @@ function thumbnail($file_name, $width=0, $height=0, $is_create=false, $is_crop=2
         }
     }
 
-    // ÀÌ¹ÌÁö Ä÷·¯Æ¼¸¦ ÀçÁ¶Á¤
+    // ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     ob_start();
     if ($size[2] == 1)
         imagegif($target, "", $quality);
     else if ($size[2] == 2)
         imagejpeg($target, "", $quality);
     else if ($size[2] == 3)
-        imagepng($target, "", round(10 - ($quality / 10))); //imagepngÀÇ Ä÷¸®Æ¼´Â 0~9±îÁö »ç¿ë °¡´ÉÇÕ´Ï´Ù (Lusia). 0(no compression) ÀÔ´Ï´Ù
+        imagepng($target, "", round(10 - ($quality / 10))); //imagepngï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ¼ï¿½ï¿½ 0~9ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Õ´Ï´ï¿½ (Lusia). 0(no compression) ï¿½Ô´Ï´ï¿½
     $tmp_image_str = ob_get_contents();
     ob_end_clean();
     $target = imagecreatefromstring($tmp_image_str);
     unset($tmp_image_str);
 
-    // watermark ÀÌ¹ÌÁö ³Ö¾îÁÖ±â
+    // watermark ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½Ö¾ï¿½ï¿½Ö±ï¿½
     if (trim($watermark) && count($watermark) > 0) {
         foreach ($watermark as $w1) {
-            // ÆÄÀÏÀÌ¸§°ú µğ·ºÅä¸®¸¦ ±¸ºĞ
+            // ï¿½ï¿½ï¿½ï¿½ï¿½Ì¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ä¸®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             $w1_file = $w1['filename'];
             if (!$w1_file) continue;
 
@@ -302,15 +302,15 @@ function thumbnail($file_name, $width=0, $height=0, $is_create=false, $is_crop=2
 
             $w1_file = $w_dir . "/" . $w_file;
 
-            // ¿öÅÍ¸¶Å© ÆÄÀÏÀÌ ¾øÀ¸¸é ¿öÅÍ¸¶Å©¸¦ ÂïÁö ¾Ê½À´Ï´Ù
+            // ï¿½ï¿½ï¿½Í¸ï¿½Å© ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Í¸ï¿½Å©ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê½ï¿½ï¿½Ï´ï¿½
             if (!file_exists($w1_file))
                 break;
 
-            // ¿öÅÍ¸¶Å© ÀÌ¹ÌÁöÀÇ width, height
+            // ï¿½ï¿½ï¿½Í¸ï¿½Å© ï¿½Ì¹ï¿½ï¿½ï¿½ï¿½ï¿½ width, height
             $sizew = getimagesize($w1_file);
             $wx = $sizew[0];
             $wy = $sizew[1];
-            // watermark ÀÌ¹ÌÁö ÀĞ¾îµéÀÌ±â
+            // watermark ï¿½Ì¹ï¿½ï¿½ï¿½ ï¿½Ğ¾ï¿½ï¿½ï¿½Ì±ï¿½
             if ($sizew[2] == 1)
                 $w1_source = imagecreatefromgif($w1_file);
             else if ($sizew[2] == 2)
@@ -318,7 +318,7 @@ function thumbnail($file_name, $width=0, $height=0, $is_create=false, $is_crop=2
             else if ($sizew[2] == 3)
                 $w1_source = imagecreatefrompng($w1_file);
 
-            // $target ÀÌ¹ÌÁöÀÇ width, height
+            // $target ï¿½Ì¹ï¿½ï¿½ï¿½ï¿½ï¿½ width, height
             $sx = imagesx($target);
             $sy = imagesy($target);
 
@@ -378,7 +378,7 @@ function thumbnail($file_name, $width=0, $height=0, $is_create=false, $is_crop=2
                                           break;
           case  99: UnsharpMask($target, $filter[arg1], $filter[arg2], $filter[arg3]);
                                         break;
-          default                   : ; // ÇÊÅÍ Å¸ÀÔÀÌ Æ²¸®¸é ¾Æ¹«°Íµµ ¾ÈÇÕ´Ï´Ù
+          default                   : ; // ï¿½ï¿½ï¿½ï¿½ Å¸ï¿½ï¿½ï¿½ï¿½ Æ²ï¿½ï¿½ï¿½ï¿½ ï¿½Æ¹ï¿½ï¿½Íµï¿½ ï¿½ï¿½ï¿½Õ´Ï´ï¿½
         }
     }
 
@@ -388,10 +388,10 @@ function thumbnail($file_name, $width=0, $height=0, $is_create=false, $is_crop=2
     else if ($size[2] == 2)
         imagejpeg($target, $thumb_file, 100);
     else if ($size[2] == 3)
-        imagepng($target, $thumb_file, 0); //imagepngÀÇ Ä÷¸®Æ¼´Â 0~9±îÁö »ç¿ë °¡´ÉÇÕ´Ï´Ù (Lusia). 0(no compression) ÀÔ´Ï´Ù
-    @chmod($thumb_file, 0606); // ÃßÈÄ »èÁ¦¸¦ À§ÇÏ¿© ÆÄÀÏ¸ğµå º¯°æ
+        imagepng($target, $thumb_file, 0); //imagepngï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ¼ï¿½ï¿½ 0~9ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Õ´Ï´ï¿½ (Lusia). 0(no compression) ï¿½Ô´Ï´ï¿½
+    @chmod($thumb_file, 0606); // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½ï¿½ï¿½Ï¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
-    // ¸Ş¸ğ¸®¸¦ ºÎ½¤Áİ´Ï´Ù - http://kr2.php.net/manual/kr/function.imagedestroy.php
+    // ï¿½Ş¸ğ¸®¸ï¿½ ï¿½Î½ï¿½ï¿½İ´Ï´ï¿½ - http://kr2.php.net/manual/kr/function.imagedestroy.php
     if ($target)
         imagedestroy($target);
     if ($source)
@@ -640,7 +640,7 @@ if(!function_exists('imagefilter')){
 }
 
 if(!function_exists('file_path')){
-// ÆÄÀÏÀÇ °æ·Î¸¦ °¡Áö°í ¿É´Ï´Ù (ºÒ´çÆÑ, /lib/common.lib.php¿¡ Á¤ÀÇµÈ ÇÔ¼ö)
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Î¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½É´Ï´ï¿½ (ï¿½Ò´ï¿½ï¿½ï¿½, /lib/common.lib.phpï¿½ï¿½ ï¿½ï¿½ï¿½Çµï¿½ ï¿½Ô¼ï¿½)
 function file_path($path) {
 
     $dir = dirname($path);
@@ -659,7 +659,7 @@ function file_path($path) {
 ////
 ////                  Unsharp Mask for PHP - version 2.1.1
 ////
-////    Unsharp mask algorithm by Torstein H©ªnsi 2003-07.
+////    Unsharp mask algorithm by Torstein Hï¿½ï¿½nsi 2003-07.
 ////             thoensi_at_netcom_dot_no.
 ////               Please leave this notice.
 ////
@@ -680,7 +680,8 @@ function UnsharpMask($img, $amount, $radius, $threshold)
 	if ($threshold > 255) $threshold = 255;
 
 	$radius = abs(round($radius)); 	// Only integers make sense.
-	if ($radius == 0) {	return $img; imagedestroy($img); break;	}
+//	if ($radius == 0) {	return $img; imagedestroy($img); break;	}
+    if ($radius == 0) {	imagedestroy($img); return $img; }
 	$w = imagesx($img); $h = imagesy($img);
 	$imgCanvas = $img;
 	$imgCanvas2 = $img;
@@ -837,7 +838,7 @@ echo $filename;
  return $res;
 }
 
-// animated gif ÆÄÀÏÀÎÁö¸¦ È®ÀÎ
+// animated gif ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½
 // http://kr2.php.net/imagecreatefromgif
 /*
 function is_ani_gif($filename)

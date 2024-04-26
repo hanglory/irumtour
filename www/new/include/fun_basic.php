@@ -2,7 +2,8 @@
 $cfile=basename(__FILE__);
 $tmpfile=realpath(__FILE__);
 if(!$tmpfile) $tmpfile=__FILE__;
-$inc_dir=eregi_replace($cfile,"",$tmpfile);
+$inc_dir = preg_replace('/' . preg_quote($cfile, '/') . '/', '', $tmpfile);
+//$inc_dir=eregi_replace($cfile,"",$tmpfile);
 unset($tmpfile);
 include_once($inc_dir."config.php");
 

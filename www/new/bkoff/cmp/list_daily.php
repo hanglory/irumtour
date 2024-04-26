@@ -151,6 +151,7 @@ while($rs=$dbo->next_record()){
 	$num--;
 }
 ?>
+       </form>
 	</table>
 
 
@@ -200,6 +201,7 @@ while($rs=$dbo->next_record()){
 	$num--;
 }
 ?>
+       </form>
 	</table>
 
 	<br/>
@@ -316,6 +318,7 @@ while($rs=$dbo->next_record()){
 	$num--;
 }
 ?>
+       </form>
 	</table>
 
 

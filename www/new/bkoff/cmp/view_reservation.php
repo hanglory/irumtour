@@ -19,9 +19,6 @@ while($rs=$dbo->next_record()){
 }
 if(strstr($_SESSION["sessLogin"]["staff_type"],"partner")) $STAFF =$_SESSION[sessLogin][name] ." (". $_SESSION[sessLogin][id] .")";
 
-
-
-
 #### operation
 if ($mode=="save"){
 
@@ -786,6 +783,16 @@ function show_hide_air_view(bit){
     else $(".bx_air_view").hide();
 }
 
+function copy_to_clip(val) {
+    var t = document.createElement("textarea");
+    document.body.appendChild(t);
+    t.value = val;
+    t.select();
+    document.execCommand('copy');
+    document.body.removeChild(t);
+    alert("복사되었습니다.");
+}
+
 jQuery(function($){
 
     $(".num").keypress(function(event){
@@ -1001,13 +1008,12 @@ jQuery(function($){
                 $long_url6 = short_url("${DOMAIN}/new/bkoff/cmp/form10.html?code=$make_code&code2=$code2&time=".time());
                 ?>
 
-                <p><span class="long_url">예약요청서 : <?=$long_url1?></span><span class="btn_pack medium bold"><a href="javascript:newWin('<?=$long_url1?>',870,650,1,1,'','')">바로가기</a></span></p>
-                <p><span class="long_url">예약확정서 : <?=$long_url2?></span><span class="btn_pack medium bold"><a href="javascript:newWin('<?=$long_url2?>',870,650,1,1,'','')">바로가기</a></span></p>
-                <p><span class="long_url">출발안내문 : <?=$long_url3?></span><span class="btn_pack medium bold"><a href="javascript:newWin('<?=$long_url3?>',870,650,1,1,'','')">바로가기</a></span></p>
-                <p><span class="long_url">샌딩의뢰서 : <?=$long_url4?></span><span class="btn_pack medium bold"><a href="javascript:newWin('<?=$long_url4?>',870,650,1,1,'','')">바로가기</a></span></p>
-                <p><span class="long_url">INVOICE : <?=$long_url5?></span><span class="btn_pack medium bold"><a href="javascript:newWin('<?=$long_url5?>',870,650,1,1,'','')">바로가기</a></span></p>
-
-                <p><span class="long_url">항공취소요청서 : <?=$long_url6?></span><span class="btn_pack medium bold"><a href="javascript:newWin('<?=$long_url6?>',870,650,1,1,'','')">바로가기</a></span></p>
+                <p><span class="long_url">예약요청서 : <?=$long_url1?></span><span class="btn_pack medium bold"><a href="javascript:newWin('<?=$long_url1?>',870,650,1,1,'','')">바로가기</a></span><span class="btn_pack medium bold"><a href="javascript:copy_to_clip('<?=$long_url1?>')"> 링크복사 </a></span></p>
+                <p><span class="long_url">예약확정서 : <?=$long_url2?></span><span class="btn_pack medium bold"><a href="javascript:newWin('<?=$long_url2?>',870,650,1,1,'','')">바로가기</a></span><span class="btn_pack medium bold"><a href="javascript:copy_to_clip('<?=$long_url2?>')"> 링크복사 </a></span></p>
+                <p><span class="long_url">출발안내문 : <?=$long_url3?></span><span class="btn_pack medium bold"><a href="javascript:newWin('<?=$long_url3?>',870,650,1,1,'','')">바로가기</a></span><span class="btn_pack medium bold"><a href="javascript:copy_to_clip('<?=$long_url3?>')"> 링크복사 </a></span></p>
+                <p><span class="long_url">샌딩의뢰서 : <?=$long_url4?></span><span class="btn_pack medium bold"><a href="javascript:newWin('<?=$long_url4?>',870,650,1,1,'','')">바로가기</a></span><span class="btn_pack medium bold"><a href="javascript:copy_to_clip('<?=$long_url4?>')"> 링크복사 </a></span></p>
+                <p><span class="long_url">INVOICE : <?=$long_url5?></span><span class="btn_pack medium bold"><a href="javascript:newWin('<?=$long_url5?>',870,650,1,1,'','')">바로가기</a></span><span class="btn_pack medium bold"><a href="javascript:copy_to_clip('<?=$long_url5?>')"> 링크복사 </a></span></p>
+                <p><span class="long_url">항공취소요청서 : <?=$long_url6?></span><span class="btn_pack medium bold"><a href="javascript:newWin('<?=$long_url6?>',870,650,1,1,'','')">바로가기</a></span><span class="btn_pack medium bold"><a href="javascript:copy_to_clip('<?=$long_url6?>')"> 링크복사 </a></span></p>
 
           </td>
         </tr>
