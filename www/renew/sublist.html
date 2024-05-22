@@ -38,6 +38,10 @@ switch($code1){
 	case "6": $code1_name2 = "BUSAN/DAEGU";break;
 }
 
+if(!$code1 && !$code2 ){
+  Header( "Location: https://irumtour.net/renew/" );
+}
+
 $DESCRIPTION =  "${SITE_NAME}에서 전개하는 ". str_replace("여행","",$code1_name) ." 여행상품을 소개합니다.";
 $SITE_NAME = $code1_name ." - " .$SITE_NAME;
 ?>
