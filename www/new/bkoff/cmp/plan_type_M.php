@@ -356,8 +356,7 @@ for($i=1;$i<=$night;$i++){
             <?if($edit_mode){?>
                 <textarea wrap="hard" name="plan_text<?=$i?>" class="editor2"><?=$plan_text[$i]?></textarea>
             <?}else{?>
-
-                <?=$plan_text[$i]?>
+                <?=nl2br($plan_text[$i])?>
             <?}?>
 
 
