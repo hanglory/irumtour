@@ -75,8 +75,88 @@ $( function() {
 
 });
 </script>
-
-
+<!--검색엔진 관련-->
+<script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "Person",
+        "name": "이룸투어",
+        "url": "https://irumtour.net/",
+        "sameAs": [
+            "https://youtube.com/@irum-tour?si=MJfgKUn9ZORK2bce",
+            "http://blog.naver.com/irumplace",
+            "https://band.us/@irumtour"
+        ]
+    }
+</script>
+<script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "ItemList",
+        "itemListElement":[
+            {
+                "@type": "ListItem",
+                "item": {
+                    "@type": "Organization",
+                    "name": "한달살기골프",
+                    "image": "https://irumtour.net/new//public/goods/2404/66504_1.jpg?timestamp=1716350108405",
+                    "url": "https://irumtour.net/renew/sublist.html?code1=14&code2=153"
+                },
+                "position": "1"
+            },
+            {
+                "@type": "ListItem",
+                "item": {
+                    "@type": "Organization",
+                    "name": "특가골프",
+                    "image": "https://irumtour.net/new//public/goods/2402/CP64893_1.jpg?timestamp=1716350174139",
+                    "url": "https://irumtour.net/renew/sublist.html?code1=16&code2=148#ptop"
+                },
+                "position": "2"
+            },
+            {
+                "@type": "ListItem",
+                "item": {
+                    "@type": "Organization",
+                    "name": "연휴 골프",
+                    "image": "https://irumtour.net/renew/hpimg/hdgf.jpg",
+                    "url": "https://irumtour.net/renew/sublist.html?code1=31&code2=149"
+                },
+                "position": "3"
+            },
+            {
+                "@type": "ListItem",
+                "item": {
+                    "@type": "Organization",
+                    "name": "2인 골프",
+                    "image": "https://irumtour.net/renew/hpimg/two.png",
+                    "url": "https://irumtour.net/renew/sublist.html?code1=14&code2=135"
+                },
+                "position": "4"
+            },
+            {
+                "@type": "ListItem",
+                "item": {
+                    "@type": "Organization",
+                    "name": "프리미엄 골프",
+                    "image": "https://irumtour.net/renew/hpimg/premium.jpeg",
+                    "url": "https://irumtour.net/renew/sublist.html?code1=15&code2=90"
+                },
+                "position": "5"
+            },
+            {
+                "@type": "ListItem",
+                "item": {
+                    "@type": "Organization",
+                    "name": "답사후기",
+                    "image": "https://irumtour.net/renew/hpimg/irum.jpg",
+                    "url": "https://irumtour.net/renew/review.html?code1=%EC%9D%BC%EB%B3%B8"
+                },
+                "position": "6"
+            }
+        ]
+    }
+</script>
 
 <?if(!strstr(strtolower($_SERVER['HTTP_USER_AGENT']),"mobile")){?>
 <!-- Global site tag (gtag.js) - Google Analytics -->
