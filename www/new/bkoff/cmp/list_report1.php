@@ -520,6 +520,66 @@ while($rs=$dbo->next_record()){
 	    </tr>
     </tfoot>
 	</table>
+<?php
+    if($bit_oversea=="O" || $bit_oversea=="D"){
+        // strtotime 함수와 mktime 함수를 사용하여 7개월 전으로 계산
+        $timestamp = strtotime($period_e);
+        $seven_months_ago_timestamp = mktime(0, 0, 0, date("m", $timestamp) - 7, date("d", $timestamp), date("Y", $timestamp));
+        $seven_months_ago = date("Y/m", $seven_months_ago_timestamp);
+
+        if($bit_oversea=="D") $where_add = " AND tour_date >= '".$seven_months_ago."/01' AND tour_date <= '".$period_e."' AND b.bit_oversea = '국내' ";
+        else    $where_add = " AND tour_date >= '".$seven_months_ago."/01' AND tour_date <= '".$period_e."' AND b.bit_oversea = '해외' ";
+        $sql_3 = "SELECT
+  substr(a.tour_date, 1, 7) AS tour_month,
+  COUNT(*) AS count_per_month,
+  ROUND(COUNT(*) * 100.0 / total.total_count, 2) AS percentage_of_total
+FROM
+  cmp_reservation AS a
+  LEFT JOIN cmp_golf AS b ON a.golf_id_no = b.id_no
+  CROSS JOIN (
+    SELECT COUNT(*) AS total_count
+    FROM cmp_reservation AS a
+    LEFT JOIN cmp_golf AS b ON a.golf_id_no = b.id_no
+    WHERE
+      a.id_no > 0
+      ".$where_add."
+      AND a.cp_id = ''
+  ) AS total
+WHERE
+  a.id_no > 0
+      ".$where_add."
+  AND a.cp_id = ''
+GROUP BY substr(a.tour_date, 1, 7), total.total_count
+ORDER BY  tour_month DESC;";
+
+        if($debug) checkVar("",$sql_3);
+        $dbo->query($sql_3);
+?>
+    <table border="0" cellspacing="0" cellpadding="3" width="100%" id="tbl_stat_list">
+        <form name="fmData" method="post">
+            <input type=hidden name=mode value='drop'>
+            <thead>
+            <tr align=center height=25 bgcolor="#F7F7F6">
+                <th class="subject" rowspan="2">구분</th>
+                <th class="subject" rowspan="2">월</th>
+                <th class="subject" rowspan="2">인원</th>
+                <th class="subject" rowspan="2">비율</th>
+            </tr>
+<?php
+        while($rs3=$dbo->next_record()){
+?>
+            <tr align='center' onMouseOver="this.style.backgroundColor='#EEEEFF'" onMouseOut="this.style.backgroundColor='#FFFFFF'">
+                <td height="35"> M(해당월)</td>
+                <td style="<?=$css?>"><?=$rs[nation]?></td>
+                <td style="<?=$css?>"><?=trim($golf_name[1])?></td>
+                <td style="<?=$css?>"><?=trim($golf_name[2])?></td>
+
+<?php
+
+        }
+    }
+?>
+
     <table border="0" cellspacing="0" cellpadding="3" width="100%" id="tbl_list">
         <tr>
 		  <td colspan="12">
