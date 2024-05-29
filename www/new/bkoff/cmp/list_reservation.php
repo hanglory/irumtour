@@ -51,11 +51,14 @@ if(strstr("partner_i,partner_g",$_SESSION["sessLogin"]["staff_type"])){
 
 
 $dtype = ($dtype)? $dtype : "d_date";
+if($date_s)	$filter.=" and a.$dtype >='$date_s'";
+if($date_e) $filter.=" and a.$dtype <='$date_e'";
+/*
 if(!$date_s) $date_s=date("Y/m/d",strtotime(date("Y/m/d")." -12 month"));
 if(!$date_e) $date_e=date("Y/m/d",strtotime(date("Y/m/d")." +12 month"));
 $filter.=" and a.$dtype >='$date_s'";
 $filter.=" and a.$dtype <='$date_e'";
-
+*/
 
 
 #query

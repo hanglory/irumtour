@@ -89,7 +89,8 @@ $sql_1 = "
         AND (a.view_path LIKE '%신규%' OR a.view_path LIKE '%재방문%' OR a.view_path LIKE '%투어문의%' )
         $filter
         group BY 2, 1
-    )BB  ON AA.view_path=BB.vpath AND AA.sd = BB.sd";
+    )BB  ON AA.view_path=BB.vpath AND AA.sd = BB.sd
+    ORDER BY AA.sd DESC, AA.view_path ASC";
 #국가 쿼리
 $sql_2 = "
     SELECT AA.nation, AA.sd, AA.tot_cnt, ifnull(BB.rev_cnt, 0) AS rev_cnt, ifnull(BB.people,0) people
@@ -114,7 +115,8 @@ $sql_2 = "
         AND (b.nation ='일본' OR b.nation='태국' OR b.nation ='베트남' OR b.nation='중국')
         $filter
         GROUP BY  2,1
-    )BB  ON AA.nation=BB.nation AND AA.sd = BB.sd";
+    )BB  ON AA.nation=BB.nation AND AA.sd = BB.sd
+    ORDER BY AA.sd DESC , AA.nation ASC";
 
 #변수 정의
 $nation_arr = array("베트남","일본","중국","태국");
