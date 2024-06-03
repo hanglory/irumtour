@@ -70,12 +70,12 @@ $FILTER_PARTNER_QUERY=str_replace("and main_staff","and a.main_staff",$FILTER_PA
 $sql_1 = "
     SELECT AA.view_path, AA.sd, AA.tot_cnt, ifnull(BB.rev_cnt, 0) AS rev_cnt, ifnull(BB.people,0) people
     FROM(
-        SELECT  c.view_path, substr(send_date,1,7) AS sd, COUNT(*) AS tot_cnt
+        SELECT  a.view_path, substr(send_date,1,7) AS sd, COUNT(*) AS tot_cnt
         FROM cmp_estimate a
         LEFT JOIN cmp_reservation AS c on a.id_no = c.origin_id_no
         WHERE a.id_no>0
         AND a.cp_id=''
-        AND (c.view_path LIKE '%신규%' OR c.view_path LIKE '%재방문%' OR c.view_path LIKE '%투어문의%' )
+        AND (a.view_path LIKE '%신규%' OR a.view_path LIKE '%재방문%' OR a.view_path LIKE '%투어문의%' )
         $filter
         GROUP BY 2,1
     ) AA LEFT JOIN (
@@ -438,6 +438,10 @@ $path_pp = array(0,0,0);
             ?>
         </tr>
     </table>
+
+<?php
+//echo '현재 PHP 버전: ' . phpversion();
+?>
     <!--내용이 들어가는 곳 끝-->
 
     <!-- Copyright -->
