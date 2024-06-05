@@ -521,76 +521,72 @@ while($rs=$dbo->next_record()){
     </tfoot>
 	</table>
 <?php
-    if($bit_oversea=="O" || $bit_oversea=="D"){
         // strtotime 함수와 mktime 함수를 사용하여 7개월 전으로 계산
         $timestamp = strtotime($period_e);
         $seven_months_ago_timestamp = mktime(0, 0, 0, date("m", $timestamp) - 7, date("d", $timestamp), date("Y", $timestamp));
         $seven_months_ago = date("Y/m", $seven_months_ago_timestamp);
 
-        if($bit_oversea=="D") $where_add = " AND tour_date >= '".$seven_months_ago."/01' AND tour_date <= '".$period_e."' AND b.bit_oversea = '국내' ";
-        else    $where_add = " AND tour_date >= '".$seven_months_ago."/01' AND tour_date <= '".$period_e."' AND b.bit_oversea = '해외' ";
+		$bagic_month = substr($period_s,0,7);
+		$where_add = " AND substr(a.d_date,1,7)='".$bagic_month."' ";
+		if($bit_oversea=="O") $where_add.=" AND b.bit_oversea ='해외'";
+		elseif($bit_oversea=="D") $where_add.=" AND b.bit_oversea ='국내'";
+		//전체 카운터
+		$sql_sum = "SELECT sum(a.people) as sum_people FROM  cmp_reservation AS a LEFT JOIN cmp_golf AS b ON a.golf_id_no = b.id_no	WHERE a.id_no > 0 AND a.cp_id = '' ";
 
-		$sql_3 = "SELECT
-  						substr(a.tour_date, 1, 7) AS tour_month,
-  						COUNT(*) AS count_per_month,
-  						ROUND(COUNT(*) * 100.0 / total.total_count, 2) AS percentage_of_total
-						,total.total_count AS total_count
-				FROM  cmp_reservation AS a
-  				LEFT JOIN cmp_golf AS b ON a.golf_id_no = b.id_no
-  				CROSS JOIN (
-    				SELECT COUNT(*) AS total_count
-    				FROM cmp_reservation AS a
-    				LEFT JOIN cmp_golf AS b ON a.golf_id_no = b.id_no
-    				WHERE a.id_no > 0 ".$where_add."
-      				AND a.cp_id = ''
-  				) AS total
-				WHERE  a.id_no > 0 ".$where_add."
-  				AND a.cp_id = ''
-				GROUP BY substr(a.tour_date, 1, 7), total.total_count
-				ORDER BY  tour_month DESC;";
+		$sql_3 = $sql_sum."	".$where_add;
         if($debug) checkVar("",$sql_3);
         $dbo->query($sql_3);
+		$rs3=$dbo->next_record();
+		$total_people = $rs3['sum_people'];
 
 ?>
     <table border="0" cellspacing="0" cellpadding="3" width="100%" id="tbl_cmp_list">
        <thead>
          <tr align=center height=25 bgcolor="#F7F7F6">
-            <th class="subject" rowspan="2">구분</th>
-            <th class="subject" rowspan="2">월</th>
+            <th class="subject" rowspan="2">출발월</th>
+            <th class="subject" rowspan="2">예약월</th>
             <th class="subject" rowspan="2">인원</th>
             <th class="subject" rowspan="2">비율</th>
             </tr>
 		</thead>
         <tbody>
 <?php
-			$idx = 0;
-		while($rs3=$dbo->next_record()){
+		$idx = 0;
+		$timestamp = strtotime($period_s);
+
+		for( ; $idx < 8; $idx++ ){
+			$ago_timestamp = mktime(0, 0, 0, date("m", $timestamp) - $idx, date("d", $timestamp), date("Y", $timestamp));
+			$idx_month = date("Y/m", $ago_timestamp);
+			if($idx == 7){
+				$sql_for = $sql_sum." ".$where_add." AND substr(a.tour_date,1,7)<='".$idx_month."'";
+				$idx_month .= "포함 이전";
+			}else{
+				$sql_for = $sql_sum." ".$where_add." AND substr(a.tour_date,1,7)='".$idx_month."'";
+			}	
+			if($debug) checkVar("",$sql_for);
+			$dbo->query($sql_for);			
+			$rsfor=$dbo->next_record();
 ?>
 	    <tr align='center' onMouseOver="this.style.backgroundColor='#EEEEFF'" onMouseOut="this.style.backgroundColor='#FFFFFF'">
-            <td height="35"><?=$idx == 0 ? "M(해당월)" : "M-".$idx ?></td>
-            <td style="<?=$css?>"><?=$rs3[tour_month]?></td>
-            <td style="<?=$css?>"><?=nf($rs3[count_per_month])?></td>
-            <td style="<?=$css?>"><?=$rs3[percentage_of_total]?>%</td>
+            <td height="35"><?=$bagic_month?></td>
+            <td style="<?=$css?>"><?=$idx_month?></td>
+            <td style="<?=$css?>"><?=nf($rsfor['sum_people'])?></td>
+            <td style="<?=$css?>"><?=round(($rsfor['sum_people'] / $total_people)*100,2)?>%</td>
 			
 		</tr>
 <?php
-			$total_count = $rs3[total_count];
-			$idx++;
         }
 ?>
     <tfoot>
 	    <tr align='center' onMouseOver="this.style.backgroundColor='#EEEEFF'" onMouseOut="this.style.backgroundColor='#FFFFFF'">
 			<td height="35" style="font-weight:bold;color:red">합계</td>
 			<td></td>
-			<td class="numberic" style="font-weight:bold;color:red" align="center"><span class="txt_price2"><?=nf($total_count)?></span></td>
+			<td class="numberic" style="font-weight:bold;color:red" align="center"><span class="txt_price2"><?=nf($total_people)?></span></td>
 			<td class="numberic" style="font-weight:bold;color:red" align="center">100%</td>
 	    </tr>
     </tfoot>
 		</tbody>
 	</table>
-<?php		
-    }
-?>
 
     <table border="0" cellspacing="0" cellpadding="3" width="100%" id="tbl_list">
         <tr>
