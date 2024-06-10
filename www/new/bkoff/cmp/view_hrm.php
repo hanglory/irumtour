@@ -381,10 +381,10 @@ function show_file(sfile){
                                 <?}?>
 							&nbsp;&nbsp;
 							<?}?>
-							<?if($proof_power || $rs[staff]==$staff){?>
-							<span class="btn_pack medium bold"><a href="javascript:drop()"> 삭제 </a></span>
-							&nbsp;&nbsp;
-							<?}?>
+							<?if(($proof_power || $rs[staff] == $staff) && !$rs[proof]){?>
+                            <span class="btn_pack medium bold"><a href="javascript:drop()"> 삭제 </a></span>
+                            &nbsp;&nbsp;
+                            <?}?>
 						<?}?>
 
 						<span class="btn_pack medium bold"><a href="#" onClick="self.close()"> 창닫기 </a></span>
