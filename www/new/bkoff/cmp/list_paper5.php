@@ -19,6 +19,8 @@ $year_this = substr($date_s,0,4);
 $year_prev = substr($date_s,0,4)-1;
 $date_s2 = $year_prev . substr($date_s,4);
 $date_e2 = $year_prev . substr($date_e,4);
+$option_nation = "노르웨이,대만,라오스,말레이지아,미국,베트남,브루나이,스페인,싱가폴,아랍에밀레이트,인도네시아,일본,중국,태국,튀르키예,필리핀,하이난,호주,한국";
+
 
 
 if(substr($date_s,0,4)!=substr($date_e,0,4)){
@@ -71,7 +73,7 @@ $TITLE .=($dtype=="d_date")? "(출국일자 기준)" : "(예약일자 기준)";
                 <input type="text" name="date_e" id="date_e" size="13" maxlength="10" value="<?=$date_e?>" class="box c dateinput">
 
                 <select name="ctype">
-                    <?=option_str("일본,태국,중국,한국,베트남","일본,태국,중국,한국,베트남",$ctype)?>
+                    <?=option_str($option_nation,$option_nation,$ctype)?>
                 </select>
 
                 <select name="dtype">

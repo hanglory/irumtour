@@ -203,8 +203,8 @@ $TITLE .=($dtype=="d_date")? "(출국일자 기준)" : "(예약일자 기준)";
 
 		while(list($key,$val)=each($arr))
         {
-        if($val == '한국'){
-            ?>
+            if($val == '한국'){
+?>
             <tr style="background-color:#ffe6cc">
                 <td rowspan="2" style="background-color:#f0f0f0">해외소계</td>
                 <td>금년</td>
@@ -228,8 +228,8 @@ $TITLE .=($dtype=="d_date")? "(출국일자 기준)" : "(예약일자 기준)";
                 <td class="r"><?=nf($sum2_6)?>원</td>
                 <td class="r"><?=nf($sum2_7)?>원</td>
             </tr>
-            <?
-        }
+<?
+            }
 
 
 
@@ -260,25 +260,25 @@ $TITLE .=($dtype=="d_date")? "(출국일자 기준)" : "(예약일자 기준)";
 			$pos_link = strpos($val, '기타');
 ?>
 		
-		<tr>
-			<td rowspan="2" style="background-color:#f0f0f0">
+		    <tr>
+			    <td rowspan="2" style="background-color:#f0f0f0">
 <?
                 if($pos_link !== false ) {
                     echo $val;
                 } else {
-?>                  <a href="/new/bkoff/cmp/list_paper5.php?ctype=<?=$val?>&dtype=tour_date&date_s=<?$date_s?>&date_e=<?$date_e?>"><?=$val?></a>
+?>                  <a href="/new/bkoff/cmp/list_paper5.php?ctype=<?=$val?>&dtype=tour_date&date_s=<?=$date_s?>&date_e=<?=$date_e?>"><?=$val?></a>
 <?              }
-?>          </td>
-			<td>금년</td>
-			<td><?=nf($DATA[$did][$did2]["신규"]["people"])?>명</td>
-			<td><?=nf($DATA[$did][$did2]["재방문"]["people"]+$DATA[$did][$did2]["재문의"]["people"])?>명</td>
-			<td><?=nf($DATA[$did][$did2]["추천"]["people"])?>명</td>
-			<td><?=nf($DATA[$did][$did2]["기타"]["people"]+$DATA[$did][$did2]["기타2"]["people"])?>명</td>
-			<td><?=nf($sum_this1)?>명</td>
-            <td><?= $val=='한국' ? '':$x.'%'?></td>
-			<td class="r"><?=@nf($sum_this2)?>원</td>
-			<td class="r"><?=@nf($sum_this2/$sum_this1)?>원</td>
-		</tr>
+?>              </td>
+			    <td>금년</td>
+			    <td><?=nf($DATA[$did][$did2]["신규"]["people"])?>명</td>
+			    <td><?=nf($DATA[$did][$did2]["재방문"]["people"]+$DATA[$did][$did2]["재문의"]["people"])?>명</td>
+			    <td><?=nf($DATA[$did][$did2]["추천"]["people"])?>명</td>
+			    <td><?=nf($DATA[$did][$did2]["기타"]["people"]+$DATA[$did][$did2]["기타2"]["people"])?>명</td>
+			    <td><?=nf($sum_this1)?>명</td>
+                <td><?= $val=='한국' ? '':$x.'%'?></td>
+			    <td class="r"><?=@nf($sum_this2)?>원</td>
+			    <td class="r"><?=@nf($sum_this2/$sum_this1)?>원</td>
+		    </tr>
 
 <?
 			$did2 = $year_prev;
