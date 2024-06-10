@@ -165,7 +165,7 @@ function copy(id_no){
 
 
 	 <select name="nation">
-	 <option value="">전체보기</optioni>
+	 <option value="">전체보기</option>
 	 <?=option_str($NATIONS,$NATIONS,$nation)?>
 	 </select>
 

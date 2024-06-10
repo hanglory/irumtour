@@ -39,21 +39,43 @@ if ($mode=="save"){
 	      golf_name4,
 	      hotel_name,
 	      hotel2_name,
+	                         hotel3_name,
+	                         hotel4_name,
 
 	      golf2_1_id_no,
 	      golf2_2_id_no,
 	      golf2_3_id_no,
 	      golf2_4_id_no,
+	                         golf2_5_id_no,
+	                         golf2_6_id_no,
+	                         golf2_7_id_no,
+	                         golf2_8_id_no,
+	                         golf2_9_id_no,
+	                         golf2_10_id_no,
 	      golf2_1_name,
 	      golf2_2_name,
 	      golf2_3_name,
 	      golf2_4_name,
+	                         golf2_5_name,
+	                         golf2_6_name,
+	                         golf2_7_name,
+	                         golf2_8_name,
+	                         golf2_9_name,
+	                         golf2_10_name,
 	      golf2_1,
 	      golf2_2,
 	      golf2_3,
 	      golf2_4,
+	                         golf2_5,
+	                         golf2_6,
+	                         golf2_7,
+	                         golf2_8,
+	                         golf2_9,
+	                         golf2_10,
 	      hotel_id_no,
 	      hotel2_id_no,
+	                         hotel3_id_no,
+	                         hotel4_id_no,
 
 	      main_staff,
 	      main_staff_id,
@@ -72,9 +94,6 @@ if ($mode=="save"){
 	      staff,
 
 		  air_city,
-		  golf2_5,
-		  golf2_5_name,
-		  golf2_5_id_no,
 		  car2,
 		  car3,
 		  etc2,
@@ -86,6 +105,8 @@ if ($mode=="save"){
 		   ag6,
 		   ag7,
 		   ag8,
+	                         ag9,
+	                         ag10,
 		   gh1,
 		   gh2,
 		   gh3,
@@ -94,6 +115,8 @@ if ($mode=="save"){
 		   gh6,
 		   gh7,
 		   gh8,
+	                         gh9,
+	                         gh10,
 		   ah1,
 		   ah2,
 		   ah3,
@@ -119,21 +142,43 @@ if ($mode=="save"){
 	      '$golf_name4',
 	      '$hotel_name',
 	      '$hotel2_name',
+	            '$hotel3_name',
+	            '$hotel4_name',
 
 	      '$golf2_1_id_no',
 	      '$golf2_2_id_no',
 	      '$golf2_3_id_no',
 	      '$golf2_4_id_no',
+	            '$golf2_5_id_no',
+	            '$golf2_6_id_no',
+	            '$golf2_7_id_no',
+	            '$golf2_8_id_no',
+	            '$golf2_9_id_no',
+	            '$golf2_10_id_no',
 	      '$golf2_1_name',
 	      '$golf2_2_name',
 	      '$golf2_3_name',
 	      '$golf2_4_name',
+	            '$golf2_5_name',
+	            '$golf2_6_name',
+	            '$golf2_7_name',
+	            '$golf2_8_name',
+	            '$golf2_9_name',
+	            '$golf2_10_name',
 	      '$golf2_1',
 	      '$golf2_2',
 	      '$golf2_3',
 	      '$golf2_4',
+	      '$golf2_5',
+	      '$golf2_6',
+	      '$golf2_7',
+	      '$golf2_8',
+	      '$golf2_9',
+	      '$golf2_10',
 	      '$hotel_id_no',
 	      '$hotel2_id_no',
+	            '$hotel3_id_no',
+	            '$hotel4_id_no',
 
 	      '$main_staff',
 	      '$main_staff_id',
@@ -151,9 +196,6 @@ if ($mode=="save"){
 	      '$car',
 	      '$staff',
 	      '$air_city',
-	      '$golf2_5',
-	      '$golf2_5_name',
-	      '$golf2_5_id_no',
 	      '$car2',
 	      '$car3',
 	      '$etc2',
@@ -165,6 +207,8 @@ if ($mode=="save"){
 	      '$ag6',
 	      '$ag7',
 	      '$ag8',
+	      '$ag9',
+	      '$ag10',
 	      '$gh1',
 	      '$gh2',
 	      '$gh3',
@@ -173,6 +217,8 @@ if ($mode=="save"){
 	      '$gh6',
 	      '$gh7',
 	      '$gh8',
+	      '$gh9',
+	      '$gh10',
 	      '$ah1',
 	      '$ah2',
 	      '$ah3',
@@ -207,21 +253,43 @@ if ($mode=="save"){
 	      golf_name4 = '$golf_name4',
 	      hotel_name = '$hotel_name',
 	      hotel2_name = '$hotel2_name',
+	      hotel3_name = '$hotel3_name',
+	      hotel4_name = '$hotel4_name',
 
 	      golf2_1_id_no='$golf2_1_id_no',
 	      golf2_2_id_no='$golf2_2_id_no',
 	      golf2_3_id_no='$golf2_3_id_no',
 	      golf2_4_id_no='$golf2_4_id_no',
+	      golf2_5_id_no='$golf2_5_id_no',
+	      golf2_6_id_no='$golf2_6_id_no',
+	      golf2_7_id_no='$golf2_7_id_no',
+	      golf2_8_id_no='$golf2_8_id_no',
+	      golf2_9_id_no='$golf2_9_id_no',
+	      golf2_10_id_no='$golf2_10_id_no',
 	      golf2_1_name='$golf2_1_name',
 	      golf2_2_name='$golf2_2_name',
 	      golf2_3_name='$golf2_3_name',
 	      golf2_4_name='$golf2_4_name',
+	      golf2_5_name='$golf2_5_name',
+	      golf2_6_name='$golf2_6_name',
+	      golf2_7_name='$golf2_7_name',
+	      golf2_8_name='$golf2_8_name',
+	      golf2_9_name='$golf2_9_name',
+	      golf2_10_name='$golf2_10_name',
 	      golf2_1='$golf2_1',
 	      golf2_2='$golf2_2',
 	      golf2_3='$golf2_3',
 	      golf2_4='$golf2_4',
+	      golf2_5='$golf2_5',
+	      golf2_6='$golf2_6',
+	      golf2_7='$golf2_7',
+	      golf2_8='$golf2_8',
+	      golf2_9='$golf2_9',
+	      golf2_10='$golf2_10',
 	      hotel_id_no='$hotel_id_no',
 	      hotel2_id_no='$hotel2_id_no',
+	      hotel3_id_no='$hotel3_id_no',
+	      hotel4_id_no='$hotel4_id_no',
 
 	      main_staff = '$main_staff',
 	      main_staff_id = '$main_staff_id',
@@ -239,9 +307,6 @@ if ($mode=="save"){
 	      car = '$car',
 	      staff = '$staff',
 	      air_city = '$air_city',
-	      golf2_5 = '$golf2_5',
-	      golf2_5_name = '$golf2_5_name',
-	      golf2_5_id_no = '$golf2_5_id_no',
 	      car2 = '$car2',
 	      car3 = '$car3',
 	      etc2 = '$etc2',
@@ -254,6 +319,8 @@ if ($mode=="save"){
 	      ag6 ='$ag6',
 	      ag7 ='$ag7',
 	      ag8 ='$ag8',
+	      ag9 ='$ag9',
+	      ag10 ='$ag10',
 	      gh1 ='$gh1',
 	      gh2 ='$gh2',
 	      gh3 ='$gh3',
@@ -262,6 +329,8 @@ if ($mode=="save"){
 	      gh6 ='$gh6',
 	      gh7 ='$gh7',
 	      gh8 ='$gh8',
+	      gh9 ='$gh9',
+	      gh10 ='$gh10',
 	      ah1 ='$ah1',
 	      ah2 ='$ah2',
 	      ah3 ='$ah3',
@@ -335,7 +404,9 @@ if ($mode=="save"){
 
 }elseif($mode=="hotel"){
 
-	$seq =($id=="hotel2")?2:1;
+	// $seq =($id=="hotel2")?2:1;
+    $seq =intval(substr($id,-1));
+    if($seq == 0) $seq = 1;
 	$THME="";
 
 	$hotel = trim($hotel);
@@ -422,9 +493,17 @@ if ($mode=="save"){
 	$arr  =explode(">",$rs[golf2_2_name]);	$rs[golf2_2] = trim($arr[count($arr)-1]);
 	$arr  =explode(">",$rs[golf2_3_name]);	$rs[golf2_3] = trim($arr[count($arr)-1]);
 	$arr  =explode(">",$rs[golf2_4_name]);	$rs[golf2_4] = trim($arr[count($arr)-1]);
-
+    $arr  =explode(">",$rs[golf2_5_name]);	$rs[golf2_5] = trim($arr[count($arr)-1]);
+    $arr  =explode(">",$rs[golf2_6_name]);	$rs[golf2_6] = trim($arr[count($arr)-1]);
+    $arr  =explode(">",$rs[golf2_7_name]);	$rs[golf2_7] = trim($arr[count($arr)-1]);
+    $arr  =explode(">",$rs[golf2_8_name]);	$rs[golf2_8] = trim($arr[count($arr)-1]);
+    $arr  =explode(">",$rs[golf2_9_name]);	$rs[golf2_9] = trim($arr[count($arr)-1]);
+    $arr  =explode(">",$rs[golf2_10_name]);$rs[golf2_10] = trim($arr[count($arr)-1]);
+//DB에 hotel, hotel2 ... 데이터가 없는데..?                 이거
 	$arr  =explode(">",$rs[hotel_name]);	$rs[hotel] = trim($arr[count($arr)-1]);
 	$arr  =explode(">",$rs[hotel2_name]);	$rs[hotel2] = trim($arr[count($arr)-1]);
+    $arr  =explode(">",$rs[hotel3_name]);	$rs[hotel3] = trim($arr[count($arr)-1]);
+    $arr  =explode(">",$rs[hotel4_name]);	$rs[hotel4] = trim($arr[count($arr)-1]);
 }
 
 
@@ -568,8 +647,16 @@ jQuery(function($){
 	$("#golf2_2").on("change",function(){if(this.value==""){$("#golf2_2_name").val('');$("#golf2_2_id_no").val('')}});
 	$("#golf2_3").on("change",function(){if(this.value==""){$("#golf2_3_name").val('');$("#golf2_3_id_no").val('')}});
 	$("#golf2_4").on("change",function(){if(this.value==""){$("#golf2_4_name").val('');$("#golf2_4_id_no").val('')}});
+    $("#golf2_5").on("change",function(){if(this.value==""){$("#golf2_5_name").val('');$("#golf2_5_id_no").val('')}});
+    $("#golf2_6").on("change",function(){if(this.value==""){$("#golf2_6_name").val('');$("#golf2_6_id_no").val('')}});
+    $("#golf2_7").on("change",function(){if(this.value==""){$("#golf2_7_name").val('');$("#golf2_7_id_no").val('')}});
+    $("#golf2_8").on("change",function(){if(this.value==""){$("#golf2_8_name").val('');$("#golf2_8_id_no").val('')}});
+    $("#golf2_9").on("change",function(){if(this.value==""){$("#golf2_9_name").val('');$("#golf2_9_id_no").val('')}});
+    $("#golf2_10").on("change",function(){if(this.value==""){$("#golf2_10_name").val('');$("#golf2_10_id_no").val('')}});
 	$("#hotel").on("change",function(){if(this.value==""){$("#hotel_name").val('');$("#hotel_id_no").val('')}});
 	$("#hotel2").on("change",function(){if(this.value==""){$("#hotel2_name").val('');$("#hotel2_id_no").val('')}});
+    $("#hotel3").on("change",function(){if(this.value==""){$("#hotel3_name").val('');$("#hotel3_id_no").val('')}});
+    $("#hotel4").on("change",function(){if(this.value==""){$("#hotel4_name").val('');$("#hotel4_id_no").val('')}});
 
 	$('#golf2_1').keypress(function(e){
 		if(e.which == 13) find_golf2('golf2_1');
@@ -587,6 +674,30 @@ jQuery(function($){
 		if(e.which == 13) find_golf2('golf2_4');
 	});
 
+    $('#golf2_5').keypress(function(e){
+        if(e.which == 13) find_golf2('golf2_5');
+    });
+
+    $('#golf2_6').keypress(function(e){
+        if(e.which == 13) find_golf2('golf2_6');
+    });
+
+    $('#golf2_7').keypress(function(e){
+        if(e.which == 13) find_golf2('golf2_7');
+    });
+
+    $('#golf2_8').keypress(function(e){
+        if(e.which == 13) find_golf2('golf2_8');
+    });
+
+    $('#golf2_9').keypress(function(e){
+        if(e.which == 13) find_golf2('golf2_9');
+    });
+
+    $('#golf2_10').keypress(function(e){
+        if(e.which == 13) find_golf2('golf2_10');
+    });
+
 	$('#hotel').keypress(function(e){
 		if(e.which == 13) find_hotel('hotel');
 	});
@@ -595,13 +706,21 @@ jQuery(function($){
 		if(e.which == 13) find_hotel('hotel2');
 	});
 
+    $('#hotel3').keypress(function(e){
+        if(e.which == 13) find_hotel('hotel3');
+    });
+
+    $('#hotel4').keypress(function(e){
+        if(e.which == 13) find_hotel('hotel4');
+    });
+
 	chk_staff('<?=$rs[partner]?>','<?=$rs[main_staff]?>');
 
 });
 </script>
 
 <style type="text/css">
-.tm_col{display:inline-block;width:80px;font-family: verdana;font-size:12px;}
+.tm_col{display:inline-block;width:100px;font-family: verdana;font-size:12px;}
 .golf{width:500px;}
 .hotel{width:300px;}
 </style>
@@ -645,11 +764,27 @@ jQuery(function($){
 		<input type="hidden" name="golf2_3_id_no" id="golf2_3_id_no" value='<?=$rs[golf2_3_id_no]?>'>
 		<input type="hidden" name="golf2_4_name" id="golf2_4_name" value='<?=$rs[golf2_4_name]?>'>
 		<input type="hidden" name="golf2_4_id_no" id="golf2_4_id_no" value='<?=$rs[golf2_4_id_no]?>'>
+            <input type="hidden" name="golf2_5_name" id="golf2_5_name" value='<?=$rs[golf2_5_name]?>'>
+            <input type="hidden" name="golf2_5_id_no" id="golf2_5_id_no" value='<?=$rs[golf2_5_id_no]?>'>
+            <input type="hidden" name="golf2_6_name" id="golf2_6_name" value='<?=$rs[golf2_6_name]?>'>
+            <input type="hidden" name="golf2_6_id_no" id="golf2_6_id_no" value='<?=$rs[golf2_6_id_no]?>'>
+            <input type="hidden" name="golf2_7_name" id="golf2_7_name" value='<?=$rs[golf2_7_name]?>'>
+            <input type="hidden" name="golf2_7_id_no" id="golf2_7_id_no" value='<?=$rs[golf2_7_id_no]?>'>
+            <input type="hidden" name="golf2_8_name" id="golf2_8_name" value='<?=$rs[golf2_8_name]?>'>
+            <input type="hidden" name="golf2_8_id_no" id="golf2_8_id_no" value='<?=$rs[golf2_8_id_no]?>'>
+            <input type="hidden" name="golf2_9_name" id="golf2_9_name" value='<?=$rs[golf2_9_name]?>'>
+            <input type="hidden" name="golf2_9_id_no" id="golf2_9_id_no" value='<?=$rs[golf2_9_id_no]?>'>
+            <input type="hidden" name="golf2_10_name" id="golf2_10_name" value='<?=$rs[golf2_10_name]?>'>
+            <input type="hidden" name="golf2_10_id_no" id="golf2_10_id_no" value='<?=$rs[golf2_10_id_no]?>'>
 
 		<input type="hidden" name="hotel_name" id="hotel_name" value='<?=$rs[hotel_name]?>'>
 		<input type="hidden" name="hotel_id_no" id="hotel_id_no" value='<?=$rs[hotel_id_no]?>'>
 		<input type="hidden" name="hotel2_name" id="hotel2_name" value='<?=$rs[hotel2_name]?>'>
 		<input type="hidden" name="hotel2_id_no" id="hotel2_id_no" value='<?=$rs[hotel2_id_no]?>'>
+            <input type="hidden" name="hotel3_name" id="hotel3_name" value='<?=$rs[hotel3_name]?>'>
+            <input type="hidden" name="hotel3_id_no" id="hotel3_id_no" value='<?=$rs[hotel3_id_no]?>'>
+            <input type="hidden" name="hotel4_name" id="hotel4_name" value='<?=$rs[hotel4_name]?>'>
+            <input type="hidden" name="hotel4_id_no" id="hotel4_id_no" value='<?=$rs[hotel4_id_no]?>'>
 		<input type="hidden" name="main_staff" value='<?=$rs[main_staff]?>'>
 
 		<tr><td colspan=8  bgcolor='#5E90AE' height=2></td></tr>
@@ -736,24 +871,61 @@ jQuery(function($){
         <tr>
           <td class="subject">골프장명</td>
           <td colspan="3">
-			   <span id="golf2_1_wrap"></span>
-	           <?=html_input('golf2_1',30,50,'box golf')?> <span class="btn_pack medium bold"><a href="javascript:find_golf2('golf2_1')"> 검색 </a></span>
+              1. <span id="golf2_1_wrap"></span>
+	            <?=html_input('golf2_1',30,50,'box golf')?> <span class="btn_pack medium bold"><a href="javascript:find_golf2('golf2_1')"> 검색 </a></span>
 			   <br/>
 
-			   <span id="golf2_2_wrap"></span>
-			   <?=html_input('golf2_2',30,50,'box golf')?> <span class="btn_pack medium bold"><a href="javascript:find_golf2('golf2_2')"> 검색 </a></span>
-
-			   <br/>
-
-
-			   <span id="golf2_3_wrap"></span>
-	           <?=html_input('golf2_3',30,50,'box golf')?> <span class="btn_pack medium bold"><a href="javascript:find_golf2('golf2_3')"> 검색 </a></span>
+              2. <span id="golf2_2_wrap"></span>
+			    <?=html_input('golf2_2',30,50,'box golf')?> <span class="btn_pack medium bold"><a href="javascript:find_golf2('golf2_2')"> 검색 </a></span>
 
 			   <br/>
 
 
-			   <span id="golf2_4_wrap"></span>
-			   <?=html_input('golf2_4',30,50,'box golf')?> <span class="btn_pack medium bold"><a href="javascript:find_golf2('golf2_4')"> 검색 </a></span>
+              3. <span id="golf2_3_wrap"></span>
+	            <?=html_input('golf2_3',30,50,'box golf')?> <span class="btn_pack medium bold"><a href="javascript:find_golf2('golf2_3')"> 검색 </a></span>
+
+			   <br/>
+
+
+              4. <span id="golf2_4_wrap"></span>
+			    <?=html_input('golf2_4',30,50,'box golf')?> <span class="btn_pack medium bold"><a href="javascript:find_golf2('golf2_4')"> 검색 </a></span>
+
+              <br/>
+
+
+              5. <span id="golf2_5_wrap"></span>
+               <?=html_input('golf2_5',30,50,'box golf')?> <span class="btn_pack medium bold"><a href="javascript:find_golf2('golf2_5')"> 검색 </a></span>
+
+              <br/>
+
+
+              6. <span id="golf2_6_wrap"></span>
+               <?=html_input('golf2_6',30,50,'box golf')?> <span class="btn_pack medium bold"><a href="javascript:find_golf2('golf2_6')"> 검색 </a></span>
+
+              <br/>
+
+
+              7. <span id="golf2_7_wrap"></span>
+               <?=html_input('golf2_7',30,50,'box golf')?> <span class="btn_pack medium bold"><a href="javascript:find_golf2('golf2_7')"> 검색 </a></span>
+
+              <br/>
+
+
+              8. <span id="golf2_8_wrap"></span>
+               <?=html_input('golf2_8',30,50,'box golf')?> <span class="btn_pack medium bold"><a href="javascript:find_golf2('golf2_8')"> 검색 </a></span>
+
+              <br/>
+
+
+              9. <span id="golf2_9_wrap"></span>
+               <?=html_input('golf2_9',30,50,'box golf')?> <span class="btn_pack medium bold"><a href="javascript:find_golf2('golf2_9')"> 검색 </a></span>
+
+              <br/>
+
+
+              10. <span id="golf2_10_wrap"></span>
+               <?=html_input('golf2_10',30,50,'box golf')?> <span class="btn_pack medium bold"><a href="javascript:find_golf2('golf2_10')"> 검색 </a></span>
+
           </td>
         </tr>
         <tr><td colspan="4" class="tblLine"></td></tr>
@@ -761,20 +933,40 @@ jQuery(function($){
         <tr>
           <td class="subject">소요시간</td>
           <td colspan="3">
-			   <span class="tm_col">공항-골프장 :</span> <?=html_input('ag1',10,28)?>소요,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			   <span class="tm_col">1. 공항-골프장 :</span> <?=html_input('ag1',10,28)?>소요,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			   <span class="tm_col">골프장-호텔 :</span> <?=html_input('gh1',10,28)?>소요
 			   <br/>
-			   <span class="tm_col">공항-골프장 :</span> <?=html_input('ag2',10,28)?>소요,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			   <span class="tm_col">2. 공항-골프장 :</span> <?=html_input('ag2',10,28)?>소요,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			   <span class="tm_col">골프장-호텔 :</span> <?=html_input('gh2',10,28)?>소요
 			   <br/>
-			   <span class="tm_col">공항-골프장 :</span> <?=html_input('ag3',10,28)?>소요,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			   <span class="tm_col">3. 공항-골프장 :</span> <?=html_input('ag3',10,28)?>소요,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			   <span class="tm_col">골프장-호텔 :</span> <?=html_input('gh3',10,28)?>소요
 			   <br/>
-			   <span class="tm_col">공항-골프장 :</span> <?=html_input('ag4',10,28)?>소요,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			   <span class="tm_col">4. 공항-골프장 :</span> <?=html_input('ag4',10,28)?>소요,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			   <span class="tm_col">골프장-호텔 :</span> <?=html_input('gh4',10,28)?>소요
 			   <br/>
+              <span class="tm_col">5. 공항-골프장 :</span> <?=html_input('ag5',10,28)?>소요,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <span class="tm_col">골프장-호텔 :</span> <?=html_input('gh5',10,28)?>소요
+              <br/>
+              <span class="tm_col">6. 공항-골프장 :</span> <?=html_input('ag6',10,28)?>소요,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <span class="tm_col">골프장-호텔 :</span> <?=html_input('gh6',10,28)?>소요
+              <br/>
+              <span class="tm_col">7. 공항-골프장 :</span> <?=html_input('ag7',10,28)?>소요,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <span class="tm_col">골프장-호텔 :</span> <?=html_input('gh7',10,28)?>소요
+              <br/>
+              <span class="tm_col">8. 공항-골프장 :</span> <?=html_input('ag8',10,28)?>소요,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <span class="tm_col">골프장-호텔 :</span> <?=html_input('gh8',10,28)?>소요
+              <br/>
+              <span class="tm_col">9. 공항-골프장 :</span> <?=html_input('ag9',10,28)?>소요,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <span class="tm_col">골프장-호텔 :</span> <?=html_input('gh9',10,28)?>소요
+              <br/>
+              <span class="tm_col">10. 공항-골프장 :</span> <?=html_input('ag10',10,28)?>소요,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <span class="tm_col">골프장-호텔 :</span> <?=html_input('gh10',10,28)?>소요
+              <br/>
 			   <span class="tm_col">호텔-공항 :</span> <?=html_input('ah1',10,28)?>소요<br>
-			   <span class="tm_col">호텔-공항 :</span> <?=html_input('ah2',10,28)?>소요
+               <span class="tm_col">호텔-공항 :</span> <?=html_input('ah2',10,28)?>소요<br>
+               <span class="tm_col">호텔-공항 :</span> <?=html_input('ah3',10,28)?>소요<br>
+			   <span class="tm_col">호텔-공항 :</span> <?=html_input('ah4',10,28)?>소요
           </td>
         </tr>
         <tr><td colspan="4" class="tblLine"></td></tr>
@@ -786,6 +978,10 @@ jQuery(function($){
 	           <?=html_input('hotel',25,50,'box hotel')?> <span class="btn_pack medium bold"><a href="javascript:find_hotel('hotel')"> 검색 </a></span><br/>
 			   <span id="hotel2_wrap"></span>
 	           <?=html_input('hotel2',25,50,'box hotel')?> <span class="btn_pack medium bold"><a href="javascript:find_hotel('hotel2')"> 검색 </a></span>
+              <span id="hotel3_wrap"></span>
+              <?=html_input('hotel3',25,50,'box hotel')?> <span class="btn_pack medium bold"><a href="javascript:find_hotel('hotel3')"> 검색 </a></span>
+              <span id="hotel4_wrap"></span>
+              <?=html_input('hotel4',25,50,'box hotel')?> <span class="btn_pack medium bold"><a href="javascript:find_hotel('hotel4')"> 검색 </a></span>
           </td>
 
           <td class="subject">소요시간</td>
@@ -793,6 +989,10 @@ jQuery(function($){
 			   호텔-공항 : <?=html_input('ah1',10,28)?>소요
 			   <br/>
 			   호텔-공항 : <?=html_input('ah2',10,28)?>소요
+              <br/>
+              호텔-공항 : <?=html_input('ah3',10,28)?>소요
+              <br/>
+              호텔-공항 : <?=html_input('ah4',10,28)?>소요
           </td>
 
         </tr>

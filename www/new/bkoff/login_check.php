@@ -26,7 +26,8 @@ if(strstr("@14.37.242.84@221.154.216.133@","@".$_SERVER["REMOTE_ADDR"]."@")){$EA
 $thisfilename=basename(__FILE__);
 $temp_filename=realpath(__FILE__);
 if(!$temp_filename) $temp_filename=__FILE__;
-$osdir=eregi_replace($thisfilename,"",$temp_filename);
+$osdir = preg_replace('/' . preg_quote($thisfilename, '/') . '/', '', $temp_filename);
+//$osdir=eregi_replace($thisfilename,"",$temp_filename);
 unset($temp_filename);
 $castle_dir = str_replace("bkoff/","castle-php",$osdir);
 define("__CASTLE_PHP_VERSION_BASE_DIR__", $castle_dir);
