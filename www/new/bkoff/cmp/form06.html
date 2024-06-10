@@ -1628,7 +1628,18 @@ textarea{
 
             </td>
             <td width="15%" height="25" align="center" bgcolor="<?=$bg_color?>" style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;font-family:'Malgun Gothic','돋움';font-weight:bold;color:#FFF">도착일</span></td>
-            <td height="25" bgcolor="#ffffff" style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px;font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;text-align:left"><?=$r_date?></td>
+
+            <?
+            if($plan_type == M){
+            ?>
+              <td height="25" bgcolor="#ffffff" style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px;font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;text-align:left"><?=date("Y/m/d",strtotime($r_date." 1 day"))?></td>
+            <?
+            }
+            else{?>
+              <td height="25" bgcolor="#ffffff" style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc;padding:5px;font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;text-align:left"><?=$r_date?></td>
+            <?
+            }
+            ?>
           </tr>
           <tr>
             <td width="15%" height="25" align="center" bgcolor="<?=$bg_color?>" style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;font-family:'Malgun Gothic','돋움';border-left:1px solid #ccc;border-bottom:1px solid #ccc"><span style="font-size:10pt;font-family:'Malgun Gothic','돋움';line-height:130%;font-family:'Malgun Gothic','돋움';font-weight:bold;color:#FFF"><?=($plan_type=='L')?'이동차량':'이용항공'?></span></td>
