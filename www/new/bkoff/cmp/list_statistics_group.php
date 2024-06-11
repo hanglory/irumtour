@@ -1,17 +1,14 @@
-<?
+<?php
 include_once("../include/common_file.php");
 
-
 chk_power($_SESSION["sessLogin"]["proof"],"견적서관리대장");
-
-
 
 ####기초 정보
 $filecode = substr(SELF,5,-4);
 $table = "cmp_estimate";
 $MENU = "cmp_basic";
 $LEFT_HIDDEN="1";
-$TITLE = "일정표 통계";
+$TITLE = "골프투어문의 통계";
 
 ####각종 기초 정보 결정
 $view_row=15;   //한 페이지에 보여줄 행 수를 결정
@@ -51,8 +48,9 @@ $dtype = ($dtype)? $dtype : "send_date";
 if($year) {
     $filter .= " AND substr(a.$dtype,1,4) = $year ";
 }
-if(!$date_s) $date_s= date("Y/m/d",strtotime(date("Y/m/d")." -11 month")); //date("Y"); //"2015/06/01";
-if(!$date_e) $date_e= date("Y/m/d",strtotime(date("Y/m/d")." +1 month"));
+if(!$date_s) $date_s= date("Y/m/d",strtotime(date("Y/m/d")." -12 month")); //date("Y"); //"2015/06/01";
+//if(!$date_e) $date_e= date("Y/m/d",strtotime(date("Y/m/d")." +1 month"));
+if(!$date_e) $date_e= date("Y/m/d",strtotime(date("Y/m/d")));
 $filter.=" AND a.$dtype >='$date_s'";
 $filter.=" AND a.$dtype <='$date_e'";
 // $year = ($year)? $year : date("Y");
@@ -148,7 +146,7 @@ $selectValue ="a.main_staff";
 ?>
 <?include("../top.html");?>
     <script language="JavaScript">
-        <!--
+
         function selectAll(){
             fm = document.fmData;
             for(var i = 1; i < fm.elements.length; i++){
