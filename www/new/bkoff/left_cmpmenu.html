@@ -3,7 +3,12 @@ $total_menu_mode=0;//0인 경우 개별 메뉴 사용
 
 if(rnf($_GET[tms])) $_SESSION[SESS_TOP_MENU_SELECTED]=$tms;
 
+
+
 //상품관리    
+if(!$CP_ID){
+    $ADDMENU1="@list_cp.php@view_cp.php@";
+}
 if(strstr("
     @cmp_config.php@
     @list_golf.php@view_golf.php@
@@ -17,6 +22,7 @@ if(strstr("
     @list_temperature.php@view_temperature.php@
     @list_sample.php@view_sample.php@
     @list_cargo.php@view_cargo.php@
+    $ADDMENU1
     ",SELF)){
 
     $left_memus = array(
@@ -33,9 +39,13 @@ if(strstr("
         "list_sample.php"=>"입국 신고서 샘플",
         "list_cargo.php"=>"항공사별 수화물 무게",  
     );
+
+    if(!$CP_ID){
+        $left_memus['list_cp.php']="파트너 등록";
+    }
+
     $total_menu_mode=1;
 }
-
 
 
 //일정표등록
@@ -43,6 +53,7 @@ elseif(strstr("
     @list_estimate.php@view_estimate.php@
     @list_group.php@view_group.php@
     @list_statistics.php@view_statistics.php@
+    @list_statistics_group.php@
     ",SELF)){
 
     $left_memus = array(
@@ -109,7 +120,6 @@ elseif(strstr("
     @list_paper5.php@
     @list_paper5.php@
     @list_paper17.php@    
-    @list_download.php@    
     ",SELF) || $LEFT_MENU = "cmp_sales"){
 
     if($_SESSION[SESS_TOP_MENU_SELECTED]==6){
@@ -126,7 +136,6 @@ elseif(strstr("
             "list_paper5.php?ctype=중국&dtype=tour_date"=>"기간별 현황(중국)",
             "list_paper5.php?ctype=한국&dtype=tour_date"=>"기간별 현황(한국)",
             "list_paper5.php?ctype=베트남&dtype=tour_date"=>"기간별 현황(베트남)",
-            "list_download.php"=>"고객정보 프로파일링",
         );
         $total_menu_mode=1;
 
