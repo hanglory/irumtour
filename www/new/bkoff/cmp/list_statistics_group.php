@@ -50,8 +50,8 @@ $dtype = ($dtype)? $dtype : "send_date";
 if($year) {
     $filter .= " AND substr(a.$dtype,1,4) = $year ";
 }
-if(!$date_e) $date_e= date("Y/m/d",strtotime(date("Y/m/d")));
-$date_one_year_ago = date('Y/m/d', strtotime('-1 year', strtotime($date_e)));
+if(!$date_e) $date_e= date("Y/m",strtotime(date("Y/m")));
+$date_one_year_ago = date('Y/m', strtotime('-1 year', strtotime($date_e)));
 
 $filter.= "WHERE reg_date >= '$date_one_year_ago' AND
                  reg_date <= '$date_e'";
